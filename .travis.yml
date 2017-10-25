@@ -1,0 +1,38 @@
+language: python
+sudo: required
+
+python:
+  - "3.6"
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
+cache:
+  pip: true
+  npm: true
+  directories:
+    - frontend/node_modules
+
+before_install:
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+install:
+  - pip install django coverage coveralls
+  - cd frontend && npm install && npm install coveralls && npm install -g @angular/cli && cd ..
+
+before_script:
+  - cd backend && python manage.py migrate && cd ..
+
+script:
+  - cd backend && coverage run --branch --source="./example" manage.py test && cd ..
+  - cd frontend && ng test --code-coverage --watch false && ng e2e && cd ..
+
+after_success:
+  - cd backend && coveralls && cd ..
+  - cd frontend && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && cd ..
