@@ -8,5 +8,5 @@
 
 ## Repo structure
 
-- ``/angular``: folder for frontend
-- ``/django``: folder for backend
+- ``/frontend``: folder for frontend
+- ``/backend``: folder for backend
