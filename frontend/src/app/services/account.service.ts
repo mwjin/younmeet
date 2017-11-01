@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { User } from './objects/User';
+import { User } from '../objects/User';
 
 @Injectable()
 export class AccountService {
