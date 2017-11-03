@@ -3,6 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {MeetService} from "../services/meet.service";
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
+import {Router} from "@angular/router";
 
 class CreateRoomForm {
   constructor(public name: string = '',
@@ -23,14 +24,19 @@ class CreateRoomForm {
 export class CreateRoomComponent implements OnInit {
   formModel = new CreateRoomForm();
 
-  constructor(private meetService: MeetService) {}
+  constructor(private meetService: MeetService,
+              private router: Router) {}
 
   ngOnInit() {
   }
 
   onSubmit(): void {
     let room = this.formModel.toRoom();
-    this.meetService.addRoom(this.formModel.toRoom());
     console.log('you submitted ', room);
+    this.meetService.addRoom(this.formModel.toRoom())
+      .then(room => {
+        // navigate to room detail page
+        this.router.navigate(['room', room.id])
+    });
   }
 }
