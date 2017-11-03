@@ -1,9 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-class User(AbstractUser):
-    google_accounts = models.CharField(max_length=64, default='')
-    pass
 
 class Room(models.Model):
     name = models.CharField(max_length=64)
@@ -11,7 +6,4 @@ class Room(models.Model):
     best_start_time = models.DateTimeField()
     best_end_time = models.DateTimeField()
     min_time_required = models.DateTimeField()
-
-class free_time(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+# Create your models here.
