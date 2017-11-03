@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Room} from "../models/room";
+import { Room } from '../models/room';
 
 let ROOMS_CREATED: Room[] = [
   new Room('Room 1', 'Seoul Nat. Univ. 302', 1),

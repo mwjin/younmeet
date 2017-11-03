@@ -12,15 +12,8 @@ import { MeetService } from './services/meet.service';
 import { HttpModule } from '@angular/http';
 import { AccountService } from './services/account.service';
 
-import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SignupComponent } from './login/signup.component';
-import { Routes } from '@angular/router';
-
-const routes: Routes = [
-  { path : '', redirectTo : 'dashboard', pathMatch : 'full' },
-  { path : 'dashboard', component : DashboardComponent },
-];
+import { SignupComponent } from './login/signup/signup.component';
 
 @NgModule({
   declarations : [ AppComponent,
@@ -34,9 +27,9 @@ const routes: Routes = [
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    DashboardComponent ],
+  ],
   providers : [ AccountService,
-    { provide : APP_BASE_HREF, useValue : '/' } ],
+    MeetService ],
   bootstrap : [ AppComponent ]
 })
 

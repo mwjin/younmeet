@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Room} from "../models/room";
-import {MeetService} from "../services/meet.service";
+import { Room } from '../models/room';
+import { MeetService } from '../services/meet.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styles: []
+  selector : 'app-dashboard',
+  templateUrl : './dashboard.component.html',
+  styles : []
 })
 export class DashboardComponent implements OnInit {
 
