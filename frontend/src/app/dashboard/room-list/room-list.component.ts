@@ -8,7 +8,7 @@ import {Room} from "../../models/room";
 })
 export class RoomListComponent implements OnInit {
 
-  @Input() rooms: Room[]
+  @Input() rooms: Room[];
 
   constructor() { }
 

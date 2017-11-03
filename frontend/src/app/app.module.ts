@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
+import {MeetService} from "./services/meet.service";
 
 @NgModule({
   declarations : [
@@ -16,7 +17,7 @@ import { RoomListComponent } from './dashboard/room-list/room-list.component';
     BrowserModule,
     SuiModule
   ],
-  providers : [],
+  providers : [ MeetService ],
   bootstrap : [ AppComponent ]
 })
 export class AppModule {}
