@@ -7,21 +7,27 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import {MeetService} from "./services/meet.service";
 import {RouterModule, Routes} from "@angular/router";
+import { CreateRoomComponent } from './create-room/create-room.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'room/create', component: CreateRoomComponent }
 ];
 
 @NgModule({
   declarations : [
     AppComponent,
     DashboardComponent,
-    RoomListComponent
+    RoomListComponent,
+    CreateRoomComponent
   ],
   imports : [
     BrowserModule,
     RouterModule.forRoot(routes),
+    FormsModule,
+    ReactiveFormsModule,
     SuiModule
   ],
   providers : [ MeetService ],
