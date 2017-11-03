@@ -10,10 +10,19 @@ import { HttpModule } from '@angular/http';
 import { AccountService } from './services/account.service';
 
 import { APP_BASE_HREF } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SignupComponent } from './login/signup.component';
 
 @NgModule({
-  declarations : [ AppComponent, LoginComponent ],
-  imports : [ BrowserModule, SuiModule, YounmeetRoutingModule, HttpModule ],
+  declarations : [ AppComponent,
+    LoginComponent,
+    SignupComponent ],
+  imports : [ BrowserModule,
+    SuiModule,
+    YounmeetRoutingModule,
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule ],
   providers : [ AccountService,
     { provide : APP_BASE_HREF, useValue : '/' } ],
   bootstrap : [ AppComponent ]
