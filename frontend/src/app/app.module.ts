@@ -6,6 +6,12 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import {MeetService} from "./services/meet.service";
+import {RouterModule, Routes} from "@angular/router";
+
+const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  { path: 'dashboard', component: DashboardComponent },
+];
 
 @NgModule({
   declarations : [
@@ -15,6 +21,7 @@ import {MeetService} from "./services/meet.service";
   ],
   imports : [
     BrowserModule,
+    RouterModule.forRoot(routes),
     SuiModule
   ],
   providers : [ MeetService ],
