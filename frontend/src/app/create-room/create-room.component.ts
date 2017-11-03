@@ -7,8 +7,8 @@ import {Router} from "@angular/router";
 
 class CreateRoomForm {
   constructor(public name: string = '',
-              public duration: number = 0,
-              public timespan: Timespan = new Timespan(null, null),
+              public duration: number = 30,
+              public timespan: Timespan = new Timespan(),
               public anonymity: boolean = false) {}
 
   toRoom(): Room {

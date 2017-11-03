@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Room} from "../models/room";
+import {Timespan} from "../models/timespan";
 
 let ROOMS_CREATED: Room[] = [
-  new Room('Room 1', 'Seoul Nat. Univ. 302', 1),
-  new Room('Room 2', 'Seoul Nat. Univ. Station', 2)
+  new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', 1),
+  new Room('Room 2', 30, new Timespan(), false, 'Seoul Nat. Univ. Station', 2)
 ];
 
 let ROOMS_JOINED: Room[] = [
-  new Room('Room 3', 'Seoul Nat. Univ. 301', 3),
-  new Room('Room 4', 'Seoul Nat. Univ. Student Building', 4)
+  new Room('Room 3', 60, new Timespan(), false, 'Seoul Nat. Univ. 301', 3),
+  new Room('Room 4', 60, new Timespan(), false, 'Seoul Nat. Univ. Student Building', 4)
 ];
 
 @Injectable()
