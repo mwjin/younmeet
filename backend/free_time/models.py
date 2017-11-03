@@ -2,7 +2,8 @@ from django.db import models
 from user.models import User
 from room.models import Room
 
-class free_time(models.Model):
+
+class FreeTime(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
