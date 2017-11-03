@@ -19,13 +19,10 @@ class CreateRoomForm {
 export class CreateRoomComponent implements OnInit {
   formModel = new CreateRoomForm();
 
-  constructor(fb: FormBuilder) {
-  }
-
   ngOnInit() {
   }
 
-  onSubmit(value: any): void {
-    console.log('you submitted ', value)
+  onSubmit(): void {
+    console.log('you submitted ', this.formModel)
   }
 }

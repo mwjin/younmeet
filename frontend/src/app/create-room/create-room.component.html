@@ -1,7 +1,11 @@
 <h1>Create Appointment</h1>
 
-<form #form="ngForm"
+<div class="ui divider"></div>
+
+<form (ngSubmit)="onSubmit()"
+      #form="ngForm"
       class="ui form">
+
   <div class="field">
     <label for="name">Name</label>
     <input type="text"
@@ -18,25 +22,29 @@
            [(ngModel)]="formModel.duration" name="name" required>
   </div>
 
-  <div class="field">
-    <label>Min Date</label>
-    <div class="ui left icon input">
-      <i class="calendar icon"></i>
-      <input suiDatepicker
-             [(ngModel)]="formModel.timespan.start" name="timespan_start"
-             [pickerMode]="'date'">
+  <div class="two fields">
+    <div class="field">
+      <label>Min Date</label>
+      <div class="ui left icon input">
+        <i class="calendar icon"></i>
+        <input suiDatepicker
+               [(ngModel)]="formModel.timespan.start" name="timespan_start"
+               [pickerMode]="'date'">
+      </div>
+    </div>
+    <div class="field">
+      <label>Max Date</label>
+      <div class="ui left icon input">
+        <i class="calendar icon"></i>
+        <input suiDatepicker
+               [(ngModel)]="formModel.timespan.end" name="timespan_end"
+               [pickerMode]="'date'">
+      </div>
     </div>
   </div>
 
-  <div class="field">
-    <label>Max Date</label>
-    <div class="ui left icon input">
-      <i class="calendar icon"></i>
-      <input suiDatepicker
-             [(ngModel)]="formModel.timespan.end" name="timespan_end"
-             [pickerMode]="'date'">
-    </div>
-  </div>
+
+
 
   <div *ngIf="!form.valid"
        class="ui error message">Form is invalid</div>
