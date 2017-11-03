@@ -6,26 +6,39 @@ import { LoginComponent } from './login/login.component';
 
 import { SuiModule } from 'ng2-semantic-ui';
 import { YounmeetRoutingModule } from './younmeet-routing/younmeet-routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { RoomListComponent } from './dashboard/room-list/room-list.component';
+import { MeetService } from './services/meet.service';
 import { HttpModule } from '@angular/http';
 import { AccountService } from './services/account.service';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './login/signup.component';
+import { Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path : '', redirectTo : 'dashboard', pathMatch : 'full' },
+  { path : 'dashboard', component : DashboardComponent },
+];
 
 @NgModule({
   declarations : [ AppComponent,
     LoginComponent,
-    SignupComponent ],
+    SignupComponent,
+    DashboardComponent,
+    RoomListComponent ],
   imports : [ BrowserModule,
     SuiModule,
     YounmeetRoutingModule,
     HttpModule,
     FormsModule,
-    ReactiveFormsModule ],
+    ReactiveFormsModule,
+    DashboardComponent ],
   providers : [ AccountService,
     { provide : APP_BASE_HREF, useValue : '/' } ],
   bootstrap : [ AppComponent ]
 })
+
 export class AppModule {
 }
