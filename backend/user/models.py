@@ -1,15 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-class User(AbstractUser):
-    google_accounts = models.CharField(max_length=64, default='')
-    pass
+class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(max_length=255, unique=True)
+    google_accounts = models.EmailField(max_length=255, unique=True)
 
-class Room(models.Model):
-    name = models.CharField(max_length=64)
-    place = models.CharField(max_length=64)
-    best_start_time = models.DateTimeField()
-    best_end_time = models.DateTimeField()
-    min_time_required = models.DateTimeField()
+    USERNAME_FIELD = 'email'
 
 # Create your models here.
