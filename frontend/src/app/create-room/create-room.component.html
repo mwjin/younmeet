@@ -41,5 +41,14 @@
   <div *ngIf="!form.valid"
        class="ui error message">Form is invalid</div>
 
+  <h2>Options</h2>
+  <div class="field">
+    <sui-checkbox [(ngModel)]="formModel.anonymity" name="anonymity">
+      Anonymity
+    </sui-checkbox>
+  </div>
+
+  <div class="ui divider"></div>
+
   <button type="submit" class="ui button">Submit</button>
 </form>

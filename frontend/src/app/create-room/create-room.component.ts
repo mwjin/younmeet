@@ -8,7 +8,8 @@ class Timespan {
 class CreateRoomForm {
   constructor(public name: string = '',
               public duration: number = 0,
-              public timespan: Timespan = new Timespan(null, null)) {}
+              public timespan: Timespan = new Timespan(null, null),
+              public anonymity: boolean = false) {}
 }
 @Component({
   selector: 'app-create-room',
