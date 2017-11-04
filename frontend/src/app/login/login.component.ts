@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector : 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(private accountService: AccountService,
+              private authenticationService: AuthenticationService,
               private router: Router,
               private formBuilder: FormBuilder) {
     this.loginForm = formBuilder.group({
@@ -28,16 +30,14 @@ export class LoginComponent implements OnInit {
   }
 
   tryLogin(): void {
-    this.accountService.postUserSignIn(
+    this.authenticationService.logIn(
       this.email_username.value,
-      this.password.value
-    ).then(response => {
-      if (response.status === 200) {
-        this.router.navigate([ 'dashboard' ]);
-      } else {
-
-      }
-    });
+      this.password.value)
+      .then(success => {
+        if (success) {
+          this.router.navigate([ 'dashboard' ]);
+        }
+      });
 
   }
 
@@ -47,13 +47,11 @@ export class LoginComponent implements OnInit {
    *  2. Password is invalid when the input password does not match with the password in DB
    */
 
-  private emailUsernameValidator(control: FormControl): { [s: string]: boolean } {
+  private emailUsernameValidator(control: FormControl): { [ s: string ]: boolean } {
     return { inValidEmailUsername : true };
   }
 
-  private passwordValidator(control: FormControl): { [s: string]: boolean } {
+  private passwordValidator(control: FormControl): { [ s: string]: boolean } {
     return { inValidPassword : true };
   }
-
-
 }

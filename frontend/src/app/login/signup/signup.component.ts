@@ -48,8 +48,8 @@ export class SignupComponent implements OnInit {
       this.username.value,
       this.email.value,
       this.password.value
-    ).then(response => {
-      if (response.status === 201) {
+    ).then(user => {
+      if (user) {
         this.router.navigate([ 'login' ]);
       }
     });

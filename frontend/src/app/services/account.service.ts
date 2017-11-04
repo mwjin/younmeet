@@ -28,29 +28,7 @@ export class AccountService {
       .catch(this.handleError);
   }
 
-  postUserSignIn(usernameOrEmail: string, password: string): Promise<HttpResponse<number>> {
-    /*
-     * Request POST for signin
-     * return status 200 if sign-in success
-     *  then route to the dashboard component
-     * else, return 404 or something else
-     */
-    const url = `/api/signin`; // could be /api/user/signin
-    const isEmail: RegExp = new RegExp('^[^@\\s]+[@][^@\\s]+[.][a-z]{2,3}$');
-    if (isEmail.test(usernameOrEmail)) {
-      // If input is email format
-      return this.http.post(url,
-        JSON.stringify({
-          email : usernameOrEmail,
-          password : password
-        }), { headers : this.headers })
-        .toPromise()
-        .then(response => response.status)
-        .catch(this.handleError);
-    }
-  }
-
-  postUserSignUp(username: string, email: string, password: string): Promise<HttpResponse<number>> {
+  postUserSignUp(username: string, email: string, password: string): Promise<User> {
     /*
      * Requiest POST for signup
      * return status 201 if success to make a new user
@@ -64,7 +42,7 @@ export class AccountService {
         password : password
       }), { headers : this.headers })
       .toPromise()
-      .then(response => response.status)
+      .then(response => response.json() as User)
       .catch(this.handleError);
   }
 

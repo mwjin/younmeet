@@ -14,11 +14,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './login/signup/signup.component';
 import { AccountService } from './services/account.service';
 import { HttpModule } from '@angular/http';
+import { AuthenticationService } from './services/authentication.service';
+import { AuthGuard } from './auth-guard/auth.guard';
 
 const routes: Routes = [
-  { path : '', redirectTo : 'dashboard', pathMatch : 'full' },
-  { path : 'dashboard', component : DashboardComponent },
-  { path : 'room/create', component : CreateRoomComponent },
+  { path : '', redirectTo : 'login', pathMatch : 'full' },
+  { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
+  { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
 ];
@@ -40,7 +42,9 @@ const routes: Routes = [
     SuiModule
   ],
   providers : [ AccountService,
-    MeetService ],
+    MeetService,
+    AuthenticationService,
+    AuthGuard ],
   bootstrap : [ AppComponent ]
 })
 
