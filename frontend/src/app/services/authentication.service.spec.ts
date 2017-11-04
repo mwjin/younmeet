@@ -51,31 +51,69 @@ describe('AuthenticationService', () => {
     });
   });
 
+  it('currentUser should be null before signin', () => {
+    expect(localStorage.getItem('currentUser')).toBeNull();
+  });
+
   it('can make object with "new"', inject([ Http ], (http: Http) => {
     expect(http).not.toBeNull('http should be provided');
     let service = new AuthenticationService(http);
     expect(service instanceof AuthenticationService).toBe(true);
   }));
 
-  it('local storage currentUser should be empty before sign in', inject([ Http ], (http: Http) => {
-    expect(localStorage.getItem[ 'currentUser' ]).toBeNull();
-  }));
 
-  /*
   describe('When signin', () => {
     let backend: MockBackend;
     let service: AuthenticationService;
 
     let fakeUsers: User[];
-    let response: Response;
 
     beforeEach(inject([ Http, XHRBackend ], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthenticationService(http);
 
       fakeUsers = makeMockUserDB();
-
     }));
+
+    it('could sign in with username', async(inject([], () => {
+      service.logIn('user1', 'iluvswpp')
+        .then(result => {
+          expect(result).toBe(true);
+          expect(localStorage.getItem('currentUser')).not.toBeNull();
+        });
+    })));
+
+    it('could sign in with email', async(inject([], () => {
+      service.logIn('swpp2017@gmail.com', 'iluvswpp')
+        .then(result => {
+          expect(result).toBe(true);
+          expect(localStorage.getItem('currentUser')).not.toBeNull();
+        });
+    })));
+
+    it('could not sign in with unregistered username', async(inject([], () => {
+      service.logIn('nouser', 'iluvswpp')
+        .then(result => {
+          expect(result).toBe(false);
+          expect(localStorage.getItem('currentUser')).toBeNull();
+        });
+    })));
+
+    it('could not sign in with unregistered username', async(inject([], () => {
+      service.logIn('nono@gmail.com', 'iluvswpp')
+        .then(result => {
+          expect(result).toBe(false);
+          expect(localStorage.getItem('currentUser')).toBeNull();
+        });
+    })));
+
+    it('could log out', async(inject([], () => {
+      localStorage.setItem('currentUser', JSON.stringify(fakeUsers[ 0 ]));
+      expect(localStorage.getItem('currentUser')).not.toBeNull();
+      service.logOut()
+        .then(() => {
+          expect(localStorage.getItem('currentUser')).toBeNull();
+        });
+    })));
   });
-  */
 });
