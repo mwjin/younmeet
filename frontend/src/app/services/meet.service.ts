@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
+import {User} from "../models/user";
 
 let ROOMS_CREATED: Room[] = [
   new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
@@ -12,6 +13,12 @@ let ROOMS_JOINED: Room[] = [
   new Room('Room 4', 60, new Timespan(), false, 'Seoul Nat. Univ. 301', true, 4),
   new Room('Room 5', 60, new Timespan(), false, 'Seoul Nat. Univ. Student Building', true, 5),
   new Room('Room 6', 60, new Timespan(), false, 'Shinlim Station', false, 6)
+];
+
+let TEST_USERS: User[] = [
+  new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
+  new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
+  new User(1, 'chris', 'chris@snu.ac.kr', 'chris'),
 ];
 
 @Injectable()
@@ -29,6 +36,14 @@ export class MeetService {
 
   getRoomsJoinedByMe(): Promise<Room[]> {
     return Promise.resolve(ROOMS_JOINED);
+  }
+
+  getRoomById(id: number): Promise<Room> {
+    return Promise.resolve(this.rooms[id]);
+  }
+
+  getUsersInRoom(id: number): Promise<User[]> {
+    return Promise.resolve([]);
   }
 
   addRoom(room: Room): Promise<Room> {

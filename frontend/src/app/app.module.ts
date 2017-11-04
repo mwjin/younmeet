@@ -9,6 +9,8 @@ import {MeetService} from "./services/meet.service";
 import {RouterModule, Routes} from "@angular/router";
 import { CreateRoomComponent } from './create-room/create-room.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { RoomDetailComponent } from './room-detail/room-detail.component';
+import {AccountService} from "./services/account.service";
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -21,7 +23,8 @@ const routes: Routes = [
     AppComponent,
     DashboardComponent,
     RoomListComponent,
-    CreateRoomComponent
+    CreateRoomComponent,
+    RoomDetailComponent
   ],
   imports : [
     BrowserModule,
@@ -30,7 +33,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     SuiModule
   ],
-  providers : [ MeetService ],
+  providers : [ AccountService,
+    MeetService ],
   bootstrap : [ AppComponent ]
 })
 export class AppModule {}
