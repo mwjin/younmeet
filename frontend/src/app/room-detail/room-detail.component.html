@@ -1,0 +1,31 @@
+<div *ngIf="room">
+  <h1>{{room.name}}</h1>
+
+  <button class="ui button">Shareable Link</button>
+
+  <h2>List of participants</h2>
+  <div *ngIf="members">
+    <div class="ui horizontal list" *ngFor="let member of members">
+      <div class="item">
+        <img *ngIf="room.owner.id === member.id"
+             class="ui avatar image" src="assets/images/user-icon-tiny-king.png">
+        <img *ngIf="room.owner.id !== member.id"
+             class="ui avatar image" src="assets/images/user-icon-tiny.png">
+        <div class="content">
+          <div class="header">{{ member.username }} &nbsp;&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Location</h2>
+  {{room.place}}
+
+  <h2>Available Time</h2>
+  <div class="ui list" *ngFor="let timespan of availableTime">
+    <div class="item">
+      {{timespan.start | date:'short'}} ~ {{timespan.end | date:'short'}}
+    </div>
+  </div>
+  <button class="ui button">Select Available Time</button>
+</div>
