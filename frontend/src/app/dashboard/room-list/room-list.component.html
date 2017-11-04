@@ -1,7 +1,7 @@
 <div class="ui segment">
   <div class="ui relaxed divided list">
     <div class="item" *ngFor="let room of rooms">
-      <a [routerLink]="['room', room.id]" class="content">
+      <a [routerLink]="['/room', room.id]" class="content">
         <div class="header">{{room.name}}</div>
         {{room.place}}
       </a>
