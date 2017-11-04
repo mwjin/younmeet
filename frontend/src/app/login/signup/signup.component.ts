@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
 import { SignupValidator } from './signupValidator';
@@ -24,18 +24,12 @@ export class SignupComponent implements OnInit {
               private formBuilder: FormBuilder) {
 
     this.signUpForm = formBuilder.group({
-      'email' : [ '', Validators.compose([
-        Validators.required, this.emailValidator
-      ]) ],
-      'username' : [ '', Validators.compose([
-        Validators.required, this.usernameValidator
-      ]) ],
-      'password' : [ '', Validators.compose([
-        Validators.required, this.passwordValidator
-      ]) ],
+      'email' : [ '', Validators.required ],
+      'username' : [ '', Validators.required ],
+      'password' : [ '', Validators.required ],
       'passwordConfirm' : [ '', Validators.required ]
     }, {
-      validator : SignupValidator.matchPassword
+      validator : SignupValidator.matchForm
     });
 
     this.email = this.signUpForm.controls[ 'email' ];
@@ -59,38 +53,5 @@ export class SignupComponent implements OnInit {
         this.router.navigate([ 'login' ]);
       }
     });
-  }
-
-  private emailValidator(control: FormControl): { [s: string]: boolean } {
-    const emailReg: RegExp = new RegExp('^[^@\\s]+[@][^@\\s]+[.][a-z]{2,3}$');
-    if (!emailReg.test(control.value)) {
-      return { invalidEmail : true };
-    }
-  }
-
-  private usernameValidator(control: FormControl): { [s: string]: boolean } {
-    const usernameReg: RegExp = new RegExp('^$');
-    if (usernameReg.test(control.value)) {
-      return { invalidUsername : true };
-    }
-    /* TODO:
-     * Update username Validator for checking duplicate username
-     */
-  }
-
-  private passwordValidator(control: FormControl): { [s: string]: boolean } {
-    const passwordReg: RegExp = new RegExp('^(?=.*[a-z])(?=.*[0-9])\\S{8,}$');
-    if (!passwordReg.test(control.value)) {
-      return { invalidPassword : true };
-    }
-  }
-
-  private passwordConfirmValidator(password: string): ValidatorFn {
-    return (control: FormControl): { [s: string]: boolean } => {
-      const passwordConfirmReg: RegExp = new RegExp(`^${password}$`);
-      if (!passwordConfirmReg.test(control.value)) {
-        return { invalidPasswordConfirm : true };
-      }
-    };
   }
 }
