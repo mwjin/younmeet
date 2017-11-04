@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import User
+from django.conf import settings
 from room.models import Room
 
 
@@ -8,7 +8,7 @@ class FreeTime(models.Model):
     end_time = models.DateTimeField()
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name='free_times',
         null=True
     )

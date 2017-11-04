@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.contrib.auth import authenticate, login, logout
-from models import User
+from user.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.forms.models import model_to_dict
 import json
