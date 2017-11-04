@@ -36,6 +36,17 @@ export class MeetService {
 
   rooms: Room[] = [];
 
+  constructor() {
+    for (let room of ROOMS_CREATED) {
+      room.users = TEST_USERS.slice(0);
+      room.owner = TEST_USERS[0];
+    }
+    for (let room of ROOMS_JOINED) {
+      room.users = TEST_USERS.slice(0);
+      room.owner = TEST_USERS[0];
+    }
+  }
+
   getRoomsCreatedByMe(): Promise<Room[]> {
     return Promise.resolve(ROOMS_CREATED);
   }
@@ -48,6 +59,7 @@ export class MeetService {
     let room = ROOMS_CREATED
       .concat(ROOMS_JOINED)
       .filter(room => room.id === id)[0];
+    console.log(room);
     return Promise.resolve(room);
   }
 
