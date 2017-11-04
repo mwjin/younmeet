@@ -13,6 +13,20 @@ export class LoginComponent implements OnInit {
   private email_username: AbstractControl;
   private password: AbstractControl;
 
+  ngOnInit() {
+  }
+
+  constructor(private accountService: AccountService,
+              private router: Router,
+              private formBuilder: FormBuilder) {
+    this.loginForm = formBuilder.group({
+      'email/username' : [ '', Validators.required ],
+      'password' : [ '', Validators.required ]
+    });
+    this.email_username = this.loginForm.controls[ 'email/username' ];
+    this.password = this.loginForm.controls[ 'password' ];
+  }
+
   tryLogin(): void {
     this.accountService.postUserSignIn(
       this.email_username.value,
@@ -25,18 +39,6 @@ export class LoginComponent implements OnInit {
       }
     });
 
-  }
-
-
-  constructor(private accountService: AccountService,
-              private router: Router,
-              private formBuilder: FormBuilder) {
-    this.loginForm = formBuilder.group({
-      'email/username' : [ '', Validators.required ],
-      'password' : [ '', Validators.required ]
-    });
-    this.email_username = this.loginForm.controls[ 'email/username' ];
-    this.password = this.loginForm.controls[ 'password' ];
   }
 
   /* TODO
@@ -53,8 +55,5 @@ export class LoginComponent implements OnInit {
     return { inValidPassword : true };
   }
 
-
-  ngOnInit() {
-  }
 
 }

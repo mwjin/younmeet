@@ -1,4 +1,66 @@
 <body>
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+      <h2 class="ui header">
+        You & MEet Sign Up
+      </h2>
+      <form class="ui large form"
+            [formGroup]="signUpForm"
+            [class.error]="!signUpForm.valid&&signUpForm.touched"
+            (submit)="signUp()">
+        <div class="ui stacked segment">
+          <!-- Username Input -->
+          <div class="required field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" name="email" placeholder="Username"
+                     [formControl]="signUpForm.controls['username']">
+            </div>
+          </div>
+          <div *ngIf="username.hasError('invalidUsername')&&username.touched"
+               class="ui error message"> Username Should not be Empty
+          </div>
 
+          <!-- Email Input -->
+          <div class="required field">
+            <div class="ui left icon input">
+              <i class="mail icon"></i>
+              <input type="text" name="email" placeholder="Email"
+                     [formControl]="signUpForm.controls['email']">
+            </div>
+          </div>
+          <div *ngIf="email.hasError('invalidEmail')&&email.touched"
+               class="ui error message"> Email Should be xxxxx@xxxxxx.xxx
+          </div>
+
+          <!-- Password Input -->
+          <div class="required field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password" placeholder="Password"
+                     [formControl]="signUpForm.controls['password']">
+            </div>
+          </div>
+          <div *ngIf="password.hasError('invalidPassword')&&password.touched"
+               class="ui error message"> Must contain at least 8 characters with at least one number
+          </div>
+
+          <!-- PasswordConfirm Input -->
+          <div class="required field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="passwordConfirm" placeholder="Password Confirmation"
+                     [formControl]="signUpForm.controls['passwordConfirm']">
+            </div>
+          </div>
+          <div *ngIf="passwordConfirm.hasError('invalidPasswordConfirm')&&passwordConfirm.touched"
+               class="ui error message"> Must match password.
+          </div>
+
+          <button class="ui fluid large submit button" type="submit">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
 </body>
