@@ -18,7 +18,13 @@ let ROOMS_JOINED: Room[] = [
 let TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
   new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
-  new User(1, 'chris', 'chris@snu.ac.kr', 'chris'),
+  new User(3, 'chris', 'chris@snu.ac.kr', 'chris'),
+];
+
+let TEST_AVAILABLE_TIME: Timespan[] = [
+  new Timespan(),
+  new Timespan(),
+  new Timespan()
 ];
 
 @Injectable()
@@ -39,11 +45,18 @@ export class MeetService {
   }
 
   getRoomById(id: number): Promise<Room> {
-    return Promise.resolve(this.rooms[id]);
+    let room = ROOMS_CREATED
+      .concat(ROOMS_JOINED)
+      .filter(room => room.id === id)[0];
+    return Promise.resolve(room);
   }
 
   getUsersInRoom(id: number): Promise<User[]> {
-    return Promise.resolve([]);
+    return Promise.resolve(TEST_USERS);
+  }
+
+  getAvailableTime(roomId: number): Promise<Timespan[]> {
+    return Promise.resolve(TEST_AVAILABLE_TIME);
   }
 
   addRoom(room: Room): Promise<Room> {

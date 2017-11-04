@@ -11,11 +11,13 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RoomDetailComponent } from './room-detail/room-detail.component';
 import {AccountService} from "./services/account.service";
+import {HttpModule} from "@angular/http";
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'room/create', component: CreateRoomComponent }
+  { path: 'room/create', component: CreateRoomComponent },
+  { path: 'room/:id', component: RoomDetailComponent }
 ];
 
 @NgModule({
@@ -30,6 +32,7 @@ const routes: Routes = [
     BrowserModule,
     RouterModule.forRoot(routes),
     FormsModule,
+    HttpModule,
     ReactiveFormsModule,
     SuiModule
   ],

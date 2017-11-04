@@ -1,6 +1,20 @@
-<h1>{{room.name}}</h1>
+<div *ngIf="room">
+  <h1>{{room.name}}</h1>
 
-<h2>List of participants</h2>
-<div class="ui list" *ngFor="let room.">
-  <div class="item"></div>
+  <button class="ui button">Shareable Link</button>
+
+  <h2>List of participants</h2>
+  <div *ngIf="members">
+    <div class="ui list" *ngFor="let member of members">
+      <div class="item">{{member.username}}</div>
+    </div>
+  </div>
+
+  <h2>Location</h2>
+
+  <h2>Available Time</h2>
+  <div class="ui list" *ngFor="let timespan of availableTime">
+    <div class="item">{{timespan.start}} ~ {{timespan.end}}</div>
+  </div>
+  <button class="ui button">Select Available Time</button>
 </div>
