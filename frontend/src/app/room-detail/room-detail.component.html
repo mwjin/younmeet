@@ -5,8 +5,13 @@
 
   <h2>List of participants</h2>
   <div *ngIf="members">
-    <div class="ui list" *ngFor="let member of members">
-      <div class="item">{{member.username}}</div>
+    <div class="ui horizontal list" *ngFor="let member of members">
+      <div class="item">
+        <img class="ui avatar image" src="assets/images/user-icon-tiny.png">
+        <div class="content">
+          <div class="header">{{ member.username }} &nbsp;&nbsp;</div>
+        </div>
+      </div>
     </div>
   </div>
 
