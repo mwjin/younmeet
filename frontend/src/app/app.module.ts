@@ -12,6 +12,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RoomDetailComponent } from './room-detail/room-detail.component';
 import {AccountService} from "./services/account.service";
 import {HttpModule} from "@angular/http";
+import {CommonModule} from "@angular/common";
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full'},

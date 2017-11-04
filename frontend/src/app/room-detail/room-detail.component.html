@@ -11,10 +11,13 @@
   </div>
 
   <h2>Location</h2>
+  {{room.place}}
 
   <h2>Available Time</h2>
   <div class="ui list" *ngFor="let timespan of availableTime">
-    <div class="item">{{timespan.start}} ~ {{timespan.end}}</div>
+    <div class="item">
+      {{timespan.start | date:'short'}} ~ {{timespan.end | date:'short'}}
+    </div>
   </div>
   <button class="ui button">Select Available Time</button>
 </div>
