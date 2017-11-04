@@ -14,7 +14,7 @@ def room_list(request):
     user = request.user
 
     if request.method == 'GET':
-        return JsonResponse(list(Room.objects.get(user=user).values()))
+        return JsonResponse(list(Room.objects.filter(members__id=user.id).values()), safe=False)
 
     elif request.method == 'POST':
         data = json.loads(request.body.decode())

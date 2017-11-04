@@ -19,8 +19,7 @@ def signup(request):
         req_data = json.loads(request.body.decode())
         email = req_data['email']
         password = req_data['password']
-        google_account = req_data['google_account']
-        User.objects.create_user(email=email, password=password, google_account=google_account)
+        User.objects.create_user(email=email, password=password)
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
