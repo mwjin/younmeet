@@ -4,7 +4,6 @@ from django.http import HttpResponseNotFound, JsonResponse
 from django.forms.models import model_to_dict
 from datetime import datetime
 from .models import Room
-from user.models import User
 import json
 
 
@@ -59,6 +58,7 @@ def room_detail(request, room_id):
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
+
 def room_users(request, room_id):
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
@@ -71,4 +71,6 @@ def room_users(request, room_id):
 
     if request.method == 'GET':
         return JsonResponse(list(room.users.all().values()))
+    else:
+        return HttpResponseNotAllowed(['GET'])
 

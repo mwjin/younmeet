@@ -166,23 +166,6 @@ class TimeCountTree:
 # simple testing
 if __name__ == "__main__":
     from datetime import datetime
-    '''
-    start1 = datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M')
-    end1 = datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M')
-    start2 = datetime.strptime('2017-11-4 4:30', '%Y-%m-%d %H:%M')
-    end2 = datetime.strptime('2017-11-4 6:30', '%Y-%m-%d %H:%M')
-    start3 = datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M')
-    end3 = datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M')
-
-    node1 = TimeCountNode(start1, end1)
-    node2 = TimeCountNode(start2, end2)
-    node3 = TimeCountNode(start3, end3)
-
-    tree = TimeCountTree(node1)
-    tree.insert(node2)
-    tree.insert(node3)
-    tree.print_inorder()
-    '''
 
     def make_time(str):
         return datetime.strptime('2017-11-4 '+str, '%Y-%m-%d %H:%M')
