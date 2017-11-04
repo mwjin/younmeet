@@ -33,8 +33,8 @@ export class LoginComponent implements OnInit {
     this.authenticationService.logIn(
       this.email_username.value,
       this.password.value)
-      .then(success => {
-        if (success) {
+      .then(isSignInSuccess => {
+        if (isSignInSuccess) {
           this.router.navigate([ 'dashboard' ]);
         }
       });

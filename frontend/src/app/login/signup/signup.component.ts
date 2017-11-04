@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit {
       this.password.value
     ).then(user => {
       if (user) {
+        // If success to create a new user
         this.router.navigate([ 'login' ]);
       }
     });
