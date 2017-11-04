@@ -68,7 +68,7 @@ export class MeetService {
   deleteRoom(room: Room): Promise<Response> {
     let roomIndex = this.rooms.indexOf(room);
     this.rooms.splice(roomIndex, 1);
-    let response = new Response(new Blob(), { "status": 200, "statusText": "Room deleted" });
+    let response = new Response(new Blob(), { 'status' : 200, 'statusText' : 'Room deleted' });
     return Promise.resolve(response);
   }
 
