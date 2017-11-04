@@ -7,18 +7,18 @@ import { LoginComponent } from './login/login.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
-import {MeetService} from "./services/meet.service";
-import {RouterModule, Routes} from "@angular/router";
+import { MeetService } from './services/meet.service';
+import { RouterModule, Routes } from '@angular/router';
 import { CreateRoomComponent } from './create-room/create-room.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {SignupComponent} from "./login/signup/signup.component";
-import {AccountService} from "./services/account.service";
-import {HttpModule} from "@angular/http";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SignupComponent } from './login/signup/signup.component';
+import { AccountService } from './services/account.service';
+import { HttpModule } from '@angular/http';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'room/create', component: CreateRoomComponent },
+  { path : '', redirectTo : 'dashboard', pathMatch : 'full' },
+  { path : 'dashboard', component : DashboardComponent },
+  { path : 'room/create', component : CreateRoomComponent },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
 ];

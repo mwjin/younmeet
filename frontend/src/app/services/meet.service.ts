@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Room} from "../models/room";
-import {Timespan} from "../models/timespan";
+import { Room } from '../models/room';
+import { Timespan } from '../models/timespan';
 
 let ROOMS_CREATED: Room[] = [
   new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
@@ -40,7 +40,7 @@ export class MeetService {
   deleteRoom(room: Room): Promise<Response> {
     let roomIndex = this.rooms.indexOf(room);
     this.rooms.splice(roomIndex, 1);
-    let response = new Response(new Blob(), { "status": 200, "statusText": "Room deleted" });
+    let response = new Response(new Blob(), { 'status' : 200, 'statusText' : 'Room deleted' });
     return Promise.resolve(response);
   }
 
