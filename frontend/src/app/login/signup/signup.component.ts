@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
+import { SignupValidator } from './signupValidator';
 
 @Component({
   selector : 'app-signup',
@@ -32,9 +33,9 @@ export class SignupComponent implements OnInit {
       'password' : [ '', Validators.compose([
         Validators.required, this.passwordValidator
       ]) ],
-      'passwordConfirm' : [ '', Validators.compose([
-        Validators.required, this.passwordConfirmValidator('')
-      ]) ]
+      'passwordConfirm' : [ '', Validators.required ]
+    }, {
+      validator : SignupValidator.matchPassword
     });
 
     this.email = this.signUpForm.controls[ 'email' ];
