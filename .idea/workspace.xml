@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="899c4920-8154-48fa-b855-30c47d4554a0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/db.sqlite3" afterPath="$PROJECT_DIR$/backend/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/swpp17-team8.iml" afterPath="$PROJECT_DIR$/.idea/swpp17-team8.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/Algorithm/test_time_count_tree.py" afterPath="$PROJECT_DIR$/backend/Algorithm/test_time_count_tree.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/Algorithm/time_count_tree.py" afterPath="$PROJECT_DIR$/backend/Algorithm/time_count_tree.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/room/models.py" afterPath="$PROJECT_DIR$/backend/room/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/room/tests.py" afterPath="$PROJECT_DIR$/backend/room/tests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/room/views.py" afterPath="$PROJECT_DIR$/backend/room/views.py" />
-    </list>
+    <list default="true" id="899c4920-8154-48fa-b855-30c47d4554a0" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
