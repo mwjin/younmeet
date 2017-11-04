@@ -1,3 +1,50 @@
+'''
+best k time algorithm
+
+
+def of "best time" = argmax ( sum( time_count * (minutes) )
+
+1. minutes > min_time_required
+2. each output is time interval that is sum of time interval of nodes
+
+
+'''
+
+'''
+How algorithm works
+
+def time_interval = (start_time, end_time)
+
+1. build tree
+    1) Input to root a time_interval
+        If a new time_interval has been inputed, it has time_count of 1
+        
+    2) Input other nodes
+        when inputting other nodes, the other node can have 3 relationship with the tree node
+        (1) one time_interval contains the other
+        (2) it overlaps
+        (3) it does not intersect
+        These 3 cases are held accordingly considering time_count by node_relationship()
+        
+        so node_relationship outputs [new_left)node, new_self_node, new_right_node]
+        (new_self_node is not None)
+        
+        the new_left_node recursively inserted to the left node and as same for right
+        the new_self_node becomes the self node
+        
+        
+'''
+
+'''
+Tree input specification(Database integrity)
+
+Assumes that for each person, the free time interval must not overlap
+
+ex) 
+person that has free time(start_time, end_time)  
+(1, 3) and (2,4) must not exit in DB
+
+'''
 
 
 class TimeConstraintException(Exception):

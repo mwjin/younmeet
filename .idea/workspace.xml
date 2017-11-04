@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="899c4920-8154-48fa-b855-30c47d4554a0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/algorithm/Test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/algorithm/time_count_tree.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/algorithm/time_scheduling.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/algorithm/time_count_tree.py" afterPath="$PROJECT_DIR$/backend/algorithm/time_count_tree.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,8 +26,8 @@
       <file leaf-file-name="time_count_tree.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/algorithm/time_count_tree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="889">
-              <caret line="104" column="0" lean-forward="true" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+            <state relative-caret-position="1056">
+              <caret line="32" column="47" lean-forward="false" selection-start-line="32" selection-start-column="47" selection-end-line="32" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -66,8 +64,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/backend/algorithm/Test.py" />
-        <option value="$PROJECT_DIR$/backend/algorithm/time_count_tree.py" />
         <option value="$PROJECT_DIR$/backend/algorithm/time_scheduling.py" />
+        <option value="$PROJECT_DIR$/backend/algorithm/time_count_tree.py" />
       </list>
     </option>
   </component>
@@ -226,8 +224,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/algorithm/time_count_tree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="889">
-          <caret line="104" column="0" lean-forward="true" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+        <state relative-caret-position="1056">
+          <caret line="32" column="47" lean-forward="false" selection-start-line="32" selection-start-column="47" selection-end-line="32" selection-end-column="47" />
           <folding />
         </state>
       </provider>
