@@ -4,57 +4,14 @@ from django.http import HttpResponseNotFound, JsonResponse
 from django.forms.models import model_to_dict
 from datetime import datetime
 from .models import Room
+from user.models import User
 import json
-'''
-def heroList(request):
-if request.method == 'GET':
-# Serialization
-return JsonResponse( list(Hero.objects.all().values()), safe=False)
-elif request.method == 'POST':
-name = json.loads(request.body.decode())[ 'name']
-# Deserialization
-new_hero = Hero(name=name)
-new_hero.save()
-return HttpResponse( status=201) # 201 is 'created' response code
-else:
-# only GET and POST methods are allowed for this url
-return HttpResponseNotAllowed([ 'GET', 'POST'])
 
 
-def heroDetail (request, hero_id):
-hero_id = int(hero_id)
-if request.method == 'GET':
-try:
-hero = Hero.objects.get( id=hero_id)
-except Hero.DoesNotExist:
-return HttpResponseNotFound()
-return JsonResponse(model_to_dict(hero))
-elif request.method == 'PUT':
-name = json.loads(request.body.decode())[ 'name']
-try:
-hero = Hero.objects.get( id=hero_id)
-except Hero.DoesNotExist:
-return HttpResponseNotFound()
-hero.name = name
-hero.save()
-return HttpResponse( status=204) # 'No content' response
-
-elif request.method == 'DELETE':
-try:
-hero = Hero.objects.get( id=hero_id)
-except Hero.DoesNotExist:
-return HttpResponseNotFound()
-hero.delete()
-return HttpResponse( status=204) # 'No content' response
-else:
-# only GET, PUT and DELETE methods are allowed for this url
-return HttpResponseNotAllowed([ 'GET', 'PUT', 'DELETE'])
-'''
-
-# TODO: user authentication for all methods
 
 def room_list(request):
-    # GET, POST
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
     user = request.user
 
     if request.method == 'GET':
@@ -74,16 +31,44 @@ def room_list(request):
             owner=user
         )
         new_room.save()
-        new_room.user.add(user)
+        # does not add this user to new_room.users
+        # room.user is only added when selecting free_time
         return HttpResponse( status=201)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-def room_detail(request):
-    #GET, DELETE
-    pass 
 
-def room_user_list(request):
-    #GET
-    pass
+def room_detail(request, room_id):
+
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    room_id = int(room_id)
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == 'GET':
+        return JsonResponse(model_to_dict(room))
+
+    elif request.method == 'DELETE':
+        room.delete()
+        return HttpResponse(status=204)
+    else:
+        return HttpResponseNotAllowed(['GET', 'DELETE'])
+
+def room_users(request, room_id):
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    room_id = int(room_id)
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == 'GET':
+        return JsonResponse(list(room.users.all().values()))
+

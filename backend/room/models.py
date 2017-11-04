@@ -12,7 +12,7 @@ class Room(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='created_room'
     )
-    user = models.ManyToManyField(
+    users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='rooms',
     )
