@@ -7,6 +7,7 @@ export class Room {
               public timespan: Timespan = new Timespan(),
               public anonymity: boolean = false,
               public place: string = '',
+              public urgent: boolean = true,
               public id?: number) {
 
   }

@@ -3,13 +3,15 @@ import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 
 let ROOMS_CREATED: Room[] = [
-  new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', 1),
-  new Room('Room 2', 30, new Timespan(), false, 'Seoul Nat. Univ. Station', 2)
+  new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
+  new Room('Room 2', 30, new Timespan(), false, 'Seoul Nat. Univ. Station', true, 2),
+  new Room('Room 3', 30, new Timespan(), false, 'Nakseongdae Station', false, 3)
 ];
 
 let ROOMS_JOINED: Room[] = [
-  new Room('Room 3', 60, new Timespan(), false, 'Seoul Nat. Univ. 301', 3),
-  new Room('Room 4', 60, new Timespan(), false, 'Seoul Nat. Univ. Student Building', 4)
+  new Room('Room 4', 60, new Timespan(), false, 'Seoul Nat. Univ. 301', true, 4),
+  new Room('Room 5', 60, new Timespan(), false, 'Seoul Nat. Univ. Student Building', true, 5),
+  new Room('Room 6', 60, new Timespan(), false, 'Shinlim Station', false, 6)
 ];
 
 @Injectable()

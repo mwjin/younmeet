@@ -9,18 +9,22 @@ import {MeetService} from "../services/meet.service";
 })
 export class DashboardComponent implements OnInit {
 
-  roomsCreated: Room[];
-  roomsJoined: Room[];
+  roomsCreated_Urgent: Room[];
+  roomsCreated_NotUrgent: Room[];
+  roomsJoined_Urgent: Room[];
+  roomsJoined_NotUrgent: Room[];
 
   constructor(private meetService: MeetService) { }
 
   ngOnInit() {
-    this.meetService.getRoomsCreatedByMe().then(
-      rooms => this.roomsCreated = rooms
-    );
-    this.meetService.getRoomsJoinedByMe().then(
-      rooms => this.roomsJoined = rooms
-    );
+    this.meetService.getRoomsCreatedByMe().then(rooms => {
+      this.roomsCreated_Urgent = rooms.filter(room => room.urgent);
+      this.roomsCreated_NotUrgent = rooms.filter(room => !room.urgent);
+    });
+    this.meetService.getRoomsJoinedByMe().then(rooms => {
+      this.roomsJoined_Urgent = rooms.filter(room => room.urgent);
+      this.roomsJoined_NotUrgent = rooms.filter(room => !room.urgent);
+    });
   }
 
 }
