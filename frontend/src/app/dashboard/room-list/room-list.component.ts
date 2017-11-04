@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Room} from "../../models/room";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-room-list',
@@ -10,7 +11,7 @@ export class RoomListComponent implements OnInit {
 
   @Input() rooms: Room[];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
