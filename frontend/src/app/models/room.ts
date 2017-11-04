@@ -1,6 +1,11 @@
 import {Timespan} from "./timespan";
+import {User} from "./user";
 
 export class Room {
+
+  users: User[] = [];
+  owner: User;
+  createdTime: Date;
 
   constructor(public name: string = '',
               public duration: number = 0,
