@@ -1,11 +1,22 @@
 from django.test import TestCase, Client
 from .models import Room
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 from user.models import User
 import json
 
 CONTENT_TYPE = 'application/json'
+
+
+def time_delta_handler(x):
+    if isinstance(x, timedelta):
+        minutes, seconds = divmod(x.seconds, 60)
+        if minutes < 10:
+            minutes = "0{}".format(minutes)
+        else:
+            minutes = "{}".format(minutes)
+        return minutes
+    raise TypeError("Unknown type")
 
 
 class RoomTestCase(TestCase):
@@ -21,8 +32,8 @@ class RoomTestCase(TestCase):
         user4 = User.objects.get(id=4)
 
         #timezone.make_aware() is used to suppress warning
-        min_time1 = timezone.make_aware(datetime.strptime('2000-01-1 2:30', '%Y-%m-%d %H:%M'))
-        min_time2 = timezone.make_aware(datetime.strptime('2000-01-1 1:00', '%Y-%m-%d %H:%M'))
+        min_time1 = timedelta(hours=2, minutes=30)
+        min_time2 = timedelta(hours=1, minutes=00)
 
         best_start_time1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
         best_end_time1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
@@ -76,13 +87,12 @@ class RoomTestCase(TestCase):
             content_type=CONTENT_TYPE
         )
 
-        min_time = timezone.make_aware(datetime.strptime('2000-01-1 1:00', '%Y-%m-%d %H:%M'))
-
+        min_time = timedelta(hours=1)
         response = self.client.post(
             '/api/rooms',
             json.dumps({'name': 'room1',
                         'place': 'place1',
-                        'min_time_required': str(min_time),
+                        'min_time_required': time_delta_handler(min_time),
                         }),
             content_type=CONTENT_TYPE,
         )

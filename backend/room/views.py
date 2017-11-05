@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
 from django.forms.models import model_to_dict
 from .models import Room
+from datetime import datetime, timedelta
 import json
 
 
@@ -20,7 +21,8 @@ def room_list(request):
         data = json.loads(request.body.decode())
         name = data['name']
         place = data['place']
-        min_time_required = data['min_time_required']
+        t = int(data['min_time_required'])
+        min_time_required = timedelta(hours=t/60, minutes=t%60)
         new_room = Room(
             name=name,
             place=place,
