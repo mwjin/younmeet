@@ -104,3 +104,14 @@ def userDetail(request, user_id):
 
     else:
         return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
+
+
+def room_user_list(request):
+
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        pass
+    else:
+        return HttpResponseNotAllowed(['GET'])
