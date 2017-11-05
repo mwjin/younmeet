@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import {Headers, Http, RequestOptionsArgs} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
+import {getCSRFHeaders} from "../../util/headers";
 
 @Injectable()
 export class AccountService {
@@ -21,7 +22,7 @@ export class AccountService {
   putUser(user: User): Promise<User> {
     const url = `${this.accountUrl}/${user.id}`;
     return this.http
-      .put(url, JSON.stringify(user), { headers : this.headers })
+      .put(url, JSON.stringify(user), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
       .then(() => user)
       .catch(this.handleError);
@@ -39,7 +40,7 @@ export class AccountService {
         username : username,
         email : email,
         password : password
-      }), { headers : this.headers })
+      }), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
       .then(response => response.status === 201)
       .catch(this.handleError);
@@ -47,7 +48,7 @@ export class AccountService {
 
   deleteUser(id: number): Promise<boolean> {
     const url = `${this.accountUrl}/${id}`;
-    return this.http.delete(url, { headers : this.headers })
+    return this.http.delete(url, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
       .then((response) => {
         return response.status === 200;

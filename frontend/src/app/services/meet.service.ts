@@ -6,6 +6,7 @@ import {Headers, Http, RequestOptionsArgs, Response} from "@angular/http";
 
 import 'rxjs/add/operator/toPromise';
 import {RoomResponseData} from "./room-response-data";
+import {getCSRFHeaders} from "../../util/headers";
 
 let ROOMS_CREATED: Room[] = [
   new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
@@ -93,7 +94,7 @@ export class MeetService {
   }
 
   addRoom(room: Room): Promise<Room> {
-    return this.http.post(`api/rooms`, this.toRoomCreateRequest(room), <RequestOptionsArgs>{headers: this.headers})
+    return this.http.post(`api/rooms`, this.toRoomCreateRequest(room), <RequestOptionsArgs>{headers: getCSRFHeaders()})
       .toPromise()
       .then(res => res.json() as RoomResponseData)
       .then(roomData => RoomResponseData.toRoom(roomData))
@@ -101,7 +102,7 @@ export class MeetService {
   }
 
   deleteRoom(roomId: number): Promise<Response> {
-    return this.http.delete(`api/rooms/${roomId}`)
+    return this.http.delete(`api/rooms/${roomId}`, <RequestOptionsArgs>{ headers: getCSRFHeaders() })
       .toPromise()
       .catch(handleError);
   }
