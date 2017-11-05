@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
+import {Headers, Http, RequestOptionsArgs, Response} from "@angular/http";
+
+import 'rxjs/add/operator/toPromise';
+import {RoomResponseData} from "./room-response-data";
 
 let ROOMS_CREATED: Room[] = [
   new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
@@ -27,61 +31,70 @@ let TEST_AVAILABLE_TIME: Timespan[] = [
   new Timespan()
 ];
 
+function handleError(error: any) {
+  console.error('An error occured: ', error);
+  return Promise.reject(error.message || error);
+}
+
 @Injectable()
 export class MeetService {
+  private headers = new Headers({ 'Content-Type' : 'application/json' });
 
-  // Note: this is just a fake service implementation
-  // We need a proper backend to test the real thing...
-  // This code may be used in the future to mock MeetService.
-
-  rooms: Room[] = [];
-
-  constructor() {
-    for (let room of ROOMS_CREATED) {
-      room.users = TEST_USERS.slice(0);
-      room.owner = TEST_USERS[0];
-    }
-    for (let room of ROOMS_JOINED) {
-      room.users = TEST_USERS.slice(0);
-      room.owner = TEST_USERS[0];
-    }
+  constructor(private http: Http) {
   }
 
-  getRoomsCreatedByMe(): Promise<Room[]> {
-    return Promise.resolve(ROOMS_CREATED);
+  getRoomsCreatedByMe(id: number): Promise<Room[]> {
+    return this.http.get(`api/user/rooms-created-by/${id}`)
+      .toPromise()
+      .then(res => res.json() as RoomResponseData[])
+      .then(roomDataList => roomDataList.map(
+        roomData => RoomResponseData.toRoom(roomData)
+      ))
+      .catch(handleError);
   }
 
-  getRoomsJoinedByMe(): Promise<Room[]> {
-    return Promise.resolve(ROOMS_JOINED);
+  getRoomsJoinedByMe(id: number): Promise<Room[]> {
+    return this.http.get(`api/user/rooms-joined-by/${id}`)
+      .toPromise()
+      .then(res => res.json() as RoomResponseData[])
+      .then(roomDataList => roomDataList.map(
+        roomData => RoomResponseData.toRoom(roomData)
+      ))
+      .catch(handleError);
   }
 
   getRoomById(id: number): Promise<Room> {
-    let room = ROOMS_CREATED
-      .concat(ROOMS_JOINED)
-      .filter(room => room.id === id)[0];
-    console.log(room);
-    return Promise.resolve(room);
+    return this.http.get(`api/rooms/${id}`)
+      .toPromise()
+      .then(res => res.json() as RoomResponseData)
+      .then(roomData => RoomResponseData.toRoom(roomData))
+      .catch(handleError);
   }
 
   getUsersInRoom(id: number): Promise<User[]> {
-    return Promise.resolve(TEST_USERS);
+    return this.http.get(`api/rooms/${id}/members`)
+      .toPromise()
+      .then(res => res.json() as User[])
+      .catch(handleError);
   }
 
   getAvailableTime(roomId: number): Promise<Timespan[]> {
+    // Not yet implemented
+    // Need REST APIs related to free time
     return Promise.resolve(TEST_AVAILABLE_TIME);
   }
 
   addRoom(room: Room): Promise<Room> {
-    room.id = this.rooms.length;
-    this.rooms.push(room);
-    return Promise.resolve(room);
+    return this.http.post(`api/rooms`, JSON.stringify(RoomResponseData.fromRoom(room)), <RequestOptionsArgs>{headers: this.headers})
+      .toPromise()
+      .then(res => res.json() as RoomResponseData)
+      .then(roomData => RoomResponseData.toRoom(roomData))
+      .catch(handleError);
   }
 
-  deleteRoom(room: Room): Promise<Response> {
-    let roomIndex = this.rooms.indexOf(room);
-    this.rooms.splice(roomIndex, 1);
-    let response = new Response(new Blob(), { 'status' : 200, 'statusText' : 'Room deleted' });
-    return Promise.resolve(response);
+  deleteRoom(roomId: number): Promise<Response> {
+    return this.http.delete(`api/rooms/${roomId}`)
+      .toPromise()
+      .catch(handleError);
   }
-
 }
