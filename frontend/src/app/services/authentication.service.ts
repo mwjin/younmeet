@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { toPromise } from 'rxjs/operator/toPromise';
 
 @Injectable()
 export class AuthenticationService {
@@ -17,12 +18,13 @@ export class AuthenticationService {
         JSON.stringify({
           email : usernameOrEmail,
           password : password
-        }), { headers : this.headers })
+        }), { headers : this.headers, withCredentials : true })
         .toPromise()
         .then(response => {
           if (response.status === 200) {
             // login success
-            localStorage.setItem('currentUser', JSON.stringify(response.json()));
+            let token = document.cookie.split('=')[ 1 ];
+            localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
             return false;
@@ -39,8 +41,9 @@ export class AuthenticationService {
         .toPromise()
         .then(response => {
           if (response.status === 200) {
-            // signin success
-            localStorage.setItem('currentUser', JSON.stringify(response.json()));
+            // login success
+            let token = document.cookie.split('=')[ 1 ];
+            localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
             // do something else
