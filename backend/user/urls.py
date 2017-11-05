@@ -5,7 +5,7 @@ urlpatterns = [
     url('^signup$', views.signup, name='signup'),
     url('^signin$', views.signin, name='signin'),
     url('^signout$', views.signout, name='signout'),
-    url('^user$', views.userDetail, name='userDetail'),
-    url('^user/owned-rooms$', views.userOwnedRoomList, name='userOwnedRoomList'),
-    url('^user/joined-rooms$', views.userJoinedRoomList, name='userJoinedRoomList'),
+    url('^user$', views.user_detail, name='user_detail'),
+    url('^user/owned-rooms$', views.user_owned_room_list, name='user_owned_room_list'),
+    url('^user/joined-rooms$', views.user_joined_room_list, name='user_joined_room_list'),
 ]
