@@ -9,6 +9,7 @@ def room_list(request):
 
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
+
     user = request.user
 
     if request.method == 'GET':
@@ -27,6 +28,10 @@ def room_list(request):
             owner=user
         )
         new_room.save()
+
+        new_room.members.add(user)
+        new_room.save()
+
         # does not add this user to new_room.users
         # room.user is only added when selecting free_time
         return HttpResponse(status=201)

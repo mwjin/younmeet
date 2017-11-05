@@ -11,10 +11,10 @@ CONTENT_TYPE = 'application/json'
 class RoomTestCase(TestCase):
 
     def setUp(self):
-        User.objects.create_user(email='email1', password='password1')
-        User.objects.create_user(email='email2', password='password2')
-        User.objects.create_user(email='email3', password='password3')
-        User.objects.create_user(email='email4', password='password4')
+        User.objects.create_user(email='email1', password='password1', username='username1')
+        User.objects.create_user(email='email2', password='password2', username='username2')
+        User.objects.create_user(email='email3', password='password3', username='username3')
+        User.objects.create_user(email='email4', password='password4', username='username4')
         user1 = User.objects.get(id=1)
         user2 = User.objects.get(id=2)
         user3 = User.objects.get(id=3)
@@ -75,7 +75,9 @@ class RoomTestCase(TestCase):
             json.dumps({'email': 'email1', 'password': 'password1'}),
             content_type=CONTENT_TYPE
         )
+
         min_time = timezone.make_aware(datetime.strptime('2000-01-1 1:00', '%Y-%m-%d %H:%M'))
+
         response = self.client.post(
             '/api/rooms',
             json.dumps({'name': 'room1',
@@ -84,9 +86,12 @@ class RoomTestCase(TestCase):
                         }),
             content_type=CONTENT_TYPE,
         )
+
         self.assertEqual(response.status_code, 201)
+
         response = self.client.get('/api/rooms')
         data = json.loads(response.content.decode())
+
         self.assertEqual(len(data), 3)
 
     def test_room_list_delete(self):
