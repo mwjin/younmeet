@@ -43,8 +43,8 @@ export class MeetService {
   constructor(private http: Http) {
   }
 
-  getRoomsCreatedByMe(id: number): Promise<Room[]> {
-    return this.http.get(`api/user/rooms-created-by/${id}`)
+  getRoomsCreatedByMe(): Promise<Room[]> {
+    return this.http.get(`api/user/joined-rooms`)
       .toPromise()
       .then(res => res.json() as RoomResponseData[])
       .then(roomDataList => roomDataList.map(
@@ -53,8 +53,8 @@ export class MeetService {
       .catch(handleError);
   }
 
-  getRoomsJoinedByMe(id: number): Promise<Room[]> {
-    return this.http.get(`api/user/rooms-joined-by/${id}`)
+  getRoomsJoinedByMe(): Promise<Room[]> {
+    return this.http.get(`api/user/owned-rooms`)
       .toPromise()
       .then(res => res.json() as RoomResponseData[])
       .then(roomDataList => roomDataList.map(
