@@ -21,8 +21,8 @@ def room_list(request):
         data = json.loads(request.body.decode())
         name = data['name']
         place = data['place']
-        t = datetime.strptime(data['min_time_required'], "%H:%M")
-        min_time_required = timedelta(hours=t.hour, minutes=t.minute)
+        t = int(data['min_time_required'])
+        min_time_required = timedelta(hours=t/60, minutes=t%60)
         new_room = Room(
             name=name,
             place=place,

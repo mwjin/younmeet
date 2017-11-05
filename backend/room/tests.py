@@ -10,18 +10,12 @@ CONTENT_TYPE = 'application/json'
 
 def time_delta_handler(x):
     if isinstance(x, timedelta):
-        hours, remainder = divmod(x.seconds, 3600)
-        if hours < 10:
-            hours = "0{}".format(hours)
-        else:
-            hours="{}".format(hours)
-
-        minutes, seconds = divmod(remainder, 60)
+        minutes, seconds = divmod(x.seconds, 60)
         if minutes < 10:
             minutes = "0{}".format(minutes)
         else:
             minutes = "{}".format(minutes)
-        return str("{}:{}".format(hours, minutes))
+        return minutes
     raise TypeError("Unknown type")
 
 
@@ -40,8 +34,6 @@ class RoomTestCase(TestCase):
         #timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
-        #min_time1 = timezone.make_aware(datetime.strptime('2000-01-1 2:30', '%Y-%m-%d %H:%M'))
-        #min_time2 = timezone.make_aware(datetime.strptime('2000-01-1 1:00', '%Y-%m-%d %H:%M'))
 
         best_start_time1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
         best_end_time1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
