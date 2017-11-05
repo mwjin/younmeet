@@ -73,7 +73,7 @@ def signout(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-def userDetail(request):
+def user_detail(request):
     user = request.user
 
     if not user.is_authenticated():
@@ -99,7 +99,7 @@ def userDetail(request):
         return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
 
 
-def userOwnedRoomList(request):
+def user_owned_room_list(request):
     user = request.user
 
     if not user.is_authenticated():
@@ -112,7 +112,7 @@ def userOwnedRoomList(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-def userJoinedRoomList(request):
+def user_joined_room_list(request):
     user = request.user
 
     if not user.is_authenticated():
