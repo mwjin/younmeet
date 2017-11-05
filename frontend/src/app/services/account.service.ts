@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable()
 export class AccountService {
@@ -46,11 +45,13 @@ export class AccountService {
       .catch(this.handleError);
   }
 
-  deleteUser(id: number): Promise<void> {
+  deleteUser(id: number): Promise<boolean> {
     const url = `${this.accountUrl}/${id}`;
     return this.http.delete(url, { headers : this.headers })
       .toPromise()
-      .then(() => null)
+      .then((response) => {
+        return response.status === 200;
+      })
       .catch(this.handleError);
   }
 
