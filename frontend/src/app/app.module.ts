@@ -10,19 +10,19 @@ import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateRoomComponent } from './create-room/create-room.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
-import {AccountService} from "./services/account.service";
-import {HttpModule} from "@angular/http";
-import {SignupComponent} from "./login/signup/signup.component";
+import { AccountService } from './services/account.service';
+import { HttpModule } from '@angular/http';
+import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'room/create', component: CreateRoomComponent },
-  { path: 'room/:id', component: RoomDetailComponent },
+  { path : '', redirectTo : 'dashboard', pathMatch : 'full' },
+  { path : 'dashboard', component : DashboardComponent },
+  { path : 'room/create', component : CreateRoomComponent },
+  { path : 'room/:id', component : RoomDetailComponent },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
 ];
@@ -47,7 +47,12 @@ const routes: Routes = [
   providers : [ AccountService,
     MeetService,
     AuthenticationService,
-    AuthGuard ],
+    AuthGuard,
+    /*
+    {
+      provide : XSRFStrategy,
+      useValue : new CookieXSRFStrategy('CSRF-TOKEN', 'X-CSRF-TOKEN')
+    } */ ],
   bootstrap : [ AppComponent ]
 })
 
