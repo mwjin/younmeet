@@ -108,7 +108,7 @@ def userOwnedRoomList(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-def userJoinedRoomList(request, user_id):
+def userJoinedRoomList(request):
     user = request.user
 
     if not user.is_authenticated():

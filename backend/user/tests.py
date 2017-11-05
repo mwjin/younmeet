@@ -1,49 +1,35 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from user.models import User
+from room.models import Room
 import json
 
 # Create your tests here.
 class UserTestCase(TestCase):
     def setUp(self):
-        User.objects.create_user(email='minu@snu.ac.kr', password='1234', username='minu')
-        User.objects.create_user(email='taebum@snu.ac.kr', password='1234', username='taebum')
+        user1 = User.objects.create_user(email='minu@snu.ac.kr', password='1234', username='minu')
+        user2 = User.objects.create_user(email='taebum@snu.ac.kr', password='1234', username='taebum')
+
+        room1 = Room.objects.create(name="room1",
+                                    place="place1",
+                                    best_start_time=None,
+                                    best_end_time=None,
+                                    min_time_required=None,
+                                    owner=user1)
+
+        room2 = Room.objects.create(name="room2",
+                                    place="place2",
+                                    best_start_time=None,
+                                    best_end_time=None,
+                                    min_time_required=None,
+                                    owner=user2)
+
+        room1.members.add(user1)
+        room1.members.add(user2)
+        room2.members.add(user1)
+        room2.members.add(user2)
 
         self.client = Client(enforce_csrf_checks=True)
-
-    """
-    # region test view.py
-    def test_csrf(self):
-        # By default, csrf checks are disabled in test client
-        # To test csrf protection we enforce csrf checks here
-        client = Client(enforce_csrf_checks=True)
-        response = client.post('/api/signup',
-                               json.dumps({'email': 'chris@snu.ac.kr', 'password': 'chris'}),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, 403) # Request without csrf token returns 403 response
-
-        response = client.get('/api/token')
-        csrftoken = response.cookies['csrftoken'].value # Get csrf token from cookie
-
-        response = client.post('/api/signup',
-                               json.dumps({'email': 'chris@snu.ac.kr', 'password': 'chris'}),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 201) # Pass csrf protection
-
-    def test_csrf_invalid_methods(self):
-        response = self.client.get('/api/token')
-        csrftoken = response.cookies['csrftoken'].value
-
-        response = self.client.post('/api/token', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 405) # Pass csrf protection
-
-        response = self.client.put('/api/token', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 405) # Pass csrf protection
-
-        response = self.client.delete('/api/token', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 405) # Pass csrf protection
-    """
 
     def test_signup_post(self):
         response = self.client.post('/api/signup',
@@ -211,6 +197,83 @@ class UserTestCase(TestCase):
 
         self.assertRaises(User.DoesNotExist, User.objects.get, id=1)
         self.assertEqual(response.status_code, 204)
+
+    def test_user_owned_room_list_unauth(self):
+        response = self.client.get('/api/user/owned-rooms')
+        self.assertEqual(response.status_code, 401)  # Unauthorized
+
+    def test_user_owned_room_list_get(self):
+        self.client.login(email='minu@snu.ac.kr', password='1234')
+        response = self.client.get('/api/user/owned-rooms')
+
+        data = json.loads(response.content.decode())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 1)
+        self.assertEqual(len([room for room in data if room['owner_id'] == 1]), 1)
+
+    def test_user_owned_room_list_invalid_methods(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+
+        response = self.client.post('/api/user/owned-rooms',
+                                    json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/user/owned-rooms',
+                                   json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                   content_type='application/json',
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/user/owned-rooms',
+                                      json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                      content_type='application/json',
+                                      HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+    def test_user_joined_room_list_unauth(self):
+        response = self.client.get('/api/user/joined-rooms')
+        self.assertEqual(response.status_code, 401)  # Unauthorized
+
+    def test_user_joined_room_list_get(self):
+        self.client.login(email='minu@snu.ac.kr', password='1234')
+        response = self.client.get('/api/user/joined-rooms')
+
+        data = json.loads(response.content.decode())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 2)
+
+    def test_user_joined_room_list_invalid_methods(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+
+        response = self.client.post('/api/user/joined-rooms',
+                                    json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/user/joined-rooms',
+                                   json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                   content_type='application/json',
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/user/joined-rooms',
+                                      json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                      content_type='application/json',
+                                      HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
 
     # endregion
 
