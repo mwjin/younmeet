@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
-import {Http, Response} from "@angular/http";
-import {Observable} from "rxjs/Observable";
+import {Headers, Http, RequestOptionsArgs, Response} from "@angular/http";
+
 import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {RoomResponseData} from "./room-response-data";
 
 let ROOMS_CREATED: Room[] = [
   new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
@@ -33,86 +32,50 @@ let TEST_AVAILABLE_TIME: Timespan[] = [
 ];
 
 function handleError(error: any) {
-  console.error(error);
-  return Observable.throw(error);
-}
-
-class RoomResponseData {
-  id: number;
-  name: string;
-  place: string;
-  best_start_time: Date;
-  best_end_time: Date;
-  min_time_required: number;
-  user_ids: number[];
-  created_time: Date;
-  owner_id: number;
-
-  toRoom(): Room {
-    let room = new Room(this.name,
-            this.min_time_required,
-            new Timespan(this.best_start_time, this.best_end_time),
-            false,
-            this.place,
-            true,
-            this.id
-          );
-    return room;
-  }
-
-  static fromRoom(room: Room): RoomResponseData {
-    return <RoomResponseData> {
-      id: room.id,
-      name: room.name,
-      place: room.place,
-      best_start_time: room.timespan.start,
-      best_end_time: room.timespan.end,
-      min_time_required: room.duration,
-      user_ids: room.users.map(user => user.id),
-      created_time: room.createdTime,
-      owner_id: room.owner.id
-    }
-  }
+  console.error('An error occured: ', error);
+  return Promise.reject(error.message || error);
 }
 
 @Injectable()
 export class MeetService {
+  private headers = new Headers({ 'Content-Type' : 'application/json' });
+
   constructor(private http: Http) {
   }
 
   getRoomsCreatedByMe(id: number): Promise<Room[]> {
-    return this.http.get(`/api/user/rooms-created-by/${id}`)
-      .map(res => res.json() as RoomResponseData[])
-      .map(roomDataList => roomDataList.map(
-        roomData => roomData.toRoom()
+    return this.http.get(`api/user/rooms-created-by/${id}`)
+      .toPromise()
+      .then(res => res.json() as RoomResponseData[])
+      .then(roomDataList => roomDataList.map(
+        roomData => RoomResponseData.toRoom(roomData)
       ))
-      .catch(handleError)
-      .toPromise();
+      .catch(handleError);
   }
 
   getRoomsJoinedByMe(id: number): Promise<Room[]> {
-    return this.http.get(`/api/user/rooms-joined-by/${id}`)
-      .map(res => res.json() as RoomResponseData[])
-      .map(roomDataList => roomDataList.map(
-        roomData => roomData.toRoom()
+    return this.http.get(`api/user/rooms-joined-by/${id}`)
+      .toPromise()
+      .then(res => res.json() as RoomResponseData[])
+      .then(roomDataList => roomDataList.map(
+        roomData => RoomResponseData.toRoom(roomData)
       ))
-      .catch(handleError)
-      .toPromise();
+      .catch(handleError);
   }
 
   getRoomById(id: number): Promise<Room> {
-    return this.http.get(`/api/rooms/${id}`)
-      .map(res => res.json() as RoomResponseData)
-      .map(roomData => roomData.toRoom())
-      .catch(handleError)
-      .toPromise();
+    return this.http.get(`api/rooms/${id}`)
+      .toPromise()
+      .then(res => res.json() as RoomResponseData)
+      .then(roomData => RoomResponseData.toRoom(roomData))
+      .catch(handleError);
   }
 
   getUsersInRoom(id: number): Promise<User[]> {
-    return this.http.get(`/api/rooms/${id}/members`)
-      .map(res => res.json() as User[])
-      .catch(handleError)
-      .toPromise();
+    return this.http.get(`api/rooms/${id}/members`)
+      .toPromise()
+      .then(res => res.json() as User[])
+      .catch(handleError);
   }
 
   getAvailableTime(roomId: number): Promise<Timespan[]> {
@@ -122,19 +85,16 @@ export class MeetService {
   }
 
   addRoom(room: Room): Promise<Room> {
-    return this.http.post(`/api/rooms`, RoomResponseData.fromRoom(room))
-      .map(res => res.json() as RoomResponseData)
-      .map(roomData => roomData.toRoom())
-      .catch(handleError)
-      .toPromise();
+    return this.http.post(`api/rooms`, JSON.stringify(RoomResponseData.fromRoom(room)), <RequestOptionsArgs>{headers: this.headers})
+      .toPromise()
+      .then(res => res.json() as RoomResponseData)
+      .then(roomData => RoomResponseData.toRoom(roomData))
+      .catch(handleError);
   }
 
-  deleteRoom(room: Room): Promise<Response> {
-    return this.http.delete(`/api/rooms/${room.id}`)
-      .catch(handleError)
-      .toPromise();
+  deleteRoom(roomId: number): Promise<Response> {
+    return this.http.delete(`api/rooms/${roomId}`)
+      .toPromise()
+      .catch(handleError);
   }
-
-
-
 }
