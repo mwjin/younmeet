@@ -6,7 +6,7 @@ import {
   ResponseOptions,
   XHRBackend
 } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { AuthenticationService } from './authentication.service';
 import { User } from '../models/user';
@@ -28,7 +28,7 @@ const makeMockUserDB = () => [
 
 
 describe('AuthenticationService', () => {
-  beforeEach(() => {
+  beforeEach(async(() => {
     const local = {};
 
 
@@ -48,8 +48,8 @@ describe('AuthenticationService', () => {
       imports : [ HttpModule ],
       providers : [ AuthenticationService,
         { provide : XHRBackend, useClass : MockBackend } ]
-    });
-  });
+    }).compileComponents();
+  }));
 
   it('currentUser should be null before signin', () => {
     expect(localStorage.getItem('currentUser')).toBeNull();
@@ -57,7 +57,7 @@ describe('AuthenticationService', () => {
 
   it('can make object with "new"', inject([ Http ], (http: Http) => {
     expect(http).not.toBeNull('http should be provided');
-    let service = new AuthenticationService(http);
+    const service = new AuthenticationService(http);
     expect(service instanceof AuthenticationService).toBe(true);
   }));
 
@@ -68,16 +68,23 @@ describe('AuthenticationService', () => {
 
     let fakeUsers: User[];
 
+    let response: Response;
+
     beforeEach(inject([ Http, XHRBackend ], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthenticationService(http);
-
       fakeUsers = makeMockUserDB();
+      response = new Response(new ResponseOptions({ status : 200, body : fakeUsers[ 0 ] }));
+
     }));
 
     it('could sign in with username', async(inject([], () => {
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+
       service.logIn('user1', 'iluvswpp')
         .then(result => {
+          console.log(localStorage.getItem('currentUser'));
+          console.log(result);
           expect(result).toBe(true);
           expect(localStorage.getItem('currentUser')).not.toBeNull();
         });
@@ -86,34 +93,88 @@ describe('AuthenticationService', () => {
     it('could sign in with email', async(inject([], () => {
       service.logIn('swpp2017@gmail.com', 'iluvswpp')
         .then(result => {
+          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(true);
           expect(localStorage.getItem('currentUser')).not.toBeNull();
         });
     })));
+  });
+
+  describe('When failed to signin', () => {
+    let backend: MockBackend;
+    let service: AuthenticationService;
+
+    let fakeUsers: User[];
+
+    let response: Response;
+
+    beforeEach(inject([ Http, XHRBackend ], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthenticationService(http);
+      fakeUsers = makeMockUserDB();
+      response = new Response(new ResponseOptions({ status : 403 }));
+
+    }));
+
 
     it('could not sign in with unregistered username', async(inject([], () => {
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+
       service.logIn('nouser', 'iluvswpp')
         .then(result => {
+          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(false);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));
 
     it('could not sign in with unregistered username', async(inject([], () => {
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.logIn('nono@gmail.com', 'iluvswpp')
         .then(result => {
+          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(false);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));
+  });
+  describe('When signout', () => {
+    let backend: MockBackend;
+    let service: AuthenticationService;
 
-    it('could log out', async(inject([], () => {
+    let fakeUsers: User[];
+    let response: Response;
+
+    beforeEach(inject([ Http, XHRBackend ], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthenticationService(http);
+      fakeUsers = makeMockUserDB();
+
+    }));
+    it('could log out when current user exists', async(inject([], () => {
+      response = new Response(new ResponseOptions({ status : 200 }));
       localStorage.setItem('currentUser', JSON.stringify(fakeUsers[ 0 ]));
+      console.log(localStorage.getItem('currentUser'));
       expect(localStorage.getItem('currentUser')).not.toBeNull();
       service.logOut()
-        .then(() => {
+        .then((result) => {
+          console.log(localStorage.getItem('currentUser'));
+          expect(result).toBe(true);
+          expect(localStorage.getItem('currentUser')).toBeNull();
+        });
+    })));
+    it('could not log out when current user does not exist', async(inject([], () => {
+      response = new Response(new ResponseOptions({ status : 403 }));
+      console.log(localStorage.getItem('currentUser'));
+      expect(localStorage.getItem('currentUser')).toBeNull();
+      service.logOut()
+        .then((result) => {
+          console.log(localStorage.getItem('currentUser'));
+          expect(result).toBe(false);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));
   });
 });
+
+

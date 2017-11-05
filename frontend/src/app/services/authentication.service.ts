@@ -50,13 +50,16 @@ export class AuthenticationService {
     }
   }
 
-  logOut(): Promise<void> {
+  logOut(): Promise<boolean> {
     const url = `/api/signout`;
     return this.http.get(url)
       .toPromise()
       .then(response => {
         if (response.status === 200) {
           localStorage.removeItem('currentUser');
+          return true;
+        } else {
+          return false;
         }
       });
   }
