@@ -285,5 +285,5 @@ class UserTestCase(TestCase):
     def test_create_user_no_password(self):
         with self.assertRaises(ValueError):
             User.objects.create_user(email='philsik@snu.ac.kr', password=None)
-    # endregion
 
+    #  endregion
