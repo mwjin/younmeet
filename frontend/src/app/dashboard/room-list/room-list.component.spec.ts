@@ -1,6 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RoomListComponent } from './room-list.component';
+import {RouterTestingModule} from "@angular/router/testing";
+import {Component} from "@angular/core";
+import {RouterLinkStubDirective} from "../../../testing/router-stubs";
+
+@Component({
+  template: ``
+})
+class RoomDetailComponentMock {}
 
 describe('RoomListComponent', () => {
   let component: RoomListComponent;
@@ -8,7 +16,16 @@ describe('RoomListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoomListComponent ]
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'room/:id', component: RoomDetailComponentMock }
+        ]),
+      ],
+      declarations: [
+        RoomListComponent,
+        RouterLinkStubDirective,
+        RoomDetailComponentMock
+      ],
     })
     .compileComponents();
   }));
