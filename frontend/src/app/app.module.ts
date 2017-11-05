@@ -10,17 +10,19 @@ import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateRoomComponent } from './create-room/create-room.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SignupComponent } from './login/signup/signup.component';
-import { AccountService } from './services/account.service';
-import { HttpModule } from '@angular/http';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { RoomDetailComponent } from './room-detail/room-detail.component';
+import {AccountService} from "./services/account.service";
+import {HttpModule} from "@angular/http";
+import {SignupComponent} from "./login/signup/signup.component";
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
 
 const routes: Routes = [
-  { path : '', redirectTo : 'login', pathMatch : 'full' },
-  { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
-  { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'room/create', component: CreateRoomComponent },
+  { path: 'room/:id', component: RoomDetailComponent },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
 ];
@@ -31,7 +33,8 @@ const routes: Routes = [
     SignupComponent,
     DashboardComponent,
     RoomListComponent,
-    CreateRoomComponent
+    CreateRoomComponent,
+    RoomDetailComponent
   ],
   imports : [
     BrowserModule,

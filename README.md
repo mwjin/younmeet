@@ -1,5 +1,8 @@
 # Team 8 SWPP Project: You & Meet
 
+[![Build Status](https://travis-ci.org/swsnu/swpp17-team8.svg?branch=master)](https://travis-ci.org/swsnu/swpp17-team8)
+[![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp17-team8/badge.svg?branch=master)](https://coveralls.io/github/swsnu/swpp17-team8?branch=master)
+
 ## Branch management
 
 - We will work in the ``dev`` branch when implementing features.
