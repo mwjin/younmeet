@@ -101,7 +101,7 @@ export class MeetService {
   }
 
   getRoomById(id: number): Promise<Room> {
-    return this.http.get(`/api/room/${id}`)
+    return this.http.get(`/api/rooms/${id}`)
       .map(res => res.json() as RoomResponseData)
       .map(roomData => roomData.toRoom())
       .catch(handleError)
@@ -109,7 +109,7 @@ export class MeetService {
   }
 
   getUsersInRoom(id: number): Promise<User[]> {
-    return this.http.get(`/api/room/${id}/users`)
+    return this.http.get(`/api/rooms/${id}/members`)
       .map(res => res.json() as User[])
       .catch(handleError)
       .toPromise();
@@ -122,7 +122,7 @@ export class MeetService {
   }
 
   addRoom(room: Room): Promise<Room> {
-    return this.http.post(`/api/room`, RoomResponseData.fromRoom(room))
+    return this.http.post(`/api/rooms`, RoomResponseData.fromRoom(room))
       .map(res => res.json() as RoomResponseData)
       .map(roomData => roomData.toRoom())
       .catch(handleError)
@@ -130,7 +130,7 @@ export class MeetService {
   }
 
   deleteRoom(room: Room): Promise<Response> {
-    return this.http.delete(`/api/room/${room.id}`)
+    return this.http.delete(`/api/rooms/${room.id}`)
       .catch(handleError)
       .toPromise();
   }
