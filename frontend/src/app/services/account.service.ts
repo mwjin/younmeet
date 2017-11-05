@@ -27,7 +27,7 @@ export class AccountService {
       .catch(this.handleError);
   }
 
-  postUserSignUp(username: string, email: string, password: string): Promise<User> {
+  postUserSignUp(username: string, email: string, password: string): Promise<boolean> {
     /*
      * Requiest POST for signup
      * return status 201 if success to make a new user
@@ -41,7 +41,7 @@ export class AccountService {
         password : password
       }), { headers : this.headers })
       .toPromise()
-      .then(response => response.json() as User)
+      .then(response => response.status === 201)
       .catch(this.handleError);
   }
 

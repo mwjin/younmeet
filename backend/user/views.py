@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
-from django.contrib.auth import authenticate, login, logout
-from user.models import User
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.forms.models import model_to_dict
 import json
+
+from django.contrib.auth import authenticate, login, logout
+from django.forms.models import model_to_dict
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from user.models import User
 
 
 @ensure_csrf_cookie
@@ -14,6 +15,7 @@ def token(request):
         return HttpResponseNotAllowed(['GET'])
 
 
+@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
