@@ -128,7 +128,7 @@ describe('AuthenticationService', () => {
         });
     })));
 
-    it('could not sign in with unregistered username', async(inject([], () => {
+    it('could not sign in with unregistered email', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.logIn('nono@gmail.com', 'iluvswpp')
         .then(result => {
