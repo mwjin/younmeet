@@ -43,6 +43,14 @@ export class MeetService {
   constructor(private http: Http) {
   }
 
+  private toRoomCreateRequest(room: Room) : string {
+    return JSON.stringify({
+      name: room.name,
+      place: room.place,
+      min_time_required: room.duration,
+    });
+  }
+
   getRoomsCreatedByMe(): Promise<Room[]> {
     return this.http.get(`api/user/joined-rooms`)
       .toPromise()
@@ -85,7 +93,7 @@ export class MeetService {
   }
 
   addRoom(room: Room): Promise<Room> {
-    return this.http.post(`api/rooms`, JSON.stringify(RoomResponseData.fromRoom(room)), <RequestOptionsArgs>{headers: this.headers})
+    return this.http.post(`api/rooms`, this.toRoomCreateRequest(room), <RequestOptionsArgs>{headers: this.headers})
       .toPromise()
       .then(res => res.json() as RoomResponseData)
       .then(roomData => RoomResponseData.toRoom(roomData))

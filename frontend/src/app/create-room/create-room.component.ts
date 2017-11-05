@@ -12,7 +12,8 @@ class CreateRoomForm {
               public anonymity: boolean = false) {}
 
   toRoom(): Room {
-    return new Room(this.name, this.duration, this.timespan, this.anonymity);
+    let room = new Room(this.name, this.duration, this.timespan, this.anonymity);
+    return room;
   }
 }
 
