@@ -74,9 +74,8 @@ export class MeetServiceSpy {
     return Promise.resolve(room);
   });
 
-  deleteRoom = jasmine.createSpy('deleteRoom').and.callFake((room: Room) => {
-    let roomIndex = this.rooms.indexOf(room);
-    this.rooms.splice(roomIndex, 1);
+  deleteRoom = jasmine.createSpy('deleteRoom').and.callFake((roomId: number) => {
+    this.rooms = this.rooms.filter(room => room.id !== roomId);
     let response = new Response(new Blob(), {'status': 200, 'statusText': 'Room deleted'});
     return Promise.resolve(response);
   });

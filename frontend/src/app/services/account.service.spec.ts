@@ -140,8 +140,8 @@ describe('AccountService', () => {
       response = new Response(new ResponseOptions({ status : 201, body : newUser }));
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.postUserSignUp(newUser.username, newUser.email, newUser.password)
-        .then(user => {
-          expect(user).toEqual(newUser);
+        .then(result => {
+          expect(result).toEqual(true);
         });
     })));
   });
