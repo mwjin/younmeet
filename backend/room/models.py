@@ -17,7 +17,7 @@ class Room(models.Model):
     best_start_time = models.DateTimeField(null=True)
     best_end_time = models.DateTimeField(null=True)
 
-    min_time_required = models.DateTimeField(null=True, blank=True)
+    min_time_required = models.DurationField(null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey(
