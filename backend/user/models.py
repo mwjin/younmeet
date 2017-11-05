@@ -10,10 +10,13 @@ class MyUserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
 
         if not email:
-            raise ValueError('The email must be set')
+            raise ValueError('The email must be set.')
 
         if not password:
-            raise password('The password must be set')
+            raise ValueError('The password must be set.')
+
+        if not extra_fields['username']:
+            raise ValueError('The username must be set.')
 
         user = self.model(
             email = MyUserManager.normalize_email(email),
@@ -42,11 +45,11 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    username = None
-    email = models.EmailField(_('email address'), unique=True)
+    username = models.CharField(_('Username'), max_length=64, unique=True)
+    email = models.EmailField(_('Email'), unique=True)
     google_account = models.EmailField(_('google account'), blank=True, default='')
 
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
