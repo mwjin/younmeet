@@ -1,7 +1,12 @@
 # Team 8 SWPP Project: You & Meet
 
+master:
 [![Build Status](https://travis-ci.org/swsnu/swpp17-team8.svg?branch=master)](https://travis-ci.org/swsnu/swpp17-team8)
 [![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp17-team8/badge.svg?branch=master)](https://coveralls.io/github/swsnu/swpp17-team8?branch=master)
+
+dev:
+[![Build Status](https://travis-ci.org/swsnu/swpp17-team8.svg?branch=dev)](https://travis-ci.org/swsnu/swpp17-team8)
+[![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp17-team8/badge.svg?branch=dev)](https://coveralls.io/github/swsnu/swpp17-team8?branch=dev)
 
 ## Branch management
 
