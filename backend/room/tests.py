@@ -97,7 +97,7 @@ class RoomTestCase(TestCase):
             content_type=CONTENT_TYPE,
         )
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/api/rooms')
         data = json.loads(response.content.decode())

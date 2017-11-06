@@ -36,7 +36,7 @@ def room_list(request):
 
         # does not add this user to new_room.users
         # room.user is only added when selecting free_time
-        return HttpResponse(status=201)
+        return JsonResponse(model_to_dict(new_room, exclude='members'), safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
