@@ -16,5 +16,16 @@ dev:
 
 ## Repo structure
 
-- ``/frontend``: folder for frontend
-- ``/backend``: folder for backend
+- ``/frontend``: folder for frontend (Angular)
+- ``/backend``: folder for backend (Django)
+
+## Build Instructions
+
+- Angular
+  - Installing dependencies: ``npm install``
+  - Running the app: ``npm start``
+  - Testing: ``ng test``
+- Django
+  - Running the app: ``python manage.py runserver``
+  - Testing: ``python manage.py test``
+  - Note: if Python 2 is the default for the system, use python3 command instead of python
