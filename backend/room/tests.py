@@ -10,11 +10,8 @@ CONTENT_TYPE = 'application/json'
 
 def time_delta_handler(x):
     if isinstance(x, timedelta):
-        minutes, seconds = divmod(x.seconds, 60)
-        if minutes < 10:
-            minutes = "0{}".format(minutes)
-        else:
-            minutes = "{}".format(minutes)
+        minutes = x.seconds % 60
+        minutes = "{}".format(minutes)
         return minutes
     raise TypeError("Unknown type")
 
@@ -97,7 +94,7 @@ class RoomTestCase(TestCase):
             content_type=CONTENT_TYPE,
         )
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/api/rooms')
         data = json.loads(response.content.decode())
