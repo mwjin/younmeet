@@ -1,7 +1,5 @@
 from django.db import models
 from django.conf import settings
-from datetime import datetime
-from django.utils import timezone
 
 '''
 auto_now_add=True will create a warning which is inevitable according to 
