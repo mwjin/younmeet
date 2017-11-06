@@ -56,7 +56,7 @@ describe('MeetService', () => {
         { name: 'Room 2'},
         { name: 'Room 3'}
       ];
-      expectUrl(mockBackend, 'api/user/rooms-created-by/42', mockResponse);
+      expectUrl(mockBackend, 'api/user/owned-rooms', mockResponse);
       meetService.getRoomsCreatedByMe().then(res => {
         let resSorted = res.sort((r1, r2) => r1.id - r2.id);
         expect(resSorted.length).toBe(3);
@@ -74,7 +74,7 @@ describe('MeetService', () => {
         { name: 'Room 2'},
         { name: 'Room 3'}
       ];
-      expectUrl(mockBackend, 'api/user/rooms-joined-by/42', mockResponse);
+      expectUrl(mockBackend, 'api/user/joined-rooms', mockResponse);
       meetService.getRoomsJoinedByMe().then(res => {
         let resSorted = res.sort((r1, r2) => r1.id - r2.id);
         expect(resSorted.length).toBe(3);

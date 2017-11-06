@@ -52,7 +52,7 @@ export class MeetService {
   }
 
   getRoomsCreatedByMe(): Promise<Room[]> {
-    return this.http.get(`api/user/joined-rooms`)
+    return this.http.get(`api/user/owned-rooms`)
       .toPromise()
       .then(res => res.json() as RoomResponseData[])
       .then(roomDataList => roomDataList.map(
@@ -62,7 +62,7 @@ export class MeetService {
   }
 
   getRoomsJoinedByMe(): Promise<Room[]> {
-    return this.http.get(`api/user/owned-rooms`)
+    return this.http.get(`api/user/joined-rooms`)
       .toPromise()
       .then(res => res.json() as RoomResponseData[])
       .then(roomDataList => roomDataList.map(
