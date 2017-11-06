@@ -57,7 +57,7 @@ export function MyCookieStrategy() {
     AuthGuard,
     {
       provide: XSRFStrategy,
-      useFactory: () => new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
+      useFactory: MyCookieStrategy
     }
   ],
   bootstrap : [ AppComponent ]
