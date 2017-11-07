@@ -21,7 +21,7 @@ export class RoomResponseData {
       best_start_time: room.timespan.start,
       best_end_time: room.timespan.end,
       min_time_required: room.duration,
-      user_ids: room.users.map(user => user.id),
+      members: room.users.map(user => user.id),
       created_time: room.createdTime,
       owner: room.owner.id
     }
