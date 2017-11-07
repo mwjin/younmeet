@@ -80,6 +80,7 @@ export class MeetService {
   }
 
   getUsersInRoom(id: number): Promise<User[]> {
+    //TODO: Not working
     return this.http.get(`api/rooms/${id}/members`)
       .toPromise()
       .then(res => res.json() as User[])
