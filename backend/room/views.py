@@ -76,7 +76,7 @@ def room_members(request, room_id):
         return HttpResponseNotFound()
 
     if request.method == 'GET':
-        return JsonResponse(list(room.members.all().values('id')), safe=False)
+        return JsonResponse(list(room.members.all().values('id', 'username', 'email')), safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 

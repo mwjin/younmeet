@@ -9,6 +9,7 @@ import {Timespan} from "../models/timespan";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/mergeMap"
 import "rxjs/add/observable/forkJoin"
+import {UserInfo} from "../models/user-info";
 
 @Component({
   selector: 'app-room-detail',
@@ -17,7 +18,7 @@ import "rxjs/add/observable/forkJoin"
 })
 export class RoomDetailComponent implements OnInit {
   room: Room;
-  members: User[];
+  members: UserInfo[];
   availableTime: Timespan[];
 
   constructor(private router: Router,
@@ -30,6 +31,7 @@ export class RoomDetailComponent implements OnInit {
       })
       .flatMap(room => {
         this.room = room;
+        console.log(room);
         let getMembers = this.meetService.getUsersInRoom(this.room.id)
           .then(members => this.members = members);
         let getAvailableTime = this.meetService.getAvailableTime(this.room.id)

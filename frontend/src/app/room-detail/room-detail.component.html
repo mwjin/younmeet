@@ -4,7 +4,7 @@
   <button class="ui button">Shareable Link</button>
 
   <h2>List of participants</h2>
-  <div *ngIf="members">
+  <div *ngIf="members && room.owner">
     <div class="ui horizontal list" *ngFor="let member of members">
       <div class="item">
         <img *ngIf="room.owner.id === member.id"
