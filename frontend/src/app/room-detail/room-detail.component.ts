@@ -10,6 +10,7 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/mergeMap"
 import "rxjs/add/observable/forkJoin"
 import {UserInfo} from "../models/user-info";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-room-detail',
@@ -23,7 +24,9 @@ export class RoomDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private meetService: MeetService) {
+              private meetService: MeetService,
+              private location: Location)
+  {
     this.route.params
       .flatMap(params => {
         let roomId = +params['id'];
@@ -42,6 +45,10 @@ export class RoomDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }
