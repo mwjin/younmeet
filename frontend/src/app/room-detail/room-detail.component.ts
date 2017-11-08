@@ -36,7 +36,10 @@ export class RoomDetailComponent implements OnInit {
         this.room = room;
         console.log(room);
         let getMembers = this.meetService.getUsersInRoom(this.room.id)
-          .then(members => this.members = members);
+          .then(members => {
+              this.members = members.filter(user => user.id !== room.owner.id);
+              this.members.unshift(members.filter(user => user.id === room.owner.id)[0]);
+          });
         let getAvailableTime = this.meetService.getAvailableTime(this.room.id)
           .then(availableTime => this.availableTime = availableTime);
         return Observable.forkJoin(getMembers, getAvailableTime);
