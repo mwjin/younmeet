@@ -45,7 +45,10 @@ person that has free time(start_time, end_time)
 (1, 3) and (2,4) must not exit in DB
 
 '''
+from queue import Queue
+from datetime import timedelta
 
+K = 5
 
 class TimeConstraintException(Exception):
     def __init__(self):
@@ -147,6 +150,13 @@ class TimeCountNode:
         if self.right is not None:
             self.right.print_inorder()
 
+    def append_inorder(self, list):
+        if self.left is not None:
+            self.left.append_inorder(list)
+        list.append(self)
+        if self.right is not None:
+            self.right.append_inorder(list)
+
 
 class TimeCountTree:
 
@@ -162,39 +172,108 @@ class TimeCountTree:
     def print_inorder(self):
         self.root.print_inorder()
 
+    def append_inorder(self, list):
+        self.root.append_inorder(list)
 
-# simple testing
-if __name__ == "__main__":
-    from datetime import datetime
-    '''
-    start1 = datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M')
-    end1 = datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M')
-    start2 = datetime.strptime('2017-11-4 4:30', '%Y-%m-%d %H:%M')
-    end2 = datetime.strptime('2017-11-4 6:30', '%Y-%m-%d %H:%M')
-    start3 = datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M')
-    end3 = datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M')
+    def k_max_pq_add(top_k_list, weight, node_list):
+        if (len(top_k_list) < K):
+            top_k_list.append((weight, node_list))
+        else:
+            max_weight = -1
+            max_weight_index = -1
+            for i in range (K):
+                if top_k_list[i][0] < max_weight:
+                    max_weight = top_k_list[i][0]
+                    max_weight_index = i
+            if max_weight > weight:
+                top_k_list[i] = (weight, node_list)
+            return top_k_list
 
-    node1 = TimeCountNode(start1, end1)
-    node2 = TimeCountNode(start2, end2)
-    node3 = TimeCountNode(start3, end3)
+    def calculate_best_time(self, min_time_required):
+        # min_time_required is time_delta
+        list = []
+        self.append_inorder(list)
 
-    tree = TimeCountTree(node1)
-    tree.insert(node2)
-    tree.insert(node3)
-    tree.print_inorder()
-    '''
+        top_k_list = []
 
-    def make_time(str):
-        return datetime.strptime('2017-11-4 '+str, '%Y-%m-%d %H:%M')
-    start_str_list = ['12:00', '15:30', '14:00', '20:30', '12:30', '15:30', '18:30', '12:30']
-    end_str_list = ['14:00', '21:00', '18:30', '22:00', '14:00', '17:00', '23:00', '22:00']
-    start_time_list = []
-    end_time_list = []
-    tree = TimeCountTree()
-    for i in range(len(start_str_list) - 1, -1, -1):
-        start_time_list.append(make_time(start_str_list[i]))
-        end_time_list.append(make_time(end_str_list[i]))
-    for i in range(len(start_time_list)):
-        node = TimeCountNode(start_time_list[i], end_time_list[i])
-        tree.insert(node)
-    tree.print_inorder()
+        i = 0
+        j = 0
+        time_diff = timedelta()
+        end_time = list[0].end
+
+        while j < len(list):
+
+            # check if the time is continuous
+            if end_time != list[j].start_time:
+                i = j
+                time_diff = timedelta()
+                end_time = list[i].start_time
+            else:
+                time_diff_bigger_than_min_time = True
+                while j < len(list) and time_diff < min_time_required:
+                    # check if the time is continuous
+                    if end_time != list[j].start_time:
+                        time_diff_bigger_than_min_time = False
+                        break
+                    else:
+                        time_diff += list[j].end - list[j].start
+                        end_time = list[j].end
+                        j += 1
+
+                # time_diff > min_time_required
+                # move i and calculate the weight of node. weight = sum(time_count * minutes)
+                # list[j].end_time - list[i].start_time >= min_time_required
+                # list[j - 1].end_time - list[i].start_time min_time_required
+                if time_diff_bigger_than_min_time:
+                    next_i = i - 1
+                    max_weight = 0
+
+                    #increment i
+                    while next_i <= j:
+                        # fixed i
+                        # new_end cannot be bigger than j by assumption (always exists new_end)
+                        new_end = next_i
+                        while list[new_end].end_time - list[i].start_time < min_time_required:
+                            new_end += 1
+                        # ensures that list[i...new_end] is the minimum node that satisfies
+                        # list[new_end].end_time - list[i].start_time >= min_time_required
+                        weight1 = 0
+                        min_time1 = min_time_required
+                        for curr in range (i, new_end + 1):
+                            if curr == new_end:
+                                weight1 += min_time1.total_seconds() / 60
+                            else:
+                                duration = list[curr].end - list[curr].start
+                                weight1 += duration.total_seconds() / 60
+                                min_time1 -= duration
+
+                        weight2 = 0
+                        min_time2 = min_time_required
+                        for curr in range(new_end, i - 1, -1):
+                            if curr == i:
+                                weight2 += min_time2.total_seconds() / 60
+                            else:
+                                duration = list[curr].end - list[curr].start
+                                weight2 += duration.total_seconds() / 60
+                                min_time2 -= duration
+
+                        new_max_weight = 0
+                        if weight1 > weight2:
+                            new_max_weight = weight1
+                        else:
+                            new_max_weight = weight2
+
+                        TimeCountTree.k_max_pq_add(top_k_list, new_max_weight, list[i: j + 1])
+        return top_k_list
+
+
+
+
+
+
+
+
+
+
+
+
