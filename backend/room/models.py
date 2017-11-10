@@ -18,6 +18,11 @@ class Room(models.Model):
     min_time_required = models.DurationField(null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
+    time_span_min = models.DateTimeField(null=True)
+    time_span_max = models.DateTimeField(null=True)
+
+    min_members = models.IntegerField(default=0)
+
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='owned_rooms',
