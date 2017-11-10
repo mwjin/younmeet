@@ -6,6 +6,8 @@ import { toPromise } from 'rxjs/operator/toPromise';
 export class AuthenticationService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
 
+  redirectUrl: string;
+
   constructor(private http: Http) {
   }
 
@@ -65,6 +67,13 @@ export class AuthenticationService {
           return false;
         }
       });
+  }
+
+  isLoggedIn(): boolean {
+    if (localStorage.getItem('currentUser')) {
+      return true;
+    }
+    return false;
   }
 
   private handleError(error: any): Promise<any> {
