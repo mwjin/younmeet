@@ -19,14 +19,21 @@ def room_list(request):
 
     elif request.method == 'POST':
         data = json.loads(request.body.decode())
+
         name = data['name']
         place = data['place']
         t = int(data['min_time_required'])
+        time_span_min = datetime.strptime(data['time_span_min'])
+        time_span_max = datetime.strptime(data['time_span_max'])
+
         min_time_required = timedelta(hours=t/60, minutes=t%60)
+
         new_room = Room(
             name=name,
             place=place,
             min_time_required=min_time_required,
+            time_span_max=time_span_max,
+            time_span_min=time_span_min,
             owner=user
         )
         new_room.save()
