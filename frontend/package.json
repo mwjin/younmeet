@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "angular-calendar": "^0.21.3",
     "core-js": "^2.4.1",
     "ng2-mock-component": "^0.1.0",
     "ng2-semantic-ui": "^0.9.6",
