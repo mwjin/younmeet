@@ -23,6 +23,7 @@ class RoomTestCase(TestCase):
         User.objects.create_user(email='email2', password='password2', username='username2')
         User.objects.create_user(email='email3', password='password3', username='username3')
         User.objects.create_user(email='email4', password='password4', username='username4')
+
         user1 = User.objects.get(id=1)
         user2 = User.objects.get(id=2)
         user3 = User.objects.get(id=3)
@@ -56,6 +57,7 @@ class RoomTestCase(TestCase):
         )
         room1 = Room.objects.get(id=1)
         room2 = Room.objects.get(id=2)
+
         room1.members.add(user1)
         room1.members.add(user2)
         room1.members.add(user3)
