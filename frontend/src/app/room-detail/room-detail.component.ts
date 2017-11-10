@@ -10,6 +10,7 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/mergeMap"
 import "rxjs/add/observable/forkJoin"
 import {UserInfo} from "../models/user-info";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-room-detail',
@@ -23,7 +24,9 @@ export class RoomDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private meetService: MeetService) {
+              private meetService: MeetService,
+              private location: Location)
+  {
     this.route.params
       .flatMap(params => {
         let roomId = +params['id'];
@@ -33,7 +36,10 @@ export class RoomDetailComponent implements OnInit {
         this.room = room;
         console.log(room);
         let getMembers = this.meetService.getUsersInRoom(this.room.id)
-          .then(members => this.members = members);
+          .then(members => {
+              this.members = members.filter(user => user.id !== room.owner.id);
+              this.members.unshift(members.filter(user => user.id === room.owner.id)[0]);
+          });
         let getAvailableTime = this.meetService.getAvailableTime(this.room.id)
           .then(availableTime => this.availableTime = availableTime);
         return Observable.forkJoin(getMembers, getAvailableTime);
@@ -42,6 +48,10 @@ export class RoomDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }
