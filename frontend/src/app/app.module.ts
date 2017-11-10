@@ -18,6 +18,7 @@ import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
 import {CommonModule} from "@angular/common";
+import {RoomListFilterPipe} from "./dashboard/room-list-filter.pipe";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -39,7 +40,8 @@ export function MyCookieStrategy() {
     DashboardComponent,
     RoomListComponent,
     CreateRoomComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    RoomListFilterPipe
   ],
   imports : [
     CommonModule,

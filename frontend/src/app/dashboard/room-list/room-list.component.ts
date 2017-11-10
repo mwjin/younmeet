@@ -5,11 +5,12 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-room-list',
   templateUrl: './room-list.component.html',
-  styles: []
+  styles: [],
 })
 export class RoomListComponent implements OnInit {
 
   @Input() rooms: Room[];
+  @Input() searchText: string;
 
   constructor(private router: Router) { }
 

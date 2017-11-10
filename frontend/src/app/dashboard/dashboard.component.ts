@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   roomsJoined_Urgent: Room[];
   roomsJoined_NotUrgent: Room[];
 
+  private searchText: string;
+
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {
       this.roomsCreated_Urgent = rooms.filter(room => room.urgent);
