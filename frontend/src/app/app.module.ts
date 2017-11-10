@@ -24,6 +24,7 @@ const routes: Routes = [
   { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
   { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:id', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
+  { path : 'link/:id', redirectTo: 'room/:id', pathMatch: 'full'},
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
 ];
