@@ -22,6 +22,8 @@ export class RoomDetailComponent implements OnInit {
   members: UserInfo[];
   availableTime: Timespan[];
 
+  shareableLink: string;
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private meetService: MeetService,
@@ -30,6 +32,7 @@ export class RoomDetailComponent implements OnInit {
     this.route.params
       .flatMap(params => {
         let roomId = +params['id'];
+        this.shareableLink = `http://localhost:4200/room/${roomId}`;
         return this.meetService.getRoomById(roomId);
       })
       .flatMap(room => {
@@ -53,5 +56,7 @@ export class RoomDetailComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+
 
 }

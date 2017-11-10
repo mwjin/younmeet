@@ -1,7 +1,14 @@
 <div *ngIf="room">
   <h1>{{room.name}}</h1>
+  <div class="ui hidden divider"></div>
+  <div class="ui action input">
+    <input type="text" [(ngModel)]="shareableLink" readonly="">
+    <button class="ui teal right labeled icon button">
+      <i class="copy icon"></i>
+      Copy
+    </button>
+  </div>
 
-  <button class="ui button">Shareable Link</button>
   <button (click)="goBack()" class="ui button right floated">Back</button>
 
   <h2>List of participants</h2>
