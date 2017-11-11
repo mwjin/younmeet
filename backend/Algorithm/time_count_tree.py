@@ -45,7 +45,7 @@ person that has free time(start_time, end_time)
 (1, 3) and (2,4) must not exit in DB
 
 '''
-from queue import Queue
+
 from datetime import timedelta
 
 K = 5
@@ -67,6 +67,9 @@ class TimeCountNode:
         self.time_count = time_count
         self.left = None
         self.right = None
+
+    def __str__(self):
+        return str(self.start) + " " + str(self.end)
 
     # finds out the relation
     def node_relationship(self, oth):
@@ -150,12 +153,12 @@ class TimeCountNode:
         if self.right is not None:
             self.right.print_inorder()
 
-    def append_inorder(self, list):
+    def append_inorder(self, tree_list):
         if self.left is not None:
-            self.left.append_inorder(list)
-        list.append(self)
+            self.left.append_inorder(tree_list)
+        tree_list.append(self)
         if self.right is not None:
-            self.right.append_inorder(list)
+            self.right.append_inorder(tree_list)
 
 
 class TimeCountTree:
@@ -163,117 +166,16 @@ class TimeCountTree:
     def __init__(self, node=None):
         self.root = node
 
-    def insert(self, oth):
+    def insert(self, start, end):
+        node = TimeCountNode(start, end)
         if self.root is None:
-            self.root = oth
+            self.root = node
         else:
-            self.root.insert_node(oth)
+            self.root.insert_node(node)
 
     def print_inorder(self):
         self.root.print_inorder()
 
-    def append_inorder(self, list):
-        self.root.append_inorder(list)
-
-    def k_max_pq_add(top_k_list, weight, node_list):
-        if (len(top_k_list) < K):
-            top_k_list.append((weight, node_list))
-        else:
-            max_weight = -1
-            max_weight_index = -1
-            for i in range (K):
-                if top_k_list[i][0] < max_weight:
-                    max_weight = top_k_list[i][0]
-                    max_weight_index = i
-            if max_weight > weight:
-                top_k_list[i] = (weight, node_list)
-            return top_k_list
-
-    def calculate_best_time(self, min_time_required):
-        # min_time_required is time_delta
-        list = []
-        self.append_inorder(list)
-
-        top_k_list = []
-
-        i = 0
-        j = 0
-        time_diff = timedelta()
-        end_time = list[0].end
-
-        while j < len(list):
-
-            # check if the time is continuous
-            if end_time != list[j].start_time:
-                i = j
-                time_diff = timedelta()
-                end_time = list[i].start_time
-            else:
-                time_diff_bigger_than_min_time = True
-                while j < len(list) and time_diff < min_time_required:
-                    # check if the time is continuous
-                    if end_time != list[j].start_time:
-                        time_diff_bigger_than_min_time = False
-                        break
-                    else:
-                        time_diff += list[j].end - list[j].start
-                        end_time = list[j].end
-                        j += 1
-
-                # time_diff > min_time_required
-                # move i and calculate the weight of node. weight = sum(time_count * minutes)
-                # list[j].end_time - list[i].start_time >= min_time_required
-                # list[j - 1].end_time - list[i].start_time min_time_required
-                if time_diff_bigger_than_min_time:
-                    next_i = i - 1
-                    max_weight = 0
-
-                    #increment i
-                    while next_i <= j:
-                        # fixed i
-                        # new_end cannot be bigger than j by assumption (always exists new_end)
-                        new_end = next_i
-                        while list[new_end].end_time - list[i].start_time < min_time_required:
-                            new_end += 1
-                        # ensures that list[i...new_end] is the minimum node that satisfies
-                        # list[new_end].end_time - list[i].start_time >= min_time_required
-                        weight1 = 0
-                        min_time1 = min_time_required
-                        for curr in range (i, new_end + 1):
-                            if curr == new_end:
-                                weight1 += min_time1.total_seconds() / 60
-                            else:
-                                duration = list[curr].end - list[curr].start
-                                weight1 += duration.total_seconds() / 60
-                                min_time1 -= duration
-
-                        weight2 = 0
-                        min_time2 = min_time_required
-                        for curr in range(new_end, i - 1, -1):
-                            if curr == i:
-                                weight2 += min_time2.total_seconds() / 60
-                            else:
-                                duration = list[curr].end - list[curr].start
-                                weight2 += duration.total_seconds() / 60
-                                min_time2 -= duration
-
-                        new_max_weight = 0
-                        if weight1 > weight2:
-                            new_max_weight = weight1
-                        else:
-                            new_max_weight = weight2
-
-                        TimeCountTree.k_max_pq_add(top_k_list, new_max_weight, list[i: j + 1])
-        return top_k_list
-
-
-
-
-
-
-
-
-
-
-
+    def append_inorder(self, tree_list):
+        self.root.append_inorder(tree_list)
 
