@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector : 'app-time-select',
@@ -6,14 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls : [ './time-select.component.css' ]
 })
 export class TimeSelectComponent implements OnInit {
-
-
   calendarOptions: Object = {
-    header : {
-      left : 'prev,next today',
-      center : 'title',
-      right : 'month,agendaWeek,agendaDay'
-    },
+    headers : false,
+    timezone : 'local',
     selectable : true,
     selectHelper : true,
     select : function (start, end) {
@@ -22,47 +18,26 @@ export class TimeSelectComponent implements OnInit {
         start : start,
         end : end
       };
+      $('#calendar').fullCalendar('renderEvent', eventData, true);
       console.log(start[ '_d' ]);
       console.log(end[ '_d' ]);
+      console.log(start[ '_d' ].toString().split(' ')[ 4 ]);
     },
-
-    defaultDate : '2014-06-12',
-    defaultView : 'agendaWeek',
+    defaultDate : '2017-11-10',
+    defaultView : 'agendaWeek', // view type
+    allDaySlot : false, // turn off the all day slot
+    slotDuration : '00:10:00', // set slot duration
+    scrollTime : '09:00:00', // start scroll from 9AM
     editable : true,
-    events : [
-      {
-        id : 999,
-        title : 'Repeating Event',
-        start : '2014-06-09T16:00:00'
-      },
-      {
-        id : 999,
-        title : 'Repeating Event',
-        start : '2014-06-16T16:00:00'
-      },
-      {
-        title : 'Meeting',
-        start : '2014-06-12T10:30:00',
-        end : '2014-06-12T12:30:00'
-      },
-      {
-        title : 'Lunch',
-        start : '2014-06-12T12:00:00'
-      },
-      {
-        title : 'Birthday Party',
-        start : '2014-06-13T07:00:00'
-      },
-      {
-        title : 'Click for Google',
-        url : 'http://google.com/',
-        start : '2014-06-28'
-      }
-    ]
+    views : {
+      name : 'agendaWeek',
+      title : 'Select Available Time',
+    },
+    locale : 'ko',
+    themeSystem : 'bootstrap3'
   };
 
   constructor() {
-
   }
 
   ngOnInit() {

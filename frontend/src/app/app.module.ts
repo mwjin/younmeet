@@ -19,6 +19,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
 import { CommonModule } from '@angular/common';
 import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
+import { CalendarModule } from 'fullcalendar-ag4';
+
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -42,7 +44,7 @@ export function MyCookieStrategy() {
     RoomListComponent,
     CreateRoomComponent,
     RoomDetailComponent,
-    TimeSelectComponent
+    TimeSelectComponent,
   ],
   imports : [
     CommonModule,
@@ -51,7 +53,8 @@ export function MyCookieStrategy() {
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    SuiModule
+    SuiModule,
+    CalendarModule.forRoot()
   ],
   providers : [
     AccountService,
