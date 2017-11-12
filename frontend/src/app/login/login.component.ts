@@ -34,7 +34,13 @@ export class LoginComponent implements OnInit {
       this.password.value)
       .then(isSignInSuccess => {
         if (isSignInSuccess) {
-          this.router.navigate([ 'dashboard' ]);
+          let redirectUrl = this.authenticationService.redirectUrl;
+          if (redirectUrl) {
+            this.router.navigateByUrl(redirectUrl);
+          }
+          else {
+            this.router.navigate(['dashboard']);
+          }
         }
       });
 

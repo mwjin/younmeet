@@ -22,13 +22,17 @@ export class RoomDetailComponent implements OnInit {
   members: UserInfo[];
   availableTime: Timespan[];
 
+  shareableLink: string;
+  linkCopied: boolean = false;
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private meetService: MeetService,
               private location: Location) {
     this.route.params
       .flatMap(params => {
-        let roomId = +params[ 'id' ];
+        let roomId = +params['id'];
+        this.shareableLink = `http://localhost:4200/link/${roomId}`;
         return this.meetService.getRoomById(roomId);
       })
       .flatMap(room => {
