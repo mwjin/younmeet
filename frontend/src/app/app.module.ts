@@ -18,6 +18,7 @@ import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
 import {CommonModule} from "@angular/common";
+import {ClipboardModule} from "ngx-clipboard/dist";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -49,7 +50,8 @@ export function MyCookieStrategy() {
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    SuiModule
+    SuiModule,
+    ClipboardModule
   ],
   providers : [
     AccountService,

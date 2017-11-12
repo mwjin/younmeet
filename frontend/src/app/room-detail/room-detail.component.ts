@@ -23,6 +23,7 @@ export class RoomDetailComponent implements OnInit {
   availableTime: Timespan[];
 
   shareableLink: string;
+  linkCopied: boolean = false;
 
   constructor(private router: Router,
               private route: ActivatedRoute,

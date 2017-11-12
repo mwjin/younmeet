@@ -1,15 +1,25 @@
 <div *ngIf="room">
   <h1>{{room.name}}</h1>
   <div class="ui hidden divider"></div>
-  <div class="ui action input">
-    <input type="text" [(ngModel)]="shareableLink" readonly="">
-    <button class="ui teal right labeled icon button">
-      <i class="copy icon"></i>
-      Copy
-    </button>
+  <div class="ui grid">
+    <div class="row">
+      <div class="six wide column">
+        <div class="ui fluid action input">
+          <input type="text" [(ngModel)]="shareableLink" readonly="" #inputTarget>
+          <button class="ui teal right labeled icon button" type="button"
+                  ngxClipboard [cbContent]="shareableLink" (cbOnSuccess)="isCopied = true">
+            <i class="copy icon"></i>
+            <div *ngIf="!isCopied">Copy</div>
+            <div *ngIf="isCopied">Copied!</div>
+          </button>
+        </div>
+      </div>
+      <div class="eight wide column"></div>
+      <div class="two wide column">
+        <button (click)="goBack()" class="ui button right floated">Back</button>
+      </div>
+    </div>
   </div>
-
-  <button (click)="goBack()" class="ui button right floated">Back</button>
 
   <h2>List of participants</h2>
   <div *ngIf="members && room.owner">
