@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimeSelectComponent } from './time-select.component';
+import { CalendarModule } from 'fullcalendar-ag4';
+import * as $ from 'jquery';
 
 describe('TimeSelectComponent', () => {
   let component: TimeSelectComponent;
@@ -8,9 +10,9 @@ describe('TimeSelectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimeSelectComponent ]
-    })
-    .compileComponents();
+      imports : [ CalendarModule.forRoot() ],
+      declarations : [ TimeSelectComponent ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
