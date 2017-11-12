@@ -6,42 +6,84 @@ import * as $ from 'jquery';
   templateUrl : './time-select.component.html',
   styleUrls : [ './time-select.component.css' ]
 })
+
 export class TimeSelectComponent implements OnInit {
-  calendarOptions: Object = {
-    headers : false,
+
+  public calendarOptions: Object = {
+    // Option Set for calendar display
+    locale : 'ko',
+    slotDuration : '00:10:00', // set slot duration
+    scrollTime : '09:00:00', // start scroll from 9AM
+    visibleRange : {
+      /* Calendar Day Range
+       Should be differ by arguments of constructor
+       */
+      start : '2017-11-10',
+      end : '2017-11-15'
+    },
+    // Do not Modify Below This Comment
     timezone : 'local',
+    defaultView : 'agenda',
+    allDaySlot : false,
+    editable : true,
     selectable : true,
     selectHelper : true,
     select : function (start, end) {
+      document.getElementById('deleteButton').style.display = 'none';
       let eventData;
       eventData = {
+        title : '',
         start : start,
         end : end
       };
       $('#calendar').fullCalendar('renderEvent', eventData, true);
-      console.log(start[ '_d' ]);
-      console.log(end[ '_d' ]);
-      console.log(start[ '_d' ].toString().split(' ')[ 4 ]);
     },
-    defaultDate : '2017-11-10',
-    defaultView : 'agendaWeek', // view type
-    allDaySlot : false, // turn off the all day slot
-    slotDuration : '00:10:00', // set slot duration
-    scrollTime : '09:00:00', // start scroll from 9AM
-    editable : true,
-    views : {
-      name : 'agendaWeek',
-      title : 'Select Available Time',
-    },
-    locale : 'ko',
-    themeSystem : 'bootstrap3'
+    unselectAuto : true,
+    eventClick : function (calEvent, jsEvent, view) {
+      document.getElementById('deleteButton').style.display = 'block';
+      localStorage.setItem('deleteButtonId', calEvent._id);
+    }
   };
 
   constructor() {
+    /*
+      TODO:
+        Get some appropriate arguments.
+          Arguments will be (startTimeSpan: string, endTimeSpan: string, preSetEvents When try to modify)
+        Set calendarOptions for user
+     */
   }
 
   ngOnInit() {
   }
 
+  public deleteEvent(): void {
+    $('#calendar').fullCalendar('removeEvents', localStorage.getItem('deleteButtonId'));
+    document.getElementById('deleteButton').style.display = 'none';
+  }
 
+  public collectedDatas(): Array<Array<String>> {
+    // Collect all events and return array of [start_time, end_time] pair
+    const freeTimes = [];
+    const selectedAreas = $('#calendar').fullCalendar('clientEvents');
+    for (let index in selectedAreas) {
+      const startTimeArray = selectedAreas[ index ][ 'start' ][ '_d' ].toString().split(' ');
+      const endTimeArray = selectedAreas[ index ][ 'end' ][ '_d' ].toString().split(' ');
+      freeTimes.push(
+        [ startTimeArray[ 3 ] + ' ' +
+        startTimeArray[ 1 ] + ' ' +
+        startTimeArray[ 2 ] + ' ' +
+        startTimeArray[ 4 ],
+          endTimeArray[ 3 ] + ' ' +
+          endTimeArray[ 1 ] + ' ' +
+          endTimeArray[ 2 ] + ' ' +
+          endTimeArray[ 4 ]
+        ]
+      );
+    }
+    console.log(freeTimes);
+    return freeTimes;
+  }
 }
+
+

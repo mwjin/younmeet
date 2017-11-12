@@ -29,7 +29,7 @@ const routes: Routes = [
   { path : 'room/:id', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
-  { path : 'room/:id/time', component : TimeSelectComponent }
+  { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] }
 ];
 
 export function MyCookieStrategy() {

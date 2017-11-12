@@ -1,1 +1,8 @@
+<h2 class="ui header">Select Available Time
+  <button (click)="collectedDatas()" class="ui secondary button right floated">Submit</button>
+  <button (click)="deleteEvent()" class="ui red button right floated"
+          style="display: none;"
+          id="deleteButton">Delete
+  </button>
+</h2>
 <calendar-component [options]="calendarOptions" id="calendar"></calendar-component>
