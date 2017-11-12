@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Headers, Http, RequestOptionsArgs} from '@angular/http';
+import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
-import {getCSRFHeaders} from "../../util/headers";
+import { getCSRFHeaders } from '../../util/headers';
 
 @Injectable()
 export class AccountService {
