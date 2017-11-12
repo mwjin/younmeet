@@ -1,7 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~fullcalendar/dist/fullcalendar.min.css';
+
+.fc button {
+  display: none;
+}
+
+.fc-toolbar {
+  display: none;
+}
+
+.fc-event {
+  background-color: black;
+  font-size: .90em;
+  border: solid 1px black;
+}
+
+.fc-unthemed td.fc-today {
+  background: white;
+}
+
 body {
   background-color: #FFFFFF;
 }
+
 .main.container {
   margin-top: 7em;
 }

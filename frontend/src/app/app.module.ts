@@ -13,11 +13,14 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
 import { AccountService } from './services/account.service';
-import {CookieXSRFStrategy, HttpModule, XSRFStrategy} from '@angular/http';
+import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
-import {CommonModule} from "@angular/common";
+import { CommonModule } from '@angular/common';
+import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
+import { CalendarModule } from 'fullcalendar-ag4';
+
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -26,6 +29,7 @@ const routes: Routes = [
   { path : 'room/:id', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
+  { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] }
 ];
 
 export function MyCookieStrategy() {
@@ -39,7 +43,8 @@ export function MyCookieStrategy() {
     DashboardComponent,
     RoomListComponent,
     CreateRoomComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    TimeSelectComponent,
   ],
   imports : [
     CommonModule,
@@ -48,7 +53,8 @@ export function MyCookieStrategy() {
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    SuiModule
+    SuiModule,
+    CalendarModule.forRoot()
   ],
   providers : [
     AccountService,
@@ -56,8 +62,8 @@ export function MyCookieStrategy() {
     AuthenticationService,
     AuthGuard,
     {
-      provide: XSRFStrategy,
-      useFactory: MyCookieStrategy
+      provide : XSRFStrategy,
+      useFactory : MyCookieStrategy
     }
   ],
   bootstrap : [ AppComponent ]
