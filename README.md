@@ -11,8 +11,15 @@ dev:
 ## Branch management
 
 - We will work in the ``dev`` branch when implementing features.
-- Avoid pushing features directly into the ``dev`` branch. Create features in a separate branch, and submit a pull request. (Temporarily Philsik will manage the pull requests.)
+- Avoid pushing features directly into the ``dev`` branch. Create features in a separate branch, and submit a pull request
 - We will push the contents of the ``dev`` branch to the ``master`` branch at the end of each sprint.
+
+## Branch Manager
+
+- Sprint2: Philsik
+- Sprint3: Taebum
+- Sprint4: Dongsu
+- Sprint5: Minwoo
 
 ## Repo structure
 
@@ -29,3 +36,4 @@ dev:
   - Running the app: ``python manage.py runserver``
   - Testing: ``python manage.py test``
   - Note: if Python 2 is the default for the system, use python3 command instead of python
+
