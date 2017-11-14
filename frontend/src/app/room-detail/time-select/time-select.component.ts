@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import * as $ from 'jquery';
 
 @Component({
@@ -52,7 +53,7 @@ export class TimeSelectComponent implements OnInit {
     }
   };
 
-  constructor() {
+  constructor(private location: Location) {
     /*
       TODO:
         Get some appropriate arguments.
@@ -89,6 +90,7 @@ export class TimeSelectComponent implements OnInit {
       );
     }
     console.log(freeTimes);
+    this.location.back();
     return freeTimes;
   }
 }
