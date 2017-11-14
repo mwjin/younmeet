@@ -31,7 +31,7 @@ export class RoomDetailComponent implements OnInit {
               private location: Location) {
     this.route.params
       .flatMap(params => {
-        let roomId = +params['id'];
+        let roomId = +params[ 'id' ];
         this.shareableLink = `http://localhost:4200/link/${roomId}`;
         return this.meetService.getRoomById(roomId);
       })
@@ -54,7 +54,8 @@ export class RoomDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate([ 'dashboard' ]);
+    // this.location.back(); it redirects to create page when location.back is 'create'
   }
 
   goTimeSelectPage(): void {
