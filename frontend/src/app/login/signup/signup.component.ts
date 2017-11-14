@@ -22,10 +22,6 @@ export class SignupComponent implements OnInit {
   constructor(private accoutService: AccountService,
               private router: Router,
               private formBuilder: FormBuilder) {
-    if (localStorage.getItem('currentUser')) {
-      // if user already signed in
-      this.router.navigate([ 'dashboard' ]);
-    }
     this.signUpForm = formBuilder.group({
       'email' : [ '', Validators.required ],
       'username' : [ '', Validators.required ],
