@@ -4,11 +4,13 @@
       <h2 class="ui header">
         You & MEet Login
       </h2>
+
       <form class="ui large form"
             [formGroup]="loginForm"
             (ngSubmit)="tryLogin(loginForm.value)"
             [class.error]="!loginForm.valid && loginForm.touched">
         <div class="ui stacked segment">
+
           <div class="required field">
             <div class="ui left icon input"
                  [class.error]="!email_username.valid && email_username.touched">
@@ -17,6 +19,7 @@
                      [formControl]="loginForm.controls['email/username']">
             </div>
           </div>
+
           <div class="required field">
             <div class="ui left icon input"
                  [class.error]="!password.valid && password.touched">
@@ -25,14 +28,17 @@
                      [formControl]="loginForm.controls['password']">
             </div>
           </div>
+
           <div *ngIf="!email_username.valid || !password.valid"
                class="ui error message"> Incorrect Email/Username or Password
           </div>
+
           <button class="ui fluid large submit button" type="submit">Login</button>
           <button class="ui fluid large google plus button">
             <i class="google plus icon"></i>
             Login With Google Account
           </button>
+
           <div class="ui error message"></div>
         </div>
       </form>
@@ -41,5 +47,4 @@
       </div>
     </div>
   </div>
-
 </body>
