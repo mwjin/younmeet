@@ -20,6 +20,10 @@ export class LoginComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private formBuilder: FormBuilder) {
+    if (localStorage.getItem('currentUser')) {
+      // if user already signed in
+      this.router.navigate([ 'dashboard' ]);
+    }
     this.loginForm = formBuilder.group({
       'email/username' : [ '', Validators.required ],
       'password' : [ '', Validators.required ]
@@ -39,7 +43,7 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl(redirectUrl);
           }
           else {
-            this.router.navigate(['dashboard']);
+            this.router.navigate([ 'dashboard' ]);
           }
         }
       });
