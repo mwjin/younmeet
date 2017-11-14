@@ -40,7 +40,14 @@ export class TimeSelectComponent implements OnInit {
     },
     unselectAuto : true,
     eventClick : function (calEvent, jsEvent, view) {
+      let selected = $('#calendar').fullCalendar('clientEvents', calEvent._id);
+      let startTime = selected[ 0 ][ 'start' ][ '_d' ]
+        .toString().split(' ')[ 4 ].slice(0, 5);
+      let endTime = selected[ 0 ][ 'end' ][ '_d' ]
+        .toString().split(' ')[ 4 ].slice(0, 5);
       document.getElementById('deleteButton').style.display = 'block';
+      document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
+
       localStorage.setItem('deleteButtonId', calEvent._id);
     }
   };
