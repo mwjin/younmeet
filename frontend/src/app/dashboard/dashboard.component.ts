@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   roomsJoined_Urgent: Room[];
   roomsJoined_NotUrgent: Room[];
 
+  private filters = ['Name', 'User', 'Location'];
+
   private searchText: string;
 
   constructor(private meetService: MeetService) {
