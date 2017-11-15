@@ -17,7 +17,8 @@
                 icon="filter"
                 [options]="filters"
                 [isSearchable]="true"
-                placeholder="Name"
+                placeholder="All"
+                [(ngModel)]="currentSearchOption"
                 #filterSelect>
       <div class="header">
         <i class="tags icon"></i>
@@ -32,27 +33,31 @@
   <div class="ui top attached tabular menu">
     <a class="item" suiTabHeader="1">Created</a>
     <a class="item" suiTabHeader="2">Joined</a>
-
   </div>
-
-
-
   <div class="ui bottom attached segment" suiTabContent="1">
     <app-room-list [rooms]="roomsCreated_Urgent"
-                   [searchText]="searchText"></app-room-list>
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
     <div class="ui divider"></div>
     <app-room-list [rooms]="roomsCreated_NotUrgent"
-                   [searchText]="searchText"></app-room-list>
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
   </div>
   <div class="ui bottom attached segment" suiTabContent="2">
     <app-room-list [rooms]="roomsJoined_Urgent"
-                   [searchText]="searchText"></app-room-list>
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
     <div class="ui divider"></div>
     <app-room-list [rooms]="roomsJoined_NotUrgent"
-                   [searchText]="searchText"></app-room-list>
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
   </div>
 </sui-tabset>

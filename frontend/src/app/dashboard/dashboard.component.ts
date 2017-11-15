@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Room } from '../models/room';
 import { MeetService } from '../services/meet.service';
 import {User} from "../models/user";
-import {AuthenticationService} from "../services/authentication.service";
+import {FilterOptions} from "./room-list-filter.pipe";
 
 @Component({
   selector : 'app-dashboard',
@@ -18,9 +18,11 @@ export class DashboardComponent implements OnInit {
   roomsJoined_Urgent: Room[];
   roomsJoined_NotUrgent: Room[];
 
-  private filters = ['Name', 'User', 'Location'];
+  private filters: FilterOptions[] = ["All", "Name", "Location"];
 
   private searchText: string;
+
+  private currentSearchOption: FilterOptions = "All";
 
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {
