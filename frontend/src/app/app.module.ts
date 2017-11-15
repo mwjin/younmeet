@@ -46,7 +46,7 @@ export function MyCookieStrategy() {
     RoomListComponent,
     CreateRoomComponent,
     RoomDetailComponent,
-    RoomListFilterPipe
+    RoomListFilterPipe,
     TimeSelectComponent,
   ],
   imports : [
