@@ -18,6 +18,7 @@ import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
 import {CommonModule} from "@angular/common";
+import {RoomListFilterPipe} from "./dashboard/room-list-filter.pipe";
 import {ClipboardModule} from "ngx-clipboard/dist";
 import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
 import { CalendarModule } from 'fullcalendar-ag4';
@@ -45,6 +46,7 @@ export function MyCookieStrategy() {
     RoomListComponent,
     CreateRoomComponent,
     RoomDetailComponent,
+    RoomListFilterPipe
     TimeSelectComponent,
   ],
   imports : [

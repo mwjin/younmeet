@@ -8,6 +8,7 @@ import {MeetServiceSpy} from "../services/meet.service.spy";
 import {RouterLinkStubDirective} from "../../testing/router-stubs";
 import {MeetService} from "../services/meet.service";
 import {SuiModule} from "ng2-semantic-ui";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   template: ``
@@ -25,13 +26,14 @@ describe('DashboardComponent', () => {
         RouterTestingModule.withRoutes([
           { path: 'room/create', component: CreateRoomComponentMock }
         ]),
+        FormsModule,
         SuiModule
       ],
       declarations: [
         DashboardComponent,
         CreateRoomComponentMock,
         RouterLinkStubDirective,
-        MockComponent({ selector: 'app-room-list', inputs: ['rooms'] })
+        MockComponent({ selector: 'app-room-list', inputs: ['rooms', 'searchText', 'searchOption'] })
       ],
       providers: [
         { provide: MeetService, useClass: MeetServiceSpy }
