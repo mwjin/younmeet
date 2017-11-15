@@ -8,6 +8,7 @@ import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
 import {RoomResponse} from "./room-rest-interfaces";
 import {FormsModule} from "@angular/forms";
+import { CreateRoomForm } from '../create-room/create-room-form';
 
 let TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
@@ -118,9 +119,8 @@ describe('MeetService', () => {
     it('creates a new room', async(() => {
       let mockResponse = <RoomResponse> { name: "Room to submit", id: 42 };
       expectUrl(mockBackend, 'api/rooms', mockResponse);
-      let room = new Room("Room to submit");
-      room.id = 42;
-      meetService.addRoom(room).then(res => {
+      let roomForm = new CreateRoomForm("Room to submit", 30, new Timespan(), false);
+      meetService.addRoom(roomForm).then(res => {
         console.log(res);
         expect(res.name).toBe("Room to submit");
         expect(res.id).toBe(42);
