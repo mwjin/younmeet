@@ -6,7 +6,7 @@ import {MockBackend} from "@angular/http/testing";
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
-import {RoomResponseData} from "./room-response-data";
+import {RoomResponse} from "./room-rest-interfaces";
 import {FormsModule} from "@angular/forms";
 
 let TEST_USERS: User[] = [
@@ -51,7 +51,7 @@ describe('MeetService', () => {
 
   describe('getRoomsCreatedByMe', () => {
     it('gets rooms created by me', async(() => {
-      let mockResponse = <RoomResponseData[]> [
+      let mockResponse = <RoomResponse[]> [
         { name: 'Room 1'},
         { name: 'Room 2'},
         { name: 'Room 3'}
@@ -69,7 +69,7 @@ describe('MeetService', () => {
 
   describe('getRoomsJoinedByMe', () => {
     it('gets rooms joined by me', async(() => {
-      let mockResponse = <RoomResponseData[]> [
+      let mockResponse = <RoomResponse[]> [
         { name: 'Room 1'},
         { name: 'Room 2'},
         { name: 'Room 3'}
@@ -87,7 +87,7 @@ describe('MeetService', () => {
 
   describe('getRoomById', () => {
     it('gets the room by id', async(() => {
-      let mockResponse = <RoomResponseData> { name: "Room", id: 42 };
+      let mockResponse = <RoomResponse> { name: "Room", id: 42 };
       expectUrl(mockBackend, 'api/rooms/42', mockResponse);
       meetService.getRoomById(42).then(res => {
         expect(res.name).toBe("Room");
@@ -116,7 +116,7 @@ describe('MeetService', () => {
 
   describe('addRoom', () => {
     it('creates a new room', async(() => {
-      let mockResponse = <RoomResponseData> { name: "Room to submit", id: 42 };
+      let mockResponse = <RoomResponse> { name: "Room to submit", id: 42 };
       expectUrl(mockBackend, 'api/rooms', mockResponse);
       let room = new Room("Room to submit");
       room.id = 42;
