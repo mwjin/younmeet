@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     btc = BestTimeCalculator(
         min_time_required=timedelta(hours=2),
-        min_people=1,
+        min_people=3,
         k=3
     )
 
@@ -33,6 +33,5 @@ if __name__ == "__main__":
 
     for node in btc.top_k_list:
         print (node[0])
-        for time in node[1]:
-            print(time.start, time.end)
+        print(node[1], node[2])
 
