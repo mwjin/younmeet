@@ -28,5 +28,11 @@ if __name__ == "__main__":
     for i in range(len(start_str_list) - 1, -1, -1):
         time_list.append((make_time(start_str_list[i]), make_time(end_str_list[i])))
     btc.insert_time(time_list)
+    print(make_time(start_str_list[0]))
     btc.top_k_best_time()
-    print(btc.top_k_list)
+
+    for node in btc.top_k_list:
+        print (node[0])
+        for time in node[1]:
+            print(time.start, time.end)
+
