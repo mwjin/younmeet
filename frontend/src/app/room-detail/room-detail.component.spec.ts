@@ -5,6 +5,7 @@ import {RouterTestingModule} from "@angular/router/testing";
 import {MeetServiceSpy} from "../services/meet.service.spy";
 import {MeetService} from "../services/meet.service";
 import {RouterLinkStubDirective} from "../../testing/router-stubs";
+import {FormsModule} from "@angular/forms";
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -13,7 +14,10 @@ describe('RoomDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [
+        RouterTestingModule,
+        FormsModule
+      ],
       declarations: [
         RoomDetailComponent,
       ],

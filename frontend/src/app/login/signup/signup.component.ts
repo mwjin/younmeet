@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
 import { SignupValidator } from './signupValidator';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector : 'app-signup',
@@ -21,8 +22,8 @@ export class SignupComponent implements OnInit {
 
   constructor(private accoutService: AccountService,
               private router: Router,
-              private formBuilder: FormBuilder) {
-
+              private formBuilder: FormBuilder,
+              private authenticationService: AuthenticationService) {
     this.signUpForm = formBuilder.group({
       'email' : [ '', Validators.required ],
       'username' : [ '', Validators.required ],
@@ -48,10 +49,17 @@ export class SignupComponent implements OnInit {
       this.username.value,
       this.email.value,
       this.password.value
-    ).then(user => {
-      if (user) {
+    ).then(isSignUpSuccess => {
+      if (isSignUpSuccess) {
         // If success to create a new user
-        this.router.navigate([ 'login' ]);
+        this.authenticationService.logIn(this.username.value, this.password.value)
+          .then(isLogInSuccess => {
+            if (isLogInSuccess) {
+              this.router.navigate([ 'dashboard' ]);
+            } else {
+              this.router.navigate([ 'login' ]);
+            }
+          });
       }
     });
   }

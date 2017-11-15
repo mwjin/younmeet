@@ -1,6 +1,6 @@
-import {Timespan} from "./timespan";
-import {User} from "./user";
-import {UserInfo} from "./user-info";
+import { Timespan } from './timespan';
+import { User } from './user';
+import { UserInfo } from './user-info';
 
 export class Room {
 
