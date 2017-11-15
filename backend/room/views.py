@@ -23,8 +23,8 @@ def room_list(request):
         name = data['name']
         place = data['place']
         t = int(data['min_time_required'])
-        time_span_min = datetime.strptime(data['time_span_min'])
-        time_span_max = datetime.strptime(data['time_span_max'])
+        time_span_start = datetime.strptime(data['time_span_start'])
+        time_span_end = datetime.strptime(data['time_span_end'])
 
         min_time_required = timedelta(hours=t/60, minutes=t%60)
 
@@ -32,8 +32,8 @@ def room_list(request):
             name=name,
             place=place,
             min_time_required=min_time_required,
-            time_span_max=time_span_max,
-            time_span_min=time_span_min,
+            time_span_end=time_span_end,
+            time_span_start=time_span_start,
             owner=user
         )
         new_room.save()

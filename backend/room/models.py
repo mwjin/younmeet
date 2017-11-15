@@ -12,14 +12,11 @@ class Room(models.Model):
     name = models.CharField(max_length=64)
     place = models.CharField(max_length=64)
 
-    best_start_time = models.DateTimeField(null=True)
-    best_end_time = models.DateTimeField(null=True)
-
     min_time_required = models.DurationField(null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
-    time_span_min = models.DateTimeField(null=True)
-    time_span_max = models.DateTimeField(null=True)
+    time_span_start = models.DateTimeField(null=True)
+    time_span_end = models.DateTimeField(null=True)
 
     min_members = models.IntegerField(default=0)
 
@@ -33,3 +30,5 @@ class Room(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='joined_rooms',
     )
+
+    # TODO: Implement member functions for make best times.

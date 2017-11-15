@@ -33,25 +33,25 @@ class RoomTestCase(TestCase):
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
 
-        best_start_time1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
-        best_end_time1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
+        time_span_start1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
+        time_span_end1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
 
-        best_start_time2 = timezone.make_aware(datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M'))
-        best_end_time2 = timezone.make_aware(datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M'))
+        time_span_start2 = timezone.make_aware(datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M'))
+        time_span_end2 = timezone.make_aware(datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M'))
 
         Room.objects.create(
             name="room1",
             place="place1",
-            best_start_time=best_start_time1,
-            best_end_time=best_end_time1,
+            time_span_start=time_span_start1,
+            time_span_end=time_span_end1,
             min_time_required=min_time1,
             owner=user1,
         )
         Room.objects.create(
             name="room2",
             place="place2",
-            best_start_time=best_start_time2,
-            best_end_time=best_end_time2,
+            time_span_start=time_span_start2,
+            time_span_end=time_span_end2,
             min_time_required=min_time2,
             owner=user2,
         )
