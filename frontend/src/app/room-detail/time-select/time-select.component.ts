@@ -15,6 +15,7 @@ export class TimeSelectComponent implements OnInit {
     locale : 'ko',
     slotDuration : '00:10:00', // set slot duration
     scrollTime : '09:00:00', // start scroll from 9AM
+    height : 650,
     visibleRange : {
       /* Calendar Day Range
        Should be differ by arguments of constructor
@@ -50,7 +51,7 @@ export class TimeSelectComponent implements OnInit {
       document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
 
       localStorage.setItem('deleteButtonId', calEvent._id);
-    }
+    },
   };
 
   constructor(private location: Location) {
