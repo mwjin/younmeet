@@ -67,6 +67,15 @@ export class TimeSelectComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*
+    this.freetimeService.getFreeTimes()
+      .then(freeTimes => {
+        if (freeTimes.length > 0) {
+          // if previous set free times exist
+          $('#calendar').fullCalendar('option', 'events', JSON.stringify(freeTimes));
+        }
+      });
+      */
   }
 
   public deleteEvent(): void {
@@ -74,7 +83,7 @@ export class TimeSelectComponent implements OnInit {
     document.getElementById('deleteButton').style.display = 'none';
   }
 
-  public collectedDatas(): Freetime[] {
+  public collectFreeTimes(): Freetime[] {
     // Collect all events and return array of [start_time, end_time] pair
     const freeTimes: Freetime[] = [];
     const selectedAreas = $('#calendar').fullCalendar('clientEvents');
@@ -84,7 +93,18 @@ export class TimeSelectComponent implements OnInit {
     }
     console.log(JSON.stringify(freeTimes));
 
+    /*
+      After success to connect with backend, replace code as below
 
+
+
+    this.freetimeService.postFreeTimes(freeTimes)
+      .then(isSuccessToPost => {
+        if (isSuccessToPost) {
+          this.location.back();
+        }
+      });
+      */
     this.location.back();
     return freeTimes;
   }
