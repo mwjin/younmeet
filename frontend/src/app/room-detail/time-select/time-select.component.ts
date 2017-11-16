@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import * as $ from 'jquery';
 import { Freetime } from '../../models/freetime';
+import { FreetimeService } from '../../services/freetime.service';
 
 @Component({
   selector : 'app-time-select',
@@ -55,7 +56,8 @@ export class TimeSelectComponent implements OnInit {
     },
   };
 
-  constructor(private location: Location) {
+  constructor(private location: Location,
+              private freetimeService: FreetimeService) {
     /*
       TODO:
         Get some appropriate arguments.
@@ -72,19 +74,17 @@ export class TimeSelectComponent implements OnInit {
     document.getElementById('deleteButton').style.display = 'none';
   }
 
-  public collectedDatas(): Array<Freetime> {
+  public collectedDatas(): Freetime[] {
     // Collect all events and return array of [start_time, end_time] pair
-    const freeTimes: Array<Freetime> = [];
+    const freeTimes: Freetime[] = [];
     const selectedAreas = $('#calendar').fullCalendar('clientEvents');
     for (let index in selectedAreas) {
       freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
         selectedAreas[ index ][ 'end' ][ '_d' ]));
     }
+    console.log(JSON.stringify(freeTimes));
 
-    for (let freeTime in freeTimes) {
-      console.log(freeTimes[ freeTime ].start.toUTCString() + ', '
-        + freeTimes[ freeTime ].end.toUTCString());
-    }
+
     this.location.back();
     return freeTimes;
   }

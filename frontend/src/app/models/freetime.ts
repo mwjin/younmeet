@@ -3,4 +3,10 @@ export class Freetime {
               public end: Date) {
   }
 
+  public toJson(): string {
+    return JSON.stringify({
+      start : this.start.toJSON(),
+      end : this.end.toJSON()
+    });
+  }
 }

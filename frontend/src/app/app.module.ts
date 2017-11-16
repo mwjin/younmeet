@@ -17,18 +17,19 @@ import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
-import {CommonModule} from "@angular/common";
-import {RoomListFilterPipe} from "./dashboard/room-list-filter.pipe";
-import {ClipboardModule} from "ngx-clipboard/dist";
+import { CommonModule } from '@angular/common';
+import { RoomListFilterPipe } from './dashboard/room-list-filter.pipe';
+import { ClipboardModule } from 'ngx-clipboard/dist';
 import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
 import { CalendarModule } from 'fullcalendar-ag4';
+import { FreetimeService } from './services/freetime.service';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
   { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
   { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:id', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
-  { path : 'link/:id', redirectTo: 'room/:id', pathMatch: 'full'},
+  { path : 'link/:id', redirectTo : 'room/:id', pathMatch : 'full' },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] }
@@ -64,6 +65,7 @@ export function MyCookieStrategy() {
     AccountService,
     MeetService,
     AuthenticationService,
+    FreetimeService,
     AuthGuard,
     {
       provide : XSRFStrategy,
