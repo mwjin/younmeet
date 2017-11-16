@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import * as $ from 'jquery';
+import { Freetime } from '../../models/freetime';
 
 @Component({
   selector : 'app-time-select',
@@ -71,26 +72,19 @@ export class TimeSelectComponent implements OnInit {
     document.getElementById('deleteButton').style.display = 'none';
   }
 
-  public collectedDatas(): Array<Array<String>> {
+  public collectedDatas(): Array<Freetime> {
     // Collect all events and return array of [start_time, end_time] pair
-    const freeTimes = [];
+    const freeTimes: Array<Freetime> = [];
     const selectedAreas = $('#calendar').fullCalendar('clientEvents');
     for (let index in selectedAreas) {
-      const startTimeArray = selectedAreas[ index ][ 'start' ][ '_d' ].toString().split(' ');
-      const endTimeArray = selectedAreas[ index ][ 'end' ][ '_d' ].toString().split(' ');
-      freeTimes.push(
-        [ startTimeArray[ 3 ] + ' ' +
-        startTimeArray[ 1 ] + ' ' +
-        startTimeArray[ 2 ] + ' ' +
-        startTimeArray[ 4 ],
-          endTimeArray[ 3 ] + ' ' +
-          endTimeArray[ 1 ] + ' ' +
-          endTimeArray[ 2 ] + ' ' +
-          endTimeArray[ 4 ]
-        ]
-      );
+      freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
+        selectedAreas[ index ][ 'end' ][ '_d' ]));
     }
-    console.log(freeTimes);
+
+    for (let freeTime in freeTimes) {
+      console.log(freeTimes[ freeTime ].start.toUTCString() + ', '
+        + freeTimes[ freeTime ].end.toUTCString());
+    }
     this.location.back();
     return freeTimes;
   }
