@@ -153,13 +153,13 @@ class TimeCountNode:
         if self.right is not None:
             self.right.print_inorder()
 
-    def append_inorder(self, tree_list, min_people):
+    def append_inorder(self, tree_list, min_people=0):
         if self.left is not None:
-            self.left.append_inorder(tree_list, min_people)
+            self.left.append_inorder(tree_list, min_people=0)
         if self.time_count >= min_people:
             tree_list.append(self)
         if self.right is not None:
-            self.right.append_inorder(tree_list, min_people)
+            self.right.append_inorder(tree_list, min_people=0)
 
 
 class TimeCountTree:
@@ -177,7 +177,7 @@ class TimeCountTree:
     def print_inorder(self):
         self.root.print_inorder()
 
-    def append_inorder(self, tree_list, min_people):
+    def append_inorder(self, tree_list, min_people=0):
         if self.root is None:
             return
         self.root.append_inorder(tree_list, min_people)
