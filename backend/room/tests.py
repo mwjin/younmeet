@@ -87,11 +87,16 @@ class RoomTestCase(TestCase):
         )
 
         min_time = timedelta(hours=1)
+        time_span_start = '2017-11-4 12:30 %Y-%m-%d %H:%M'
+        time_span_end = '2017-11-4 17:30 %Y-%m-%d %H:%M'
+
         response = self.client.post(
             '/api/rooms',
             json.dumps({'name': 'room1',
                         'place': 'place1',
                         'min_time_required': time_delta_handler(min_time),
+                        'time_span_start': time_span_start,
+                        'time_span_end': time_span_end,
                         }),
             content_type=CONTENT_TYPE,
         )
