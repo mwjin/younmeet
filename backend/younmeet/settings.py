@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'room.apps.RoomConfig',
     'free_time.apps.FreeTimeConfig',
+    'best_time.apps.BestTimeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

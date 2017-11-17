@@ -43,8 +43,8 @@ def free_time_list(request, room_id):
         for free_time_json in free_time_jsons:
             free_time_data = json.loads(free_time_json)
 
-            start_time = datetime.strptime(free_time_data['start_time'])
-            end_time = datetime.strptime(free_time_data['end_time'])
+            start_time = datetime.strptime(free_time_data['start_time'], '%Y-%m-%d %H:%M')
+            end_time = datetime.strptime(free_time_data['end_time'], '%Y-%m-%d %H:%M')
 
             new_free_time = FreeTime(
                 start_time=start_time,
@@ -54,14 +54,13 @@ def free_time_list(request, room_id):
             )
             new_free_time.save()
 
-
         # Calculate new best time
         new_free_time_list = list(FreeTime.objects.filter(room_id=room_id).values())
 
         btc = BestTimeCalculator(
             current_room.min_time_required,
             current_room.min_members,
-        )
+        )   # default k=3
         btc.insert_time(new_free_time_list)
         result = btc.calculate_best_time()
 

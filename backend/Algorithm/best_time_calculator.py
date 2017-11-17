@@ -47,7 +47,6 @@ class BestTimeCalculator:
 
 
     def td_to_min(self, td):
-
         return td.days * 24 * 60 + td.seconds / 60
 
     def check_continuity(self, f, l):
