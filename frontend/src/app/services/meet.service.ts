@@ -51,15 +51,7 @@ export class MeetService {
   getRoomById(id: number): Promise<Room> {
     return this.http.get(`api/rooms/${id}`)
       .toPromise()
-      .then(res => {
-        console.log(res);
-        return res;
-      })
       .then(res => res.json() as RoomResponse)
-      .then(roomData => {
-        console.log(roomData);
-        return roomData;
-      })
       .then(roomData => roomFromResponse(roomData))
       .catch(handleError);
   }
