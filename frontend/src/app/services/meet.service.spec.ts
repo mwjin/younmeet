@@ -137,6 +137,15 @@ describe('MeetService', () => {
         expect(res.ok).toBe(true);
       });
     }));
+    it('should allow delete of non-existing room', async(() => {
+      let mockResponse = {ok: false};
+      expectUrl(mockBackend, 'api/rooms/42', mockResponse, 404);
+
+      meetService.deleteRoom(42).then(res => {
+        expect(res.status).toBe(404);
+        expect(res.ok).toBe(false);
+      })
+    }))
   });
 
 });
