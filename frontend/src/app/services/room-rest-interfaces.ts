@@ -10,9 +10,11 @@ export interface RoomResponse {
   best_start_time: Date;
   best_end_time: Date;
   min_time_required: number;
-  members?: number[];
   created_time: Date;
   owner: number;
+  members?: number[];
+  time_span_start: Date;
+  time_span_end: Date;
 }
 
 export function roomToResponse(room: Room): RoomResponse {
@@ -20,12 +22,14 @@ export function roomToResponse(room: Room): RoomResponse {
     id: room.id,
     name: room.name,
     place: room.place,
-    best_start_time: room.timespan.start,
-    best_end_time: room.timespan.end,
+    best_start_time: null,
+    best_end_time: null,
     min_time_required: room.duration,
-    members: room.users.map(user => user.id),
     created_time: room.createdTime,
-    owner: room.owner.id
+    owner: room.owner.id,
+    members: room.users.map(user => user.id),
+    time_span_start: room.timespan.start,
+    time_span_end: room.timespan.end
   }
 }
 
@@ -33,7 +37,7 @@ export function roomFromResponse(res: RoomResponse): Room {
   return {
     name: res.name,
     duration: res.min_time_required,
-    timespan: new Timespan(res.best_start_time, res.best_end_time),
+    timespan: new Timespan(res.time_span_start, res.time_span_end),
     anonymity: false,
     place: res.place,
     urgent: true,
@@ -48,8 +52,8 @@ export interface RoomCreateRequest {
   name: string;
   place: string;
   min_time_required: number;
-  time_span_min: Date;
-  time_span_max: Date;
+  time_span_start: Date;
+  time_span_end: Date;
 }
 
 export function roomFormToCreateResponse(
@@ -58,7 +62,7 @@ export function roomFormToCreateResponse(
     name: roomForm.name,
     place: "",
     min_time_required: roomForm.duration,
-    time_span_min: roomForm.timespan.start,
-    time_span_max: roomForm.timespan.end
+    time_span_start: roomForm.timespan.start,
+    time_span_end: roomForm.timespan.end
   }
 }

@@ -28,14 +28,6 @@ export class MeetService {
   constructor(private http: Http) {
   }
 
-  private toRoomCreateRequest(room: Room): string {
-    return JSON.stringify({
-      name : room.name,
-      place : room.place,
-      min_time_required : room.duration,
-    });
-  }
-
   getRoomsCreatedByMe(): Promise<Room[]> {
     return this.http.get(`api/user/owned-rooms`)
       .toPromise()
