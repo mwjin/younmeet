@@ -6,6 +6,7 @@ import {MeetServiceSpy} from "../services/meet.service.spy";
 import {MeetService} from "../services/meet.service";
 import {RouterLinkStubDirective} from "../../testing/router-stubs";
 import {FormsModule} from "@angular/forms";
+import { ClipboardModule } from 'ngx-clipboard/dist';
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -16,7 +17,8 @@ describe('RoomDetailComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        FormsModule
+        FormsModule,
+        ClipboardModule
       ],
       declarations: [
         RoomDetailComponent,
