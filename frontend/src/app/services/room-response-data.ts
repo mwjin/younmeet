@@ -1,5 +1,6 @@
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
+import {UserInfo} from "../models/user-info";
 
 export class RoomResponseData {
   id: number;
@@ -8,9 +9,9 @@ export class RoomResponseData {
   best_start_time: Date;
   best_end_time: Date;
   min_time_required: number;
-  user_ids: number[];
+  members?: number[];
   created_time: Date;
-  owner_id: number;
+  owner: number;
 
   static fromRoom(room: Room): RoomResponseData {
     return <RoomResponseData> {
@@ -20,9 +21,9 @@ export class RoomResponseData {
       best_start_time: room.timespan.start,
       best_end_time: room.timespan.end,
       min_time_required: room.duration,
-      user_ids: room.users.map(user => user.id),
+      members: room.users.map(user => user.id),
       created_time: room.createdTime,
-      owner_id: room.owner.id
+      owner: room.owner.id
     }
   }
 
@@ -35,6 +36,10 @@ export class RoomResponseData {
       true,
       res.id
     );
+    if (res.members) {
+      room.users = res.members.map(id => new UserInfo(id));
+    }
+    room.owner = new UserInfo(res.owner);
     return room;
   }
 }

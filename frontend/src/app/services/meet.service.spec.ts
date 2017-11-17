@@ -7,6 +7,7 @@ import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
 import {RoomResponseData} from "./room-response-data";
+import {FormsModule} from "@angular/forms";
 
 let TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
@@ -55,8 +56,8 @@ describe('MeetService', () => {
         { name: 'Room 2'},
         { name: 'Room 3'}
       ];
-      expectUrl(mockBackend, 'api/user/rooms-created-by/42', mockResponse);
-      meetService.getRoomsCreatedByMe(42).then(res => {
+      expectUrl(mockBackend, 'api/user/owned-rooms', mockResponse);
+      meetService.getRoomsCreatedByMe().then(res => {
         let resSorted = res.sort((r1, r2) => r1.id - r2.id);
         expect(resSorted.length).toBe(3);
         expect(resSorted[0].name).toBe("Room 1");
@@ -73,8 +74,8 @@ describe('MeetService', () => {
         { name: 'Room 2'},
         { name: 'Room 3'}
       ];
-      expectUrl(mockBackend, 'api/user/rooms-joined-by/42', mockResponse);
-      meetService.getRoomsJoinedByMe(42).then(res => {
+      expectUrl(mockBackend, 'api/user/joined-rooms', mockResponse);
+      meetService.getRoomsJoinedByMe().then(res => {
         let resSorted = res.sort((r1, r2) => r1.id - r2.id);
         expect(resSorted.length).toBe(3);
         expect(resSorted[0].name).toBe("Room 1");

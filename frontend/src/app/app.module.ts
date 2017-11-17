@@ -13,10 +13,11 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
 import { AccountService } from './services/account.service';
-import { HttpModule } from '@angular/http';
+import {CookieXSRFStrategy, HttpModule, XSRFStrategy} from '@angular/http';
 import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
+import {CommonModule} from "@angular/common";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -26,6 +27,10 @@ const routes: Routes = [
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
 ];
+
+export function MyCookieStrategy() {
+  return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
+}
 
 @NgModule({
   declarations : [ AppComponent,
@@ -37,6 +42,7 @@ const routes: Routes = [
     RoomDetailComponent
   ],
   imports : [
+    CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes),
     FormsModule,
@@ -44,15 +50,16 @@ const routes: Routes = [
     ReactiveFormsModule,
     SuiModule
   ],
-  providers : [ AccountService,
+  providers : [
+    AccountService,
     MeetService,
     AuthenticationService,
     AuthGuard,
-    /*
     {
-      provide : XSRFStrategy,
-      useValue : new CookieXSRFStrategy('CSRF-TOKEN', 'X-CSRF-TOKEN')
-    } */ ],
+      provide: XSRFStrategy,
+      useFactory: MyCookieStrategy
+    }
+  ],
   bootstrap : [ AppComponent ]
 })
 
