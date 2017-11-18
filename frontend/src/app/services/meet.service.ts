@@ -25,7 +25,7 @@ let TEST_AVAILABLE_TIME = [
 @Injectable()
 export class MeetService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
-
+  public timespan: Timespan;
   constructor(private http: Http) {
   }
 
@@ -63,7 +63,12 @@ export class MeetService {
       .then(res => { console.log(res); return res; })
       .then(res => res.json() as RoomResponseData)
       .then(roomData => { console.log(roomData); return roomData; })
-      .then(roomData => RoomResponseData.toRoom(roomData))
+      .then(roomData => {
+        let room = RoomResponseData.toRoom(roomData);
+        this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
+        console.log(this.timespan);
+        return room;
+      })
       .catch(handleError);
   }
 
