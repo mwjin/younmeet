@@ -1,12 +1,14 @@
+from dateutil.parser import parse
+
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
 from django.forms.models import model_to_dict
+
 from .models import FreeTime
 from .best_time_calculator import BestTimeCalculator
 from best_time.models import BestTime
 from room.models import Room
-import dateutil.parser
-from datetime import datetime
+
 
 from datetime import datetime, timedelta
 import json
@@ -34,33 +36,38 @@ def free_time_list(request, room_id):
         )
 
     elif request.method == 'POST':
-        old_free_times = list(FreeTime.objects.filter(user_id=user.id).filter(room_id=room_id).values())
+        old_free_times = FreeTime.objects.filter(user_id=user.id).filter(room_id=room_id)
 
         for old_free_time in old_free_times:
             old_free_time.delete()
 
-        print()
-        print('ZZ')
-        print()
         # New free times
-        free_time_jsons = request.POST.getlist()
+        data = json.loads(request.body.decode())
 
-        for free_time_json in free_time_jsons:
-            free_time_data = json.loads(free_time_json)
+        for free_time in data:
 
-            start_time = datetime.strptime(free_time_data['start_time'], '%Y-%m-%d %H:%M')
-            end_time = datetime.strptime(free_time_data['end_time'], '%Y-%m-%d %H:%M')
+            start = parse(free_time['start'], ignoretz=True)
+            end = parse(free_time['end'], ignoretz=True)
 
             new_free_time = FreeTime(
-                start_time=start_time,
-                end_time=end_time,
+                start_time=start,
+                end_time=end,
                 user=user,
                 room=current_room,
             )
             new_free_time.save()
 
         # Calculate new best time
-        new_free_time_list = list(FreeTime.objects.filter(room_id=room_id).values())
+        new_free_time_dic = list(FreeTime.objects.filter(room_id=room_id).values('start_time', 'end_time'))
+        new_free_time_list = []
+        print(new_free_time_dic)
+        for ft in new_free_time_dic:
+            print(ft)
+            new_free_time_list.append((ft['start_time'], ft['end_time']))
+        print()
+        print(new_free_time_list)
+        print()
+
 
         btc = BestTimeCalculator(
             current_room.min_time_required,
@@ -69,7 +76,12 @@ def free_time_list(request, room_id):
         btc.insert_time(new_free_time_list)
         result = btc.calculate_best_time()
 
-        BestTime.delete(room_id=room_id)
+        # delete old best time and replace it with a new one
+        best_times = BestTime.objects.filter(room_id=room_id)
+        for bt in best_times:
+            bt.delete()
+
+        # replace best time
         for t in result:
             new_best_time = BestTime(
                 room=current_room,

@@ -1,22 +1,24 @@
 import json
 from datetime import datetime, timedelta
+import dateutil.parser
 from django.test import TestCase, Client
 from django.utils import timezone
 
 from room.models import Room
 from user.models import User
 from .models import FreeTime
+from best_time.models import BestTime
 CONTENT_TYPE = 'application/json'
 
+
+
 def make_time(str, i=0):
-
     if i == 0:
-        return timezone.make_aware(datetime.strptime('2017-11-1 ' + str, '%Y-%m-%d %H:%M'))
+        return dateutil.parser.parse('2017-11-1T'+str, ignoretz=True)
     if i == 1:
-        return timezone.make_aware(datetime.strptime('2017-11-2 ' + str, '%Y-%m-%d %H:%M'))
+        return dateutil.parser.parse('2017-11-2T'+str, ignoretz=True)
     if i == 2:
-        return timezone.make_aware(datetime.strptime('2017-11-3 ' + str, '%Y-%m-%d %H:%M'))
-
+        return dateutil.parser.parse('2017-11-3T'+str, ignoretz=True)
 
 def make_time_list(start_list, end_list):
 
@@ -30,15 +32,15 @@ def make_time_list(start_list, end_list):
 def time_list_to_dic(start_list, end_list):
 
     result = []
-    for i in range (3):
+    for i in range(3):
         for j in range(len(start_list[i])):
             date = ''
             if i == 0:
-                date = '2017-11-1 '
+                date = '2017-11-1T'
             if i == 1:
-                date = '2017-11-2 '
+                date = '2017-11-2T'
             if i == 2:
-                date = '2017-11-3 '
+                date = '2017-11-3T'
             result.append({'start': date + start_list[i][j], 'end': date + end_list[i][j]})
 
     return result
@@ -61,12 +63,9 @@ class FreeTimeTestCase(TestCase):
         # timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=00)
 
-        time_span_start1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
-        time_span_end1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
-
         # TODO Parse time
-        # print(dateutil.parser.parse('Sat, 11 Nov 2017 00:50:00 GMT'))
-        # date = dateutil.parser.parse('2017-11-11T00:20:00.000Z', ignoretz=True)
+        time_span_start1 = dateutil.parser.parse('2017-11-4T12:30:00.000Z', ignoretz=True)
+        time_span_end1 = dateutil.parser.parse('2017-11-4T17:30:00.000Z', ignoretz=True)
 
         Room.objects.create(
             name="room1",
@@ -138,7 +137,7 @@ class FreeTimeTestCase(TestCase):
             ft = FreeTime(user=user1, room=room1, start_time=time[0], end_time=time[1])
             ft.save()
 
-        self.client = Client(enforce_csrf_checks=True)
+        self.client = Client()
 
     def test_free_time_list_get(self):
 
@@ -171,17 +170,22 @@ class FreeTimeTestCase(TestCase):
         ]
         mw_str_time_list = time_list_to_dic(mw_start_list, mw_end_list)
 
-        #print()
-        #print(json.dumps(mw_str_time_list))
-        #print()
+        print()
+        print(json.dumps(mw_str_time_list))
+        print()
         response = self.client.post(
             '/api/rooms/1/free-times',
             json.dumps(mw_str_time_list),
             content_type=CONTENT_TYPE
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
+        best_time_list = list(BestTime.objects.filter(room_id=1).values())
+        print()
+        for bt in best_time_list:
+            print(bt)
+        print()
 
 
 
