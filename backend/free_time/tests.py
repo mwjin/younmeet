@@ -90,11 +90,15 @@ class FreeTimeTestCase(TestCase):
             owner=user1,
         )
         room1 = Room.objects.get(id=1)
+        room2 = Room.objects.get(id=2)
 
         room1.members.add(user1)
         room1.members.add(user2)
         room1.members.add(user3)
         room1.members.add(user4)
+
+        room2.members.add(user1)
+        room2.members.add(user2)
 
         mw_start_list = [
             ['08:00', '12:20']
@@ -205,7 +209,7 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
 
-    def test_free_time_list_post(self):
+    def test_free_time_list_post1(self):
 
         self.client.post(
             '/api/signin',
@@ -234,8 +238,16 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(len(best_time_list), 3)
         self.assertEqual(best_time_list[0]['start_time'], datetime(2017, 11, 2, 17, 0))
 
+    def test_free_time_list_post2(self):
 
+        # should have no free time
 
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
 
+        room2 = Room.objects.get(id=1)
 
 
