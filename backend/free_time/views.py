@@ -1,4 +1,5 @@
 from dateutil.parser import parse
+from dateutil.tz import gettz
 
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
@@ -48,7 +49,6 @@ def free_time_list(request, room_id):
 
             start = parse(free_time['start'], ignoretz=True)
             end = parse(free_time['end'], ignoretz=True)
-
             new_free_time = FreeTime(
                 start_time=start,
                 end_time=end,
@@ -57,16 +57,12 @@ def free_time_list(request, room_id):
             )
             new_free_time.save()
 
-        # Calculate new best time
+        # Calculate new best time TODO: Not getting all the free times
         new_free_time_dic = list(FreeTime.objects.filter(room_id=room_id).values('start_time', 'end_time'))
         new_free_time_list = []
-        print(new_free_time_dic)
+
         for ft in new_free_time_dic:
-            print(ft)
             new_free_time_list.append((ft['start_time'], ft['end_time']))
-        print()
-        print(new_free_time_list)
-        print()
 
 
         btc = BestTimeCalculator(
@@ -74,7 +70,10 @@ def free_time_list(request, room_id):
             current_room.min_members,
         )   # default k=3
         btc.insert_time(new_free_time_list)
+
+        # TODO
         result = btc.calculate_best_time()
+        print('result: ', result)
 
         # delete old best time and replace it with a new one
         best_times = BestTime.objects.filter(room_id=room_id)

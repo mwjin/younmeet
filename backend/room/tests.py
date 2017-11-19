@@ -33,11 +33,11 @@ class RoomTestCase(TestCase):
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
 
-        time_span_start1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
-        time_span_end1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
+        time_span_start1 = datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M')
+        time_span_end1 = datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M')
 
-        time_span_start2 = timezone.make_aware(datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M'))
-        time_span_end2 = timezone.make_aware(datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M'))
+        time_span_start2 = datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M')
+        time_span_end2 = datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M')
 
         Room.objects.create(
             name="room1",

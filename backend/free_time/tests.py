@@ -1,8 +1,8 @@
 import json
 from datetime import datetime, timedelta
-import dateutil.parser
+from dateutil.parser import parse
 from django.test import TestCase, Client
-from django.utils import timezone
+from dateutil.tz import gettz
 
 from room.models import Room
 from user.models import User
@@ -14,12 +14,11 @@ CONTENT_TYPE = 'application/json'
 
 def make_time(str, i=0):
     if i == 0:
-        return dateutil.parser.parse('2017-11-1T'+str, ignoretz=True)
+        return parse('2017-11-1T'+str, ignoretz=True)
     if i == 1:
-        return dateutil.parser.parse('2017-11-2T'+str, ignoretz=True)
+        return parse('2017-11-2T'+str, ignoretz=True)
     if i == 2:
-        return dateutil.parser.parse('2017-11-3T'+str, ignoretz=True)
-
+        return parse('2017-11-3T'+str, ignoretz=True)
 def make_time_list(start_list, end_list):
 
     result = []
@@ -63,9 +62,8 @@ class FreeTimeTestCase(TestCase):
         # timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=00)
 
-        # TODO Parse time
-        time_span_start1 = dateutil.parser.parse('2017-11-4T12:30:00.000Z', ignoretz=True)
-        time_span_end1 = dateutil.parser.parse('2017-11-4T17:30:00.000Z', ignoretz=True)
+        time_span_start1 = parse('2017-11-4T12:30:00.000Z', ignoretz=True)
+        time_span_end1 = parse('2017-11-4T17:30:00.000Z', ignoretz=True)
 
         Room.objects.create(
             name="room1",
@@ -170,9 +168,6 @@ class FreeTimeTestCase(TestCase):
         ]
         mw_str_time_list = time_list_to_dic(mw_start_list, mw_end_list)
 
-        print()
-        print(json.dumps(mw_str_time_list))
-        print()
         response = self.client.post(
             '/api/rooms/1/free-times',
             json.dumps(mw_str_time_list),
@@ -182,10 +177,9 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
 
         best_time_list = list(BestTime.objects.filter(room_id=1).values())
-        print()
-        for bt in best_time_list:
-            print(bt)
-        print()
+        self.assertEqual(len(best_time_list), 3)
+        print(best_time_list)
+
 
 
 
