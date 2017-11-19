@@ -149,14 +149,42 @@ class FreeTimeTestCase(TestCase):
         data = json.loads(response.content.decode())
         self.assertEqual(len(data), 2)
 
-    def test_free_time_list_post_no_available_time(self):
+    def test_tree_time_list_unauth_user(self):
+        response = self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'wrong password'}),
+            content_type=CONTENT_TYPE
+        )
+
+
+    def test_free_time_list_post_send_nothing(self):
 
         self.client.post(
             '/api/signin',
             json.dumps({'email': 'email1', 'password': 'password1'}),
             content_type=CONTENT_TYPE
         )
-    
+
+        response = self.client.post(
+            '/api/rooms/1/free-times',
+            content_type=CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        mw_time_list = FreeTime.objects.filter(user_id=1)
+        self.assertEqual(len(mw_time_list), 0)
+
+    def test_free_time_list_delete(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.delete(
+            '/api/rooms/1/free-times',
+            content_type=CONTENT_TYPE
+        )
+
 
     def test_free_time_list_post(self):
 
@@ -182,9 +210,7 @@ class FreeTimeTestCase(TestCase):
             json.dumps(mw_str_time_list),
             content_type=CONTENT_TYPE
         )
-
         self.assertEqual(response.status_code, 201)
-
         best_time_list = list(BestTime.objects.filter(room_id=1).values())
         self.assertEqual(len(best_time_list), 3)
         self.assertEqual(best_time_list[0]['start_time'], datetime(2017, 11, 2, 17, 0))
