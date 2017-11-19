@@ -1,7 +1,33 @@
 <h1>Dashboard</h1>
-<button class="ui button" [routerLink]="['/room/create']">
-  Create
-</button>
+<div class="ui grid">
+  <div class="eight wide column">
+    <button class="ui button" [routerLink]="['/room/create']">
+      Create
+    </button>
+  </div>
+  <div class="four wide column">
+    <div class="ui search icon input">
+      <i class="search icon"></i>
+      <input type="text" name="search" placeholder="Search rooms..."
+             [(ngModel)]="searchText">
+    </div>
+  </div>
+  <div class="four wide column">
+    <sui-select class="ui right floated labeled icon button"
+                icon="filter"
+                [options]="filters"
+                [isSearchable]="true"
+                placeholder="All"
+                [(ngModel)]="currentSearchOption"
+                #filterSelect>
+      <div class="header">
+        <i class="tags icon"></i>
+        Filter by:
+      </div>
+      <sui-select-option *ngFor="let o of filterSelect.filteredOptions" [value]="o"></sui-select-option>
+    </sui-select>
+  </div>
+</div>
 <div class="ui divider"></div>
 <sui-tabset>
   <div class="ui top attached tabular menu">
@@ -9,17 +35,29 @@
     <a class="item" suiTabHeader="2">Joined</a>
   </div>
   <div class="ui bottom attached segment" suiTabContent="1">
-    <app-room-list [rooms]="roomsCreated_Urgent"></app-room-list>
+    <app-room-list [rooms]="roomsCreated_Urgent"
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
     <div class="ui divider"></div>
-    <app-room-list [rooms]="roomsCreated_NotUrgent"></app-room-list>
+    <app-room-list [rooms]="roomsCreated_NotUrgent"
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
   </div>
   <div class="ui bottom attached segment" suiTabContent="2">
-    <app-room-list [rooms]="roomsJoined_Urgent"></app-room-list>
+    <app-room-list [rooms]="roomsJoined_Urgent"
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
     <div class="ui divider"></div>
-    <app-room-list [rooms]="roomsJoined_NotUrgent"></app-room-list>
+    <app-room-list [rooms]="roomsJoined_NotUrgent"
+                   [searchText]="searchText"
+                   [searchOption]="currentSearchOption">
+    </app-room-list>
     <button class="fluid ui button">View more</button>
   </div>
 </sui-tabset>

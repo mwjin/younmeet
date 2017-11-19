@@ -13,19 +13,26 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
 import { AccountService } from './services/account.service';
-import {CookieXSRFStrategy, HttpModule, XSRFStrategy} from '@angular/http';
+import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth-guard/auth.guard';
-import {CommonModule} from "@angular/common";
+import { CommonModule } from '@angular/common';
+import { RoomListFilterPipe } from './dashboard/room-list-filter.pipe';
+import { ClipboardModule } from 'ngx-clipboard/dist';
+import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
+import { CalendarModule } from 'fullcalendar-ag4';
+import { FreetimeService } from './services/freetime.service';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
   { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
   { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:id', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
+  { path : 'link/:id', redirectTo : 'room/:id', pathMatch : 'full' },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
+  { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] }
 ];
 
 export function MyCookieStrategy() {
@@ -39,7 +46,9 @@ export function MyCookieStrategy() {
     DashboardComponent,
     RoomListComponent,
     CreateRoomComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    RoomListFilterPipe,
+    TimeSelectComponent,
   ],
   imports : [
     CommonModule,
@@ -48,16 +57,19 @@ export function MyCookieStrategy() {
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    SuiModule
+    SuiModule,
+    ClipboardModule,
+    CalendarModule.forRoot()
   ],
   providers : [
     AccountService,
     MeetService,
     AuthenticationService,
+    FreetimeService,
     AuthGuard,
     {
-      provide: XSRFStrategy,
-      useFactory: MyCookieStrategy
+      provide : XSRFStrategy,
+      useFactory : MyCookieStrategy
     }
   ],
   bootstrap : [ AppComponent ]
