@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptionsArgs } from '@angular/http';
+import { Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
 import { getCSRFHeaders } from '../../util/headers';
@@ -7,13 +7,11 @@ import { getCSRFHeaders } from '../../util/headers';
 @Injectable()
 export class AccountService {
   private accountUrl = '/api/user';
-  private headers = new Headers({ 'Content-Type' : 'application/json' });
 
   constructor(private http: Http) { }
 
-  getUser(id: number): Promise<User> {
-    const url = `${this.accountUrl}/${id}`;
-    return this.http.get(url)
+  getUserDetail(): Promise<User> {
+    return this.http.get(this.accountUrl)
       .toPromise()
       .then(response => response.json() as User)
       .catch(this.handleError);
