@@ -14,13 +14,13 @@ import { AuthenticationService } from '../../services/authentication.service';
 
 export class SignupComponent implements OnInit {
   signUpForm: FormGroup;
-  private email: AbstractControl;
-  private username: AbstractControl;
-  private password: AbstractControl;
-  private passwordConfirm: AbstractControl;
+  email: AbstractControl;
+  username: AbstractControl;
+  password: AbstractControl;
+  passwordConfirm: AbstractControl;
 
 
-  constructor(private accoutService: AccountService,
+  constructor(private accountService: AccountService,
               private router: Router,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService) {
@@ -45,7 +45,7 @@ export class SignupComponent implements OnInit {
   }
 
   signUp(): void {
-    this.accoutService.postUserSignUp(
+    this.accountService.postUserSignUp(
       this.username.value,
       this.email.value,
       this.password.value
