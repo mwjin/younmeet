@@ -23,6 +23,7 @@ class BestTimeCalculator:
             if node.time_count < self.min_people:
                 return False
         return True
+    
 
     # maintains top k list
     def k_max_pq_add(self, new_sum, f, l):

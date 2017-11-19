@@ -21,7 +21,7 @@ def make_time(str, i=0):
 
 def make_time_list(start_list, end_list):
     result = []
-    for i in range (3):
+    for i in range(3):
         for j in range(len(start_list[i])):
             result.append((make_time(start_list[i][j], i), make_time(end_list[i][j], i)))
     return result
