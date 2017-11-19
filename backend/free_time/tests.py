@@ -14,11 +14,11 @@ CONTENT_TYPE = 'application/json'
 
 def make_time(str, i=0):
     if i == 0:
-        return parse('2017-11-1T'+str, ignoretz=True)
+        return parse('2017-11-1T'+str+':00.000Z', ignoretz=True)
     if i == 1:
-        return parse('2017-11-2T'+str, ignoretz=True)
+        return parse('2017-11-2T'+str+':00.000Z', ignoretz=True)
     if i == 2:
-        return parse('2017-11-3T'+str, ignoretz=True)
+        return parse('2017-11-3T'+str+':00.000Z', ignoretz=True)
 def make_time_list(start_list, end_list):
 
     result = []
@@ -148,6 +148,15 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content.decode())
         self.assertEqual(len(data), 2)
+
+    def test_free_time_list_post(self):
+
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+
 
     def test_free_time_list_post(self):
 
