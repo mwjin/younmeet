@@ -126,13 +126,13 @@ class FreeTimeTestCase(TestCase):
             ft = FreeTime(user=user1, room=room1, start_time=time[0], end_time=time[1])
             ft.save()
         for time in tb_time_list:
-            ft = FreeTime(user=user1, room=room1, start_time=time[0], end_time=time[1])
+            ft = FreeTime(user=user2, room=room1, start_time=time[0], end_time=time[1])
             ft.save()
         for time in ps_time_list:
-            ft = FreeTime(user=user1, room=room1, start_time=time[0], end_time=time[1])
+            ft = FreeTime(user=user3, room=room1, start_time=time[0], end_time=time[1])
             ft.save()
         for time in ds_time_list:
-            ft = FreeTime(user=user1, room=room1, start_time=time[0], end_time=time[1])
+            ft = FreeTime(user=user4, room=room1, start_time=time[0], end_time=time[1])
             ft.save()
 
         self.client = Client()
@@ -147,7 +147,7 @@ class FreeTimeTestCase(TestCase):
         response = self.client.get('/api/rooms/1/free-times')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content.decode())
-        self.assertEqual(len(data), 27)
+        self.assertEqual(len(data), 2)
 
     def test_free_time_list_post(self):
 
@@ -178,8 +178,7 @@ class FreeTimeTestCase(TestCase):
 
         best_time_list = list(BestTime.objects.filter(room_id=1).values())
         self.assertEqual(len(best_time_list), 3)
-        print(best_time_list)
-
+        self.assertEqual(best_time_list[0]['start_time'], datetime(2017, 11, 2, 17, 0))
 
 
 

@@ -57,12 +57,9 @@ def free_time_list(request, room_id):
             )
             new_free_time.save()
 
-        # Calculate new best time TODO: Not getting all the free times
+        # Calculate new best time
         new_free_time_dic = list(FreeTime.objects.filter(room_id=room_id).values('start_time', 'end_time'))
         new_free_time_list = []
-
-        print("Free Time POST length: ", len(new_free_time_dic))
-        print("Free Time POST length: ", len(new_free_time_dic))
 
         for ft in new_free_time_dic:
             new_free_time_list.append((ft['start_time'], ft['end_time']))
@@ -74,9 +71,7 @@ def free_time_list(request, room_id):
         )   # default k=3
         btc.insert_time(new_free_time_list)
 
-        # TODO
         result = btc.calculate_best_time()
-        print('result: ', result)
 
         # delete old best time and replace it with a new one
         best_times = BestTime.objects.filter(room_id=room_id)
