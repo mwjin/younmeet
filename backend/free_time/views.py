@@ -61,6 +61,9 @@ def free_time_list(request, room_id):
         new_free_time_dic = list(FreeTime.objects.filter(room_id=room_id).values('start_time', 'end_time'))
         new_free_time_list = []
 
+        print("Free Time POST length: ", len(new_free_time_dic))
+        print("Free Time POST length: ", len(new_free_time_dic))
+
         for ft in new_free_time_dic:
             new_free_time_list.append((ft['start_time'], ft['end_time']))
 
