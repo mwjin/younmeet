@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Optional} from '@angular/core';
 import { Room } from '../models/room';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetService } from '../services/meet.service';
@@ -11,6 +11,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
 import { UserInfo } from '../models/user-info';
 import { Location } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector : 'app-room-detail',
@@ -61,5 +62,6 @@ export class RoomDetailComponent implements OnInit {
   goTimeSelectPage(): void {
     this.router.navigate([ 'room', this.room.id, 'time' ]);
   }
+
 
 }
