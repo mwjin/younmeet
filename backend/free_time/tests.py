@@ -156,7 +156,7 @@ class FreeTimeTestCase(TestCase):
             json.dumps({'email': 'email1', 'password': 'password1'}),
             content_type=CONTENT_TYPE
         )
-
+    
 
     def test_free_time_list_post(self):
 
