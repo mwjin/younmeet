@@ -1,4 +1,4 @@
-from time_count_tree import TimeCountTree, TimeCountNode
+from .time_count_tree import TimeCountTree, TimeCountNode
 from datetime import timedelta
 
 class BestTimeCalculator:

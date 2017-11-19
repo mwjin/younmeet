@@ -5,6 +5,8 @@ from .models import FreeTime
 from .best_time_calculator import BestTimeCalculator
 from best_time.models import BestTime
 from room.models import Room
+import dateutil.parser
+from datetime import datetime
 
 from datetime import datetime, timedelta
 import json
@@ -37,6 +39,9 @@ def free_time_list(request, room_id):
         for old_free_time in old_free_times:
             old_free_time.delete()
 
+        print()
+        print('ZZ')
+        print()
         # New free times
         free_time_jsons = request.POST.getlist()
 
@@ -64,6 +69,7 @@ def free_time_list(request, room_id):
         btc.insert_time(new_free_time_list)
         result = btc.calculate_best_time()
 
+        BestTime.delete(room_id=room_id)
         for t in result:
             new_best_time = BestTime(
                 room=current_room,

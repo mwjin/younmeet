@@ -1,31 +1,34 @@
+import json
+from datetime import datetime, timedelta
 from django.test import TestCase, Client
 from django.utils import timezone
-import json
 
-from .models import Room
-from datetime import datetime, timedelta
+from room.models import Room
 from user.models import User
-from .models import  FreeTime
-from best_time.models import BestTime
-
+from .models import FreeTime
 CONTENT_TYPE = 'application/json'
 
 def make_time(str, i=0):
+
     if i == 0:
-        return datetime.strptime('2017-11-1 ' + str, '%Y-%m-%d %H:%M')
+        return timezone.make_aware(datetime.strptime('2017-11-1 ' + str, '%Y-%m-%d %H:%M'))
     if i == 1:
-        return datetime.strptime('2017-11-2 ' + str, '%Y-%m-%d %H:%M')
+        return timezone.make_aware(datetime.strptime('2017-11-2 ' + str, '%Y-%m-%d %H:%M'))
     if i == 2:
-        return datetime.strptime('2017-11-3 ' + str, '%Y-%m-%d %H:%M')
+        return timezone.make_aware(datetime.strptime('2017-11-3 ' + str, '%Y-%m-%d %H:%M'))
+
 
 def make_time_list(start_list, end_list):
+
     result = []
-    for i in range (3):
+    for i in range(len(start_list)):
         for j in range(len(start_list[i])):
             result.append((make_time(start_list[i][j], i), make_time(end_list[i][j], i)))
     return result
 
+
 def time_list_to_dic(start_list, end_list):
+
     result = []
     for i in range (3):
         for j in range(len(start_list[i])):
@@ -43,7 +46,7 @@ def time_list_to_dic(start_list, end_list):
 
 class FreeTimeTestCase(TestCase):
 
-    def setup(self):
+    def setUp(self):
 
         User.objects.create_user(email='email1', password='password1', username='username1')
         User.objects.create_user(email='email2', password='password2', username='username2')
@@ -56,14 +59,14 @@ class FreeTimeTestCase(TestCase):
         user4 = User.objects.get(id=4)
 
         # timezone.make_aware() is used to suppress warning
-        min_time1 = timedelta(hours=2, minutes=30)
-        min_time2 = timedelta(hours=1, minutes=00)
+        min_time1 = timedelta(hours=2, minutes=00)
 
         time_span_start1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
         time_span_end1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
 
-        time_span_start2 = timezone.make_aware(datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M'))
-        time_span_end2 = timezone.make_aware(datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M'))
+        # TODO Parse time
+        # print(dateutil.parser.parse('Sat, 11 Nov 2017 00:50:00 GMT'))
+        # date = dateutil.parser.parse('2017-11-11T00:20:00.000Z', ignoretz=True)
 
         Room.objects.create(
             name="room1",
@@ -80,8 +83,12 @@ class FreeTimeTestCase(TestCase):
         room1.members.add(user3)
         room1.members.add(user4)
 
-        mw_start_list = [['08:00', '12:20']]
-        mw_end_list = [['11:00', '20:00']]
+        mw_start_list = [
+            ['08:00', '12:20']
+        ]
+        mw_end_list = [
+            ['11:00', '20:00']
+        ]
         tb_start_list = [
             ['08:00', '12:30', '15:30', '18:30'],
             ['11:50', '15:50'],
@@ -131,8 +138,10 @@ class FreeTimeTestCase(TestCase):
             ft = FreeTime(user=user1, room=room1, start_time=time[0], end_time=time[1])
             ft.save()
 
+        self.client = Client(enforce_csrf_checks=True)
 
     def test_free_time_list_get(self):
+
         self.client.post(
             '/api/signin',
             json.dumps({'email': 'email1', 'password': 'password1'}),
@@ -141,16 +150,15 @@ class FreeTimeTestCase(TestCase):
         response = self.client.get('/api/rooms/1/free-times')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content.decode())
-        self.assertEqual(len(data), 2)
-        self.assertEqual(data[0]['start'], '2017-11-4 08:00')
+        self.assertEqual(len(data), 27)
 
     def test_free_time_list_post(self):
+
         self.client.post(
             '/api/signin',
             json.dumps({'email': 'email1', 'password': 'password1'}),
             content_type=CONTENT_TYPE
         )
-
         mw_start_list = [
             ['08:00', '12:20'],
             ['08:00', '11:50', '16:50'],
@@ -162,11 +170,16 @@ class FreeTimeTestCase(TestCase):
             ['11:00', '18:30']
         ]
         mw_str_time_list = time_list_to_dic(mw_start_list, mw_end_list)
+
+        #print()
+        #print(json.dumps(mw_str_time_list))
+        #print()
         response = self.client.post(
             '/api/rooms/1/free-times',
             json.dumps(mw_str_time_list),
             content_type=CONTENT_TYPE
         )
+
         self.assertEqual(response.status_code, 200)
 
 
