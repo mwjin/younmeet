@@ -1,3 +1,23 @@
-<p>
-  profile works!
-</p>
+<body>
+  <div *ngIf="currentUser">
+    <div class="ui main text container">
+      <div class="column">
+        <h2 class="ui align-middle header">
+          {{currentUser.username}}'s profile
+        </h2>
+      </div>
+    </div>
+    <div class="ui main text container">
+      <form class="ui large form">
+        <div class="field">
+          <label>Email</label>
+          {{currentUser.email}}
+        </div>
+        <div class="field">
+          <label>Username</label>
+          {{currentUser.username}}
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
