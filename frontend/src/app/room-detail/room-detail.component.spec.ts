@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RoomDetailComponent } from './room-detail.component';
-import {RouterTestingModule} from "@angular/router/testing";
-import {MeetServiceSpy} from "../services/meet.service.spy";
-import {MeetService} from "../services/meet.service";
-import {RouterLinkStubDirective} from "../../testing/router-stubs";
-import {FormsModule} from "@angular/forms";
+import { RouterTestingModule } from '@angular/router/testing';
+import { MeetServiceSpy } from '../services/meet.service.spy';
+import { MeetService } from '../services/meet.service';
+import { RouterLinkStubDirective } from '../../testing/router-stubs';
+import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 
 describe('RoomDetailComponent', () => {
@@ -15,19 +15,19 @@ describe('RoomDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
+      imports : [
         RouterTestingModule,
         FormsModule,
         ClipboardModule
       ],
-      declarations: [
+      declarations : [
         RoomDetailComponent,
       ],
-      providers: [
-        { provide: MeetService, useClass: MeetServiceSpy }
+      providers : [
+        { provide : MeetService, useClass : MeetServiceSpy }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
