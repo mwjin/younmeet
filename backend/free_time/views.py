@@ -39,7 +39,7 @@ def free_time_list(request, room_id):
     elif request.method == 'POST':
 
         # add user to the room members, redundant adding is OK
-        current_room.add(user)
+        current_room.members.add(user)
 
         old_free_times = FreeTime.objects.filter(user_id=user.id).filter(room_id=room_id)
 

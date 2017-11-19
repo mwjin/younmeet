@@ -8,8 +8,8 @@ from room.models import Room
 from user.models import User
 from .models import FreeTime
 from best_time.models import BestTime
-CONTENT_TYPE = 'application/json'
 
+CONTENT_TYPE = 'application/json'
 
 
 def make_time(str, i=0):
@@ -19,6 +19,8 @@ def make_time(str, i=0):
         return parse('2017-11-2T'+str+':00.000Z', ignoretz=True)
     if i == 2:
         return parse('2017-11-3T'+str+':00.000Z', ignoretz=True)
+
+
 def make_time_list(start_list, end_list):
 
     result = []
@@ -31,7 +33,7 @@ def make_time_list(start_list, end_list):
 def time_list_to_dic(start_list, end_list):
 
     result = []
-    for i in range(3):
+    for i in range(len(start_list)):
         for j in range(len(start_list[i])):
             date = ''
             if i == 0:
@@ -80,6 +82,7 @@ class FreeTimeTestCase(TestCase):
             time_span_end=time_span_end1,
             min_time_required=min_time1,
             owner=user1,
+            min_members=2
         )
         Room.objects.create(
             name="room3",
@@ -178,6 +181,29 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(response.status_code, 401)
 
 
+    def test_free_time_list_post_add_member(self):
+
+        # login as user3 and post a new free time
+        # check if the room2 has new free time
+
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email3', 'password': 'password3'}),
+            content_type=CONTENT_TYPE
+        )
+
+        room2 = Room.objects.get(id=2)
+        member_list = list(User.objects.filter(joined_rooms=room2).values())
+        self.assertEqual(len(member_list), 2)
+
+        response = self.client.post(
+            '/api/rooms/2/free-times',
+            content_type=CONTENT_TYPE
+        )
+        self.assertEqual(response.status_code, 201)
+        room2 = Room.objects.get(id=2)
+        member_list = list(User.objects.filter(joined_rooms=room2).values())
+        self.assertEqual(len(member_list), 3)
 
     def test_free_time_list_post_send_nothing(self):
 
@@ -238,16 +264,48 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(len(best_time_list), 3)
         self.assertEqual(best_time_list[0]['start_time'], datetime(2017, 11, 2, 17, 0))
 
-    def test_free_time_list_post2(self):
+    def test_free_time_list_post(self):
 
-        # should have no free time
+        # add user1's and user2's free time so that they don't intersect
+        # the min_members of room2 is 2, so the result must be nothing
+        # use room2, and login as user2
+
+        mw_start_list = [
+            ['12:00', '16:00']
+        ]
+        mw_end_list = [
+            ['14:00', '17:00']
+        ]
+        tb_start_list = [
+            ['14:00', '20:00']
+        ]
+        tb_end_list = [
+            ['16:00', '23:00']
+        ]
+        mw_time_list = make_time_list(mw_start_list, mw_end_list)
+        user1 = User.objects.get(id=1)
+        room2 = Room.objects.get(id=2)
+        room2.members.add(user1)
+
+        for time in mw_time_list:
+            ft = FreeTime(user=user1, room=room2, start_time=time[0], end_time=time[1])
+            ft.save()
 
         self.client.post(
             '/api/signin',
-            json.dumps({'email': 'email1', 'password': 'password1'}),
+            json.dumps({'email': 'email2', 'password': 'password2'}),
             content_type=CONTENT_TYPE
         )
+        tb_str_time_list = time_list_to_dic(tb_start_list, tb_end_list)
 
-        room2 = Room.objects.get(id=1)
-
-
+        response = self.client.post(
+            '/api/rooms/2/free-times',
+            json.dumps(tb_str_time_list),
+            content_type=CONTENT_TYPE
+        )
+        self.assertEqual(response.status_code, 201)
+        best_time_list = list(BestTime.objects.filter(room_id=2).values())
+        self.assertEqual(len(best_time_list), 0)
+        tb_free_time_list = list(FreeTime.objects.filter(room_id=2).filter(user_id=2).values())
+        # check correctly posted
+        self.assertEqual(len(tb_free_time_list), 2)
