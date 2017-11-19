@@ -5,7 +5,7 @@ import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 import {Router} from "@angular/router";
 
-class CreateRoomForm {
+export class CreateRoomForm {
   constructor(public name: string = '',
               public duration: number = 30,
               public timespan: Timespan = new Timespan(),
