@@ -1,5 +1,10 @@
 export class Freetime {
-  constructor(public start: Date,
-              public end: Date) {
+  public start: Date;
+  public end: Date;
+
+  constructor(start: Date,
+              end: Date) {
+    this.start = start;
+    this.end = end;
   }
 }

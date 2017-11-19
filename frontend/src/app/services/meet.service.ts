@@ -26,6 +26,7 @@ let TEST_AVAILABLE_TIME = [
 export class MeetService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
   public timespan: Timespan;
+  public currentRoomId: number;
 
   constructor(private http: Http) {
   }
@@ -58,7 +59,9 @@ export class MeetService {
       .then(roomData => {
         let room = roomFromResponse(roomData);
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
-        return room;})
+        this.currentRoomId = room.id;
+        return room;
+      })
       .catch(handleError);
   }
 
@@ -77,10 +80,10 @@ export class MeetService {
 
   addRoom(roomForm: CreateRoomForm): Promise<Room> {
     return this.http.post(
-        `api/rooms`,
-        roomFormToCreateResponse(roomForm),
-        <RequestOptionsArgs>{ headers : getCSRFHeaders() }
-      )
+      `api/rooms`,
+      roomFormToCreateResponse(roomForm),
+      <RequestOptionsArgs>{ headers : getCSRFHeaders() }
+    )
       .toPromise()
       .then(res => res.json() as RoomResponse)
       .then(roomData => roomFromResponse(roomData))
