@@ -57,7 +57,7 @@ class BestTimeCalculator:
                 return False
         return True
 
-    # return (sum_weight, start, end)
+    # returns list of (sum_weight, start, end)
     def calculate_best_time(self):
         self.tree_list = []
         self.time_count_tree.append_inorder(self.tree_list, self.min_people)
@@ -123,8 +123,6 @@ class BestTimeCalculator:
                         else:
                             sum += self.td_to_min(time_diff) * curr.time_count
 
-                    # self.k_max_pq_add(sum, tree_list[f: l].append(
-                    #    TimeCountNode(tree_list[l].start, tree_list[l].start + time_diff, tree_list[l].time_count)))
                     self.k_max_pq_add(sum, f, l)
 
                     if f == l:
@@ -148,9 +146,6 @@ class BestTimeCalculator:
                         sum += self.td_to_min(time_diff) * curr.time_count
                 self.k_max_pq_add(sum, f, l)
 
-                # self.k_max_pq_add(sum, [TimeCountNode(tree_list[f].end - time_diff, tree_list[f].end, tree_list[f].time_count)]
-                #                    .append(tree_list[f + 1: l + 1]))
-
                 l += 1
 
                 while l < len(self.tree_list):
@@ -173,9 +168,6 @@ class BestTimeCalculator:
                             sum += self.td_to_min(time_diff) * curr.time_count
 
                     self.k_max_pq_add(sum, f, l)
-                    # self.k_max_pq_add(sum, [
-                    #    TimeCountNode(tree_list[f].end - time_diff, tree_list[f].end, tree_list[f].time_count)]
-                    #                  .append(tree_list[f + 1, l + 1]))
                     l += 1
                 f += 1
                 check_first = True

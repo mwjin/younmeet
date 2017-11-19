@@ -63,6 +63,7 @@ class FreeTimeTestCase(TestCase):
 
         # timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=00)
+        min_time3 = timedelta(hours=0, minutes=30)
 
         time_span_start1 = parse('2017-11-1T12:30:00.000Z', ignoretz=True)
         time_span_end1 = parse('2017-11-30T17:30:00.000Z', ignoretz=True)
@@ -89,11 +90,12 @@ class FreeTimeTestCase(TestCase):
             place="place3",
             time_span_start=time_span_start1,
             time_span_end=time_span_end1,
-            min_time_required=min_time1,
+            min_time_required=min_time3,
             owner=user1,
         )
         room1 = Room.objects.get(id=1)
         room2 = Room.objects.get(id=2)
+        room3 = Room.objects.get(id=3)
 
         room1.members.add(user1)
         room1.members.add(user2)
@@ -102,6 +104,10 @@ class FreeTimeTestCase(TestCase):
 
         room2.members.add(user1)
         room2.members.add(user2)
+
+        room3.members.add(user1)
+        room3.members.add(user2)
+        room3.members.add(user3)
 
         mw_start_list = [
             ['08:00', '12:20']
@@ -234,7 +240,6 @@ class FreeTimeTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 405)
 
-
     def test_free_time_list_post1(self):
 
         self.client.post(
@@ -264,7 +269,18 @@ class FreeTimeTestCase(TestCase):
         self.assertEqual(len(best_time_list), 3)
         self.assertEqual(best_time_list[0]['start_time'], datetime(2017, 11, 2, 17, 0))
 
-    def test_free_time_list_post(self):
+        # then send nothing to see that if the best time is recalculated
+        response = self.client.post(
+            '/api/rooms/1/free-times',
+            content_type=CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        mw_time_list = FreeTime.objects.filter(user_id=1)
+        self.assertEqual(len(mw_time_list), 0)
+
+
+    def test_free_time_list_post2(self):
 
         # add user1's and user2's free time so that they don't intersect
         # the min_members of room2 is 2, so the result must be nothing
@@ -309,3 +325,75 @@ class FreeTimeTestCase(TestCase):
         tb_free_time_list = list(FreeTime.objects.filter(room_id=2).filter(user_id=2).values())
         # check correctly posted
         self.assertEqual(len(tb_free_time_list), 2)
+
+    def test_free_time_list_post3(self):
+
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email4', 'password': 'password4'}),
+            content_type=CONTENT_TYPE
+        )
+
+        mw_start_list = [
+            ['12:00']
+        ]
+        mw_end_list = [
+            ['18:10']
+        ]
+        tb_start_list = [
+            ['15:00', '17:20', '18:00']
+        ]
+        tb_end_list = [
+            ['17:00', '17:50', '18:10']
+        ]
+        ps_start_list = [
+            ['16:00', '17:50']
+        ]
+        ps_end_list = [
+            ['17:40', '18:10']
+        ]
+        ds_start_list = [
+            ['16:30', '17:30']
+        ]
+        ds_end_list = [
+            ['17:20', '18:00']
+        ]
+        mw_time_list = make_time_list(mw_start_list, mw_end_list)
+        tb_time_list = make_time_list(tb_start_list, tb_end_list)
+        ps_time_list = make_time_list(ps_start_list, ps_end_list)
+
+        user1 = User.objects.get(id=1)
+        user2 = User.objects.get(id=2)
+        user3 = User.objects.get(id=3)
+
+        room3 = Room.objects.get(id=3)
+
+        for time in mw_time_list:
+            ft = FreeTime(user=user1, room=room3, start_time=time[0], end_time=time[1])
+            ft.save()
+        for time in tb_time_list:
+            ft = FreeTime(user=user2, room=room3, start_time=time[0], end_time=time[1])
+            ft.save()
+        for time in ps_time_list:
+            ft = FreeTime(user=user3, room=room3, start_time=time[0], end_time=time[1])
+            ft.save()
+
+        ds_str_time_list = time_list_to_dic(ds_start_list, ds_end_list)
+
+        response = self.client.post(
+            '/api/rooms/3/free-times',
+            json.dumps(ds_str_time_list),
+            content_type=CONTENT_TYPE
+        )
+
+        self.assertEqual(response.status_code, 201)
+        best_time_list = list(BestTime.objects.filter(room_id=3).values())
+        self.assertEqual(len(best_time_list), 3)
+        self.assertEqual(best_time_list[0]['start_time'], datetime(2017, 11, 1, 16, 30))
+
+
+
+
+
+
+
