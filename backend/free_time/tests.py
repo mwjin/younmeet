@@ -149,7 +149,7 @@ class FreeTimeTestCase(TestCase):
         data = json.loads(response.content.decode())
         self.assertEqual(len(data), 2)
 
-    def test_free_time_list_post(self):
+    def test_free_time_list_post_no_available_time(self):
 
         self.client.post(
             '/api/signin',
