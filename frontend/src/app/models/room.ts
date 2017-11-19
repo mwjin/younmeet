@@ -2,19 +2,15 @@ import { Timespan } from './timespan';
 import { User } from './user';
 import { UserInfo } from './user-info';
 
-export class Room {
-
-  users: UserInfo[] = [];
-  owner: UserInfo;
+export interface Room {
+  name: string;
+  duration: number;
+  timespan: Timespan;
+  anonymity: boolean;
+  place: string;
+  urgent: boolean;
   createdTime: Date;
-
-  constructor(public name: string = '',
-              public duration: number = 0,
-              public timespan: Timespan = new Timespan(),
-              public anonymity: boolean = false,
-              public place: string = '',
-              public urgent: boolean = true,
-              public id?: number) {
-
-  }
+  users: UserInfo[];
+  owner: UserInfo;
+  id?: number;
 }

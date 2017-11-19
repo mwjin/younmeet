@@ -12,18 +12,19 @@ class UserTestCase(TestCase):
 
         room1 = Room.objects.create(name="room1",
                                     place="place1",
-                                    best_start_time=None,
-                                    best_end_time=None,
+                                    time_span_start=None,
+                                    time_span_end=None,
                                     min_time_required=None,
-                                    owner=user1)
+                                    owner=user1
+                                    )
 
         room2 = Room.objects.create(name="room2",
                                     place="place2",
-                                    best_start_time=None,
-                                    best_end_time=None,
+                                    time_span_start=None,
+                                    time_span_end=None,
                                     min_time_required=None,
-                                    owner=user2)
-
+                                    owner=user2
+                                    )
         room1.members.add(user1)
         room1.members.add(user2)
         room2.members.add(user1)
