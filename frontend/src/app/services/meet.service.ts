@@ -12,6 +12,7 @@ import { getCSRFHeaders } from '../../util/headers';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 
+
 function handleError(error: any) {
   console.error('An error occurred: ', error);
   return Promise.reject(error.message || error);
@@ -24,9 +25,11 @@ let TEST_AVAILABLE_TIME = [
 @Injectable()
 export class MeetService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
+  public timespan: Timespan;
 
   constructor(private http: Http) {
   }
+
 
   getRoomsCreatedByMe(): Promise<Room[]> {
     return this.http.get(`api/user/owned-rooms`)
@@ -52,7 +55,10 @@ export class MeetService {
     return this.http.get(`api/rooms/${id}`)
       .toPromise()
       .then(res => res.json() as RoomResponse)
-      .then(roomData => roomFromResponse(roomData))
+      .then(roomData => {
+        let room = roomFromResponse(roomData);
+        this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
+        return room;})
       .catch(handleError);
   }
 
