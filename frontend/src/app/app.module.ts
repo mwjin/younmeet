@@ -22,6 +22,7 @@ import { RoomListFilterPipe } from './dashboard/room-list-filter.pipe';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
 import { CalendarModule } from 'fullcalendar-ag4';
+import { FreetimeService } from './services/freetime.service';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -64,6 +65,7 @@ export function MyCookieStrategy() {
     AccountService,
     MeetService,
     AuthenticationService,
+    FreetimeService,
     AuthGuard,
     {
       provide : XSRFStrategy,
