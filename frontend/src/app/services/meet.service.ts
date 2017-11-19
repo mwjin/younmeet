@@ -76,7 +76,6 @@ export class MeetService {
         console.log(roomData);
         return roomData;
       })
-      .then(roomData => RoomResponseData.toRoom(roomData))
       .catch(handleError);
   }
 
