@@ -62,12 +62,28 @@ class FreeTimeTestCase(TestCase):
         # timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=00)
 
-        time_span_start1 = parse('2017-11-4T12:30:00.000Z', ignoretz=True)
-        time_span_end1 = parse('2017-11-4T17:30:00.000Z', ignoretz=True)
+        time_span_start1 = parse('2017-11-1T12:30:00.000Z', ignoretz=True)
+        time_span_end1 = parse('2017-11-30T17:30:00.000Z', ignoretz=True)
 
         Room.objects.create(
             name="room1",
             place="place1",
+            time_span_start=time_span_start1,
+            time_span_end=time_span_end1,
+            min_time_required=min_time1,
+            owner=user1,
+        )
+        Room.objects.create(
+            name="room2",
+            place="place2",
+            time_span_start=time_span_start1,
+            time_span_end=time_span_end1,
+            min_time_required=min_time1,
+            owner=user1,
+        )
+        Room.objects.create(
+            name="room3",
+            place="place3",
             time_span_start=time_span_start1,
             time_span_end=time_span_end1,
             min_time_required=min_time1,
@@ -155,6 +171,8 @@ class FreeTimeTestCase(TestCase):
             json.dumps({'email': 'email1', 'password': 'wrong password'}),
             content_type=CONTENT_TYPE
         )
+        self.assertEqual(response.status_code, 401)
+
 
 
     def test_free_time_list_post_send_nothing(self):
@@ -184,6 +202,7 @@ class FreeTimeTestCase(TestCase):
             '/api/rooms/1/free-times',
             content_type=CONTENT_TYPE
         )
+        self.assertEqual(response.status_code, 405)
 
 
     def test_free_time_list_post(self):
