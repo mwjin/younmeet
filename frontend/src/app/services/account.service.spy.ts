@@ -25,9 +25,11 @@ export class AccountServiceSpy {
     this.TEST_USERS.push(new User(
         this.TEST_USERS.length, username, email, password
     ));
+    return Promise.resolve(true);
   });
 
   deleteUser = jasmine.createSpy('deleteUser').and.callFake((id: number) => {
     this.TEST_USERS = this.TEST_USERS.filter(u => u.id !== id);
+    return Promise.resolve(true);
   });
 }

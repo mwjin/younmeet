@@ -34,13 +34,15 @@ export class TimeSelectComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*
+    Comment out for current build test
     this.timeSpan = this.meetService.timespan;
     if (!this.timeSpan) {
       this.router.navigate([ 'dashboard' ]);
     }
     console.log(this.timeSpan.start.toJSON());
     this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
-
+    */
 
     // Option Set for calendar display
     this.calendarOptions = {
@@ -49,7 +51,7 @@ export class TimeSelectComponent implements OnInit {
       scrollTime : '09:00:00', // start scroll from 9AM
       height : 650,
       // Do not Modify Below This Comment
-      visibleRange : { 'start' : this.timeSpan.start.toJSON(), 'end' : this.timeSpan.end.toJSON() },
+      visibleRange : { 'start' : '2017-11-20', 'end' : '2017-11-25' },
       timezone : 'local',
       defaultView : 'agenda',
       allDaySlot : false,

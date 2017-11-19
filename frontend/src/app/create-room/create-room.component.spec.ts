@@ -1,6 +1,6 @@
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
-import { CreateRoomComponent, CreateRoomForm } from './create-room.component';
+import { CreateRoomComponent } from './create-room.component';
 import {MeetServiceSpy} from "../services/meet.service.spy";
 import {RouterTestingModule} from "@angular/router/testing";
 import {Component} from "@angular/core";
@@ -10,6 +10,7 @@ import {MeetService} from "../services/meet.service";
 import {FormsModule} from "@angular/forms";
 import { Timespan } from '../models/timespan';
 import {Location} from '@angular/common';
+import { CreateRoomForm } from './create-room-form';
 
 @Component({
   template: ``

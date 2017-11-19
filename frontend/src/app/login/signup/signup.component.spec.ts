@@ -8,6 +8,17 @@ import { AuthenticationServiceSpy } from '../../services/authentication.service.
 import { RouterLinkStubDirective } from '../../../testing/router-stubs';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SignupComponent } from './signup.component';
+import { Component } from '@angular/core';
+
+@Component({
+  template : ``
+})
+class DashboardComponentMock {}
+
+@Component({
+  template : ``
+})
+class LoginComponentMock {}
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -19,6 +30,8 @@ describe('SignupComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
+          { path: 'dashboard', component: DashboardComponentMock },
+          { path: 'login', component: LoginComponentMock }
         ]),
         FormsModule,
         ReactiveFormsModule
@@ -26,6 +39,8 @@ describe('SignupComponent', () => {
       declarations: [
         SignupComponent,
         RouterLinkStubDirective,
+        DashboardComponentMock,
+        LoginComponentMock
       ],
       providers: [
         { provide: AuthenticationService, useClass: AuthenticationServiceSpy },

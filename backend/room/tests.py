@@ -1,9 +1,10 @@
+from dateutil.parser import parse
+from datetime import datetime, timedelta
+import json
+
 from django.test import TestCase, Client
 from .models import Room
-from datetime import datetime, timedelta
-from django.utils import timezone
 from user.models import User
-import json
 
 CONTENT_TYPE = 'application/json'
 
@@ -23,6 +24,7 @@ class RoomTestCase(TestCase):
         User.objects.create_user(email='email2', password='password2', username='username2')
         User.objects.create_user(email='email3', password='password3', username='username3')
         User.objects.create_user(email='email4', password='password4', username='username4')
+
         user1 = User.objects.get(id=1)
         user2 = User.objects.get(id=2)
         user3 = User.objects.get(id=3)
@@ -32,30 +34,31 @@ class RoomTestCase(TestCase):
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
 
-        best_start_time1 = timezone.make_aware(datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M'))
-        best_end_time1 = timezone.make_aware(datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M'))
+        time_span_start1 = parse('2017-11-4T12:30:00.000Z', ignoretz=True)
+        time_span_end1 = parse('2017-11-4T17:30:00.000Z', ignoretz=True)
 
-        best_start_time2 = timezone.make_aware(datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M'))
-        best_end_time2 = timezone.make_aware(datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M'))
+        time_span_start2 = parse('2017-11-4T15:30:00.000Z', ignoretz=True)
+        time_span_end2 = parse('2017-11-4T16:30:00.000Z', ignoretz=True)
 
         Room.objects.create(
             name="room1",
             place="place1",
-            best_start_time=best_start_time1,
-            best_end_time=best_end_time1,
+            time_span_start=time_span_start1,
+            time_span_end=time_span_end1,
             min_time_required=min_time1,
             owner=user1,
         )
         Room.objects.create(
             name="room2",
             place="place2",
-            best_start_time=best_start_time2,
-            best_end_time=best_end_time2,
+            time_span_start=time_span_start2,
+            time_span_end=time_span_end2,
             min_time_required=min_time2,
             owner=user2,
         )
         room1 = Room.objects.get(id=1)
         room2 = Room.objects.get(id=2)
+
         room1.members.add(user1)
         room1.members.add(user2)
         room1.members.add(user3)
@@ -85,11 +88,16 @@ class RoomTestCase(TestCase):
         )
 
         min_time = timedelta(hours=1)
+        time_span_start = '2017-11-4 12:30'
+        time_span_end = '2017-11-4 17:30'
+
         response = self.client.post(
             '/api/rooms',
             json.dumps({'name': 'room1',
                         'place': 'place1',
                         'min_time_required': time_delta_handler(min_time),
+                        'time_span_start': time_span_start,
+                        'time_span_end': time_span_end,
                         }),
             content_type=CONTENT_TYPE,
         )
