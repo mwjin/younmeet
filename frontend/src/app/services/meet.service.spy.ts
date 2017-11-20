@@ -1,71 +1,71 @@
 import { Injectable } from '@angular/core';
-import {Room} from "../models/room";
-import {Timespan} from "../models/timespan";
-import {User} from "../models/user";
+import { Room } from '../models/room';
+import { Timespan } from '../models/timespan';
+import { User } from '../models/user';
 
 let ROOMS_CREATED: Room[] = [
   <Room>{
-    name: 'Room 1',
-    duration: 30,
-    timespan: new Timespan(),
-    anonymity: false,
-    place: 'Seoul Nat. Univ. 302',
-    urgent: true,
-    createdTime: new Date(),
-    id: 1
+    name : 'Room 1',
+    duration : 30,
+    timespan : new Timespan(),
+    anonymity : false,
+    place : 'Seoul Nat. Univ. 302',
+    urgent : true,
+    createdTime : new Date(),
+    id : 1
   },
   <Room>{
-    name: 'Room 2',
-    duration: 30,
-    timespan: new Timespan(),
-    anonymity: false,
-    place: 'Seoul Nat. Univ. Station',
-    urgent: true,
-    createdTime: new Date(),
-    id: 2
+    name : 'Room 2',
+    duration : 30,
+    timespan : new Timespan(),
+    anonymity : false,
+    place : 'Seoul Nat. Univ. Station',
+    urgent : true,
+    createdTime : new Date(),
+    id : 2
   },
   <Room>{
-    name: 'Room 3',
-    duration: 30,
-    timespan: new Timespan(),
-    anonymity: false,
-    place: 'Nakseongdae Station',
-    urgent: true,
-    createdTime: new Date(),
-    id: 3
+    name : 'Room 3',
+    duration : 30,
+    timespan : new Timespan(),
+    anonymity : false,
+    place : 'Nakseongdae Station',
+    urgent : true,
+    createdTime : new Date(),
+    id : 3
   },
 ];
 
 let ROOMS_JOINED: Room[] = [
   <Room>{
-    name: 'Room 4',
-    duration: 60,
-    timespan: new Timespan(),
-    anonymity: false,
-    place: 'Seoul Nat. Univ. 301',
-    urgent: true,
-    createdTime: new Date(),
-    id: 1
+    name : 'Room 4',
+    duration : 60,
+    timespan : new Timespan(),
+    anonymity : false,
+    place : 'Seoul Nat. Univ. 301',
+    urgent : true,
+    createdTime : new Date(),
+    id : 1
   },
   <Room>{
-    name: 'Room 5',
-    duration: 60,
-    timespan: new Timespan(),
-    anonymity: false,
-    place: 'Seoul Nat. Univ. Student Building',
-    urgent: true,
-    createdTime: new Date(),
-    id: 2
+    name : 'Room 5',
+    duration : 60,
+    timespan : new Timespan(),
+    anonymity : false,
+    place : 'Seoul Nat. Univ. Student Building',
+    urgent : true,
+    createdTime : new Date(),
+    id : 2
   },
   <Room>{
-    name: 'Room 6',
-    duration: 60,
-    timespan: new Timespan(),
-    anonymity: false,
-    place: 'Shinlim Station',
-    urgent: false,
-    createdTime: new Date(),
-    id: 3
+    name : 'Room 6',
+    duration : 60,
+    timespan : new Timespan(),
+    anonymity : false,
+    place : 'Shinlim Station',
+    urgent : false,
+    createdTime : new Date(),
+    id : 3
   },
 ];
 
@@ -81,6 +81,11 @@ let TEST_AVAILABLE_TIME: Timespan[] = [
   new Timespan()
 ];
 
+let TEST_TIME_SPAN: Timespan = new Timespan(
+  new Date('2017-11-10'),
+  new Date('2017-11-15')
+);
+
 // Fake meet service implementation
 @Injectable()
 export class MeetServiceSpy {
@@ -90,13 +95,18 @@ export class MeetServiceSpy {
   constructor() {
     for (let room of ROOMS_CREATED) {
       room.users = TEST_USERS.slice(0);
-      room.owner = TEST_USERS[0];
+      room.owner = TEST_USERS[ 0 ];
     }
     for (let room of ROOMS_JOINED) {
       room.users = TEST_USERS.slice(0);
-      room.owner = TEST_USERS[0];
+      room.owner = TEST_USERS[ 0 ];
     }
   }
+
+
+  getTimeSpan = jasmine.createSpy('getTimeSpan').and.returnValue(TEST_TIME_SPAN);
+
+  getCurrentRoomId = jasmine.createSpy('getCurrentRoomId').and.returnValue(1);
 
   getRoomsCreatedByMe = jasmine.createSpy('getRoomsCreatedByMe').and.callFake(
     () => Promise.resolve(ROOMS_CREATED)
@@ -109,7 +119,7 @@ export class MeetServiceSpy {
   getRoomById = jasmine.createSpy('getRoomById').and.callFake((id: number) => {
     let room = ROOMS_CREATED
       .concat(ROOMS_JOINED)
-      .filter(room => room.id === id)[0];
+      .filter(room => room.id === id)[ 0 ];
     console.log(room);
     return Promise.resolve(room);
   });
@@ -130,7 +140,7 @@ export class MeetServiceSpy {
 
   deleteRoom = jasmine.createSpy('deleteRoom').and.callFake((roomId: number) => {
     this.rooms = this.rooms.filter(room => room.id !== roomId);
-    let response = new Response(new Blob(), {'status': 200, 'statusText': 'Room deleted'});
+    let response = new Response(new Blob(), { 'status' : 200, 'statusText' : 'Room deleted' });
     return Promise.resolve(response);
   });
 }
