@@ -11,6 +11,7 @@ import { roomFormToCreateResponse, roomFromResponse, RoomResponse, roomToRespons
 import { getCSRFHeaders } from '../../util/headers';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
+import { TimespanResponseData } from './timespan-response-data';
 
 
 function handleError(error: any) {
@@ -61,7 +62,7 @@ export class MeetService {
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
         this.currentRoomId = room.id;
         return room;
-      }) 
+      })
       .then(roomData => {
         console.log(roomData);
         return roomData;
@@ -84,10 +85,11 @@ export class MeetService {
       .catch(handleError);
   }
 
-  getAvailableTime(roomId: number): Promise<Timespan[]> {
-    // Not yet implemented
-    // Need REST APIs related to free time
-    return Promise.resolve(TEST_AVAILABLE_TIME);
+  getAvailableTime(id: number): Promise<TimespanResponseData[]> {
+    return this.http.get(`api/rooms/${id}/best-times`)
+      .toPromise()
+      .then(res => res.json() as TimespanResponseData[])
+      .catch(handleError);
   }
 
   addRoom(roomForm: CreateRoomForm): Promise<Room> {
