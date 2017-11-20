@@ -58,7 +58,13 @@ export class MeetService {
       .then(roomData => {
         let room = roomFromResponse(roomData);
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
-        return room;})
+        console.log(this.timespan);
+        return room;
+      })
+      .then(roomData => {
+        console.log(roomData);
+        return roomData;
+      })
       .catch(handleError);
   }
 
