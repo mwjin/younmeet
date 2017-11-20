@@ -44,6 +44,7 @@ export class TimeSelectComponent implements OnInit {
           scrollTime : '09:00:00', // start scroll from 9AM
           height : 650,
           // Do not Modify Below This Comment
+          eventOverlap : false,
           visibleRange : {
             'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
             , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
@@ -55,6 +56,7 @@ export class TimeSelectComponent implements OnInit {
           editable : true,
           selectable : true,
           selectHelper : true,
+          selectOverlap : false,
           select : function (start, end) {
             document.getElementById('deleteButton').style.display = 'none';
             let eventData;
