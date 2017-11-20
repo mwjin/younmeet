@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { User } from '../../models/user';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PasswordValidator } from './passwordValidator';
 import { Location } from '@angular/common';
 
 @Component({
@@ -11,12 +12,13 @@ import { Location } from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
   private currentUser: User;
-  profilePasswordForm: FormGroup;
+  passwordForm: FormGroup;
   private password: AbstractControl;
-  private passwordComfirmation: AbstractControl;
+  private passwordConfirm: AbstractControl;
 
   constructor(private accountService: AccountService,
-              private location: Location) {
+              private location: Location,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -24,7 +26,16 @@ export class ProfileComponent implements OnInit {
       .then(user => {
         console.log(user);
         this.currentUser = user;
+        this.passwordForm = this.formBuilder.group({
+          'password' : [ '', Validators.required ],
+          'passwordConfirm' : [ '', Validators.required ]
+        }, {
+          validator : PasswordValidator.matchForm
+        });
+        this.password = this.passwordForm.controls[ 'password' ];
+        this.passwordConfirm = this.passwordForm.controls[ 'passwordConfirm' ];
       });
+
   }
 
   changePassword() {

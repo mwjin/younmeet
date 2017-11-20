@@ -9,7 +9,8 @@
     </div>
     <div class="ui main text container">
       <form class="ui large form"
-            [formGroup]="profilePasswordForm"
+            [formGroup]="passwordForm"
+            [class.error]="!passwordForm.valid&&passwordForm.touched"
             (submit)="changePassword()">
         <div class="field">
           <label>Email</label>
@@ -19,6 +20,32 @@
           <label>Username</label>
           {{currentUser.username}}
         </div>
+
+        <!-- Password Input -->
+        <div class="required field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password"
+                   [formControl]="passwordForm.controls['password']">
+          </div>
+        </div>
+        <div *ngIf="password.hasError('invalidPassword')&&password.touched"
+             class="ui error message"> Must contain at least 8 characters with at least one number
+        </div>
+
+        <!-- PasswordConfirm Input -->
+        <div class="required field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="passwordConfirm" placeholder="Password Confirmation"
+                   [formControl]="passwordForm.controls['passwordConfirm']">
+          </div>
+        </div>
+        <div *ngIf="passwordConfirm.hasError('invalidPasswordConfirm')&&passwordConfirm.touched"
+             class="ui error message"> Must match password.
+        </div>
+        <button class="ui fluid submit button" type="submit">Submit</button>
+
       </form>
     </div>
   </div>
