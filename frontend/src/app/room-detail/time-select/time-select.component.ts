@@ -16,7 +16,7 @@ import { FreetimeResponseData } from '../../services/freetime-response-data';
 
 export class TimeSelectComponent implements OnInit {
   private timeSpan: Timespan;
-  private previousFreeTimes: Freetime[];
+  public previousFreeTimes: Freetime[];
   public calendarOptions: Object;
 
   constructor(private location: Location,
