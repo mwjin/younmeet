@@ -80,7 +80,12 @@ def user_detail(request):
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        return JsonResponse(model_to_dict(user))
+        dict_model = model_to_dict(user)
+        dict_user_info = {'id': dict_model['id'],
+                          'email': dict_model['email'],
+                          'username': dict_model['username']}
+
+        return JsonResponse(dict_user_info)
 
     elif request.method == 'PUT':
         req_new_password = json.loads(request.body.decode())  # Deserialization

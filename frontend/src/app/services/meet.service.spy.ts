@@ -4,15 +4,69 @@ import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
 
 let ROOMS_CREATED: Room[] = [
-  new Room('Room 1', 30, new Timespan(), false, 'Seoul Nat. Univ. 302', true, 1),
-  new Room('Room 2', 30, new Timespan(), false, 'Seoul Nat. Univ. Station', true, 2),
-  new Room('Room 3', 30, new Timespan(), false, 'Nakseongdae Station', false, 3)
+  <Room>{
+    name: 'Room 1',
+    duration: 30,
+    timespan: new Timespan(),
+    anonymity: false,
+    place: 'Seoul Nat. Univ. 302',
+    urgent: true,
+    createdTime: new Date(),
+    id: 1
+  },
+  <Room>{
+    name: 'Room 2',
+    duration: 30,
+    timespan: new Timespan(),
+    anonymity: false,
+    place: 'Seoul Nat. Univ. Station',
+    urgent: true,
+    createdTime: new Date(),
+    id: 2
+  },
+  <Room>{
+    name: 'Room 3',
+    duration: 30,
+    timespan: new Timespan(),
+    anonymity: false,
+    place: 'Nakseongdae Station',
+    urgent: true,
+    createdTime: new Date(),
+    id: 3
+  },
 ];
 
 let ROOMS_JOINED: Room[] = [
-  new Room('Room 4', 60, new Timespan(), false, 'Seoul Nat. Univ. 301', true, 4),
-  new Room('Room 5', 60, new Timespan(), false, 'Seoul Nat. Univ. Student Building', true, 5),
-  new Room('Room 6', 60, new Timespan(), false, 'Shinlim Station', false, 6)
+  <Room>{
+    name: 'Room 4',
+    duration: 60,
+    timespan: new Timespan(),
+    anonymity: false,
+    place: 'Seoul Nat. Univ. 301',
+    urgent: true,
+    createdTime: new Date(),
+    id: 1
+  },
+  <Room>{
+    name: 'Room 5',
+    duration: 60,
+    timespan: new Timespan(),
+    anonymity: false,
+    place: 'Seoul Nat. Univ. Student Building',
+    urgent: true,
+    createdTime: new Date(),
+    id: 2
+  },
+  <Room>{
+    name: 'Room 6',
+    duration: 60,
+    timespan: new Timespan(),
+    anonymity: false,
+    place: 'Shinlim Station',
+    urgent: false,
+    createdTime: new Date(),
+    id: 3
+  },
 ];
 
 let TEST_USERS: User[] = [
