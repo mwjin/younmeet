@@ -4,9 +4,11 @@ import { RoomDetailComponent } from './room-detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MeetServiceSpy } from '../services/meet.service.spy';
 import { MeetService } from '../services/meet.service';
-import { RouterLinkStubDirective } from '../../testing/router-stubs';
 import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard/dist';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute } from '@angular/router';
+import "rxjs/add/observable/of"
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -24,7 +26,11 @@ describe('RoomDetailComponent', () => {
         RoomDetailComponent,
       ],
       providers : [
-        { provide : MeetService, useClass : MeetServiceSpy }
+        { provide : MeetService, useClass : MeetServiceSpy },
+        {
+          provide : ActivatedRoute, useValue: {
+          params: Observable.of({id: 1})
+        }}
       ]
     })
       .compileComponents();

@@ -10,14 +10,11 @@ from .best_time_calculator import BestTimeCalculator
 from best_time.models import BestTime
 from room.models import Room
 
-
 from datetime import datetime, timedelta
 import json
 
 
-
 def free_time_list(request, room_id):
-
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
 
@@ -31,8 +28,12 @@ def free_time_list(request, room_id):
         return HttpResponseNotFound()
 
     if request.method == 'GET':
+        previous_free_times = list(FreeTime.objects.filter(user_id=user.id).filter(room_id=room_id).values())
+        for time in previous_free_times:
+            time['start_time'] = time['start_time'].strftime('%Y-%m-%dT%H:%M:%SZ')
+            time['end_time'] = time['end_time'].strftime('%Y-%m-%dT%H:%M:%SZ')
         return JsonResponse(
-            list(FreeTime.objects.filter(user_id=user.id).filter(room_id=room_id).values()),
+            previous_free_times,
             safe=False
         )
 
@@ -50,7 +51,6 @@ def free_time_list(request, room_id):
         data = json.loads(request.body.decode())
 
         for free_time in data:
-
             start = parse(free_time['start'], ignoretz=True)
             end = parse(free_time['end'], ignoretz=True)
             new_free_time = FreeTime(
@@ -68,11 +68,10 @@ def free_time_list(request, room_id):
         for ft in new_free_time_dic:
             new_free_time_list.append((ft['start_time'], ft['end_time']))
 
-
         btc = BestTimeCalculator(
             current_room.min_time_required,
             current_room.min_members,
-        )   # default k=3
+        )  # default k=3
         btc.insert_time(new_free_time_list)
 
         result = btc.calculate_best_time()
@@ -95,6 +94,7 @@ def free_time_list(request, room_id):
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
+
 
 """
 def free_time_detail(request):
