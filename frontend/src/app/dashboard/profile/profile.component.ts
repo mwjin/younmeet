@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { User } from '../../models/user';
+import { Location } from '@angular/common';
 
 @Component({
   selector : 'app-profile',
@@ -14,7 +15,8 @@ export class ProfileComponent implements OnInit {
   private password: AbstractControl;
   private passwordComfirmation: AbstractControl;
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService,
+              private location: Location) {
   }
 
   ngOnInit() {
@@ -23,6 +25,20 @@ export class ProfileComponent implements OnInit {
         console.log(user);
         this.currentUser = user;
       });
+  }
+
+  changePassword() {
+    this.currentUser.password = this.password.value;
+    this.accountService.putUser(this.currentUser)
+      .then(isSuccessToPut => {
+        if (isSuccessToPut) {
+          this.location.back();
+        }
+      });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

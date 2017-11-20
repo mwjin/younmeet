@@ -17,11 +17,11 @@ export class AccountService {
       .catch(this.handleError);
   }
 
-  putUser(user: User): Promise<User> {
+  putUser(user: User): Promise<boolean> {
     return this.http
       .put(this.accountUrl, JSON.stringify(user), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
-      .then(() => user)
+      .then(response => response.status === 204)
       .catch(this.handleError);
   }
 

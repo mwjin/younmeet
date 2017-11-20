@@ -8,7 +8,9 @@
       </div>
     </div>
     <div class="ui main text container">
-      <form class="ui large form">
+      <form class="ui large form"
+            [formGroup]="profilePasswordForm"
+            (submit)="changePassword()">
         <div class="field">
           <label>Email</label>
           {{currentUser.email}}
