@@ -49,4 +49,17 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('tryLogin', () => {
+    it('should try login the user', async(() => {
+      let email_username = component.email_username.value;
+      let password = component.password.value;
+      component.tryLogin();
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        expect(authServiceSpy.logIn)
+            .toHaveBeenCalledWith(email_username, password);
+      });
+    }));
+  });
 });

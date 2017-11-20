@@ -10,8 +10,8 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  private email_username: AbstractControl;
-  private password: AbstractControl;
+  email_username: AbstractControl;
+  password: AbstractControl;
 
   ngOnInit() {
   }

@@ -61,6 +61,10 @@ export class MeetService {
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
         this.currentRoomId = room.id;
         return room;
+      }) 
+      .then(roomData => {
+        console.log(roomData);
+        return roomData;
       })
       .catch(handleError);
   }
