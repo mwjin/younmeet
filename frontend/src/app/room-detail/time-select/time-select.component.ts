@@ -88,6 +88,10 @@ export class TimeSelectComponent implements OnInit {
     document.getElementById('deleteButton').style.display = 'none';
   }
 
+  public deleteAllEvent(): void {
+    $('#calendar').fullCalendar('removeEvents');
+  }
+
   public collectFreeTimes(): void {
     // Collect all events and return array of [start_time, end_time] pair
     const freeTimes: Freetime[] = [];
