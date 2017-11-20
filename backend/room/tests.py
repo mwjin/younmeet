@@ -1,9 +1,10 @@
+from dateutil.parser import parse
+from datetime import datetime, timedelta
+import json
+
 from django.test import TestCase, Client
 from .models import Room
-from datetime import datetime, timedelta
-from django.utils import timezone
 from user.models import User
-import json
 
 CONTENT_TYPE = 'application/json'
 
@@ -33,11 +34,11 @@ class RoomTestCase(TestCase):
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
 
-        time_span_start1 = datetime.strptime('2017-11-4 12:30', '%Y-%m-%d %H:%M')
-        time_span_end1 = datetime.strptime('2017-11-4 17:30', '%Y-%m-%d %H:%M')
+        time_span_start1 = parse('2017-11-4T12:30:00.000Z', ignoretz=True)
+        time_span_end1 = parse('2017-11-4T17:30:00.000Z', ignoretz=True)
 
-        time_span_start2 = datetime.strptime('2017-11-4 15:30', '%Y-%m-%d %H:%M')
-        time_span_end2 = datetime.strptime('2017-11-4 16:30', '%Y-%m-%d %H:%M')
+        time_span_start2 = parse('2017-11-4T15:30:00.000Z', ignoretz=True)
+        time_span_end2 = parse('2017-11-4T16:30:00.000Z', ignoretz=True)
 
         Room.objects.create(
             name="room1",
