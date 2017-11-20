@@ -26,15 +26,15 @@ export class TimeSelectComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.timeSpan = this.meetService.timespan;
+    this.timeSpan = this.meetService.getTimeSpan();
+    console.log('timespan = ' + this.timeSpan.start + ' to ' + this.timeSpan.end);
     if (!this.timeSpan) {
       this.router.navigate([ 'dashboard' ]);
     }
-
     this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
 
     // Option Set for calendar display
-    this.freetimeService.getFreeTimes(this.meetService.currentRoomId)
+    this.freetimeService.getFreeTimes(this.meetService.getCurrentRoomId())
       .then(freeTimes => {
         this.previousFreeTimes = freeTimes.map(freetimeDate => FreetimeResponseData.responseToFreetime(freetimeDate));
         console.log(this.previousFreeTimes);
@@ -96,7 +96,7 @@ export class TimeSelectComponent implements OnInit {
     }
     console.log(JSON.stringify(freeTimes));
 
-    this.freetimeService.postFreeTimes(freeTimes, this.meetService.currentRoomId)
+    this.freetimeService.postFreeTimes(freeTimes, this.meetService.getCurrentRoomId())
       .then(isSuccessToPost => {
         if (isSuccessToPost) {
           this.location.back();

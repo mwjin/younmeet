@@ -65,6 +65,14 @@ export class MeetService {
       .catch(handleError);
   }
 
+  getTimeSpan(): Timespan {
+    return this.timespan;
+  }
+
+  getCurrentRoomId(): number {
+    return this.currentRoomId;
+  }
+
   getUsersInRoom(id: number): Promise<UserInfo[]> {
     return this.http.get(`api/rooms/${id}/members`)
       .toPromise()
