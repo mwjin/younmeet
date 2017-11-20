@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   styleUrls : [ './profile.component.css' ]
 })
 export class ProfileComponent implements OnInit {
-  private currentUser: User;
+  currentUser: User;
   passwordForm: FormGroup;
   private password: AbstractControl;
   private passwordConfirm: AbstractControl;
