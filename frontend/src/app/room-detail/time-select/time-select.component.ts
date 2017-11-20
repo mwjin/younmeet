@@ -39,6 +39,7 @@ export class TimeSelectComponent implements OnInit {
     if (!this.timeSpan) {
       this.router.navigate([ 'dashboard' ]);
     }
+
     this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
 
     // Option Set for calendar display

@@ -36,32 +36,38 @@ export class FreetimeService {
 
 
   getFreeTimes(id: number): Promise<Freetime[]> {
-    let freeTimeResult: Freetime[] = [];
     return this.http.get(`api/rooms/${id}/free-times`)
       .toPromise()
       .then(response => response.json() as FreetimeResponseData[])
       .then(freetimeList => {
-        let stringfiedFreeTimes = freetimeList.map(freetimeData => FreetimeResponseData.responseToFreetime(freetimeData));
-        console.log(stringfiedFreeTimes);
-        for (let index in stringfiedFreeTimes) {
-          console.log((stringfiedFreeTimes[ index ][ 'start' ].toJSON()));
-          console.log(new Date('2017-11-22T00:30:00.000Z'));
-          console.log(new Date(stringfiedFreeTimes[ index ][ 'start' ].toJSON()));
-          console.log(new Date(stringfiedFreeTimes[ index ][ 'end' ].toJSON()));
-          console.log(new Freetime(new Date(stringfiedFreeTimes[ index ][ 'start' ].toJSON()),
-            new Date(stringfiedFreeTimes[ index ][ 'end' ].toJSON())));
-          let freetime: Freetime = new Freetime(new Date(stringfiedFreeTimes[ index ][ 'start' ].toJSON()),
-            new Date(stringfiedFreeTimes[ index ][ 'end' ].toJSON()));
-          freeTimeResult.push(freetime);
-          console.log(freetime);
-        }
-        console.log(freeTimeResult);
-        return freeTimeResult;
-        /*
-        return freetimeList.map(
-          freetimeData => FreetimeResponseData.responseToFreetime(freetimeData)
-        );*/
+        console.log(freetimeList.map(freetimeData => FreetimeResponseData.responseToFreetime(freetimeData)));
+        return freetimeList.map(freetimeData => FreetimeResponseData.responseToFreetime(freetimeData));
       })
+      .then(freetimes => {
+        console.log(freetimes);
+        return freetimes;
+      })
+      /*
+      console.log(stringfiedFreeTimes);
+      for (let index in stringfiedFreeTimes) {
+        console.log((stringfiedFreeTimes[ index ][ 'start' ].toJSON()));
+        console.log(new Date('2017-11-22T00:30:00.000Z'));
+        console.log(new Date(stringfiedFreeTimes[ index ][ 'start' ].toJSON()));
+        console.log(new Date(stringfiedFreeTimes[ index ][ 'end' ].toJSON()));
+        console.log(new Freetime(new Date(stringfiedFreeTimes[ index ][ 'start' ].toJSON()),
+          new Date(stringfiedFreeTimes[ index ][ 'end' ].toJSON())));
+        let freetime: Freetime = new Freetime(new Date(stringfiedFreeTimes[ index ][ 'start' ].toJSON()),
+          new Date(stringfiedFreeTimes[ index ][ 'end' ].toJSON()));
+        freeTimeResult.push(freetime);
+        console.log(freetime);
+      }
+      console.log(freeTimeResult);
+      return stringfiedFreeTimes;
+    })
+    .then(freeTimes => {
+      console.log(freeTimes);
+      return freeTimes;
+    })*/
       .catch(handleError);
   }
 
