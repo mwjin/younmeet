@@ -35,17 +35,12 @@ export class FreetimeService {
   */
 
 
-  getFreeTimes(id: number): Promise<Freetime[]> {
+  getFreeTimes(id: number): Promise<FreetimeResponseData[]> {
     return this.http.get(`api/rooms/${id}/free-times`)
       .toPromise()
-      .then(response => response.json() as FreetimeResponseData[])
-      .then(freetimeList => {
-        console.log(freetimeList.map(freetimeData => FreetimeResponseData.responseToFreetime(freetimeData)));
-        return freetimeList.map(freetimeData => FreetimeResponseData.responseToFreetime(freetimeData));
-      })
-      .then(freetimes => {
-        console.log(freetimes);
-        return freetimes;
+      .then(response => {
+        console.log(response.json());
+        return response.json() as FreetimeResponseData[];
       })
       /*
       console.log(stringfiedFreeTimes);

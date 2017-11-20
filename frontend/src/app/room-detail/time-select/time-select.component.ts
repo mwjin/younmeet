@@ -6,6 +6,7 @@ import { FreetimeService } from '../../services/freetime.service';
 import { MeetService } from '../../services/meet.service';
 import { Timespan } from '../../models/timespan';
 import { Router } from '@angular/router';
+import { FreetimeResponseData } from '../../services/freetime-response-data';
 
 @Component({
   selector : 'app-time-select',
@@ -22,16 +23,6 @@ export class TimeSelectComponent implements OnInit {
               private router: Router,
               private freetimeService: FreetimeService,
               private meetService: MeetService,) {
-    /*
-      TODO:
-        Get some appropriate arguments.
-          Arguments will be (startTimeSpan: string, endTimeSpan: string, preSetEvents When try to modify)
-        Set calendarOptions for user
-     */
-    /*
-     console.log($('#calendar').fullCalendar('option', 'visibleRange'));
-     $('#calendar').fullCalendar('option', 'visibleRange', { start : '2017-08-15', end : '2017-08-20' });
-     console.log($('#calendar').fullCalendar('option', 'visibleRange'));*/
   }
 
   ngOnInit() {
@@ -45,12 +36,8 @@ export class TimeSelectComponent implements OnInit {
     // Option Set for calendar display
     this.freetimeService.getFreeTimes(this.meetService.currentRoomId)
       .then(freeTimes => {
-        this.previousFreeTimes = freeTimes;
+        this.previousFreeTimes = freeTimes.map(freetimeDate => FreetimeResponseData.responseToFreetime(freetimeDate));
         console.log(this.previousFreeTimes);
-        for (let index in this.previousFreeTimes) {
-          this.previousFreeTimes[ index ][ 'start' ] = this.previousFreeTimes[ index ][ 'start_time' ];
-          this.previousFreeTimes[ index ][ 'end' ] = this.previousFreeTimes[ index ][ 'end_time' ];
-        }
         this.calendarOptions = {
           locale : 'ko',
           slotDuration : '00:10:00', // set slot duration
@@ -61,9 +48,7 @@ export class TimeSelectComponent implements OnInit {
             'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
             , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
           },
-          events : [
-            this.previousFreeTimes
-          ],
+          events : this.previousFreeTimes,
           timezone : 'local',
           defaultView : 'agenda',
           allDaySlot : false,
@@ -94,48 +79,6 @@ export class TimeSelectComponent implements OnInit {
           },
         };
       });
-
-    /*
-    this.calendarOptions = {
-      locale : 'ko',
-      slotDuration : '00:10:00', // set slot duration
-      scrollTime : '09:00:00', // start scroll from 9AM
-      height : 650,
-      // Do not Modify Below This Comment
-      visibleRange : {
-        'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
-        , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
-      },
-      timezone : 'local',
-      defaultView : 'agenda',
-      allDaySlot : false,
-      editable : true,
-      selectable : true,
-      selectHelper : true,
-      select : function (start, end) {
-        document.getElementById('deleteButton').style.display = 'none';
-        let eventData;
-        eventData = {
-          title : '',
-          start : start,
-          end : end
-        };
-        $('#calendar').fullCalendar('renderEvent', eventData, true);
-      },
-      unselectAuto : true,
-      eventClick : function (calEvent, jsEvent, view) {
-        let selected = $('#calendar').fullCalendar('clientEvents', calEvent._id);
-        let startTime = selected[ 0 ][ 'start' ][ '_d' ]
-          .toString().split(' ')[ 4 ].slice(0, 5);
-        let endTime = selected[ 0 ][ 'end' ][ '_d' ]
-          .toString().split(' ')[ 4 ].slice(0, 5);
-        document.getElementById('deleteButton').style.display = 'block';
-        document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
-
-        localStorage.setItem('deleteButtonId', calEvent._id);
-      },
-    };
-    */
   }
 
   public deleteEvent(): void {
@@ -152,12 +95,6 @@ export class TimeSelectComponent implements OnInit {
         selectedAreas[ index ][ 'end' ][ '_d' ]));
     }
     console.log(JSON.stringify(freeTimes));
-
-    /*
-      After success to connect with backend, replace code as below
-
-      */
-
 
     this.freetimeService.postFreeTimes(freeTimes, this.meetService.currentRoomId)
       .then(isSuccessToPost => {
