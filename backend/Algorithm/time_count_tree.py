@@ -71,13 +71,25 @@ class TimeCountNode:
         self.member_list = member_list
 
     def __str__(self):
-        return str(self.start) + " " + str(self.end)
+        result = "Start: "
+        result += str(self.start) + ", "
+        result += "End: "
+        result += str(self.end) + ", "
+        result += "Time count: " + str(self.time_count) + ", "
+        result += "Members: "
+        result += "["
+        for i in self.member_list:
+            result += str(i) + ", "
+        result += "]"
+        return result
 
     # finds out the relation
     def node_relationship(self, oth):
         new_left = None
         new_self = None
         new_right = None
+
+
         # new left is not None
         if oth.start < self.start:
             if oth.end > self.end:
@@ -137,6 +149,7 @@ class TimeCountNode:
         self.start = new_self.start
         self.end = new_self.end
         self.time_count = new_self.time_count
+        self.member_list = new_self.member_list
 
         if self.left is None:
             self.left = new_left
@@ -155,20 +168,11 @@ class TimeCountNode:
         if self.right is not None:
             self.right.print_inorder()
 
-    def append_inorder(self, tree_list, min_people=0, indespensible_list=[]):
+    def append_inorder(self, tree_list, min_people=0):
         if self.left is not None:
-            self.left.append_inorder(tree_list, min_people=0, indespensible_list=[])
+            self.left.append_inorder(tree_list, min_people=0)
         if self.time_count >= min_people:
-            if len(indespensible_list) == 0:
-                append_flag = True
-                for id in indespensible_list:
-                    if not id in self.member_list:
-                        append_flag = False
-                        break
-                if append_flag:
-                    tree_list.append(self)
-            else:
-                tree_list.append(self)
+            tree_list.append(self)
         if self.right is not None:
             self.right.append_inorder(tree_list, min_people=0)
 
@@ -178,8 +182,8 @@ class TimeCountTree:
     def __init__(self, node=None):
         self.root = node
 
-    def insert(self, start, end):
-        node = TimeCountNode(start, end)
+    def insert(self, start, end, member_id):
+        node = TimeCountNode(start, end, 1, [member_id])
         if self.root is None:
             self.root = node
         else:
@@ -188,8 +192,8 @@ class TimeCountTree:
     def print_inorder(self):
         self.root.print_inorder()
 
-    def append_inorder(self, tree_list, min_people=0, indespensible_list=[]):
+    def append_inorder(self, tree_list, min_people=0):
         if self.root is None:
             return
-        self.root.append_inorder(tree_list, min_people, indespensible_list)
+        self.root.append_inorder(tree_list, min_people)
 
