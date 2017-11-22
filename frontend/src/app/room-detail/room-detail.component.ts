@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { Room } from '../models/room';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetService } from '../services/meet.service';
@@ -11,6 +11,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
 import { UserInfo } from '../models/user-info';
 import { Location } from '@angular/common';
+import * as moment from 'moment';
+import { TimespanResponseData } from '../services/timespan-response-data';
 
 @Component({
   selector : 'app-room-detail',
@@ -44,7 +46,11 @@ export class RoomDetailComponent implements OnInit {
             this.members.unshift(members.filter(user => user.id === room.owner.id)[ 0 ]);
           });
         let getAvailableTime = this.meetService.getAvailableTime(this.room.id)
-          .then(availableTime => this.availableTime = availableTime);
+          .then(availableTime => {
+            this.availableTime = availableTime.map(
+              timeSpanData => TimespanResponseData.responseToFreetime(timeSpanData));
+            console.log(this.availableTime);
+          });
         return Observable.forkJoin(getMembers, getAvailableTime);
       })
       .subscribe();
@@ -55,11 +61,11 @@ export class RoomDetailComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate([ 'dashboard' ]);
-    // this.location.back(); it redirects to create page when location.back is 'create'
   }
 
   goTimeSelectPage(): void {
     this.router.navigate([ 'room', this.room.id, 'time' ]);
   }
+
 
 }
