@@ -54,6 +54,7 @@ export function MyCookieStrategy() {
   imports : [
     CommonModule,
     BrowserModule,
+
     RouterModule.forRoot(routes),
     FormsModule,
     HttpModule,

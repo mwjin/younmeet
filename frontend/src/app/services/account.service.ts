@@ -22,7 +22,7 @@ export class AccountService {
   putUser(user: User): Promise<User> {
     const url = `${this.accountUrl}/${user.id}`;
     return this.http
-      .put(url, JSON.stringify(user), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+      .put(url, JSON.stringify(user))
       .toPromise()
       .then(() => user)
       .catch(this.handleError);
@@ -40,7 +40,7 @@ export class AccountService {
         username : username,
         email : email,
         password : password
-      }), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+      }))
       .toPromise()
       .then(response => response.status === 201)
       .catch(this.handleError);
@@ -48,7 +48,7 @@ export class AccountService {
 
   deleteUser(id: number): Promise<boolean> {
     const url = `${this.accountUrl}/${id}`;
-    return this.http.delete(url, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+    return this.http.delete(url)
       .toPromise()
       .then((response) => {
         return response.status === 200;
