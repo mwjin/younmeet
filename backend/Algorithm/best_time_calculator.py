@@ -17,6 +17,7 @@ class BestTimeCalculator:
             self.time_count_tree.insert(time[0], time[1], time[2])
             # inserting (start_time, end_time, member_id)
 
+    # checks if there are minimum people are satisfied
     def check_min_people(self, f, l):
         instersection_set = set(self.tree_list[f].member_list)
         for node in self.tree_list[f: l + 1]:
