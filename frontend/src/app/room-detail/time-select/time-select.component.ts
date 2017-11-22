@@ -16,7 +16,7 @@ import { FreetimeResponseData } from '../../services/freetime-response-data';
 
 export class TimeSelectComponent implements OnInit {
   private timeSpan: Timespan;
-  private previousFreeTimes: Freetime[];
+  public previousFreeTimes: Freetime[];
   public calendarOptions: Object;
 
   constructor(private location: Location,
@@ -44,6 +44,7 @@ export class TimeSelectComponent implements OnInit {
           scrollTime : '09:00:00', // start scroll from 9AM
           height : 650,
           // Do not Modify Below This Comment
+          eventOverlap : false,
           visibleRange : {
             'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
             , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
@@ -55,6 +56,7 @@ export class TimeSelectComponent implements OnInit {
           editable : true,
           selectable : true,
           selectHelper : true,
+          selectOverlap : false,
           select : function (start, end) {
             document.getElementById('deleteButton').style.display = 'none';
             let eventData;
@@ -84,6 +86,10 @@ export class TimeSelectComponent implements OnInit {
   public deleteEvent(): void {
     $('#calendar').fullCalendar('removeEvents', localStorage.getItem('deleteButtonId'));
     document.getElementById('deleteButton').style.display = 'none';
+  }
+
+  public deleteAllEvent(): void {
+    $('#calendar').fullCalendar('removeEvents');
   }
 
   public collectFreeTimes(): void {
