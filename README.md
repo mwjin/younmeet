@@ -31,7 +31,7 @@ dev:
 - Angular
   - Installing dependencies: ``npm install``
   - Running the app: ``npm start``
-  - Testing: ``ng test``
+  - Testing: ``npm test``
 - Django
   - Running the app: ``python manage.py runserver``
   - Testing: ``python manage.py test``
