@@ -4,6 +4,7 @@ import { User } from '../../models/user';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidator } from './passwordValidator';
 import { Location } from '@angular/common';
+import {Router} from "@angular/router";
 
 @Component({
   selector : 'app-profile',
@@ -18,7 +19,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private location: Location,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -35,7 +37,6 @@ export class ProfileComponent implements OnInit {
         this.password = this.passwordForm.controls[ 'password' ];
         this.passwordConfirm = this.passwordForm.controls[ 'passwordConfirm' ];
       });
-
   }
 
   changePassword() {
@@ -43,7 +44,7 @@ export class ProfileComponent implements OnInit {
     this.accountService.putUser(this.currentUser)
       .then(isSuccessToPut => {
         if (isSuccessToPut) {
-          this.location.back();
+          this.router.navigate(['dashboard']);
         }
       });
   }
