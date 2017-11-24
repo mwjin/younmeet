@@ -8,8 +8,8 @@ export class AccountServiceSpy {
       new User(2, 'Chris', 'chris@gmail.com', 'chris_ps'),
   ];
 
-  getUser = jasmine.createSpy('getUser').and.callFake((id: number) => {
-    return Promise.resolve(this.TEST_USERS[id])
+  getUserDetail = jasmine.createSpy('getUser').and.callFake((id: number) => {
+    return Promise.resolve(this.TEST_USERS[id]);
   });
 
   putUser = jasmine.createSpy('putUser').and.callFake((user: User) => {

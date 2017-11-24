@@ -23,6 +23,7 @@ import { ClipboardModule } from 'ngx-clipboard/dist';
 import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
 import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
+import { ProfileComponent } from './dashboard/profile/profile.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path : 'link/:id', redirectTo : 'room/:id', pathMatch : 'full' },
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
-  { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] }
+  { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
+  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] }
 ];
 
 export function MyCookieStrategy() {
@@ -49,6 +51,7 @@ export function MyCookieStrategy() {
     RoomDetailComponent,
     RoomListFilterPipe,
     TimeSelectComponent,
+    ProfileComponent
   ],
   imports : [
     CommonModule,
