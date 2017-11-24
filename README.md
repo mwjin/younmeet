@@ -29,10 +29,15 @@ dev:
 ## Build Instructions
 
 - Angular
-  - Installing dependencies: ``npm install``
+  - Installing dependencies: 
+	-``npm install``
+	-``npm install -g @angular/cli``
+	-``npm install @agm/core --save``
+	-``npm install @types/googlemaps --save dev``
   - Running the app: ``npm start``
   - Testing: ``npm test``
 - Django
+  - Installing dependencies: ``pip install django coverage coveralls python-dateutil``
   - Running the app: ``python manage.py runserver``
   - Testing: ``python manage.py test``
   - Note: if Python 2 is the default for the system, use python3 command instead of python
