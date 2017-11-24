@@ -28,6 +28,9 @@ export class PlaceComponent implements OnInit {
     this.zoom = 4;
     this.latitude = 37.459882;
     this.longitude = 126.95190530000002;
+    let options = {
+      componentRestrictions: {country: 'kr'}
+    };
 
     //create search FormControl
     this.searchControl = new FormControl();
@@ -37,9 +40,7 @@ export class PlaceComponent implements OnInit {
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
-      });
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
           //get the place result
@@ -53,7 +54,7 @@ export class PlaceComponent implements OnInit {
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
+          this.zoom = 17;
         });
       });
     });
