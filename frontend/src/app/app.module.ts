@@ -68,7 +68,7 @@ export function MyCookieStrategy() {
     ClipboardModule,
     CalendarModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCXZy_q_d4qmR7rebhBKONBlRjyaUTeLKQ',
+      apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
       libraries: ["places"]
     })
   ],
