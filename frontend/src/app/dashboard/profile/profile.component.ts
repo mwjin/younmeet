@@ -6,6 +6,7 @@ import { PasswordValidator } from './passwordValidator';
 import { Location } from '@angular/common';
 import {Router} from "@angular/router";
 
+
 @Component({
   selector : 'app-profile',
   templateUrl : './profile.component.html',
