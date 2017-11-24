@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -24,6 +25,7 @@ import { TimeSelectComponent } from './room-detail/time-select/time-select.compo
 import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
 import { ProfileComponent } from './dashboard/profile/profile.component';
+import { PlaceComponent } from './create-room/place/place.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -34,6 +36,7 @@ const routes: Routes = [
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
+  { path : 'room/:id/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
   { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] }
 ];
 
@@ -51,7 +54,8 @@ export function MyCookieStrategy() {
     RoomDetailComponent,
     RoomListFilterPipe,
     TimeSelectComponent,
-    ProfileComponent
+    ProfileComponent,
+    PlaceComponent
   ],
   imports : [
     CommonModule,
@@ -62,7 +66,11 @@ export function MyCookieStrategy() {
     ReactiveFormsModule,
     SuiModule,
     ClipboardModule,
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCXZy_q_d4qmR7rebhBKONBlRjyaUTeLKQ',
+      libraries: ["places"]
+    })
   ],
   providers : [
     AccountService,
