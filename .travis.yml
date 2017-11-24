@@ -40,6 +40,8 @@ matrix:
         - npm install
         - npm install coveralls
         - npm install -g @angular/cli
+	- npm install @agm/core --save
+	- npm install @types/googlemaps --save-dev
       script:
         - ng test -sm=false --code-coverage --watch false
         - ng e2e
