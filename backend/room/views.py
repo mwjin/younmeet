@@ -106,6 +106,7 @@ def set_place(request, room_id):
     if request.method == 'PUT':
         data = json.loads(request.body.decode())
         room.__setattr__('place', data['place'])
+        room.save()
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['PUT'])
