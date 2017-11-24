@@ -104,6 +104,16 @@ export class MeetService {
       .catch(handleError);
   }
 
+  putPlace(room_id: number, place: string): void {
+    this.http.put(
+      `api/rooms/${room_id}/place`,
+      {'place': place},
+      <RequestOptionsArgs>{ headers : getCSRFHeaders() }
+    )
+      .toPromise()
+      .catch(handleError);
+  }
+
   deleteRoom(roomId: number): Promise<Response> {
     return this.http.delete(`api/rooms/${roomId}`, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()

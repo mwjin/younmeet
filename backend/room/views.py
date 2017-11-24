@@ -93,3 +93,25 @@ def room_members(request, room_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+def set_place(request, room_id):
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    room_id = int(room_id)
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode())
+        room.__setattr__('place', data['place'])
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['PUT'])
+
+
+
+
+
+
