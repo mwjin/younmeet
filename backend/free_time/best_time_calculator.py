@@ -1,188 +1,111 @@
-from .time_count_tree import TimeCountTree, TimeCountNode
-from datetime import timedelta
+from .time_count_tree import TimeCountTree
+from .best_time_heap import BestTimeHeap
+
 
 class BestTimeCalculator:
-
     def __init__(self, min_time_required, min_people, k=3):
+        # k denotes how many times to show
         self.min_time_required = min_time_required
         self.min_people = min_people
         self.time_count_tree = TimeCountTree()
         self.k = k
-        self.top_k_list = []
+        self.best_k_times = BestTimeHeap()
+
+    def calculate_best_times(self):
+        time_node_list = self.time_count_tree.append_inorder(self.min_people)
+        for t in time_node_list:
+            print(t)
+
+        for i in range(len(time_node_list)):
+            time_node = time_node_list[i]
+            new_best_time = BestTimeCalculator.BestTime(time_node)
+            if new_best_time.end - new_best_time.start >= self.min_time_required:
+                self.best_k_times.insert(new_best_time)
+            else:
+                # failed to exceed min time
+                for j in range(i + 1, len(time_node_list)):
+                    next_node = time_node_list[j]
+                    if next_node.start != new_best_time.end:
+                        # not consecutive, break
+                        break
+
+                    if next_node.end - next_node.start < self.min_time_required:
+                        # if the next node exceeds min_time_requried, merging will product duplicate result
+                        new_best_time.expand_best_time(next_node)
+                        if new_best_time.end - new_best_time.start >= self.min_time_required:
+                            break
+
+                if new_best_time.end - new_best_time.start >= self.min_time_required:
+                    self.best_k_times.insert(new_best_time)
 
     # inputs list of pair (start, end)
     def insert_time(self, time_list):
-
         for time in time_list:
-            self.time_count_tree.insert(time[0], time[1])
+            self.time_count_tree.insert(time[0], time[1], time[2])
+            # inserting (start_time, end_time, member_id)
 
-    # TODO: Edit so that people in the time_list is same
-    def check_min_people(self, f, l):
+    def get_k_best_times(self):
+        k_times = []
+        for k in range(self.k):
+            k_times.append(self.best_k_times.extract_max())
+        return k_times
 
-        for node in self.tree_list[f: l + 1]:
-            if node.time_count < self.min_people:
-                return False
-        return True
-    
+    class BestTime(object):
+        def __init__(self, time_node):
+            self.start = time_node.start
+            self.end = time_node.end
+            self.full_attend = set(time_node.members)
+            self.partial_attend = dict()
+            self.weight = self.calculate_weight()
 
-    # maintains top k list
-    def k_max_pq_add(self, new_sum, f, l):
+        def __str__(self):
+            print('starttime:', self.start)
+            print('endtime:', self.end)
+            print('full_attend:', self.full_attend)
+            print('partial_attend:')
+            for member in self.partial_attend.keys():
+                print('\t{:s} from'.format(member), self.partial_attend[member][0], ' to',
+                      self.partial_attend[member][1])
+            print()
+            return ''
 
-        if len(self.top_k_list) < self.k:
-            self.top_k_list.append((new_sum, f , l))
-        else:
-            min_sum = 987654321
-            min_sum_index = -1
+        def calculate_weight(self):
+            weight = 0
+            weight += (BestTimeCalculator.time_delta_to_minute(self.end - self.start) * len(self.full_attend) ** 1.5)
+            for time_node in self.partial_attend.values():
+                weight += BestTimeCalculator.time_delta_to_minute(time_node[1] - time_node[0])
+            return weight
 
-            for i in range(self.k):
-                if self.top_k_list[i][1] < f and self.top_k_list[i][2] == l and self.top_k_list[i][0] <= new_sum:
-                    self.top_k_list[i] = (new_sum, f, l)
-                    return
+        def expand_best_time(self, new_time_node):
+            # Merge distinct time_node
+            remove_members = []
+            for member in self.full_attend:
+                if member not in new_time_node.members:
+                    remove_members.append(member)
+                    self.partial_attend[member] = (self.start, self.end)
 
-                if self.top_k_list[i][0] < min_sum:
-                    min_sum = self.top_k_list[i][0]
-                    min_sum_index = i
+            for member in remove_members:
+                self.full_attend.remove(member)
 
-            if new_sum > min_sum:
-                self.top_k_list[min_sum_index] = (new_sum, f, l)
-
-
-    def td_to_min(self, td):
-
-        return td.days * 24 * 60 + td.seconds / 60
-
-    def check_continuity(self, f, l):
-
-        for i in range(f, l):
-            if self.tree_list[i].end != self.tree_list[i + 1].start:
-                return False
-        return True
-
-    # returns list of (sum_weight, start, end)
-    def calculate_best_time(self):
-        self.tree_list = []
-        self.time_count_tree.append_inorder(self.tree_list, self.min_people)
-
-        f = 0
-        l = 0
-
-        # to check whether the tree_list should be checked from the first
-        check_first = False
-
-        # every time a while loop is called, f or l moves forward 0 or 1 (both can move)
-        while l < len(self.tree_list):
-
-            if not self.check_continuity(f, l):
-                f = l
-                continue
-
-            first = self.tree_list[f]
-            last = self.tree_list[l]
-
-            if last.end - first.start < self.min_time_required:
-                l += 1
-                check_first = True
-                continue
-
-            # ensures tree_list[f...l] is the min node that is longer than min_time_req
-            # tree_list[f...l-1] is shorter than min_time_req
-
-            if not self.check_min_people(f, l):
-                if not self.check_min_people(l, l):
-                    f = l + 1
-                    l = l + 1
-                for i in range (l, f - 1, - 1):
-                    if not self.check_min_people(i , i):
-                        f = i + 1
-                        break
-                continue
-
-            # ensures tree_list[f...l] has at least one best time
-
-            if check_first:
-
-                if last.end - first.start == self.min_time_required:
-                    sum = 0
-                    for i in range(f, l + 1):
-                        curr = self.tree_list[i]
-                        sum += self.td_to_min(curr.end - curr.start) * curr.time_count
-                    self.k_max_pq_add(sum, f, l)
-                    # print("f: {}, l: {} sum: {}".format(f, l, sum))
-
-                    #f and l changes
-                    f += 1
-                    l += 1
-
-                else:
-                    sum = 0
-                    time_diff = self.min_time_required
-                    for i in range(f, l + 1):
-                        curr = self.tree_list[i]
-                        if time_diff > curr.end - curr.start:
-                            sum += self.td_to_min(curr.end - curr.start) * curr.time_count
-                            time_diff -= curr.end - curr.start
-                        else:
-                            sum += self.td_to_min(time_diff) * curr.time_count
-
-                    self.k_max_pq_add(sum, f, l)
-
-                    if f == l:
-                        f += 1
-                        l += 1
-                    elif last.end - self.min_time_required < first.end:
-                        check_first = False
+            for member in self.partial_attend.keys():
+                if member in new_time_node.members:
+                    before_available_time = self.partial_attend[member]
+                    if before_available_time[1] == new_time_node.start:
+                        # Can expand time
+                        self.partial_attend[member] = (before_available_time[0], new_time_node.end)
                     else:
-                        f += 1
+                        # Take longer time
+                        if new_time_node.end - new_time_node.start > \
+                                        before_available_time[1] - before_available_time[0]:
+                            self.partial_attend[member] = (new_time_node.start, new_time_node.end)
 
-            # not check_first
-            else:
-                sum = 0
-                time_diff = self.min_time_required
-                for i in range(l, f - 1, -1):
-                    curr = self.tree_list[i]
-                    if time_diff > curr.end - curr.start:
-                        sum += self.td_to_min(curr.end - curr.start) * curr.time_count
-                        time_diff -= curr.end - curr.start
-                    else:
-                        sum += self.td_to_min(time_diff) * curr.time_count
-                self.k_max_pq_add(sum, f, l)
+            for member in new_time_node.members:
+                if member not in self.partial_attend.keys() and member not in self.full_attend:
+                    self.partial_attend[member] = (new_time_node.start, new_time_node.end)
 
-                l += 1
+            self.end = new_time_node.end
+            self.weight = self.calculate_weight()
 
-                while l < len(self.tree_list):
-
-                    if not self.check_continuity(f, l):
-                        break
-                    if not self.check_min_people(f, l):
-                        break
-                    if self.tree_list[l].end - time_diff > self.tree_list[f].end:
-                        break
-
-                    sum = 0
-                    time_diff = self.min_time_required
-                    for i in range(l, f - 1, -1):
-                        curr = self.tree_list[i]
-                        if time_diff > curr.end - curr.start:
-                            sum += self.td_to_min(curr.end - curr.start) * curr.time_count
-                            time_diff -= curr.end - curr.start
-                        else:
-                            sum += self.td_to_min(time_diff) * curr.time_count
-
-                    self.k_max_pq_add(sum, f, l)
-                    l += 1
-                f += 1
-                check_first = True
-
-        # to (start_time, end_time) format
-        result = []
-        for indices in self.top_k_list:
-            # print(indices[1], indices[2])
-            # return (sum_weight, start, end)
-            result.append((indices[0], self.tree_list[indices[1]].start, self.tree_list[indices[2]].end))
-        result.sort(key=lambda t: t[0], reverse=True)
-        return result
-
-
-    def make_tree_testing(self):
-        self.tree_list = []
-        self.time_count_tree.append_inorder(self.tree_list, self.min_people)
+    @staticmethod
+    def time_delta_to_minute(time_delta):
+        return time_delta.days * 24 * 60 + time_delta.seconds / 60

@@ -66,7 +66,7 @@ def free_time_list(request, room_id):
         new_free_time_list = []
 
         for ft in new_free_time_dic:
-            new_free_time_list.append((ft['start_time'], ft['end_time']))
+            new_free_time_list.append((ft['start_time'], ft['end_time'], user.username))
 
         btc = BestTimeCalculator(
             current_room.min_time_required,
@@ -74,7 +74,8 @@ def free_time_list(request, room_id):
         )  # default k=3
         btc.insert_time(new_free_time_list)
 
-        result = btc.calculate_best_time()
+        btc.calculate_best_times()
+        result = btc.get_k_best_times()
 
         # delete old best time and replace it with a new one
         best_times = BestTime.objects.filter(room_id=room_id)
@@ -83,12 +84,13 @@ def free_time_list(request, room_id):
 
         # replace best time
         for t in result:
-            new_best_time = BestTime(
-                room=current_room,
-                start_time=t[1],
-                end_time=t[2]
-            )
-            new_best_time.save()
+            if t is not None:
+                new_best_time = BestTime(
+                    room=current_room,
+                    start_time=t.start,
+                    end_time=t.end
+                )
+                new_best_time.save()
 
         return HttpResponse(status=201)
 

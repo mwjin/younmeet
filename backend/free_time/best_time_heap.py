@@ -25,7 +25,7 @@ class BestTimeHeap:
 
     def extract_max(self):
         if self.size == 0:
-            raise BestTimeHeap.HeapEmptyException()
+            return None
         max_item = self.items[0]
         self.size -= 1
         self.items[0] = self.items[self.size]
