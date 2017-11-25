@@ -2,7 +2,7 @@
 export class AuthenticationServiceSpy {
   shouldLogout: boolean = true;
 
-  login = jasmine.createSpy('login').and.callFake((usernameOrEmail: string, password: string) => {
+  logIn = jasmine.createSpy('logIn').and.callFake((usernameOrEmail: string, password: string) => {
     if ((usernameOrEmail == "swpp2017" || usernameOrEmail == "swpp2017@gmail.com") &&
       password == "iluvswpp") {
 
@@ -13,7 +13,7 @@ export class AuthenticationServiceSpy {
     }
   });
 
-  logout = jasmine.createSpy('logout').and.callFake(() => {
+  logOut = jasmine.createSpy('logOut').and.callFake(() => {
     return Promise.resolve(this.shouldLogout);
   });
 }

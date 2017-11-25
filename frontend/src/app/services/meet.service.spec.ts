@@ -6,8 +6,9 @@ import {MockBackend} from "@angular/http/testing";
 import {Room} from "../models/room";
 import {Timespan} from "../models/timespan";
 import {User} from "../models/user";
-import {RoomResponseData} from "./room-response-data";
+import {RoomResponse} from "./room-rest-interfaces";
 import {FormsModule} from "@angular/forms";
+import { CreateRoomForm } from '../create-room/create-room-form';
 
 let TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
@@ -51,7 +52,7 @@ describe('MeetService', () => {
 
   describe('getRoomsCreatedByMe', () => {
     it('gets rooms created by me', async(() => {
-      let mockResponse = <RoomResponseData[]> [
+      let mockResponse = <RoomResponse[]> [
         { name: 'Room 1'},
         { name: 'Room 2'},
         { name: 'Room 3'}
@@ -69,7 +70,7 @@ describe('MeetService', () => {
 
   describe('getRoomsJoinedByMe', () => {
     it('gets rooms joined by me', async(() => {
-      let mockResponse = <RoomResponseData[]> [
+      let mockResponse = <RoomResponse[]> [
         { name: 'Room 1'},
         { name: 'Room 2'},
         { name: 'Room 3'}
@@ -87,7 +88,7 @@ describe('MeetService', () => {
 
   describe('getRoomById', () => {
     it('gets the room by id', async(() => {
-      let mockResponse = <RoomResponseData> { name: "Room", id: 42 };
+      let mockResponse = <RoomResponse> { name: "Room", id: 42 };
       expectUrl(mockBackend, 'api/rooms/42', mockResponse);
       meetService.getRoomById(42).then(res => {
         expect(res.name).toBe("Room");
@@ -116,11 +117,10 @@ describe('MeetService', () => {
 
   describe('addRoom', () => {
     it('creates a new room', async(() => {
-      let mockResponse = <RoomResponseData> { name: "Room to submit", id: 42 };
+      let mockResponse = <RoomResponse> { name: "Room to submit", id: 42 };
       expectUrl(mockBackend, 'api/rooms', mockResponse);
-      let room = new Room("Room to submit");
-      room.id = 42;
-      meetService.addRoom(room).then(res => {
+      let roomForm = new CreateRoomForm("Room to submit", 30, new Timespan(), false);
+      meetService.addRoom(roomForm).then(res => {
         console.log(res);
         expect(res.name).toBe("Room to submit");
         expect(res.id).toBe(42);
@@ -137,6 +137,15 @@ describe('MeetService', () => {
         expect(res.ok).toBe(true);
       });
     }));
+    it('should allow delete of non-existing room', async(() => {
+      let mockResponse = {ok: false};
+      expectUrl(mockBackend, 'api/rooms/42', mockResponse, 404);
+
+      meetService.deleteRoom(42).then(res => {
+        expect(res.status).toBe(404);
+        expect(res.ok).toBe(false);
+      })
+    }))
   });
 
 });

@@ -8,7 +8,6 @@ import json
 
 
 def best_time_list(request, room_id):
-
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
 
@@ -20,8 +19,12 @@ def best_time_list(request, room_id):
         return HttpResponseNotFound()
 
     if request.method == 'GET':
+        best_times = list(BestTime.objects.filter(room_id=room_id).values())
+        for time in best_times:
+            time['start_time'] = time['start_time'].strftime('%Y-%m-%dT%H:%M:%SZ')
+            time['end_time'] = time['end_time'].strftime('%Y-%m-%dT%H:%M:%SZ')
         return JsonResponse(
-            list(BestTime.objects.filter(room_id=room_id).values()),
+            best_times,
             safe=False
         )
 

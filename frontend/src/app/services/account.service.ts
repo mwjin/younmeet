@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptionsArgs } from '@angular/http';
+import { Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
 import { getCSRFHeaders } from '../../util/headers';
@@ -7,24 +7,21 @@ import { getCSRFHeaders } from '../../util/headers';
 @Injectable()
 export class AccountService {
   private accountUrl = '/api/user';
-  private headers = new Headers({ 'Content-Type' : 'application/json' });
 
   constructor(private http: Http) { }
 
-  getUser(id: number): Promise<User> {
-    const url = `${this.accountUrl}/${id}`;
-    return this.http.get(url)
+  getUserDetail(): Promise<User> {
+    return this.http.get(this.accountUrl)
       .toPromise()
       .then(response => response.json() as User)
       .catch(this.handleError);
   }
 
-  putUser(user: User): Promise<User> {
-    const url = `${this.accountUrl}/${user.id}`;
+  putUser(user: User): Promise<boolean> {
     return this.http
-      .put(url, JSON.stringify(user), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+      .put(this.accountUrl, JSON.stringify(user), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
-      .then(() => user)
+      .then(response => response.status === 204)
       .catch(this.handleError);
   }
 
@@ -46,16 +43,15 @@ export class AccountService {
       .catch(this.handleError);
   }
 
-  deleteUser(id: number): Promise<boolean> {
-    const url = `${this.accountUrl}/${id}`;
-    return this.http.delete(url, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+  deleteUser(): Promise<boolean> {
+    return this.http.delete(this.accountUrl, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
       .then((response) => {
         return response.status === 200;
       })
       .catch(this.handleError);
   }
-
+  
   private handleError(error: any): Promise<any> {
     console.error('Error occured', error);
     return Promise.reject(error.message || error);

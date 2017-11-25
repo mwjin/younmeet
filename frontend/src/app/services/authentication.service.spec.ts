@@ -174,7 +174,9 @@ describe('AuthenticationService', () => {
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));
+
   });
 });
+
 
 

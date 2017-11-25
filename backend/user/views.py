@@ -1,6 +1,6 @@
 import json
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.contrib.auth import authenticate, login, logout
@@ -93,6 +93,7 @@ def user_detail(request):
 
         user.set_password(new_password)
         user.save()
+        update_session_auth_hash(request, user)
 
         return HttpResponse(status=204)
 

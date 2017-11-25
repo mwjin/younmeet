@@ -1,8 +1,11 @@
 <h2 class="ui header">Select Available Time
   <button (click)="collectFreeTimes()" class="ui secondary button right floated">Submit</button>
+  <button (click)="deleteAllEvent()" class="ui secondary button right floated">Clear</button>
   <button (click)="deleteEvent()" class="ui red button right floated"
           style="display: none;"
           id="deleteButton">Delete
   </button>
 </h2>
-<calendar-component [options]="calendarOptions" id="calendar"></calendar-component>
+<div *ngIf="previousFreeTimes">
+  <calendar-component [options]="calendarOptions" id="calendar"></calendar-component>
+</div>

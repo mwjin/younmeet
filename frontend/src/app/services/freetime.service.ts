@@ -12,26 +12,21 @@ function handleError(error: any) {
 
 @Injectable()
 export class FreetimeService {
-  /* TODO:
-       Specify url
-     */
-  private url = 'api/room/:id/free-times';
-
   constructor(private http: Http) {}
 
-
-  getFreeTimes(): Promise<Freetime[]> {
-    return this.http.get(this.url)
+  getFreeTimes(id: number): Promise<FreetimeResponseData[]> {
+    return this.http.get(`api/rooms/${id}/free-times`)
       .toPromise()
-      .then(response => response.json() as FreetimeResponseData[])
-      .then(freetimeList => freetimeList.map(
-        freetimeData => FreetimeResponseData.responseToFreetime(freetimeData)
-      ))
+      .then(response => {
+        console.log(response.json());
+        return response.json() as FreetimeResponseData[];
+      })
       .catch(handleError);
   }
 
-  postFreeTimes(freetimes: Freetime[]): Promise<boolean> {
-    return this.http.post(this.url,
+
+  postFreeTimes(freetimes: Freetime[], id: number): Promise<boolean> {
+    return this.http.post(`api/rooms/${id}/free-times`,
       JSON.stringify(freetimes), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()
       .then(response => response.status === 201)
