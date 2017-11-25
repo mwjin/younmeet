@@ -11,6 +11,7 @@ $ coverage html
 
 '''
 
+
 def make_time(str, i=0):
     if i == 0:
         return datetime.strptime('2017-11-1 ' + str, '%Y-%m-%d %H:%M')
@@ -21,7 +22,6 @@ def make_time(str, i=0):
 
 
 def make_time_list(start_list, end_list, member_id):
-
     result = []
     for i in range(3):
         for j in range(len(start_list[i])):
@@ -30,7 +30,6 @@ def make_time_list(start_list, end_list, member_id):
 
 
 class TestBestTime(unittest.TestCase):
-
     def test_no_input(self):
         btc = BestTimeCalculator(
             min_time_required=timedelta(hours=2),
@@ -60,7 +59,7 @@ class TestBestTime(unittest.TestCase):
         ds_start_list = [['08:00', '12:10', '15:20'], ['08:00', '14:00', '17:00'], ['08:00', '12:10', '15:20']]
         ds_end_list = [['11:00', '14:00', '23:00'], ['11:00', '15:30', '23:00'], ['11:00', '14:00', '18:30']]
 
-        K = 3
+        K = 5
 
         btc = BestTimeCalculator(
             min_time_required=timedelta(hours=2),
@@ -81,8 +80,8 @@ class TestBestTime(unittest.TestCase):
 
         prev_sum = 490
         # for i in range (K):
-            # self.assertGreaterEqual(prev_sum, result[i][0])
-            # prev_sum = result[i][0]
+        # self.assertGreaterEqual(prev_sum, result[i][0])
+        # prev_sum = result[i][0]
 
         # self.assertEqual(result[0][0], 480)
         # self.assertEqual(result[1][0], 450)
@@ -99,7 +98,8 @@ class TestBestTime(unittest.TestCase):
                   3, 4, 1, 3, 2, 4, 3]
         self.assertEqual(len(answer), len(time_count_list))
         # for i in range (len(answer)):
-            # self.assertEqual(answer[i], time_count_list[i])
+        # self.assertEqual(answer[i], time_count_list[i])
+
 
 '''
     def test_1day_team_table(self):
@@ -125,9 +125,3 @@ class TestBestTime(unittest.TestCase):
         for t in result:
             self.assertGreater(t[0], 350)
 '''
-
-
-
-
-
-
