@@ -30,7 +30,7 @@ class BestTimeCalculator:
                         break
 
                     if next_node.end - next_node.start < self.min_time_required:
-                        # if the next node exceeds min_time_requried, merging will product duplicate result
+                        # if the next node exceeds min_time_required, merging will product duplicate result
                         new_best_time.expand_best_time(next_node)
                         if new_best_time.end - new_best_time.start >= self.min_time_required:
                             break
@@ -64,8 +64,8 @@ class BestTimeCalculator:
             print('full_attend:', self.full_attend)
             print('partial_attend:')
             for member in self.partial_attend.keys():
-                print('\t{:s} from'.format(member), self.partial_attend[member][0], ' to',
-                      self.partial_attend[member][1])
+                print('\t{:s} from'.format(member), self.partial_attend[member]['start'], ' to',
+                      self.partial_attend[member]['end'])
             print()
             return ''
 
@@ -73,7 +73,7 @@ class BestTimeCalculator:
             weight = 0
             weight += (BestTimeCalculator.time_delta_to_minute(self.end - self.start) * len(self.full_attend) ** 1.5)
             for time_node in self.partial_attend.values():
-                weight += BestTimeCalculator.time_delta_to_minute(time_node[1] - time_node[0])
+                weight += BestTimeCalculator.time_delta_to_minute(time_node['end'] - time_node['start'])
             return weight
 
         def expand_best_time(self, new_time_node):
@@ -82,7 +82,7 @@ class BestTimeCalculator:
             for member in self.full_attend:
                 if member not in new_time_node.members:
                     remove_members.append(member)
-                    self.partial_attend[member] = (self.start, self.end)
+                    self.partial_attend[member] = {'start': self.start, 'end': self.end}
 
             for member in remove_members:
                 self.full_attend.remove(member)
@@ -90,18 +90,21 @@ class BestTimeCalculator:
             for member in self.partial_attend.keys():
                 if member in new_time_node.members:
                     before_available_time = self.partial_attend[member]
-                    if before_available_time[1] == new_time_node.start:
+                    if before_available_time['end'] == new_time_node.start:
                         # Can expand time
-                        self.partial_attend[member] = (before_available_time[0], new_time_node.end)
+                        self.partial_attend[member]['start'] = before_available_time['start']
+                        self.partial_attend[member]['end'] = new_time_node.end
                     else:
                         # Take longer time
                         if new_time_node.end - new_time_node.start > \
-                                        before_available_time[1] - before_available_time[0]:
-                            self.partial_attend[member] = (new_time_node.start, new_time_node.end)
+                                        before_available_time['end'] - before_available_time['start']:
+                            self.partial_attend[member]['start'] = new_time_node.start
+                            self.partial_attend[member]['end'] = new_time_node.end
 
             for member in new_time_node.members:
                 if member not in self.partial_attend.keys() and member not in self.full_attend:
-                    self.partial_attend[member] = (new_time_node.start, new_time_node.end)
+                    self.partial_attend[member]['start'] = new_time_node.start
+                    self.partial_attend[member]['end'] = new_time_node.end
 
             self.end = new_time_node.end
             self.weight = self.calculate_weight()

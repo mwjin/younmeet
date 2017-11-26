@@ -85,10 +85,20 @@ def free_time_list(request, room_id):
         # replace best time
         for t in result:
             if t is not None:
+                partial_attend_dict = t.partial_attend
+                partial_attend_list = []
+                for username in partial_attend_dict.keys():
+                    partial_attend_list.append(json.dumps({
+                        'username': username,
+                        'start': partial_attend_dict[username]['start'],
+                        'end': partial_attend_dict[username]['end']
+                    }))
                 new_best_time = BestTime(
                     room=current_room,
                     start_time=t.start,
-                    end_time=t.end
+                    end_time=t.end,
+                    full_attend=list(t.full_attend),
+                    partial_attend=partial_attend_list
                 )
                 new_best_time.save()
 
