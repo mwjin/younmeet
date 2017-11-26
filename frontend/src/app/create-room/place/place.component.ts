@@ -19,7 +19,6 @@ export class PlaceComponent implements OnInit {
   public searchControl: FormControl;
   public zoom: number;
   private room_id: number;
-  private positionSet: boolean;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -37,20 +36,21 @@ export class PlaceComponent implements OnInit {
         return this.meetService.getRoomById(this.room_id);
       })
       .subscribe(room => {
-        if (isUndefined(room.latitude) && isUndefined(room.longitude))
-          this.positionSet = false;
-        else
-          this.positionSet = true;
-        console.log("position set", this.positionSet);
+        console.log("Init lat: ", room.latitude);
+        if (room.latitude == null || room.longitude == null) {
+          this.setCurrentPosition();
+        }
+        else {
+          this.latitude = room.latitude;
+          this.longitude = room.longitude;
+        }
       });
 
   }
 
   ngOnInit() {
     //set google maps defaults
-    this.zoom = 4;
-    this.latitude = 37.459882;
-    this.longitude = 126.95190530000002;
+    this.zoom = 15;
     let options = {
       componentRestrictions: {country: 'kr'}
     };
@@ -58,12 +58,7 @@ export class PlaceComponent implements OnInit {
     //create search FormControl
     this.searchControl = new FormControl();
 
-    //set current position
-    if (!this.positionSet)
-      this.setCurrentPosition();
-
     //load Places Autocomplete
-
     this.mapsAPILoader.load().then(() => {
           let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
           autocomplete.addListener("place_changed", () => {

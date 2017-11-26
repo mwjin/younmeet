@@ -107,10 +107,8 @@ def set_place(request, room_id):
     if request.method == 'PUT':
         data = json.loads(request.body.decode())
         room.__setattr__('place', data['place'])
-        room.__setattr__(
-            'position',
-            Geoposition(data['latitude'], data['longitude'])
-        )
+        room.__setattr__('latitude', data['latitude'])
+        room.__setattr__('longitude', data['longitude'])
         room.save()
         return HttpResponse(status=200)
     else:
