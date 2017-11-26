@@ -7,6 +7,8 @@ export interface RoomResponse {
   id: number;
   name: string;
   place: string;
+  latitude: number;
+  longitude: number;
   best_start_time: Date;
   best_end_time: Date;
   min_time_required: number;
@@ -22,6 +24,8 @@ export function roomToResponse(room: Room): RoomResponse {
     id: room.id,
     name: room.name,
     place: room.place,
+    latitude: room.latitude,
+    longitude: room.longitude,
     best_start_time: null,
     best_end_time: null,
     min_time_required: room.duration,
@@ -40,6 +44,8 @@ export function roomFromResponse(res: RoomResponse): Room {
     timespan: new Timespan(res.time_span_start, res.time_span_end),
     anonymity: false,
     place: res.place,
+    latitude: res.latitude,
+    longitude: res.longitude,
     urgent: true,
     createdTime: res.created_time,
     users: res.members? res.members.map(id => new UserInfo(id)) : [],

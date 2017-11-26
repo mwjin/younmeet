@@ -133,8 +133,8 @@ export class MeetServiceSpy {
   );
 
   addRoom = jasmine.createSpy('addRoom').and.callFake((room: Room) => {
-    room.id = this.rooms.length;
     this.rooms.push(room);
+    room.id = this.rooms.length;
     return Promise.resolve(room);
   });
 

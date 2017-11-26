@@ -7,6 +7,7 @@ import json
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
 from django.forms.models import model_to_dict
+from geoposition import Geoposition
 
 from .models import Room
 
@@ -49,7 +50,7 @@ def room_list(request):
 
         # does not add this user to new_room.users
         # room.user is only added when selecting free_time
-        return JsonResponse(model_to_dict(new_room, exclude='members'), safe=False)
+        return JsonResponse(model_to_dict(new_room, exclude='members').popitem('position'), safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -106,6 +107,10 @@ def set_place(request, room_id):
     if request.method == 'PUT':
         data = json.loads(request.body.decode())
         room.__setattr__('place', data['place'])
+        room.__setattr__(
+            'position',
+            Geoposition(data['latitude'], data['longitude'])
+        )
         room.save()
         return HttpResponse(status=200)
     else:

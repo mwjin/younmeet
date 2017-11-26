@@ -4,6 +4,8 @@ import { MapsAPILoader } from '@agm/core';
 import {FormControl} from "@angular/forms";
 import {MeetService} from "../../services/meet.service";
 import {ActivatedRoute} from "@angular/router";
+import { Location } from '@angular/common';
+import {isUndefined} from "util";
 
 
 @Component({
@@ -17,6 +19,7 @@ export class PlaceComponent implements OnInit {
   public searchControl: FormControl;
   public zoom: number;
   private room_id: number;
+  private positionSet: boolean;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -26,12 +29,21 @@ export class PlaceComponent implements OnInit {
     private ngZone: NgZone,
     private meetService: MeetService,
     private route: ActivatedRoute,
+    private location: Location,
   ) {
     this.route.params
-      .subscribe(params => {
+      .flatMap(params => {
         this.room_id = +params[ 'id' ];
-        console.log(this.room_id);
+        return this.meetService.getRoomById(this.room_id);
+      })
+      .subscribe(room => {
+        if (isUndefined(room.latitude) && isUndefined(room.longitude))
+          this.positionSet = false;
+        else
+          this.positionSet = true;
+        console.log("position set", this.positionSet);
       });
+
   }
 
   ngOnInit() {
@@ -47,9 +59,11 @@ export class PlaceComponent implements OnInit {
     this.searchControl = new FormControl();
 
     //set current position
-    this.setCurrentPosition();
+    if (!this.positionSet)
+      this.setCurrentPosition();
 
     //load Places Autocomplete
+
     this.mapsAPILoader.load().then(() => {
           let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
           autocomplete.addListener("place_changed", () => {
@@ -66,9 +80,7 @@ export class PlaceComponent implements OnInit {
               this.latitude = place.geometry.location.lat();
               this.longitude = place.geometry.location.lng();
               this.zoom = 17;
-              this.meetService.putPlace(this.room_id, place.name);
-              console.log(this.room_id);
-              console.log(place.name);
+              this.meetService.putPlace(this.room_id, place.name, this.latitude, this.longitude);
             });
           });
         });

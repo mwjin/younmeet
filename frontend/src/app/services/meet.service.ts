@@ -104,10 +104,10 @@ export class MeetService {
       .catch(handleError);
   }
 
-  putPlace(room_id: number, place: string): void {
+  putPlace(room_id: number, place: string, latitude: number, longitude: number): void {
     this.http.put(
       `api/rooms/${room_id}/place`,
-      {'place': place},
+      {'place_name': place, 'latitude': latitude, 'longitude': longitude},
       <RequestOptionsArgs>{ headers : getCSRFHeaders() }
     )
       .toPromise()
