@@ -28,11 +28,12 @@ export class RoomDetailComponent implements OnInit {
 
   shareableLink: string;
   linkCopied: boolean = false;
+  _popupOpen: boolean = false;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private meetService: MeetService,
-              private location: Location) {
+              private location: Location,) {
     this.route.params
       .flatMap(params => {
         let roomId = +params[ 'id' ];
@@ -55,6 +56,7 @@ export class RoomDetailComponent implements OnInit {
         return Observable.forkJoin(getMembers, getBestTime);
       })
       .subscribe();
+
   }
 
   ngOnInit() {
@@ -67,6 +69,4 @@ export class RoomDetailComponent implements OnInit {
   goTimeSelectPage(): void {
     this.router.navigate([ 'room', this.room.id, 'time' ]);
   }
-
-
 }

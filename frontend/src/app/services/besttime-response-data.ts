@@ -21,10 +21,8 @@ class PartialAttendInfoResponseData {
   end: string;
 
   static responseToPartialAttend(response: PartialAttendInfoResponseData): Partialattendinfo {
-    return {
-      username : response.username,
-      start : new Date(response.start),
-      end : new Date(response.end)
-    };
+    return new Partialattendinfo(response.username,
+      new Date(response.start),
+      new Date(response.end));
   }
 }
