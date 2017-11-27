@@ -40,12 +40,12 @@
   {{room.place}}
 
   <h2>Available Time</h2>
-  <div class="ui list" *ngFor="let timespan of availableTime; let i = index">
+  <div class="ui list" *ngFor="let bestTime of availableTime; let i = index">
     <div class="item">
       <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
-      <b>{{timespan.getDate()[0]}}: &nbsp;</b>
-      {{timespan.getStartTime()}} ~ {{timespan.getEndTime()}}
-      ({{timespan.getDuration()}})
+      <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+      {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
+      ({{bestTime.getDuration()}})
       <br>
     </div>
   </div>
