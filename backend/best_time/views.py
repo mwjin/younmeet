@@ -1,10 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
-from django.forms.models import model_to_dict
 from .models import BestTime
 from room.models import Room
-from datetime import datetime, timedelta
-import json
 
 
 def best_time_list(request, room_id):
@@ -19,14 +16,19 @@ def best_time_list(request, room_id):
         return HttpResponseNotFound()
 
     if request.method == 'GET':
-        best_times = list(BestTime.objects.filter(room_id=room_id).values())
-        for time in best_times:
-            time['start_time'] = time['start_time'].strftime('%Y-%m-%dT%H:%M:%SZ')
-            time['end_time'] = time['end_time'].strftime('%Y-%m-%dT%H:%M:%SZ')
-        return JsonResponse(
-            best_times,
-            safe=False
-        )
-
+        best_times = BestTime.objects.filter(room_id=room_id).all()
+        best_times_list = []
+        for best_time in best_times:
+            best_time_dict = dict()
+            best_time_dict['start_time'] = best_time.start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            best_time_dict['end_time'] = best_time.start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            best_time_dict['full_attend'] = list(map(lambda user: user.username, list(best_time.full_attend.all())))
+            partial_attends = list(best_time.partial_attend.values())
+            for partial_attend in partial_attends:
+                partial_attend['start'] = partial_attend['start'].strftime('%Y-%m-%dT%H:%M:%SZ')
+                partial_attend['end'] = partial_attend['end'].strftime('%Y-%m-%dT%H:%M:%SZ')
+            best_time_dict['partial_attend'] = partial_attends
+            best_times_list.append(best_time_dict)
+        return JsonResponse(best_times_list, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])

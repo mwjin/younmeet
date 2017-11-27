@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField, JSONField
 from room.models import Room
+from django.conf import settings
 
 
 class BestTime(models.Model):
@@ -12,6 +12,9 @@ class BestTime(models.Model):
         related_name='best_times',
     )
 
-    full_attend = ArrayField(models.CharField(max_length=200), null=True, blank=True)
-
-    # partial_attend = ArrayField(JSONField(), blank=True, default=[])
+    full_attend = models.ManyToManyField(
+        # each user has many fully attend best time
+        # each best time has many fully attend user
+        settings.AUTH_USER_MODEL,
+        related_name='fully_attend_time',
+    )

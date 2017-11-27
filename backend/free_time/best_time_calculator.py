@@ -13,9 +13,6 @@ class BestTimeCalculator:
 
     def calculate_best_times(self):
         time_node_list = self.time_count_tree.append_inorder(self.min_people)
-        for t in time_node_list:
-            print(t)
-
         for i in range(len(time_node_list)):
             time_node = time_node_list[i]
             new_best_time = BestTimeCalculator.BestTime(time_node)
