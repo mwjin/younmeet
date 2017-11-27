@@ -12,7 +12,11 @@ matrix:
         - cd backend
         - python3 manage.py migrate
       script:
-        - coverage run manage.py test
+        - coverage run --branch manage.py test user
+        - coverage run --branch manage.py test free_time 
+        - coverage run --branch manage.py test best_time
+        - coverage run --branch manage.py test room
+        - coverage run --branch manage.py test partial_attend_info
       after_success:
         - coveralls
       after_script:
