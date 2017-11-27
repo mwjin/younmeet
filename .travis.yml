@@ -12,7 +12,7 @@ matrix:
         - cd backend
         - python3 manage.py migrate
       script:
-        - coverage run managy.py test
+        - coverage run manage.py test
       after_success:
         - coveralls
       after_script:
