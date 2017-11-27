@@ -31,15 +31,15 @@ class BestTimeCalculator:
                         new_best_time.expand_best_time(next_node)
                         if new_best_time.end - new_best_time.start >= self.min_time_required:
                             break
-
-                if new_best_time.end - new_best_time.start >= self.min_time_required:
+                if new_best_time.end - new_best_time.start >= self.min_time_required \
+                        and len(new_best_time.full_attend) >= self.min_people:
                     self.best_k_times.insert(new_best_time)
 
     # inputs list of pair (start, end)
     def insert_time(self, time_list):
         for time in time_list:
             self.time_count_tree.insert(time[0], time[1], time[2])
-            # inserting (start_time, end_time, member_id)
+            # inserting (start_time, end_time, member)
 
     def get_k_best_times(self):
         k_times = []
@@ -56,15 +56,16 @@ class BestTimeCalculator:
             self.weight = self.calculate_weight()
 
         def __str__(self):
-            print('starttime:', self.start)
-            print('endtime:', self.end)
-            print('full_attend:', self.full_attend)
-            print('partial_attend:')
-            for member in self.partial_attend.keys():
-                print('\t{:s} from'.format(member), self.partial_attend[member]['start'], ' to',
-                      self.partial_attend[member]['end'])
-            print()
-            return ''
+            msg = ''
+            msg += 'starttime:'
+            msg += str(self.start)
+            msg += '\nendtime:'
+            msg += str(self.end)
+            msg += '\nfull_attend:'
+            msg += str(self.full_attend)
+            msg += '\npartial_attend'
+            msg += str(self.partial_attend)
+            return msg
 
         def calculate_weight(self):
             weight = 0
@@ -100,6 +101,7 @@ class BestTimeCalculator:
 
             for member in new_time_node.members:
                 if member not in self.partial_attend.keys() and member not in self.full_attend:
+                    self.partial_attend[member] = dict()
                     self.partial_attend[member]['start'] = new_time_node.start
                     self.partial_attend[member]['end'] = new_time_node.end
 

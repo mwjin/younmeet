@@ -1,9 +1,8 @@
-from best_time_heap import BestTimeHeap
+from .best_time_heap import BestTimeHeap
 
 import unittest
 import sys
 import io
-import math
 
 
 class BestTimeMock:
@@ -21,25 +20,12 @@ class BestTimeHeapTester(unittest.TestCase):
     def test_best_time_mock_str(self):
         self.assertEqual(str(BestTimeMock(1)), '1')
 
-    def test_empty_exception_str(self):
-        empty_exception = BestTimeHeap.HeapEmptyException()
-        self.assertEqual(str(empty_exception), 'Heap contains nothing')
-
     def test_insert_case(self):
         self.heap.insert(BestTimeMock(10))
         self.assertEqual(self.heap.size, 1)
 
-    def test_empty_heap_exception(self):
-        with self.assertRaises(BestTimeHeap.HeapEmptyException):
-            self.heap.extract_max()
-
-    def test_peek_max_weight(self):
-        self.heap.insert(BestTimeMock(1))
-        self.heap.insert(BestTimeMock(3))
-        self.assertEqual(self.heap.peek_max_weight(), 3)
-
-    def test_peek_max_weight_in_empty_heap(self):
-        self.assertEqual(self.heap.peek_max_weight(), -math.inf)
+    def test_empty_heap_return_None(self):
+        self.assertEqual(self.heap.extract_max(), None)
 
     def test_extract_min(self):
         self.heap.insert(BestTimeMock(10))

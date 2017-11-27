@@ -1,6 +1,3 @@
-import math
-
-
 class BestTimeHeap:
     def __init__(self):
         self.items = []
@@ -14,10 +11,6 @@ class BestTimeHeap:
         msg += ']'
         return msg
 
-    class HeapEmptyException(Exception):
-        def __str__(self):
-            return 'Heap contains nothing'
-
     def insert(self, besttime):
         self.items.append(besttime)
         self.sift_up(self.size)
@@ -25,18 +18,13 @@ class BestTimeHeap:
 
     def extract_max(self):
         if self.size == 0:
-            raise BestTimeHeap.HeapEmptyException()
+            return None
         max_item = self.items[0]
         self.size -= 1
         self.items[0] = self.items[self.size]
         self.sift_down(0)
 
         return max_item
-
-    def peek_max_weight(self):
-        if self.size == 0:
-            return -math.inf
-        return self.items[0].weight
 
     def print_heap(self):
         for item in self.items:

@@ -46,6 +46,8 @@ person that has free time(start_time, end_time)
 
 '''
 
+import math
+
 
 class TimeCountTree:
     def __init__(self, node=None):
@@ -80,7 +82,7 @@ class TimeCountTree:
         if split_left is not None:
             root.left = self._insert(split_left, root.left)
             if TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right) == 2:
-                if root.left.start > split_left.start:
+                if TimeCountTree.get_height(root.left.left) > TimeCountTree.get_height(root.left.right):
                     root = TimeCountTree.right_rotate(root)
                 else:
                     root = TimeCountTree.double_right_rotate(root)
@@ -88,7 +90,7 @@ class TimeCountTree:
         if split_right is not None:
             root.right = self._insert(split_right, root.right)
             if TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right) == -2:
-                if root.right.start <= split_right.start:
+                if TimeCountTree.get_height(root.right.right) > TimeCountTree.get_height(root.right.left):
                     root = TimeCountTree.left_rotate(root)
                 else:
                     root = TimeCountTree.double_left_rotate(root)
@@ -112,8 +114,19 @@ class TimeCountTree:
         if node.right is not None:
             self._append_inorder(node.right, tree_list, min_people)
 
+    def check_balanced(self):
+        return self._check_balanced(self.root)
+
+    def _check_balanced(self, root):
+        if root is None:
+            return True
+        return self._check_balanced(root.left) \
+               and math.fabs(TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right)) < 2 \
+               and self._check_balanced(root.right)
+
     @staticmethod
     def split_node(inserted_node, root):
+        # new left is not None
         if inserted_node.start < root.start:
             if inserted_node.end > root.end:
                 new_left = TimeCountTree.TimeCountNode(inserted_node.start, root.start, inserted_node.time_count,
@@ -164,7 +177,7 @@ class TimeCountTree:
                 new_right = None
             else:
                 new_left = None
-                new_self = TimeCountTree.TimeCountNode(root.start, inserted_node.end,
+                new_self = TimeCountTree.TimeCountNode(inserted_node.start, inserted_node.end,
                                                        root.time_count + inserted_node.time_count,
                                                        root.members + inserted_node.members)
                 new_right = TimeCountTree.TimeCountNode(inserted_node.end, root.end, root.time_count,
@@ -187,12 +200,12 @@ class TimeCountTree:
                                                             inserted_node.time_count,
                                                             inserted_node.members)
             elif inserted_node.end == root.end:
-                new_left = TimeCountTree.TimeCountNode(root.start, inserted_node.start, root.time_count,
+                new_left = None
+                new_self = TimeCountTree.TimeCountNode(root.start, inserted_node.start, root.time_count,
                                                        root.members)
-                new_self = TimeCountTree.TimeCountNode(inserted_node.start, inserted_node.end,
-                                                       root.time_count + inserted_node.time_count,
-                                                       root.members + inserted_node.members)
-                new_right = None
+                new_right = TimeCountTree.TimeCountNode(inserted_node.start, inserted_node.end,
+                                                        root.time_count + inserted_node.time_count,
+                                                        root.members + inserted_node.members)
 
             else:
                 new_left = TimeCountTree.TimeCountNode(root.start, inserted_node.start, root.time_count,

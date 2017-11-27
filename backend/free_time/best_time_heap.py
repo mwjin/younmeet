@@ -1,6 +1,3 @@
-import math
-
-
 class BestTimeHeap:
     def __init__(self):
         self.items = []
@@ -13,10 +10,6 @@ class BestTimeHeap:
             msg += ', '
         msg += ']'
         return msg
-
-    class HeapEmptyException(Exception):
-        def __str__(self):
-            return 'Heap contains nothing'
 
     def insert(self, besttime):
         self.items.append(besttime)

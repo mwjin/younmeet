@@ -21,7 +21,7 @@ def best_time_list(request, room_id):
         for best_time in best_times:
             best_time_dict = dict()
             best_time_dict['start_time'] = best_time.start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            best_time_dict['end_time'] = best_time.start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            best_time_dict['end_time'] = best_time.end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             best_time_dict['full_attend'] = list(map(lambda user: user.username, list(best_time.full_attend.all())))
             partial_attends = list(best_time.partial_attend.values())
             for partial_attend in partial_attends:
