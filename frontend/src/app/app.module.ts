@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule, SuiPopupModule } from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
@@ -24,6 +24,7 @@ import { TimeSelectComponent } from './room-detail/time-select/time-select.compo
 import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
 import { ProfileComponent } from './dashboard/profile/profile.component';
+import { SuiPopup } from 'ng2-semantic-ui/dist';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -62,7 +63,8 @@ export function MyCookieStrategy() {
     ReactiveFormsModule,
     SuiModule,
     ClipboardModule,
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    SuiPopupModule
   ],
   providers : [
     AccountService,

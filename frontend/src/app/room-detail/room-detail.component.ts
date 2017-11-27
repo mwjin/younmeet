@@ -3,16 +3,11 @@ import { Room } from '../models/room';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetService } from '../services/meet.service';
 
-import { User } from '../models/user';
-import { AccountService } from '../services/account.service';
-import { Timespan } from '../models/timespan';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
 import { UserInfo } from '../models/user-info';
 import { Location } from '@angular/common';
-import * as moment from 'moment';
-import { TimespanResponseData } from '../services/timespan-response-data';
 import { BesttimeResponseData } from '../services/besttime-response-data';
 import { Besttime } from '../models/besttime';
 
