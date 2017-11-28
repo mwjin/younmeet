@@ -43,9 +43,13 @@
       <agm-marker [latitude]="room.latitude" [longitude]="room.longitude"></agm-marker>
     </agm-map>
   </div>
-  `
+  <br/>
+  <div *ngIf="isRoomOwner" class="two wide column">
+    <button (click)="goPlaceChangePage()" class="ui button left floated">Change</button>
+  </div>
 
 
+  <br/>
   <h2>Available Time</h2>
   <div class="ui list" *ngFor="let timespan of availableTime; let i = index">
     <div class="item">

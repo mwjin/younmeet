@@ -24,6 +24,7 @@ export class RoomDetailComponent implements OnInit {
   members: UserInfo[];
   availableTime: Timespan[];
   zoom: number;
+  isRoomOwner: boolean;
 
   shareableLink: string;
   linkCopied: boolean = false;
@@ -31,7 +32,8 @@ export class RoomDetailComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private meetService: MeetService,
-              private location: Location) {
+              private location: Location,
+              private accountService: AccountService) {
     this.route.params
       .flatMap(params => {
         let roomId = +params[ 'id' ];
@@ -40,17 +42,22 @@ export class RoomDetailComponent implements OnInit {
       })
       .flatMap(room => {
         this.room = room;
-        console.log(room);
         let getMembers = this.meetService.getUsersInRoom(this.room.id)
           .then(members => {
             this.members = members.filter(user => user.id !== room.owner.id);
             this.members.unshift(members.filter(user => user.id === room.owner.id)[ 0 ]);
           });
+        this.accountService.getUserDetail().then(currUser=> {
+          if (currUser.id === this.room.owner.id)
+            this.isRoomOwner = true;
+          else
+            this.isRoomOwner = false;
+          console.log(this.isRoomOwner);
+        });
         let getAvailableTime = this.meetService.getAvailableTime(this.room.id)
           .then(availableTime => {
             this.availableTime = availableTime.map(
               timeSpanData => TimespanResponseData.responseToFreetime(timeSpanData));
-            console.log(this.availableTime);
           });
         return Observable.forkJoin(getMembers, getAvailableTime);
       })
@@ -68,6 +75,11 @@ export class RoomDetailComponent implements OnInit {
   goTimeSelectPage(): void {
     this.router.navigate([ 'room', this.room.id, 'time' ]);
   }
+
+  goPlaceChangePage(): void {
+    this.router.navigate([ 'room', this.room.id, 'place' ]);
+  }
+
 
 
 }

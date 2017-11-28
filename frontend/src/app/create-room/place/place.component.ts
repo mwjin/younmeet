@@ -3,11 +3,10 @@ import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
 import {FormControl} from "@angular/forms";
 import {MeetService} from "../../services/meet.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { Location } from '@angular/common';
 import {isUndefined} from "util";
 import {AccountService} from "../../services/account.service";
-
 
 @Component({
   selector: 'app-place',
@@ -20,6 +19,8 @@ export class PlaceComponent implements OnInit {
   public searchControl: FormControl;
   public zoom: number;
   private room_id: number;
+  private place: google.maps.places.PlaceResult
+  private firstTimePlaceSetting: boolean;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -31,6 +32,7 @@ export class PlaceComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private accountService: AccountService,
+    private router: Router,
   ) {
     this.route.params
       .flatMap(params => {
@@ -41,17 +43,19 @@ export class PlaceComponent implements OnInit {
         accountService.getUserDetail().then(
           user => {
             if (user.id !== room.owner.id) {
-              alert("Not allowed!");
+              alert("Not allowed!\nNot owner of this room!");
               location.back();
             }
           }
         );
         if (room.latitude == null || room.longitude == null) {
           this.setCurrentPosition();
+          this.firstTimePlaceSetting = false;
         }
         else {
           this.latitude = room.latitude;
           this.longitude = room.longitude;
+          this.firstTimePlaceSetting = true;
         }
       });
 
@@ -73,18 +77,15 @@ export class PlaceComponent implements OnInit {
           autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
               //get the place result
-              let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+              this.place= autocomplete.getPlace();
+
 
               //verify result
-              if (place.geometry === undefined || place.geometry === null) {
+              if (this.place.geometry === undefined || this.place.geometry === null) {
                 return;
               }
-
-              //set latitude, longitude and zoom
-              this.latitude = place.geometry.location.lat();
-              this.longitude = place.geometry.location.lng();
-              this.zoom = 17;
-              this.meetService.putPlace(this.room_id, place.name, this.latitude, this.longitude);
+              this.latitude = this.place.geometry.location.lat();
+              this.longitude = this.place.geometry.location.lng();
             });
           });
         });
@@ -99,4 +100,19 @@ export class PlaceComponent implements OnInit {
       });
     }
   }
+
+  private onSubmit(): void {
+    this.zoom = 17;
+    this.meetService.putPlace(this.room_id, this.place.name, this.latitude, this.longitude).then(
+       isPutPlaceSuccess => {
+        if (isPutPlaceSuccess) {
+          if (this.firstTimePlaceSetting)
+            this.router.navigate(['room', this.room_id]);
+          else
+            this.router.navigate(['room', this.room_id, 'time']);
+        }
+      }
+    );
+  }
+
 }
