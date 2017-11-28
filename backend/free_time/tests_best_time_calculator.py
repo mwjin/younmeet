@@ -221,7 +221,7 @@ class BestTimeCalculatorTest(unittest.TestCase):
             [convert_to_datetime('2017-11-03 15:20'), convert_to_datetime('2017-11-03 18:30'), 'user4'],
         ]
 
-        calculator = BestTimeCalculator(timedelta(minutes=2), min_people=4, k=4)
+        calculator = BestTimeCalculator(timedelta(hours=1, minutes=30), min_people=4, k=3)
 
         calculator.insert_time(time1)
         calculator.insert_time(time2)
@@ -231,10 +231,8 @@ class BestTimeCalculatorTest(unittest.TestCase):
         k_times = calculator.get_k_best_times()
         self.assertEqual(k_times[0].start, datetime(2017, 11, 2, 17, 0))
         self.assertEqual(k_times[0].end, datetime(2017, 11, 2, 20, 0))
-        self.assertEqual(k_times[1].start, datetime(2017, 11, 1, 15, 30))
-        self.assertEqual(k_times[1].end, datetime(2017, 11, 1, 17, 0))
-        self.assertEqual(k_times[2].start, datetime(2017, 11, 3, 15, 20))
-        self.assertEqual(k_times[2].end, datetime(2017, 11, 3, 16, 50))
+        self.assertEqual(k_times[1].end - k_times[1].start, timedelta(hours=1, minutes=30))
+        self.assertEqual(k_times[2].end - k_times[2].start, timedelta(hours=1, minutes=30))
 
     def test_expand_best_time_redistribution(self):
         node1 = TimeCountTree.TimeCountNode(start=datetime(2017, 11, 1),
