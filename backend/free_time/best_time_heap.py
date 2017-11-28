@@ -35,8 +35,12 @@ class BestTimeHeap:
         while k > 0:
             parent = int((k - 1) / 2)
 
-            if self.items[parent].weight >= self.items[k].weight:
+            if self.items[parent].weight > self.items[k].weight:
                 return
+            elif self.items[parent].weight == self.items[k].weight:
+                # if has same weight, the earlier, the better
+                if self.items[parent].start <= self.items[k].start:
+                    return
             self.items[parent], self.items[k] = self.items[k], self.items[parent]
 
             k = parent
@@ -50,8 +54,11 @@ class BestTimeHeap:
                     child = 2 * k + 2
                 else:
                     child = 2 * k + 1
-            if self.items[k].weight >= self.items[child].weight:
+            if self.items[k].weight > self.items[child].weight:
                 return
+            elif self.items[k].weight == self.items[child].weight:
+                if self.items[k].start <= self.items[child].start:
+                    return
 
             self.items[child], self.items[k] = self.items[k], self.items[child]
 

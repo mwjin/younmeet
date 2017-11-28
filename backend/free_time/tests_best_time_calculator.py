@@ -79,6 +79,27 @@ class BestTimeCalculatorTest(unittest.TestCase):
         self.assertEqual(k_times[1], None)
         self.assertEqual(k_times[2], None)
 
+    def test_single_person_same_time_span_different_start(self):
+        # from heap criteria, the earlier times will come first
+        times = [
+            [convert_to_datetime('2017-11-01 11:00'), convert_to_datetime('2017-11-01 14:00'), 'user'],
+            [convert_to_datetime('2017-11-01 07:00'), convert_to_datetime('2017-11-01 10:00'), 'user'],
+            [convert_to_datetime('2017-11-01 15:00'), convert_to_datetime('2017-11-01 18:00'), 'user'],
+        ]
+
+        calculator = BestTimeCalculator(timedelta(hours=3), min_people=1, k=3)
+
+        calculator.insert_time(times)
+        calculator.calculate_best_times()
+        k_times = calculator.get_k_best_times()
+
+        self.assertEqual(k_times[0].start, datetime(2017, 11, 1, 7, 0))
+        self.assertEqual(k_times[0].end, datetime(2017, 11, 1, 10, 0))
+        self.assertEqual(k_times[1].start, datetime(2017, 11, 1, 11, 0))
+        self.assertEqual(k_times[1].end, datetime(2017, 11, 1, 14, 0))
+        self.assertEqual(k_times[2].start, datetime(2017, 11, 1, 15, 0))
+        self.assertEqual(k_times[2].end, datetime(2017, 11, 1, 18, 0))
+
     def test_two_people_do_not_intersect(self):
         # do not intersect => no best time
         time1 = [
