@@ -26,14 +26,16 @@ def room_list(request):
         place = data['place']
         time_span_start = parse(data['time_span_start'], ignoretz=True)
         time_span_end = parse(data['time_span_end'], ignoretz=True)
-        t = int(data['min_time_required'])
+        time = int(data['min_time_required'])
+        min_members = int(data['min_members'])
 
-        min_time_required = timedelta(hours=int(t / 60), minutes=t % 60)
+        min_time_required = timedelta(hours=int(time / 60), minutes=time % 60)
 
         new_room = Room(
             name=name,
             place=place,
             min_time_required=min_time_required,
+            min_members=min_members,
             time_span_end=time_span_end,
             time_span_start=time_span_start,
             owner=user

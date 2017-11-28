@@ -6,8 +6,9 @@ import io
 
 
 class BestTimeMock:
-    def __init__(self, weight):
+    def __init__(self, weight, start=1):
         self.weight = weight
+        self.start = start
 
     def __str__(self):
         return str(self.weight)
@@ -52,3 +53,17 @@ class BestTimeHeapTester(unittest.TestCase):
         sys.stdout = sys.__stdout__
 
         self.assertEqual(capture_string.getvalue(), '10, ')
+
+    def test_sift_up_when_same_weight(self):
+        self.heap.insert(BestTimeMock(10, 5))
+        self.heap.insert(BestTimeMock(10, 1))
+
+        self.assertEqual(self.heap.extract_max().start, 1)
+
+    def test_sift_down_when_same_weight(self):
+        self.heap.insert(BestTimeMock(100, 5))
+        self.heap.insert(BestTimeMock(10, 1))
+        self.heap.insert(BestTimeMock(10, 5))
+
+        self.heap.extract_max()
+        self.assertEqual(self.heap.extract_max().start, 1)

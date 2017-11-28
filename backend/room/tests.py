@@ -18,7 +18,6 @@ def time_delta_handler(x):
 
 
 class RoomTestCase(TestCase):
-
     def setUp(self):
         User.objects.create_user(email='email1', password='password1', username='username1')
         User.objects.create_user(email='email2', password='password2', username='username2')
@@ -30,7 +29,7 @@ class RoomTestCase(TestCase):
         user3 = User.objects.get(id=3)
         user4 = User.objects.get(id=4)
 
-        #timezone.make_aware() is used to suppress warning
+        # timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
 
@@ -96,6 +95,7 @@ class RoomTestCase(TestCase):
             json.dumps({'name': 'room1',
                         'place': 'place1',
                         'min_time_required': time_delta_handler(min_time),
+                        'min_members': '1',
                         'time_span_start': time_span_start,
                         'time_span_end': time_span_end,
                         }),
@@ -199,9 +199,3 @@ class RoomTestCase(TestCase):
         )
         response = self.client.get('/api/rooms/100/members')
         self.assertEqual(response.status_code, 404)
-
-
-
-
-
-

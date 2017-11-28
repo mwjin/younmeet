@@ -21,6 +21,13 @@
            [(ngModel)]="formModel.duration" name="duration">
   </div>
 
+  <div class="field">
+    <label for="duration">Minimum People to Meet</label>
+    <input type="number" id="minPeople" step="1" min="1" required
+           placeholder="Number of People"
+           [(ngModel)]="formModel.minPeople" name="minPeople">
+  </div>
+
   <div class="two fields">
     <div class="field"
          [ngClass]="{error: !(timespan_start.valid || timespan_start.pristine)}">
@@ -47,7 +54,8 @@
   </div>
 
   <div *ngIf="!form.valid"
-       class="ui error message">Form is invalid</div>
+       class="ui error message">Form is invalid
+  </div>
 
   <h2>Options</h2>
   <div class="field">
@@ -59,5 +67,6 @@
   <div class="ui divider"></div>
 
   <button type="submit" class="ui button"
-          [disabled]="!form.form.valid">Submit</button>
+          [disabled]="!form.form.valid">Submit
+  </button>
 </form>
