@@ -17,12 +17,13 @@ import { TimespanResponseData } from '../services/timespan-response-data';
 @Component({
   selector : 'app-room-detail',
   templateUrl : './room-detail.component.html',
-  styles : []
+  styleUrls : ['./room-detail.component.css']
 })
 export class RoomDetailComponent implements OnInit {
   room: Room;
   members: UserInfo[];
   availableTime: Timespan[];
+  zoom: number;
 
   shareableLink: string;
   linkCopied: boolean = false;
@@ -57,6 +58,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.zoom = 15;
   }
 
   goBack(): void {
