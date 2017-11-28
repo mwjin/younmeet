@@ -8,7 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
-import "rxjs/add/observable/of"
+import 'rxjs/add/observable/of';
+import { SuiPopupModule } from 'ng2-semantic-ui';
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -20,7 +21,8 @@ describe('RoomDetailComponent', () => {
       imports : [
         RouterTestingModule,
         FormsModule,
-        ClipboardModule
+        ClipboardModule,
+        SuiPopupModule
       ],
       declarations : [
         RoomDetailComponent,
@@ -28,9 +30,10 @@ describe('RoomDetailComponent', () => {
       providers : [
         { provide : MeetService, useClass : MeetServiceSpy },
         {
-          provide : ActivatedRoute, useValue: {
-          params: Observable.of({id: 1})
-        }}
+          provide : ActivatedRoute, useValue : {
+          params : Observable.of({ id : 1 })
+        }
+        }
       ]
     })
       .compileComponents();

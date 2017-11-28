@@ -3,16 +3,13 @@ import { Room } from '../models/room';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetService } from '../services/meet.service';
 
-import { User } from '../models/user';
-import { AccountService } from '../services/account.service';
-import { Timespan } from '../models/timespan';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
 import { UserInfo } from '../models/user-info';
 import { Location } from '@angular/common';
-import * as moment from 'moment';
-import { TimespanResponseData } from '../services/timespan-response-data';
+import { BesttimeResponseData } from '../services/besttime-response-data';
+import { Besttime } from '../models/besttime';
 
 @Component({
   selector : 'app-room-detail',
@@ -22,15 +19,16 @@ import { TimespanResponseData } from '../services/timespan-response-data';
 export class RoomDetailComponent implements OnInit {
   room: Room;
   members: UserInfo[];
-  availableTime: Timespan[];
+  availableTime: Besttime[];
 
   shareableLink: string;
   linkCopied: boolean = false;
+  _popupOpen: boolean = false;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private meetService: MeetService,
-              private location: Location) {
+              private location: Location,) {
     this.route.params
       .flatMap(params => {
         let roomId = +params[ 'id' ];
@@ -45,15 +43,15 @@ export class RoomDetailComponent implements OnInit {
             this.members = members.filter(user => user.id !== room.owner.id);
             this.members.unshift(members.filter(user => user.id === room.owner.id)[ 0 ]);
           });
-        let getAvailableTime = this.meetService.getAvailableTime(this.room.id)
-          .then(availableTime => {
-            this.availableTime = availableTime.map(
-              timeSpanData => TimespanResponseData.responseToFreetime(timeSpanData));
+        let getBestTime = this.meetService.getBestTime(this.room.id)
+          .then(bestTime => {
+            this.availableTime = bestTime.map(bestTimeResponse => BesttimeResponseData.responseToBestTime(bestTimeResponse));
             console.log(this.availableTime);
           });
-        return Observable.forkJoin(getMembers, getAvailableTime);
+        return Observable.forkJoin(getMembers, getBestTime);
       })
       .subscribe();
+
   }
 
   ngOnInit() {
@@ -66,6 +64,4 @@ export class RoomDetailComponent implements OnInit {
   goTimeSelectPage(): void {
     this.router.navigate([ 'room', this.room.id, 'time' ]);
   }
-
-
 }

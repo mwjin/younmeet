@@ -1,8 +1,6 @@
 from datetime import datetime, timedelta
-from dateutil.parser import  parse
+from dateutil.parser import parse
 import json
-
-
 
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
@@ -11,9 +9,7 @@ from django.forms.models import model_to_dict
 from .models import Room
 
 
-
 def room_list(request):
-
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
 
@@ -32,7 +28,7 @@ def room_list(request):
         time_span_end = parse(data['time_span_end'], ignoretz=True)
         t = int(data['min_time_required'])
 
-        min_time_required = timedelta(hours=t/60, minutes=t%60)
+        min_time_required = timedelta(hours=int(t / 60), minutes=t % 60)
 
         new_room = Room(
             name=name,
@@ -92,4 +88,3 @@ def room_members(request, room_id):
         return JsonResponse(list(room.members.all().values('id', 'username', 'email')), safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
-
