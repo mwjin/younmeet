@@ -37,7 +37,7 @@
   </div>
 
   <h2>Location</h2>
-  {{room.place}}
+  <div class="">{{room.place}}</div>
   <div class="container">
     <agm-map [latitude]="room.latitude" [longitude]="room.longitude" [scrollwheel]="false" [zoom]="zoom">
       <agm-marker [latitude]="room.latitude" [longitude]="room.longitude"></agm-marker>

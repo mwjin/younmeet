@@ -50,7 +50,7 @@ def room_list(request):
 
         # does not add this user to new_room.users
         # room.user is only added when selecting free_time
-        return JsonResponse(model_to_dict(new_room, exclude='members').popitem('position'), safe=False)
+        return JsonResponse(model_to_dict(new_room, exclude='members'), safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -95,6 +95,7 @@ def room_members(request, room_id):
         return HttpResponseNotAllowed(['GET'])
 
 def set_place(request, room_id):
+
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
 
@@ -103,6 +104,10 @@ def set_place(request, room_id):
         room = Room.objects.get(id=room_id)
     except Room.DoesNotExist:
         return HttpResponseNotFound()
+
+    # check if the user is the owner of the room
+    if request.user != room.owner:
+        return HttpResponse(status=401)
 
     if request.method == 'PUT':
         data = json.loads(request.body.decode())

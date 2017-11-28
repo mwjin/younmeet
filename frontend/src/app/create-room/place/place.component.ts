@@ -6,6 +6,7 @@ import {MeetService} from "../../services/meet.service";
 import {ActivatedRoute} from "@angular/router";
 import { Location } from '@angular/common';
 import {isUndefined} from "util";
+import {AccountService} from "../../services/account.service";
 
 
 @Component({
@@ -29,6 +30,7 @@ export class PlaceComponent implements OnInit {
     private meetService: MeetService,
     private route: ActivatedRoute,
     private location: Location,
+    private accountService: AccountService,
   ) {
     this.route.params
       .flatMap(params => {
@@ -36,7 +38,14 @@ export class PlaceComponent implements OnInit {
         return this.meetService.getRoomById(this.room_id);
       })
       .subscribe(room => {
-        console.log("Init lat: ", room.latitude);
+        accountService.getUserDetail().then(
+          user => {
+            if (user.id !== room.owner.id) {
+              alert("Not allowed!");
+              location.back();
+            }
+          }
+        );
         if (room.latitude == null || room.longitude == null) {
           this.setCurrentPosition();
         }
