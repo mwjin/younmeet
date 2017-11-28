@@ -1,4 +1,4 @@
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
 import {FormControl} from "@angular/forms";
@@ -18,9 +18,10 @@ export class PlaceComponent implements OnInit {
   public longitude: number;
   public searchControl: FormControl;
   public zoom: number;
-  private room_id: number;
-  private place: google.maps.places.PlaceResult
-  private firstTimePlaceSetting: boolean;
+  public room_id: number;
+  public place: google.maps.places.PlaceResult
+  public firstTimePlaceSetting: boolean;
+  public  placeSelected: boolean;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -33,6 +34,7 @@ export class PlaceComponent implements OnInit {
     private location: Location,
     private accountService: AccountService,
     private router: Router,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.route.params
       .flatMap(params => {
@@ -50,13 +52,14 @@ export class PlaceComponent implements OnInit {
         );
         if (room.latitude == null || room.longitude == null) {
           this.setCurrentPosition();
-          this.firstTimePlaceSetting = false;
+          this.firstTimePlaceSetting = true;
         }
         else {
           this.latitude = room.latitude;
           this.longitude = room.longitude;
-          this.firstTimePlaceSetting = true;
+          this.firstTimePlaceSetting = false;
         }
+        this.placeSelected = false;
       });
 
   }
@@ -77,11 +80,13 @@ export class PlaceComponent implements OnInit {
           autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
               //get the place result
-              this.place= autocomplete.getPlace();
+              this.place = autocomplete.getPlace();
 
 
               //verify result
               if (this.place.geometry === undefined || this.place.geometry === null) {
+                this.placeSelected = true;
+                this.cdRef.detectChanges();
                 return;
               }
               this.latitude = this.place.geometry.location.lat();
@@ -107,12 +112,16 @@ export class PlaceComponent implements OnInit {
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
           if (this.firstTimePlaceSetting)
-            this.router.navigate(['room', this.room_id]);
-          else
             this.router.navigate(['room', this.room_id, 'time']);
+          else
+            this.router.navigate(['room', this.room_id]);
         }
       }
     );
+  }
+
+  private goBack(): void {
+    this.location.back();
   }
 
 }

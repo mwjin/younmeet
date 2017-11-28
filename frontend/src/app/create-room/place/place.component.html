@@ -12,5 +12,10 @@
     <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
   </agm-map>
 </div>
-<button (click)="onSubmit()" class="ui secondary button right floated">Submit</button>
+<div *ngIf= "placeSelected">
+  <button (click)="onSubmit()" class="ui secondary button right floated">Submit</button>
+</div>
+<div *ngIf = "!placeSelected">
+  <button (click)="goBack()" class="ui secondary button right floated">Back</button>
+</div>
 
