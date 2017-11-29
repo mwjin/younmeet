@@ -7,7 +7,6 @@ import json
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
 from django.forms.models import model_to_dict
-from geoposition import Geoposition
 
 from .models import Room
 
