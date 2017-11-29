@@ -19,7 +19,7 @@ export class PlaceComponent implements OnInit {
   public searchControl: FormControl;
   public zoom: number;
   public room_id: number;
-  public place: google.maps.places.PlaceResult
+  public place: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
   public  placeSelected: boolean;
 
@@ -38,13 +38,13 @@ export class PlaceComponent implements OnInit {
   ) {
     this.route.params
       .flatMap(params => {
-        this.room_id = +params[ 'id' ];
+        this.room_id = +params[ 'id '];
         return this.meetService.getRoomById(this.room_id);
       })
       .subscribe(room => {
         accountService.getUserDetail().then(
-          user => {
-            if (user.id !== room.owner.id) {
+          currUser => {
+            if (currUser.id !== room.owner.id) {
               alert("Not allowed!\nNot owner of this room!");
               location.back();
             }
@@ -85,10 +85,10 @@ export class PlaceComponent implements OnInit {
 
               //verify result
               if (this.place.geometry === undefined || this.place.geometry === null) {
-                this.placeSelected = true;
-                this.cdRef.detectChanges();
                 return;
               }
+              this.placeSelected = true;
+              this.cdRef.detectChanges();
               this.latitude = this.place.geometry.location.lat();
               this.longitude = this.place.geometry.location.lng();
             });

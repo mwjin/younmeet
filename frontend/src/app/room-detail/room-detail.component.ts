@@ -47,7 +47,7 @@ export class RoomDetailComponent implements OnInit {
             this.members = members.filter(user => user.id !== room.owner.id);
             this.members.unshift(members.filter(user => user.id === room.owner.id)[ 0 ]);
           });
-        this.accountService.getUserDetail().then(currUser=> {
+        this.accountService.getUserDetail().then(currUser => {
           if (currUser.id === this.room.owner.id)
             this.isRoomOwner = true;
           else
