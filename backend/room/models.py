@@ -10,7 +10,10 @@ https://groups.google.com/forum/#!topic/django-users/pm6F9RSEGPk
 
 class Room(models.Model):
     name = models.CharField(max_length=64)
-    place = models.CharField(max_length=64)
+    place= models.CharField(max_length=64, null=True)
+    # place_id = models.CharField(max_length=64, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
 
     min_time_required = models.DurationField(null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)

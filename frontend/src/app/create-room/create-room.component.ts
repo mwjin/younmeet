@@ -21,7 +21,7 @@ export class CreateRoomComponent implements OnInit {
     this.meetService.addRoom(this.formModel)
       .then(room => {
         // navigate to room detail page
-        this.router.navigate([ 'room', room.id ]);
-      });
+        this.router.navigate(['room', room.id, 'place']);
+    });
   }
 }

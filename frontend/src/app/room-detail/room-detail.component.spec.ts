@@ -4,10 +4,14 @@ import { RoomDetailComponent } from './room-detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MeetServiceSpy } from '../services/meet.service.spy';
 import { MeetService } from '../services/meet.service';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
+import "rxjs/add/observable/of"
+import {AgmCoreModule} from "@agm/core";
+import {AccountService} from "../services/account.service";
+import {AccountServiceSpy} from "../services/account.service.spy";
 import 'rxjs/add/observable/of';
 import { SuiPopupModule } from 'ng2-semantic-ui';
 
@@ -22,6 +26,11 @@ describe('RoomDetailComponent', () => {
         RouterTestingModule,
         FormsModule,
         ClipboardModule,
+        AgmCoreModule.forRoot({
+          apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
+          libraries: ["places"]
+        }),
+        ClipboardModule,
         SuiPopupModule
       ],
       declarations : [
@@ -30,10 +39,9 @@ describe('RoomDetailComponent', () => {
       providers : [
         { provide : MeetService, useClass : MeetServiceSpy },
         {
-          provide : ActivatedRoute, useValue : {
-          params : Observable.of({ id : 1 })
-        }
-        }
+          provide : ActivatedRoute, useValue: {params: Observable.of({id: 1})}
+        },
+        { provide: AccountService, useValue: AccountServiceSpy},
       ]
     })
       .compileComponents();

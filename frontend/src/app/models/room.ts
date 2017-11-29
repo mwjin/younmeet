@@ -8,6 +8,8 @@ export interface Room {
   timespan: Timespan;
   anonymity: boolean;
   place: string;
+  latitude: number;
+  longitude: number;
   urgent: boolean;
   createdTime: Date;
   users: UserInfo[];
