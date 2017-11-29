@@ -76,11 +76,11 @@ export class RoomDetailComponent implements OnInit {
   }
 
   goTimeSelectPage(): void {
-    this.router.navigate([ 'room', this.room.id, 'time' ]);
+    this.router.navigate([ 'room', this.room.hashid, 'time' ]);
   }
 
   goPlaceChangePage(): void {
-    this.router.navigate([ 'room', this.room.id, 'place' ]);
+    this.router.navigate([ 'room', this.room.hashid, 'place' ]);
   }
 
 
