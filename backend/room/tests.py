@@ -155,6 +155,42 @@ class RoomTestCase(TestCase):
         response = self.client.post('/api/rooms/1')
         self.assertEqual(response.status_code, 405)
 
+    def test_room_detail_hash_get(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        hash_id = Room.get_hash(1)
+        response = self.client.get('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 200)
+        room = json.loads(response.content.decode())
+        self.assertEqual(room['name'], 'room1')
+        self.assertEqual(room['place'], 'place1')
+
+    def test_room_detail_hash_delete(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        hash_id = Room.get_hash(1)
+        response = self.client.delete('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 204)
+        response = self.client.get('/api/rooms')
+        data = json.loads(response.content.decode())
+        self.assertEqual(len(data), 1)
+
+    def test_room_detail_hash_post(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        hash_id = Room.get_hash(1)
+        response = self.client.post('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 405)
+
     def test_room_detail_get_not_authenticated(self):
         response = self.client.get('/api/rooms/1')
         self.assertEqual(response.status_code, 401)
@@ -166,6 +202,20 @@ class RoomTestCase(TestCase):
             content_type=CONTENT_TYPE
         )
         response = self.client.get('/api/rooms/100')
+        self.assertEqual(response.status_code, 404)
+
+    def test_room_detail_hash_get_not_authenticated(self):
+        hash_id = Room.get_hash(1)
+        response = self.client.get('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 401)
+
+    def test_room_detail_hash_get_not_found(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.get('/api/rooms/hash/testhash')
         self.assertEqual(response.status_code, 404)
 
     def test_room_members_get(self):
