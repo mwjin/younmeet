@@ -15,7 +15,7 @@ import { CreateRoomForm } from './create-room-form';
 @Component({
   template: ``
 })
-class RoomDetailComponentMock {}
+class PlaceComponentMock {}
 
 describe('CreateRoomComponent', () => {
   let component: CreateRoomComponent;
@@ -26,14 +26,14 @@ describe('CreateRoomComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'room/:hash', component: RoomDetailComponentMock }
+          { path: 'room/:hash/place', component: PlaceComponentMock }
         ]),
         FormsModule,
         SuiModule
       ],
       declarations: [
         CreateRoomComponent,
-        RoomDetailComponentMock,
+        PlaceComponentMock,
         RouterLinkStubDirective,
       ],
       providers: [

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -24,7 +25,7 @@ import { TimeSelectComponent } from './room-detail/time-select/time-select.compo
 import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
 import { ProfileComponent } from './dashboard/profile/profile.component';
-import { SuiPopup } from 'ng2-semantic-ui/dist';
+import { PlaceComponent } from './create-room/place/place.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
+  { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
   { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] }
 ];
 
@@ -43,7 +45,7 @@ export function MyCookieStrategy() {
 }
 
 @NgModule({
-  declarations : [ AppComponent,
+  declarations : [AppComponent,
     LoginComponent,
     SignupComponent,
     DashboardComponent,
@@ -52,7 +54,8 @@ export function MyCookieStrategy() {
     RoomDetailComponent,
     RoomListFilterPipe,
     TimeSelectComponent,
-    ProfileComponent
+    ProfileComponent,
+    PlaceComponent
   ],
   imports : [
     CommonModule,
@@ -64,7 +67,11 @@ export function MyCookieStrategy() {
     SuiModule,
     ClipboardModule,
     CalendarModule.forRoot(),
-    SuiPopupModule
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
+      libraries: ['places']
+    }),
+    SuiPopupModule,
   ],
   providers : [
     AccountService,

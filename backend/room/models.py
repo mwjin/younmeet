@@ -15,7 +15,10 @@ class Room(models.Model):
     hashid = models.CharField(max_length=16, null=True, blank=True)
 
     name = models.CharField(max_length=64)
-    place = models.CharField(max_length=64)
+    place= models.CharField(max_length=64, null=True)
+    # place_id = models.CharField(max_length=64, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
 
     min_time_required = models.DurationField(null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)

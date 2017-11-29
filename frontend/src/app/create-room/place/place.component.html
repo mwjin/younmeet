@@ -1,0 +1,21 @@
+<div class="container">
+  <h1>Select Place to MEet</h1>
+  <form class="ui small form">
+    <input placeholder="search for location"
+           autocorrect="on" autocapitalize="off"
+           spellcheck="off" type="text" class="form-control"
+           #search [formControl]="searchControl">
+  </form>
+  <br/>
+
+  <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+    <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+  </agm-map>
+</div>
+<div *ngIf= "placeSelected">
+  <button (click)="onSubmit()" class="ui secondary button right floated">Submit</button>
+</div>
+<div *ngIf = "!placeSelected">
+  <button (click)="goBack()" class="ui secondary button right floated">Back</button>
+</div>
+

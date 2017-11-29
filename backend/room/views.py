@@ -103,3 +103,34 @@ def room_members(request, room_id):
         return JsonResponse(list(room.members.all().values('id', 'username', 'email')), safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+def set_place(request, room_id):
+
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    room_id = int(room_id)
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    # check if the user is the owner of the room
+    if request.user != room.owner:
+        return HttpResponse(status=401)
+
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode())
+        room.__setattr__('place', data['place'])
+        room.__setattr__('latitude', data['latitude'])
+        room.__setattr__('longitude', data['longitude'])
+        room.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['PUT'])
+
+
+
+
+
+

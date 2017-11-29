@@ -123,6 +123,17 @@ export class MeetService {
       .catch(handleError);
   }
 
+  putPlace(room_id: number, place: string, latitude: number, longitude: number): Promise<boolean> {
+    return this.http.put(
+      `api/rooms/${room_id}/place`,
+      {'place': place, 'latitude': latitude, 'longitude': longitude},
+      <RequestOptionsArgs>{ headers : getCSRFHeaders() }
+    )
+      .toPromise()
+      .then(response => response.status === 200)
+      .catch(handleError);
+  }
+
   deleteRoom(roomId: number): Promise<Response> {
     return this.http.delete(`api/rooms/${roomId}`, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
       .toPromise()

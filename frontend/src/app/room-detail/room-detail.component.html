@@ -37,8 +37,19 @@
   </div>
 
   <h2>Location</h2>
-  {{room.place}}
+  <div class="">{{room.place}}</div>
+  <div class="container">
+    <agm-map [latitude]="room.latitude" [longitude]="room.longitude" [scrollwheel]="false" [zoom]="zoom">
+      <agm-marker [latitude]="room.latitude" [longitude]="room.longitude"></agm-marker>
+    </agm-map>
+  </div>
+  <br/>
+  <div *ngIf="isRoomOwner" class="two wide column">
+    <button (click)="goPlaceChangePage()" class="ui button left floated">Change</button>
+  </div>
 
+
+  <br/>
   <h2>Available Time</h2>
   <div class="ui list" *ngFor="let bestTime of availableTime; let i = index">
     <div class="item">

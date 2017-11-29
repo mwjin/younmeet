@@ -105,7 +105,8 @@ export class TimeSelectComponent implements OnInit {
     this.freetimeService.postFreeTimes(freeTimes, this.meetService.getCurrentRoomId())
       .then(isSuccessToPost => {
         if (isSuccessToPost) {
-          this.location.back();
+          const room_id = this.meetService.getCurrentRoomId();
+          this.router.navigate(['room', room_id]);
         }
       });
   }

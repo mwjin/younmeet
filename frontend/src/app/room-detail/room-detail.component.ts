@@ -10,16 +10,21 @@ import { UserInfo } from '../models/user-info';
 import { Location } from '@angular/common';
 import { BesttimeResponseData } from '../services/besttime-response-data';
 import { Besttime } from '../models/besttime';
+import {Timespan} from "../models/timespan";
+import {AccountService} from "../services/account.service";
+import {TimespanResponseData} from "../services/timespan-response-data";
 
 @Component({
   selector : 'app-room-detail',
   templateUrl : './room-detail.component.html',
-  styles : []
+  styleUrls : ['./room-detail.component.css']
 })
 export class RoomDetailComponent implements OnInit {
   room: Room;
   members: UserInfo[];
-  availableTime: Besttime[];
+  availableTime: Timespan[];
+  zoom: number;
+  isRoomOwner: boolean;
 
   shareableLink: string;
   linkCopied: boolean = false;
@@ -28,7 +33,8 @@ export class RoomDetailComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private meetService: MeetService,
-              private location: Location,) {
+              private location: Location,
+              private  accountService: AccountService) {
     this.route.params
       .flatMap(params => {
         let roomHash = params[ 'hash' ];
@@ -48,13 +54,21 @@ export class RoomDetailComponent implements OnInit {
             this.availableTime = bestTime.map(bestTimeResponse => BesttimeResponseData.responseToBestTime(bestTimeResponse));
             console.log(this.availableTime);
           });
+        this.accountService.getUserDetail().then(currUser => {
+          if (currUser.id === this.room.owner.id)
+            this.isRoomOwner = true;
+          else
+            this.isRoomOwner = false;
+          console.log(this.isRoomOwner);
+        });
         return Observable.forkJoin(getMembers, getBestTime);
       })
       .subscribe();
-
   }
 
+
   ngOnInit() {
+    this.zoom = 15;
   }
 
   goBack(): void {
@@ -64,4 +78,10 @@ export class RoomDetailComponent implements OnInit {
   goTimeSelectPage(): void {
     this.router.navigate([ 'room', this.room.id, 'time' ]);
   }
+
+  goPlaceChangePage(): void {
+    this.router.navigate([ 'room', this.room.id, 'place' ]);
+  }
+
+
 }
