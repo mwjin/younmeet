@@ -29,6 +29,7 @@ export class MeetService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
   public timespan: Timespan;
   public currentRoomId: number;
+  public currentRoomHash: string;
 
   constructor(private http: Http) {
   }
@@ -54,14 +55,14 @@ export class MeetService {
       .catch(handleError);
   }
 
-  getRoomById(id: number): Promise<Room> {
-    return this.http.get(`api/rooms/${id}`)
-      .toPromise()
+  handleRoomResponse(room: Promise<Response>): Promise<Room> {
+    return room
       .then(res => res.json() as RoomResponse)
       .then(roomData => {
         let room = roomFromResponse(roomData);
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
         this.currentRoomId = room.id;
+        this.currentRoomHash = room.hashid;
         return room;
       })
       .then(roomData => {
@@ -69,6 +70,18 @@ export class MeetService {
         return roomData;
       })
       .catch(handleError);
+
+  }
+  getRoomById(id: number): Promise<Room> {
+    return this.handleRoomResponse(
+      this.http.get(`api/rooms/${id}`).toPromise()
+    );
+  }
+
+  getRoomByHash(hash: string): Promise<Room> {
+    return this.handleRoomResponse((
+      this.http.get(`api/rooms/hash/${hash}`).toPromise()
+    ));
   }
 
   getTimeSpan(): Timespan {
@@ -77,6 +90,10 @@ export class MeetService {
 
   getCurrentRoomId(): number {
     return this.currentRoomId;
+  }
+
+  getCurrentRoomHash(): string {
+    return this.currentRoomHash;
   }
 
   getUsersInRoom(id: number): Promise<UserInfo[]> {

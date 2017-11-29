@@ -37,9 +37,9 @@ export class RoomDetailComponent implements OnInit {
               private  accountService: AccountService) {
     this.route.params
       .flatMap(params => {
-        let roomId = +params[ 'id' ];
-        this.shareableLink = `http://localhost:4200/link/${roomId}`;
-        return this.meetService.getRoomById(roomId);
+        let roomHash = params[ 'hash' ];
+        this.shareableLink = `http://localhost:4200/link/${roomHash}`;
+        return this.meetService.getRoomByHash(roomHash);
       })
       .flatMap(room => {
         this.room = room;
@@ -76,11 +76,11 @@ export class RoomDetailComponent implements OnInit {
   }
 
   goTimeSelectPage(): void {
-    this.router.navigate([ 'room', this.room.id, 'time' ]);
+    this.router.navigate([ 'room', this.room.hashid, 'time' ]);
   }
 
   goPlaceChangePage(): void {
-    this.router.navigate([ 'room', this.room.id, 'place' ]);
+    this.router.navigate([ 'room', this.room.hashid, 'place' ]);
   }
 
 

@@ -18,7 +18,8 @@ export class PlaceComponent implements OnInit {
   public longitude: number;
   public searchControl: FormControl;
   public zoom: number;
-  public room_id: number;
+  public roomId: number;
+  public roomHash: string;
   public place: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
   public  placeSelected: boolean;
@@ -36,11 +37,12 @@ export class PlaceComponent implements OnInit {
               private cdRef: ChangeDetectorRef) {
     this.route.params
       .flatMap(params => {
-        this.room_id = +params[ 'id'];
-        console.log(this.room_id);
-        return this.meetService.getRoomById(this.room_id);
+        this.roomHash = params['hash'];
+        console.log(this.roomHash);
+        return this.meetService.getRoomByHash(this.roomHash);
       })
       .subscribe(room => {
+        this.roomId = room.id;
         accountService.getUserDetail().then(
           currUser => {
             if (currUser.id !== room.owner.id) {
@@ -107,13 +109,13 @@ export class PlaceComponent implements OnInit {
 
   private onSubmit(): void {
     this.zoom = 17;
-    this.meetService.putPlace(this.room_id, this.place.name, this.latitude, this.longitude).then(
+    this.meetService.putPlace(this.roomId, this.place.name, this.latitude, this.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
           if (this.firstTimePlaceSetting)
-            this.router.navigate(['room', this.room_id, 'time']);
+            this.router.navigate(['room', this.roomHash, 'time']);
           else
-            this.router.navigate(['room', this.room_id]);
+            this.router.navigate(['room', this.roomHash]);
         }
       }
     );

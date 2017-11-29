@@ -97,6 +97,17 @@ describe('MeetService', () => {
     }));
   });
 
+  describe('getRoomByHash', () => {
+    it('gets the room by hash', async(() => {
+      let mockResponse = <RoomResponse> { name : 'Room', hashid : 'asdf' };
+      expectUrl(mockBackend, 'api/rooms/hash/asdf', mockResponse);
+      meetService.getRoomByHash('asdf').then(res => {
+        expect(res.name).toBe('Room');
+        expect(res.hashid).toBe('asdf');
+      });
+    }))
+  });
+
   describe('getUsersInRoom', () => {
     it('gets all the users in specified room', async(() => {
       let mockResponse = TEST_USERS.slice(0);

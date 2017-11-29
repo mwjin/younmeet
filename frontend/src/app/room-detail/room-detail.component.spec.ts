@@ -4,16 +4,16 @@ import { RoomDetailComponent } from './room-detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MeetServiceSpy } from '../services/meet.service.spy';
 import { MeetService } from '../services/meet.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
-import "rxjs/add/observable/of"
-import {AgmCoreModule} from "@agm/core";
-import {AccountService} from "../services/account.service";
-import {AccountServiceSpy} from "../services/account.service.spy";
 import 'rxjs/add/observable/of';
 import { SuiPopupModule } from 'ng2-semantic-ui';
+import { MockComponent } from 'ng2-mock-component';
+import { AgmCoreModule } from '@agm/core';
+import { AccountServiceSpy } from '../services/account.service.spy';
+import { AccountService } from '../services/account.service';
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -26,22 +26,20 @@ describe('RoomDetailComponent', () => {
         RouterTestingModule,
         FormsModule,
         ClipboardModule,
-        AgmCoreModule.forRoot({
-          apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
-          libraries: ["places"]
-        }),
-        ClipboardModule,
-        SuiPopupModule
+        SuiPopupModule,
+        AgmCoreModule
       ],
       declarations : [
         RoomDetailComponent,
       ],
       providers : [
         { provide : MeetService, useClass : MeetServiceSpy },
+        { provide : AccountService, useClass : AccountServiceSpy },
         {
-          provide : ActivatedRoute, useValue: {params: Observable.of({id: 1})}
-        },
-        { provide: AccountService, useValue: AccountServiceSpy},
+          provide : ActivatedRoute, useValue : {
+            params : Observable.of({ hash : "asdf" })
+          }
+        }
       ]
     })
       .compileComponents();

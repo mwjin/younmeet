@@ -52,16 +52,7 @@ def room_list(request):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-
-def room_detail(request, room_id):
-    if not request.user.is_authenticated():
-        return HttpResponse(status=401)
-
-    try:
-        room = Room.objects.get(id=room_id)
-    except Room.DoesNotExist:
-        return HttpResponseNotFound()
-
+def room_detail_handle_request(request, room):
     '''  
     TODO: Object of type 'User' is not JSON serializable
     members of the room are currently excluded
@@ -75,6 +66,28 @@ def room_detail(request, room_id):
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
+def room_detail(request, room_id):
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    return room_detail_handle_request(request, room)
+
+
+def room_detail_hash(request, room_hash):
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    try:
+        room = Room.objects.get(id=Room.decode_hash(room_hash))
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    return room_detail_handle_request(request, room)
 
 def room_members(request, room_id):
     if not request.user.is_authenticated():
