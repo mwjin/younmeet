@@ -29,6 +29,7 @@ export class MeetService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
   public timespan: Timespan;
   public currentRoomId: number;
+  public currentRoomHash: string;
 
   constructor(private http: Http) {
   }
@@ -61,6 +62,7 @@ export class MeetService {
         let room = roomFromResponse(roomData);
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
         this.currentRoomId = room.id;
+        this.currentRoomHash = room.hashid;
         return room;
       })
       .then(roomData => {
@@ -88,6 +90,10 @@ export class MeetService {
 
   getCurrentRoomId(): number {
     return this.currentRoomId;
+  }
+
+  getCurrentRoomHash(): string {
+    return this.currentRoomHash;
   }
 
   getUsersInRoom(id: number): Promise<UserInfo[]> {
