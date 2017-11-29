@@ -57,7 +57,7 @@ export class PlaceComponent implements OnInit {
           this.latitude = room.latitude;
           this.longitude = room.longitude;
           this.firstTimePlaceSetting = false;
-        }
+         }
         this.placeSelected = false;
       });
 

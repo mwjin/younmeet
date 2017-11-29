@@ -10,8 +10,6 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import "rxjs/add/observable/of"
 import {AgmCoreModule} from "@agm/core";
-import {Component} from "@angular/core";
-import {AppModule} from "../app.module";
 import {AccountService} from "../services/account.service";
 import {AccountServiceSpy} from "../services/account.service.spy";
 import 'rxjs/add/observable/of';
@@ -30,8 +28,8 @@ describe('RoomDetailComponent', () => {
         ClipboardModule,
         AgmCoreModule.forRoot({
           apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
-          libraries: ["places"],
-        })
+          libraries: ["places"]
+        }),
         ClipboardModule,
         SuiPopupModule
       ],
