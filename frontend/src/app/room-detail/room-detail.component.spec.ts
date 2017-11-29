@@ -12,6 +12,8 @@ import "rxjs/add/observable/of"
 import {AgmCoreModule} from "@agm/core";
 import {Component} from "@angular/core";
 import {AppModule} from "../app.module";
+import {AccountService} from "../services/account.service";
+import {AccountServiceSpy} from "../services/account.service.spy";
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -24,21 +26,20 @@ describe('RoomDetailComponent', () => {
         RouterTestingModule,
         FormsModule,
         ClipboardModule,
-        ReactiveFormsModule
-      ],
-      declarations : [
-        RoomDetailComponent,
         AgmCoreModule.forRoot({
           apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
           libraries: ["places"],
-        }),
+        })
+      ],
+      declarations : [
+        RoomDetailComponent,
       ],
       providers : [
         { provide : MeetService, useClass : MeetServiceSpy },
         {
-          provide : ActivatedRoute, useValue: {
-          params: Observable.of({id: 1})
-        }}
+          provide : ActivatedRoute, useValue: {params: Observable.of({id: 1})}
+        },
+        { provide: AccountService, useValue: AccountServiceSpy},
       ]
     })
       .compileComponents();
