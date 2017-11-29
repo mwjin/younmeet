@@ -34,7 +34,7 @@ const routes: Routes = [
   { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'link/:hash', redirectTo : 'room/:hash', pathMatch : 'full' },
-  { path : 'login', component : LoginComponent },
+  { path : 'login', component : LoginComponent, resolve: [ IsLoggedIn ] },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
