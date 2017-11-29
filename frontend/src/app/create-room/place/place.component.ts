@@ -26,19 +26,17 @@ export class PlaceComponent implements OnInit {
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
-  constructor(
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
-    private meetService: MeetService,
-    private route: ActivatedRoute,
-    private location: Location,
-    private accountService: AccountService,
-    private router: Router,
-    private cdRef: ChangeDetectorRef,
-  ) {
+  constructor(private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,
+              private meetService: MeetService,
+              private route: ActivatedRoute,
+              private location: Location,
+              private accountService: AccountService,
+              private router: Router,
+              private cdRef: ChangeDetectorRef) {
     this.route.params
       .flatMap(params => {
-        this.room_id = +params[ 'id '];
+        this.room_id = +params[ 'id'];
         console.log(this.room_id);
         return this.meetService.getRoomById(this.room_id);
       })
