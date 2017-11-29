@@ -39,6 +39,7 @@ export class PlaceComponent implements OnInit {
     this.route.params
       .flatMap(params => {
         this.room_id = +params[ 'id '];
+        console.log(this.room_id);
         return this.meetService.getRoomById(this.room_id);
       })
       .subscribe(room => {
