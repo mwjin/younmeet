@@ -11,12 +11,15 @@ import {FilterOptions} from "./room-list-filter.pipe";
 })
 export class DashboardComponent implements OnInit {
 
-  user: User;
+  public user: User;
+  public  roomsCreated_Urgent: Room[];
+  public roomsCreated_NotUrgent: Room[];
+  public roomsJoined_Urgent: Room[];
+  public roomsJoined_NotUrgent: Room[];
+  public latitude: number;
+  public longitude: number;
+  public zoom: number;
 
-  roomsCreated_Urgent: Room[];
-  roomsCreated_NotUrgent: Room[];
-  roomsJoined_Urgent: Room[];
-  roomsJoined_NotUrgent: Room[];
 
   private filters: FilterOptions[] = ["All", "Name", "Location"];
 
@@ -37,4 +40,5 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
   }
+
 }

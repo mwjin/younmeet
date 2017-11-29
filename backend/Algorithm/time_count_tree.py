@@ -59,7 +59,8 @@ class TimeConstraintException(Exception):
 
 
 class TimeCountNode:
-    def __init__(self, start, end, time_count=1):
+
+    def __init__(self, start, end, time_count=1, member_list=[]):
         if start >= end:
             raise TimeConstraintException()
         self.start = start
@@ -67,62 +68,75 @@ class TimeCountNode:
         self.time_count = time_count
         self.left = None
         self.right = None
+        self.member_list = member_list
 
     def __str__(self):
-        return str(self.start) + " " + str(self.end)
+        result = "Start: "
+        result += str(self.start) + ", "
+        result += "End: "
+        result += str(self.end) + ", "
+        result += "Time count: " + str(self.time_count) + ", "
+        result += "Members: "
+        result += "["
+        for i in self.member_list:
+            result += str(i) + ", "
+        result += "]"
+        return result
 
     # finds out the relation
     def node_relationship(self, oth):
         new_left = None
         new_self = None
         new_right = None
+
+
         # new left is not None
         if oth.start < self.start:
             if oth.end > self.end:
-                new_left = TimeCountNode(oth.start, self.start, oth.time_count)
-                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count)
-                new_right = TimeCountNode(self.end, oth.end, oth.time_count)
+                new_left = TimeCountNode(oth.start, self.start, oth.time_count, oth.member_list)
+                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
+                new_right = TimeCountNode(self.end, oth.end, oth.time_count, oth.member_list)
             elif oth.end == self.end:
-                new_left = TimeCountNode(oth.start, self.start, oth.time_count)
-                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count)
+                new_left = TimeCountNode(oth.start, self.start, oth.time_count, oth.member_list)
+                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
             else:
                 # oth.end < self.end
                 if oth.end > self.start:
-                    new_left = TimeCountNode(oth.start, self.start, oth.time_count)
-                    new_self = TimeCountNode(self.start, oth.end, self.time_count + oth.time_count)
-                    new_right = TimeCountNode(oth.end, self.end, self.time_count)
+                    new_left = TimeCountNode(oth.start, self.start, oth.time_count, oth.member_list)
+                    new_self = TimeCountNode(self.start, oth.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
+                    new_right = TimeCountNode(oth.end, self.end, self.time_count, self.member_list)
                 else:
-                    new_left = TimeCountNode(oth.start, oth.end, oth.time_count)
-                    new_self = TimeCountNode(self.start, self.end, self.time_count)
+                    new_left = TimeCountNode(oth.start, oth.end, oth.time_count, oth.member_list)
+                    new_self = TimeCountNode(self.start, self.end, self.time_count, self.member_list)
 
         elif oth.start == self.start:
             if oth.end > self.end:
-                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count)
-                new_right = TimeCountNode(self.end, oth.end, oth.time_count)
+                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
+                new_right = TimeCountNode(self.end, oth.end, oth.time_count, oth.member_list)
             elif oth.end == self.end:
-                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count)
+                new_self = TimeCountNode(self.start, self.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
             else:
-                new_self = TimeCountNode(self.start, oth.end, self.time_count + oth.time_count)
-                new_right = TimeCountNode(oth.end, self.end, self.time_count)
+                new_self = TimeCountNode(self.start, oth.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
+                new_right = TimeCountNode(oth.end, self.end, self.time_count, self.member_list)
 
         else:
             # oth.start > self.start
 
             if oth.end > self.end:
                 if oth.start < self.end:
-                    new_left = TimeCountNode(self.start, oth.start, self.time_count)
-                    new_self = TimeCountNode(oth.start, self.end, self.time_count + oth.time_count)
-                    new_right = TimeCountNode(self.end, oth.end, oth.time_count)
+                    new_left = TimeCountNode(self.start, oth.start, self.time_count, self.member_list)
+                    new_self = TimeCountNode(oth.start, self.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
+                    new_right = TimeCountNode(self.end, oth.end, oth.time_count, oth.member_list)
                 else:
-                    new_self = TimeCountNode(self.start, self.end, self.time_count)
-                    new_right = TimeCountNode(oth.start, oth.end, oth.time_count)
+                    new_self = TimeCountNode(self.start, self.end, self.time_count, self.member_list)
+                    new_right = TimeCountNode(oth.start, oth.end, oth.time_count, oth.member_list)
             elif oth.end == self.end:
-                new_left = TimeCountNode(self.start, oth.start, self.time_count)
-                new_self = TimeCountNode(oth.start, oth.end, self.time_count + oth.time_count)
+                new_left = TimeCountNode(self.start, oth.start, self.time_count, self.member_list)
+                new_self = TimeCountNode(oth.start, oth.end, self.time_count + oth.time_count, self.member_list + oth.member_list)
             else:
-                new_left = TimeCountNode(self.start, oth.start, self.time_count)
-                new_self = TimeCountNode(oth.start, oth.end, oth.time_count + self.time_count)
-                new_right = TimeCountNode(oth.end, self.end, self.time_count)
+                new_left = TimeCountNode(self.start, oth.start, self.time_count, self.member_list)
+                new_self = TimeCountNode(oth.start, oth.end, oth.time_count + self.time_count, self.member_list + oth.member_list)
+                new_right = TimeCountNode(oth.end, self.end, self.time_count, self.member_list)
 
         return [new_left, new_self, new_right]
 
@@ -135,6 +149,7 @@ class TimeCountNode:
         self.start = new_self.start
         self.end = new_self.end
         self.time_count = new_self.time_count
+        self.member_list = new_self.member_list
 
         if self.left is None:
             self.left = new_left
@@ -167,8 +182,8 @@ class TimeCountTree:
     def __init__(self, node=None):
         self.root = node
 
-    def insert(self, start, end):
-        node = TimeCountNode(start, end)
+    def insert(self, start, end, member_id):
+        node = TimeCountNode(start, end, 1, [member_id])
         if self.root is None:
             self.root = node
         else:

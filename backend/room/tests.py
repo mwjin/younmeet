@@ -18,7 +18,6 @@ def time_delta_handler(x):
 
 
 class RoomTestCase(TestCase):
-
     def setUp(self):
         User.objects.create_user(email='email1', password='password1', username='username1')
         User.objects.create_user(email='email2', password='password2', username='username2')
@@ -30,7 +29,7 @@ class RoomTestCase(TestCase):
         user3 = User.objects.get(id=3)
         user4 = User.objects.get(id=4)
 
-        #timezone.make_aware() is used to suppress warning
+        # timezone.make_aware() is used to suppress warning
         min_time1 = timedelta(hours=2, minutes=30)
         min_time2 = timedelta(hours=1, minutes=00)
 
@@ -96,6 +95,7 @@ class RoomTestCase(TestCase):
             json.dumps({'name': 'room1',
                         'place': 'place1',
                         'min_time_required': time_delta_handler(min_time),
+                        'min_members': '1',
                         'time_span_start': time_span_start,
                         'time_span_end': time_span_end,
                         }),
@@ -155,6 +155,42 @@ class RoomTestCase(TestCase):
         response = self.client.post('/api/rooms/1')
         self.assertEqual(response.status_code, 405)
 
+    def test_room_detail_hash_get(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        hash_id = Room.get_hash(1)
+        response = self.client.get('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 200)
+        room = json.loads(response.content.decode())
+        self.assertEqual(room['name'], 'room1')
+        self.assertEqual(room['place'], 'place1')
+
+    def test_room_detail_hash_delete(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        hash_id = Room.get_hash(1)
+        response = self.client.delete('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 204)
+        response = self.client.get('/api/rooms')
+        data = json.loads(response.content.decode())
+        self.assertEqual(len(data), 1)
+
+    def test_room_detail_hash_post(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        hash_id = Room.get_hash(1)
+        response = self.client.post('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 405)
+
     def test_room_detail_get_not_authenticated(self):
         response = self.client.get('/api/rooms/1')
         self.assertEqual(response.status_code, 401)
@@ -166,6 +202,20 @@ class RoomTestCase(TestCase):
             content_type=CONTENT_TYPE
         )
         response = self.client.get('/api/rooms/100')
+        self.assertEqual(response.status_code, 404)
+
+    def test_room_detail_hash_get_not_authenticated(self):
+        hash_id = Room.get_hash(1)
+        response = self.client.get('/api/rooms/hash/' + hash_id)
+        self.assertEqual(response.status_code, 401)
+
+    def test_room_detail_hash_get_not_found(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.get('/api/rooms/hash/testhash')
         self.assertEqual(response.status_code, 404)
 
     def test_room_members_get(self):
@@ -199,9 +249,3 @@ class RoomTestCase(TestCase):
         )
         response = self.client.get('/api/rooms/100/members')
         self.assertEqual(response.status_code, 404)
-
-
-
-
-
-

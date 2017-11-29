@@ -15,7 +15,7 @@ import { CreateRoomForm } from './create-room-form';
 @Component({
   template: ``
 })
-class RoomDetailComponentMock {}
+class PlaceComponentMock {}
 
 describe('CreateRoomComponent', () => {
   let component: CreateRoomComponent;
@@ -26,14 +26,14 @@ describe('CreateRoomComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'room/:id', component: RoomDetailComponentMock }
+          { path: 'room/:hash/place', component: PlaceComponentMock }
         ]),
         FormsModule,
         SuiModule
       ],
       declarations: [
         CreateRoomComponent,
-        RoomDetailComponentMock,
+        PlaceComponentMock,
         RouterLinkStubDirective,
       ],
       providers: [
@@ -71,7 +71,7 @@ describe('CreateRoomComponent', () => {
         expect(roomArg.duration).toEqual(30);
         expect(roomArg.timespan).toEqual(new Timespan(new Date(2017,11,15,0,0), new Date(2017,11,15,1,0)));
         expect(roomArg.anonymity).toEqual(false);
-        expect(location.path()).toMatch(/\/room\/\d+/);
+        expect(location.path()).toContain('room/');
       });
     })));
   });

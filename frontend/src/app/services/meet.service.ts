@@ -12,6 +12,7 @@ import { getCSRFHeaders } from '../../util/headers';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
+import { BesttimeResponseData } from './besttime-response-data';
 
 
 function handleError(error: any) {
@@ -28,6 +29,7 @@ export class MeetService {
   private headers = new Headers({ 'Content-Type' : 'application/json' });
   public timespan: Timespan;
   public currentRoomId: number;
+  public currentRoomHash: string;
 
   constructor(private http: Http) {
   }
@@ -53,14 +55,14 @@ export class MeetService {
       .catch(handleError);
   }
 
-  getRoomById(id: number): Promise<Room> {
-    return this.http.get(`api/rooms/${id}`)
-      .toPromise()
+  handleRoomResponse(room: Promise<Response>): Promise<Room> {
+    return room
       .then(res => res.json() as RoomResponse)
       .then(roomData => {
         let room = roomFromResponse(roomData);
         this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
         this.currentRoomId = room.id;
+        this.currentRoomHash = room.hashid;
         return room;
       })
       .then(roomData => {
@@ -68,6 +70,18 @@ export class MeetService {
         return roomData;
       })
       .catch(handleError);
+
+  }
+  getRoomById(id: number): Promise<Room> {
+    return this.handleRoomResponse(
+      this.http.get(`api/rooms/${id}`).toPromise()
+    );
+  }
+
+  getRoomByHash(hash: string): Promise<Room> {
+    return this.handleRoomResponse((
+      this.http.get(`api/rooms/hash/${hash}`).toPromise()
+    ));
   }
 
   getTimeSpan(): Timespan {
@@ -78,10 +92,21 @@ export class MeetService {
     return this.currentRoomId;
   }
 
+  getCurrentRoomHash(): string {
+    return this.currentRoomHash;
+  }
+
   getUsersInRoom(id: number): Promise<UserInfo[]> {
     return this.http.get(`api/rooms/${id}/members`)
       .toPromise()
       .then(res => res.json() as UserInfo[])
+      .catch(handleError);
+  }
+
+  getBestTime(id: number): Promise<BesttimeResponseData[]> {
+    return this.http.get(`api/rooms/${id}/best-times`)
+      .toPromise()
+      .then(res => res.json() as BesttimeResponseData[])
       .catch(handleError);
   }
 
@@ -100,6 +125,17 @@ export class MeetService {
       .toPromise()
       .then(res => res.json() as RoomResponse)
       .then(roomData => roomFromResponse(roomData))
+      .catch(handleError);
+  }
+
+  putPlace(room_id: number, place: string, latitude: number, longitude: number): Promise<boolean> {
+    return this.http.put(
+      `api/rooms/${room_id}/place`,
+      {'place': place, 'latitude': latitude, 'longitude': longitude},
+      <RequestOptionsArgs>{ headers : getCSRFHeaders() }
+    )
+      .toPromise()
+      .then(response => response.status === 200)
       .catch(handleError);
   }
 

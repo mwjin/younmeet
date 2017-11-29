@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule, SuiPopupModule } from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
@@ -24,16 +25,20 @@ import { TimeSelectComponent } from './room-detail/time-select/time-select.compo
 import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
 import { IsLoggedIn } from './is-logged-in/is-logged-in';
+import { ProfileComponent } from './dashboard/profile/profile.component';
+import { PlaceComponent } from './create-room/place/place.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
   { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
   { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
-  { path : 'room/:id', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
-  { path : 'link/:id', redirectTo : 'room/:id', pathMatch : 'full' },
-  { path : 'login', component : LoginComponent, resolve: [IsLoggedIn] },
+  { path : 'room/:hash', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
+  { path : 'link/:hash', redirectTo : 'room/:hash', pathMatch : 'full' },
+  { path : 'login', component : LoginComponent },
   { path : 'signup', component : SignupComponent },
-  { path : 'room/:id/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] }
+  { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
+  { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
+  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] }
 ];
 
 export function MyCookieStrategy() {
@@ -41,7 +46,7 @@ export function MyCookieStrategy() {
 }
 
 @NgModule({
-  declarations : [ AppComponent,
+  declarations : [AppComponent,
     LoginComponent,
     SignupComponent,
     DashboardComponent,
@@ -50,6 +55,8 @@ export function MyCookieStrategy() {
     RoomDetailComponent,
     RoomListFilterPipe,
     TimeSelectComponent,
+    ProfileComponent,
+    PlaceComponent
   ],
   imports : [
     CommonModule,
@@ -61,7 +68,12 @@ export function MyCookieStrategy() {
     ReactiveFormsModule,
     SuiModule,
     ClipboardModule,
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
+      libraries: ['places']
+    }),
+    SuiPopupModule,
   ],
   providers : [
     AccountService,

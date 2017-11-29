@@ -1,8 +1,6 @@
 from datetime import datetime, timedelta
-from dateutil.parser import  parse
+from dateutil.parser import parse
 import json
-
-
 
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, JsonResponse
@@ -11,9 +9,7 @@ from django.forms.models import model_to_dict
 from .models import Room
 
 
-
 def room_list(request):
-
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
 
@@ -30,14 +26,16 @@ def room_list(request):
         place = data['place']
         time_span_start = parse(data['time_span_start'], ignoretz=True)
         time_span_end = parse(data['time_span_end'], ignoretz=True)
-        t = int(data['min_time_required'])
+        time = int(data['min_time_required'])
+        min_members = int(data['min_members'])
 
-        min_time_required = timedelta(hours=t/60, minutes=t%60)
+        min_time_required = timedelta(hours=int(time / 60), minutes=time % 60)
 
         new_room = Room(
             name=name,
             place=place,
             min_time_required=min_time_required,
+            min_members=min_members,
             time_span_end=time_span_end,
             time_span_start=time_span_start,
             owner=user
@@ -54,16 +52,7 @@ def room_list(request):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-
-def room_detail(request, room_id):
-    if not request.user.is_authenticated():
-        return HttpResponse(status=401)
-
-    try:
-        room = Room.objects.get(id=room_id)
-    except Room.DoesNotExist:
-        return HttpResponseNotFound()
-
+def room_detail_handle_request(request, room):
     '''  
     TODO: Object of type 'User' is not JSON serializable
     members of the room are currently excluded
@@ -77,6 +66,28 @@ def room_detail(request, room_id):
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
+def room_detail(request, room_id):
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    return room_detail_handle_request(request, room)
+
+
+def room_detail_hash(request, room_hash):
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    try:
+        room = Room.objects.get(id=Room.decode_hash(room_hash))
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    return room_detail_handle_request(request, room)
 
 def room_members(request, room_id):
     if not request.user.is_authenticated():
@@ -92,4 +103,34 @@ def room_members(request, room_id):
         return JsonResponse(list(room.members.all().values('id', 'username', 'email')), safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+def set_place(request, room_id):
+
+    if not request.user.is_authenticated():
+        return HttpResponse(status=401)
+
+    room_id = int(room_id)
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return HttpResponseNotFound()
+
+    # check if the user is the owner of the room
+    if request.user != room.owner:
+        return HttpResponse(status=401)
+
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode())
+        room.__setattr__('place', data['place'])
+        room.__setattr__('latitude', data['latitude'])
+        room.__setattr__('longitude', data['longitude'])
+        room.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['PUT'])
+
+
+
+
+
 

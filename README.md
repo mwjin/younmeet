@@ -29,10 +29,13 @@ dev:
 ## Build Instructions
 
 - Angular
-  - Installing dependencies: ``npm install``
+  - Installing dependencies: 
+	-``npm install``
+	-``npm install -g @angular/cli``
   - Running the app: ``npm start``
   - Testing: ``npm test``
 - Django
+  - Installing dependencies: ``pip install django coverage coveralls python-dateutil hashids``
   - Running the app: ``python manage.py runserver``
   - Testing: ``python manage.py test``
   - Note: if Python 2 is the default for the system, use python3 command instead of python
