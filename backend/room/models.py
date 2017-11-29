@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models.signals import post_save
 
 from hashids import Hashids
 
@@ -10,6 +11,8 @@ https://groups.google.com/forum/#!topic/django-users/pm6F9RSEGPk
 '''
 
 class Room(models.Model):
+
+    hashid = models.CharField(max_length=16, null=True, blank=True)
 
     name = models.CharField(max_length=64)
     place = models.CharField(max_length=64)
@@ -46,3 +49,9 @@ class Room(models.Model):
 
     # TODO: Implement member functions for make best times.
 
+# function that inits hashid field at room object creation
+def init_hashid(**kwargs):
+    instance = kwargs.get('instance')
+    instance.hashid = Room.get_hash(int(instance.id))
+
+post_save.connect(init_hashid, Room)

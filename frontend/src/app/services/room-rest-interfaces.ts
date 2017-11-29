@@ -5,6 +5,7 @@ import { CreateRoomForm } from '../create-room/create-room-form';
 
 export interface RoomResponse {
   id: number;
+  hashid: string;
   name: string;
   place: string;
   best_start_time: Date;
@@ -20,6 +21,7 @@ export interface RoomResponse {
 export function roomToResponse(room: Room): RoomResponse {
   return {
     id : room.id,
+    hashid : room.hashid,
     name : room.name,
     place : room.place,
     best_start_time : null,
@@ -36,6 +38,7 @@ export function roomToResponse(room: Room): RoomResponse {
 export function roomFromResponse(res: RoomResponse): Room {
   return {
     name : res.name,
+    hashid : res.hashid,
     duration : res.min_time_required,
     timespan : new Timespan(res.time_span_start, res.time_span_end),
     anonymity : false,

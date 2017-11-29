@@ -54,9 +54,8 @@ export class MeetService {
       .catch(handleError);
   }
 
-  getRoomById(id: number): Promise<Room> {
-    return this.http.get(`api/rooms/${id}`)
-      .toPromise()
+  handleRoomResponse(room: Promise<Response>): Promise<Room> {
+    return room
       .then(res => res.json() as RoomResponse)
       .then(roomData => {
         let room = roomFromResponse(roomData);
@@ -69,6 +68,18 @@ export class MeetService {
         return roomData;
       })
       .catch(handleError);
+
+  }
+  getRoomById(id: number): Promise<Room> {
+    return this.handleRoomResponse(
+      this.http.get(`api/rooms/${id}`).toPromise()
+    );
+  }
+
+  getRoomByHash(hash: string): Promise<Room> {
+    return this.handleRoomResponse((
+      this.http.get(`api/rooms/hash/${hash}`).toPromise()
+    ));
   }
 
   getTimeSpan(): Timespan {

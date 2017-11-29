@@ -31,7 +31,7 @@ describe('RoomDetailComponent', () => {
         { provide : MeetService, useClass : MeetServiceSpy },
         {
           provide : ActivatedRoute, useValue : {
-          params : Observable.of({ id : 1 })
+          params : Observable.of({ hash : "asdf" })
         }
         }
       ]

@@ -124,6 +124,10 @@ export class MeetServiceSpy {
     return Promise.resolve(room);
   });
 
+  getRoomByHash = jasmine.createSpy('getRoomByHash').and.callFake((hash: string) => {
+    return Promise.resolve(ROOMS_CREATED[0]);
+  });
+
   getUsersInRoom = jasmine.createSpy('getUsersInRoom').and.callFake(
     (id: number) => Promise.resolve(TEST_USERS)
   );
