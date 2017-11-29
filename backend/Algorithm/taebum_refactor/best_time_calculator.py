@@ -1,6 +1,5 @@
 from .time_count_tree import TimeCountTree
 from .best_time_heap import BestTimeHeap
-from functools import reduce
 
 
 class BestTimeCalculator:
@@ -76,41 +75,35 @@ class BestTimeCalculator:
             return weight
 
         def expand_best_time(self, new_time_node):
-            # Try to expand current best time with given time_node
-            remove_members = set(filter(lambda person: person not in new_time_node.members, self.full_attend))
-
-            self.full_attend.difference_update(remove_members)
+            # Merge distinct time_node
+            remove_members = []
+            for member in self.full_attend:
+                if member not in new_time_node.members:
+                    remove_members.append(member)
+                    self.partial_attend[member] = {'start': self.start, 'end': self.end}
 
             for member in remove_members:
-                self.partial_attend[member] = {
-                    'start': self.start,
-                    'end': self.end
-                }
+                self.full_attend.remove(member)
 
-            partial_members_in_new_time_node = set(
-                filter(lambda person: person in new_time_node.members, self.partial_attend.keys()))
-
-            for member in partial_members_in_new_time_node:
-                before_available_time = self.partial_attend[member]
-                if before_available_time['end'] == new_time_node.start:
-                    # Can expand time
-                    self.partial_attend[member]['start'] = before_available_time['start']
-                    self.partial_attend[member]['end'] = new_time_node.end
-                else:
-                    # Take longer time
-                    if new_time_node.end - new_time_node.start > \
-                                    before_available_time['end'] - before_available_time['start']:
-                        self.partial_attend[member]['start'] = new_time_node.start
+            for member in self.partial_attend.keys():
+                if member in new_time_node.members:
+                    before_available_time = self.partial_attend[member]
+                    if before_available_time['end'] == new_time_node.start:
+                        # Can expand time
+                        self.partial_attend[member]['start'] = before_available_time['start']
                         self.partial_attend[member]['end'] = new_time_node.end
+                    else:
+                        # Take longer time
+                        if new_time_node.end - new_time_node.start > \
+                                        before_available_time['end'] - before_available_time['start']:
+                            self.partial_attend[member]['start'] = new_time_node.start
+                            self.partial_attend[member]['end'] = new_time_node.end
 
-            new_members = set(
-                filter(lambda person: person not in self.partial_attend.keys() and person not in self.full_attend,
-                       new_time_node.members))
-
-            for member in new_members:
-                self.partial_attend[member] = dict()
-                self.partial_attend[member]['start'] = new_time_node.start
-                self.partial_attend[member]['end'] = new_time_node.end
+            for member in new_time_node.members:
+                if member not in self.partial_attend.keys() and member not in self.full_attend:
+                    self.partial_attend[member] = dict()
+                    self.partial_attend[member]['start'] = new_time_node.start
+                    self.partial_attend[member]['end'] = new_time_node.end
 
             self.end = new_time_node.end
             self.weight = self.calculate_weight()

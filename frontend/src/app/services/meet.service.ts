@@ -12,6 +12,7 @@ import { getCSRFHeaders } from '../../util/headers';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
+import { BesttimeResponseData } from './besttime-response-data';
 
 
 function handleError(error: any) {
@@ -82,6 +83,13 @@ export class MeetService {
     return this.http.get(`api/rooms/${id}/members`)
       .toPromise()
       .then(res => res.json() as UserInfo[])
+      .catch(handleError);
+  }
+
+  getBestTime(id: number): Promise<BesttimeResponseData[]> {
+    return this.http.get(`api/rooms/${id}/best-times`)
+      .toPromise()
+      .then(res => res.json() as BesttimeResponseData[])
       .catch(handleError);
   }
 

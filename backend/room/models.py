@@ -21,7 +21,7 @@ class Room(models.Model):
     time_span_start = models.DateTimeField(null=True)
     time_span_end = models.DateTimeField(null=True)
 
-    min_members = models.IntegerField(default=0)
+    min_members = models.IntegerField(default=1)
 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,

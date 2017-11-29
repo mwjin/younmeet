@@ -51,12 +51,31 @@
 
   <br/>
   <h2>Available Time</h2>
-  <div class="ui list" *ngFor="let timespan of availableTime; let i = index">
+  <div class="ui list" *ngFor="let bestTime of availableTime; let i = index">
     <div class="item">
       <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
-      <b>{{timespan.getDate()[0]}}: &nbsp;</b>
-      {{timespan.getStartTime()}} ~ {{timespan.getEndTime()}}
-      ({{timespan.getDuration()}})
+      <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+      {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
+      ({{bestTime.getDuration()}})
+      <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
+           [popupPlacement]="right"
+           [popupTemplate]="popupTemplate">
+        <i class="users icon"></i>
+      </div>
+      <ng-template let-popup #popupTemplate>
+        <div class="header">Fully Attend Members</div>
+        <div class="ui list" *ngFor="let username of bestTime.full_attend; let j = index">
+          <div class="item">
+            <b>{{j + 1}}:</b> {{username}}
+          </div>
+        </div>
+        <div class="header">Partially Attend Members</div>
+        <div class="ui list" *ngFor="let partial of bestTime.partial_attend; let j=index">
+          <div class="item">
+            <b>{{j + 1}}:</b> {{partial.username}} (from {{partial.getStartTime()}} to {{partial.getEndTime()}}
+          </div>
+        </div>
+      </ng-template>
       <br>
     </div>
   </div>

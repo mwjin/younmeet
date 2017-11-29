@@ -14,6 +14,8 @@ import {Component} from "@angular/core";
 import {AppModule} from "../app.module";
 import {AccountService} from "../services/account.service";
 import {AccountServiceSpy} from "../services/account.service.spy";
+import 'rxjs/add/observable/of';
+import { SuiPopupModule } from 'ng2-semantic-ui';
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -30,6 +32,8 @@ describe('RoomDetailComponent', () => {
           apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
           libraries: ["places"],
         })
+        ClipboardModule,
+        SuiPopupModule
       ],
       declarations : [
         RoomDetailComponent,

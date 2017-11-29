@@ -1,6 +1,6 @@
-import {Room} from "../models/room";
-import {Timespan} from "../models/timespan";
-import {UserInfo} from "../models/user-info";
+import { Room } from '../models/room';
+import { Timespan } from '../models/timespan';
+import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 
 export interface RoomResponse {
@@ -58,17 +58,18 @@ export interface RoomCreateRequest {
   name: string;
   place: string;
   min_time_required: number;
+  min_members: number;
   time_span_start: Date;
   time_span_end: Date;
 }
 
-export function roomFormToCreateResponse(
-  roomForm: CreateRoomForm): RoomCreateRequest {
+export function roomFormToCreateResponse(roomForm: CreateRoomForm): RoomCreateRequest {
   return {
-    name: roomForm.name,
-    place: "",
-    min_time_required: roomForm.duration,
-    time_span_start: roomForm.timespan.start,
-    time_span_end: roomForm.timespan.end
-  }
+    name : roomForm.name,
+    place : '',
+    min_time_required : roomForm.duration,
+    min_members : roomForm.minPeople,
+    time_span_start : roomForm.timespan.start,
+    time_span_end : roomForm.timespan.end
+  };
 }

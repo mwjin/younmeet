@@ -9,8 +9,8 @@ from .models import FreeTime
 from .best_time_calculator import BestTimeCalculator
 from best_time.models import BestTime
 from room.models import Room
-
-from datetime import datetime, timedelta
+from user.models import User
+from partial_attend_info.models import PartialAttendInfo
 import json
 
 
@@ -42,14 +42,13 @@ def free_time_list(request, room_id):
         # add user to the room members, redundant adding is OK
         current_room.members.add(user)
 
+        # delete previous free times
         old_free_times = FreeTime.objects.filter(user_id=user.id).filter(room_id=room_id)
-
         for old_free_time in old_free_times:
             old_free_time.delete()
 
-        # New free times
+        # Add new free times
         data = json.loads(request.body.decode())
-
         for free_time in data:
             start = parse(free_time['start'], ignoretz=True)
             end = parse(free_time['end'], ignoretz=True)
@@ -61,35 +60,50 @@ def free_time_list(request, room_id):
             )
             new_free_time.save()
 
+        # delete old best time and replace it with a new one
+        best_times = BestTime.objects.filter(room_id=room_id)
+        for best_time in best_times:
+            best_time.delete()
+
         # Calculate new best time
-        new_free_time_dic = list(FreeTime.objects.filter(room_id=room_id).values('start_time', 'end_time'))
+        new_free_time_dic = list(FreeTime.objects.filter(room_id=room_id).values('start_time', 'end_time', 'user'))
         new_free_time_list = []
 
-        for ft in new_free_time_dic:
-            new_free_time_list.append((ft['start_time'], ft['end_time']))
+        for free_time in new_free_time_dic:
+            new_free_time_list.append((free_time['start_time'],
+                                       free_time['end_time'],
+                                       User.objects.get(id=free_time['user']).username))
 
-        btc = BestTimeCalculator(
+        best_time_calculator = BestTimeCalculator(
             current_room.min_time_required,
             current_room.min_members,
         )  # default k=3
-        btc.insert_time(new_free_time_list)
 
-        result = btc.calculate_best_time()
+        best_time_calculator.insert_time(new_free_time_list)
+        best_time_calculator.calculate_best_times()
+        k_best_times = best_time_calculator.get_k_best_times()
 
-        # delete old best time and replace it with a new one
-        best_times = BestTime.objects.filter(room_id=room_id)
-        for bt in best_times:
-            bt.delete()
+        for time in k_best_times:
+            if time is not None:
+                full_attend_members = time.full_attend
+                partial_attend_members = time.partial_attend
+                new_best_time = BestTime(
+                    room=current_room,
+                    start_time=time.start,
+                    end_time=time.end,
+                )
+                new_best_time.save()
 
-        # replace best time
-        for t in result:
-            new_best_time = BestTime(
-                room=current_room,
-                start_time=t[1],
-                end_time=t[2]
-            )
-            new_best_time.save()
-
+                for username in partial_attend_members.keys():
+                    partial_info = PartialAttendInfo(
+                        username=username,
+                        start=partial_attend_members[username]['start'],
+                        end=partial_attend_members[username]['end'],
+                        best_time=new_best_time
+                    )
+                    partial_info.save()
+                for username in full_attend_members:
+                    new_best_time.full_attend.add(User.objects.get(username=username))
         return HttpResponse(status=201)
 
     else:

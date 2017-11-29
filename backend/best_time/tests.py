@@ -1,6 +1,7 @@
 from room.models import Room
 from user.models import User
 from .models import BestTime
+from partial_attend_info.models import PartialAttendInfo
 
 from dateutil.parser import parse
 from django.test import TestCase, Client
@@ -74,8 +75,21 @@ class BestTimeTestCase(TestCase):
             content_type=CONTENT_TYPE
         )
 
+        best_time = BestTime.objects.create(start_time=datetime(2017, 11, 1, 8, 00),
+                                            end_time=datetime(2017, 11, 1, 10, 00),
+                                            room=Room.objects.get(id=1))
+        best_time.full_attend.add(User.objects.get(id=1))
+
+        partial_attend_info = PartialAttendInfo(start=datetime(2017, 11, 1, 9, 00),
+                                                end=datetime(2017, 11, 1, 10, 00),
+                                                username='partial',
+                                                best_time=best_time)
+        partial_attend_info.save()
         response = self.client.get('/api/rooms/1/best-times')
+        data = json.loads(response.content.decode())
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data[0]['full_attend']), 1)
+        self.assertEqual(len(data[0]['partial_attend']), 1)
 
     def test_best_time_list_invalid_methods(self):
         self.client.post(
@@ -92,4 +106,3 @@ class BestTimeTestCase(TestCase):
 
         response = self.client.delete('/api/rooms/1/best-times')
         self.assertEqual(response.status_code, 405)
-
