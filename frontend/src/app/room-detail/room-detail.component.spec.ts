@@ -10,6 +10,10 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/observable/of';
 import { SuiPopupModule } from 'ng2-semantic-ui';
+import { MockComponent } from 'ng2-mock-component';
+import { AgmCoreModule } from '@agm/core';
+import { AccountServiceSpy } from '../services/account.service.spy';
+import { AccountService } from '../services/account.service';
 
 describe('RoomDetailComponent', () => {
   let component: RoomDetailComponent;
@@ -22,17 +26,19 @@ describe('RoomDetailComponent', () => {
         RouterTestingModule,
         FormsModule,
         ClipboardModule,
-        SuiPopupModule
+        SuiPopupModule,
+        AgmCoreModule
       ],
       declarations : [
         RoomDetailComponent,
       ],
       providers : [
         { provide : MeetService, useClass : MeetServiceSpy },
+        { provide : AccountService, useClass : AccountServiceSpy },
         {
           provide : ActivatedRoute, useValue : {
-          params : Observable.of({ hash : "asdf" })
-        }
+            params : Observable.of({ hash : "asdf" })
+          }
         }
       ]
     })
