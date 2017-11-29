@@ -12,7 +12,6 @@ class Room(models.Model):
     name = models.CharField(max_length=64)
     place= models.CharField(max_length=64, null=True)
     # place_id = models.CharField(max_length=64, null=True)
-    # position = GeopositionField(null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
 
