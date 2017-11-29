@@ -26,7 +26,7 @@ describe('CreateRoomComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'room/:id', component: RoomDetailComponentMock }
+          { path: 'room/:hash', component: RoomDetailComponentMock }
         ]),
         FormsModule,
         SuiModule
@@ -71,7 +71,7 @@ describe('CreateRoomComponent', () => {
         expect(roomArg.duration).toEqual(30);
         expect(roomArg.timespan).toEqual(new Timespan(new Date(2017,11,15,0,0), new Date(2017,11,15,1,0)));
         expect(roomArg.anonymity).toEqual(false);
-        expect(location.path()).toMatch(/\/room\/\d+/);
+        expect(location.path()).toContain('room/');
       });
     })));
   });

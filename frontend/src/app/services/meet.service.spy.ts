@@ -12,7 +12,8 @@ let ROOMS_CREATED: Room[] = [
     place : 'Seoul Nat. Univ. 302',
     urgent : true,
     createdTime : new Date(),
-    id : 1
+    id : 1,
+    hashid : 'hash1'
   },
   <Room>{
     name : 'Room 2',
@@ -22,7 +23,8 @@ let ROOMS_CREATED: Room[] = [
     place : 'Seoul Nat. Univ. Station',
     urgent : true,
     createdTime : new Date(),
-    id : 2
+    id : 2,
+    hashid : 'hash2'
   },
   <Room>{
     name : 'Room 3',
@@ -32,7 +34,8 @@ let ROOMS_CREATED: Room[] = [
     place : 'Nakseongdae Station',
     urgent : true,
     createdTime : new Date(),
-    id : 3
+    id : 3,
+    hashid : 'hash3'
   },
 ];
 
@@ -45,7 +48,8 @@ let ROOMS_JOINED: Room[] = [
     place : 'Seoul Nat. Univ. 301',
     urgent : true,
     createdTime : new Date(),
-    id : 1
+    id : 1,
+    hashid : 'hash1'
   },
   <Room>{
     name : 'Room 5',
@@ -55,7 +59,8 @@ let ROOMS_JOINED: Room[] = [
     place : 'Seoul Nat. Univ. Student Building',
     urgent : true,
     createdTime : new Date(),
-    id : 2
+    id : 2,
+    hashid : 'hash2'
   },
   <Room>{
     name : 'Room 6',
@@ -65,7 +70,8 @@ let ROOMS_JOINED: Room[] = [
     place : 'Shinlim Station',
     urgent : false,
     createdTime : new Date(),
-    id : 3
+    id : 3,
+    hashid : 'hash3'
   },
 ];
 
@@ -138,6 +144,7 @@ export class MeetServiceSpy {
 
   addRoom = jasmine.createSpy('addRoom').and.callFake((room: Room) => {
     room.id = this.rooms.length;
+    room.hashid = 'asdf';
     this.rooms.push(room);
     return Promise.resolve(room);
   });
