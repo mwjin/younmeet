@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import {Room} from "../models/room";
-
-export type FilterOptions = "All" | "Name" | "Location";
+import { FilterOptions } from './room-list-filter-options';
 
 @Pipe({
   name: 'roomListFilter'

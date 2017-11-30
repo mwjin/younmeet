@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Room } from '../models/room';
 import { MeetService } from '../services/meet.service';
 import {User} from "../models/user";
-import {FilterOptions} from "./room-list-filter.pipe";
+import { FilterOptions } from './room-list-filter-options';
 
 @Component({
   selector : 'app-dashboard',
