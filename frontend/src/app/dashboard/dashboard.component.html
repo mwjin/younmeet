@@ -39,26 +39,22 @@
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
-    <button class="fluid ui button">View more</button>
     <div class="ui divider"></div>
     <app-room-list [rooms]="roomsCreated_NotUrgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
-    <button class="fluid ui button">View more</button>
   </div>
   <div class="ui bottom attached segment" suiTabContent="2">
     <app-room-list [rooms]="roomsJoined_Urgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
-    <button class="fluid ui button">View more</button>
     <div class="ui divider"></div>
     <app-room-list [rooms]="roomsJoined_NotUrgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
-    <button class="fluid ui button">View more</button>
   </div>
 </sui-tabset>
 
