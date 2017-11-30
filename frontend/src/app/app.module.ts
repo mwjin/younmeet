@@ -26,6 +26,7 @@ import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -37,7 +38,9 @@ const routes: Routes = [
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
-  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] }
+  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
+  { path : 'not_found', component : NotFoundComponent },
+  { path : '**', redirectTo : '/not_found'}
 ];
 
 export function MyCookieStrategy() {
@@ -55,7 +58,8 @@ export function MyCookieStrategy() {
     RoomListFilterPipe,
     TimeSelectComponent,
     ProfileComponent,
-    PlaceComponent
+    PlaceComponent,
+    NotFoundComponent
   ],
   imports : [
     CommonModule,
