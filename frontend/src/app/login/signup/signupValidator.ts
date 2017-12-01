@@ -16,9 +16,6 @@ export class SignupValidator {
     if (usernameReg.test(username)) {
       control.get('username').setErrors({ invalidUsername : true });
     }
-    /* TODO:
-     * Update username Validator for checking duplicate username
-     */
 
     const passwordReg: RegExp = new RegExp('^(?=.*[a-z])(?=.*[0-9])\\S{8,}$');
     if (!passwordReg.test(password)) {
