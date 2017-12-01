@@ -19,8 +19,10 @@ import { Besttime } from '../models/besttime';
 export class RoomDetailComponent implements OnInit {
   room: Room;
   members: UserInfo[];
+
   bestTimes: Besttime[];
   showingBestTimes: number;
+
   zoom: number;
   isRoomOwner: boolean;
 

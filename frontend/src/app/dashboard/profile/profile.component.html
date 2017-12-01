@@ -3,7 +3,8 @@
     <div class="ui main text container">
       <div class="column">
         <h2 class="ui align-middle header">
-          {{currentUser.username}}'s profile
+          {{currentUser.username}}
+          <button class="ui button right floated" (click)="goBack()">Back</button>
         </h2>
       </div>
     </div>
@@ -16,11 +17,6 @@
           <label>Email</label>
           {{currentUser.email}}
         </div>
-        <div class="field">
-          <label>Username</label>
-          {{currentUser.username}}
-        </div>
-
         <!-- Password Input -->
         <div class="required field">
           <div class="ui left icon input">
@@ -44,7 +40,10 @@
         <div *ngIf="passwordConfirm.hasError('invalidPasswordConfirm')&&passwordConfirm.touched"
              class="ui error message"> Must match password.
         </div>
-        <button class="ui fluid submit button" type="submit">Submit</button>
+        <button class="ui fluid submit button"
+                type="submit"
+                [disabled]="!passwordForm.valid">Change Password
+        </button>
 
       </form>
     </div>
