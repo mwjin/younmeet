@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Room} from "../../models/room";
 import {Router} from "@angular/router";
-import {FilterOptions} from "../room-list-filter.pipe";
+import { FilterOptions } from '../room-list-filter-options';
 
 @Component({
   selector: 'app-room-list',
