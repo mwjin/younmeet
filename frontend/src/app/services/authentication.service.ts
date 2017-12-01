@@ -12,7 +12,7 @@ export class AuthenticationService {
   }
 
   logIn(usernameOrEmail: string, password: string): Promise<boolean> {
-    const url = `/api/signin`; // could be /api/user/signin
+    const url = `/api/signin`;
     const isEmail: RegExp = new RegExp('^[^@\\s]+[@][^@\\s]+[.][a-z]{2,3}$');
     if (isEmail.test(usernameOrEmail)) {
       // If input is email format
@@ -51,7 +51,7 @@ export class AuthenticationService {
             // do something else
             return false;
           }
-        });
+        }).catch(this.handleError);
     }
   }
 
