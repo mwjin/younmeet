@@ -23,11 +23,12 @@ export class Besttime {
 
   getDuration(): string {
     let duration = moment.duration(moment(this.end).diff(this.start));
+    let hours = duration.hours();
     if (duration.minutes() === 0) {
-      return '' + duration.hours() + ' hours';
+      return '' + hours + (hours === 1? ' hour' : ' hours');
     }
     else {
-      return '' + duration.hours() + ' hours, ' + duration.minutes() + ' minutes';
+      return '' + duration.hours() + (hours === 1? ' hour, ' : ' hours, ') + duration.minutes() + ' minutes';
     }
   }
 }
