@@ -22,7 +22,7 @@ import {TimespanResponseData} from "../services/timespan-response-data";
 export class RoomDetailComponent implements OnInit {
   room: Room;
   members: UserInfo[];
-  availableTime: Timespan[];
+  availableTime: Besttime[];
   zoom: number;
   isRoomOwner: boolean;
 
