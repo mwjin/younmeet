@@ -27,7 +27,7 @@ export class FreetimeService {
 
   postFreeTimes(freetimes: Freetime[], id: number): Promise<boolean> {
     return this.http.post(`api/rooms/${id}/free-times`,
-      JSON.stringify(freetimes), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+      JSON.stringify(freetimes))
       .toPromise()
       .then(response => response.status === 201)
       .catch(handleError);

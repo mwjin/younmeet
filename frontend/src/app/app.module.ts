@@ -24,6 +24,7 @@ import { ClipboardModule } from 'ngx-clipboard/dist';
 import { TimeSelectComponent } from './room-detail/time-select/time-select.component';
 import { CalendarModule } from 'fullcalendar-ag4';
 import { FreetimeService } from './services/freetime.service';
+import { IsLoggedIn } from './is-logged-in/is-logged-in';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 
@@ -33,7 +34,7 @@ const routes: Routes = [
   { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'link/:hash', redirectTo : 'room/:hash', pathMatch : 'full' },
-  { path : 'login', component : LoginComponent },
+  { path : 'login', component : LoginComponent, resolve: [ IsLoggedIn ] },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
@@ -60,6 +61,7 @@ export function MyCookieStrategy() {
   imports : [
     CommonModule,
     BrowserModule,
+
     RouterModule.forRoot(routes),
     FormsModule,
     HttpModule,
@@ -79,6 +81,7 @@ export function MyCookieStrategy() {
     AuthenticationService,
     FreetimeService,
     AuthGuard,
+    IsLoggedIn,
     {
       provide : XSRFStrategy,
       useFactory : MyCookieStrategy

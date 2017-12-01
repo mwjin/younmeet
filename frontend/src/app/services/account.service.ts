@@ -19,7 +19,7 @@ export class AccountService {
 
   putUser(user: User): Promise<boolean> {
     return this.http
-      .put(this.accountUrl, JSON.stringify(user), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+      .put(this.accountUrl, JSON.stringify(user))
       .toPromise()
       .then(response => response.status === 204)
       .catch(this.handleError);
@@ -37,21 +37,21 @@ export class AccountService {
         username : username,
         email : email,
         password : password
-      }), <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+      }))
       .toPromise()
       .then(response => response.status === 201)
       .catch(this.handleError);
   }
 
   deleteUser(): Promise<boolean> {
-    return this.http.delete(this.accountUrl, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+    return this.http.delete(this.accountUrl)
       .toPromise()
       .then((response) => {
         return response.status === 200;
       })
       .catch(this.handleError);
   }
-  
+
   private handleError(error: any): Promise<any> {
     console.error('Error occured', error);
     return Promise.reject(error.message || error);

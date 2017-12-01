@@ -120,8 +120,7 @@ export class MeetService {
   addRoom(roomForm: CreateRoomForm): Promise<Room> {
     return this.http.post(
       `api/rooms`,
-      roomFormToCreateResponse(roomForm),
-      <RequestOptionsArgs>{ headers : getCSRFHeaders() }
+      roomFormToCreateResponse(roomForm)
     )
       .toPromise()
       .then(res => res.json() as RoomResponse)
@@ -141,7 +140,7 @@ export class MeetService {
   }
 
   deleteRoom(roomId: number): Promise<Response> {
-    return this.http.delete(`api/rooms/${roomId}`, <RequestOptionsArgs>{ headers : getCSRFHeaders() })
+    return this.http.delete(`api/rooms/${roomId}`)
       .toPromise()
       .catch(handleError);
   }
