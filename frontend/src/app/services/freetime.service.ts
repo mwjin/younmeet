@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Freetime } from '../models/freetime';
 import 'rxjs/add/operator/toPromise';
-import { getCSRFHeaders } from '../../util/headers';
 import { Http, RequestOptionsArgs } from '@angular/http';
 import { FreetimeResponseData } from './freetime-response-data';
 
