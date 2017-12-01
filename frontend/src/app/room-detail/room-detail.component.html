@@ -35,49 +35,64 @@
       </div>
     </div>
   </div>
-
-  <h2>Location</h2>
-  <div class="">{{room.place}}</div>
-  <div class="container">
-    <agm-map [latitude]="room.latitude" [longitude]="room.longitude" [scrollwheel]="false" [zoom]="zoom">
-      <agm-marker [latitude]="room.latitude" [longitude]="room.longitude"></agm-marker>
-    </agm-map>
-  </div>
   <br/>
-  <div *ngIf="isRoomOwner" class="two wide column">
-    <button (click)="goPlaceChangePage()" class="ui button left floated">Change</button>
-  </div>
+  <header>
+    <h2>Recommended Times</h2>
+  </header>
+  <div *ngIf="bestTimes">
+    <div class="ui attached segment">
+      <div class="ui list" *ngFor="let bestTime of bestTimes; let i = index">
+        <div *ngIf="i < showingBestTimes">
+          <div class="item">
+            <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
+            <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+            {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
+            ({{bestTime.getDuration()}})
+            <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
+                 [popupPlacement]="right"
+                 [popupTemplate]="popupTemplate">
+              <i class="users icon"></i>
+            </div>
 
-
-  <br/>
-  <h2>Available Time</h2>
-  <div class="ui list" *ngFor="let bestTime of availableTime; let i = index">
-    <div class="item">
-      <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
-      <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
-      {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
-      ({{bestTime.getDuration()}})
-      <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
-           [popupPlacement]="right"
-           [popupTemplate]="popupTemplate">
-        <i class="users icon"></i>
+            <ng-template let-popup #popupTemplate>
+              <div class="header">Fully Attend Members</div>
+              <div class="ui list" *ngFor="let username of bestTime.full_attend; let j = index">
+                <div class="item">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> {{username}}
+                </div>
+              </div>
+              <div class="header">Partially Attend Members</div>
+              <div class="ui list" *ngFor="let partial of bestTime.partial_attend; let j=index">
+                <div class="item">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> {{partial.username}} ({{partial.getStartTime()}} ~
+                  {{partial.getEndTime()}})
+                </div>
+              </div>
+            </ng-template>
+            <br>
+          </div>
+        </div>
       </div>
-      <ng-template let-popup #popupTemplate>
-        <div class="header">Fully Attend Members</div>
-        <div class="ui list" *ngFor="let username of bestTime.full_attend; let j = index">
-          <div class="item">
-            <b>{{j + 1}}:</b> {{username}}
-          </div>
-        </div>
-        <div class="header">Partially Attend Members</div>
-        <div class="ui list" *ngFor="let partial of bestTime.partial_attend; let j=index">
-          <div class="item">
-            <b>{{j + 1}}:</b> {{partial.username}} (from {{partial.getStartTime()}} to {{partial.getEndTime()}}
-          </div>
-        </div>
-      </ng-template>
-      <br>
+    </div>
+    <div *ngIf="showingBestTimes < bestTimes.length">
+      <div class="ui bottom attached button" tabindex="0" (click)="viewMore()">View More</div>
+    </div>
+    <br/>
+    <button class="ui button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+    <header>
+      <h2>Location: </h2>
+      <h3>{{room.place}}</h3>
+    </header>
+    <div class="container">
+      <agm-map [latitude]="room.latitude" [longitude]="room.longitude" [scrollwheel]="false" [zoom]="zoom">
+        <agm-marker [latitude]="room.latitude" [longitude]="room.longitude"></agm-marker>
+      </agm-map>
+    </div>
+    <br/>
+    <div *ngIf="isRoomOwner" class="two wide column">
+      <button (click)="goPlaceChangePage()" class="ui button left floated">Change</button>
     </div>
   </div>
-  <button class="ui button" (click)="goTimeSelectPage()">Select Available Time</button>
+
+
 </div>
