@@ -14,7 +14,8 @@ export class RoomListComponent implements OnInit {
   @Input() searchText: string;
   @Input() searchOption: FilterOptions;
 
-  show: number = 5;
+  numRoomsShown: number = 5;
+  numRoomsShownMin: number = 5;
 
   constructor(private router: Router) { }
 

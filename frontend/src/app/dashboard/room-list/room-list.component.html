@@ -2,15 +2,20 @@
   <div *ngIf="rooms" class="ui relaxed divided list">
     <div class="item" *ngFor="let room of rooms
     | roomListFilter: searchText: searchOption
-    | slice: 0: show">
+    | slice: 0: numRoomsShown">
       <a [routerLink]="['/room', room.hashid]" class="content">
         <div class="header">{{room.name}}</div>
         {{room.place}}
       </a>
     </div>
+    <button class="fluid ui button"
+            *ngIf="rooms.length > numRoomsShown" (click)="numRoomsShown = rooms.length">
+      View more
+    </button>
+    <button class="fluid ui button"
+            *ngIf="rooms.length <= numRoomsShown && rooms.length > numRoomsShownMin"
+            (click)="numRoomsShown = numRoomsShownMin">
+      View less
+    </button>
   </div>
-  <button class="fluid ui button"
-          *ngIf="rooms.length > show" (click)="show = rooms.length">
-    View more
-  </button>
 </div>

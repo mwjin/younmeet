@@ -35,22 +35,26 @@
     <a class="item" suiTabHeader="2">Joined</a>
   </div>
   <div class="ui bottom attached segment" suiTabContent="1">
+    <div class="ui medium header">Urgent</div>
     <app-room-list [rooms]="roomsCreated_Urgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
     <div class="ui divider"></div>
+    <div class="ui medium header">Not Urgent</div>
     <app-room-list [rooms]="roomsCreated_NotUrgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
   </div>
   <div class="ui bottom attached segment" suiTabContent="2">
+    <div class="ui medium header">Urgent</div>
     <app-room-list [rooms]="roomsJoined_Urgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
     </app-room-list>
     <div class="ui divider"></div>
+    <div class="ui medium header">Not Urgent</div>
     <app-room-list [rooms]="roomsJoined_NotUrgent"
                    [searchText]="searchText"
                    [searchOption]="currentSearchOption">
