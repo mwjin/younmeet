@@ -1,34 +1,27 @@
-import { Partialattendinfo } from './partialattendinfo';
+import { PartialAttendInfo } from './partial-attend-info';
 import * as moment from 'moment';
+import { Timespan } from './timespan';
 
 export class Besttime {
-  constructor(public start: Date,
-              public end: Date,
+  constructor(public timespan: Timespan,
               public full_attend: String[],
-              public partial_attend: Partialattendinfo[]) {}
+              public partial_attend: PartialAttendInfo[]) {
+
+  }
 
   getDate(): [ string, string ] {
-    let startDateStr = moment(this.start).format('MMMM Do (dddd)');
-    let endDateStr = moment(this.end).format('MMMM Do (dddd)');
-    return [ startDateStr, endDateStr ];
+    return this.timespan.getDate();
   }
 
   getStartTime(): string {
-    return moment(this.start).format('h:mm A');
+    return this.timespan.getStartTime();
   }
 
   getEndTime(): string {
-    return moment(this.end).format('h:mm A');
+    return this.timespan.getEndTime();
   }
 
   getDuration(): string {
-    let duration = moment.duration(moment(this.end).diff(this.start));
-    let hours = duration.hours();
-    if (duration.minutes() === 0) {
-      return '' + hours + (hours === 1? ' hour' : ' hours');
-    }
-    else {
-      return '' + duration.hours() + (hours === 1? ' hour, ' : ' hours, ') + duration.minutes() + ' minutes';
-    }
+    return this.timespan.getDuration();
   }
 }
