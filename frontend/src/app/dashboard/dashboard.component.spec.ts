@@ -9,6 +9,7 @@ import {RouterLinkStubDirective} from "../../testing/router-stubs";
 import {MeetService} from "../services/meet.service";
 import {SuiModule} from "ng2-semantic-ui";
 import {FormsModule} from "@angular/forms";
+import { RoomListFilterPipe } from './room-list-filter.pipe';
 
 @Component({
   template: ``
@@ -33,6 +34,7 @@ describe('DashboardComponent', () => {
         DashboardComponent,
         CreateRoomComponentMock,
         RouterLinkStubDirective,
+        RoomListFilterPipe,
         MockComponent({ selector: 'app-room-list', inputs: ['rooms', 'searchText', 'searchOption'] })
       ],
       providers: [

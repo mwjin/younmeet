@@ -12,14 +12,13 @@ import { FilterOptions } from './room-list-filter-options';
 export class DashboardComponent implements OnInit {
 
   public user: User;
-  public  roomsCreated_Urgent: Room[];
+  public roomsCreated_Urgent: Room[];
   public roomsCreated_NotUrgent: Room[];
   public roomsJoined_Urgent: Room[];
   public roomsJoined_NotUrgent: Room[];
   public latitude: number;
   public longitude: number;
   public zoom: number;
-
 
   private filters: FilterOptions[] = ["All", "Name", "Location"];
 
