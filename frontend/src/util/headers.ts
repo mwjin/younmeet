@@ -1,6 +1,5 @@
 export function getCSRFHeaders(): Headers {
-  let cookie = document.cookie.split('=')[1];
-  console.log(cookie);
+  const cookie = document.cookie.split('csrftoken=')[1].split(';')[0];
   return new Headers({
     'Content-Type': 'application/json',
     'X-CSRFTOKEN': cookie

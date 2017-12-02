@@ -3,12 +3,10 @@ import {Headers, Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
 
-
 function handleError(error: any) {
   console.error('Error occured', error);
   return Promise.reject(error.message || error);
 }
-
 
 
 @Injectable()
@@ -18,24 +16,21 @@ export class DaumApiService {
   //private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) {
-    document.cookie = "XSRF-TOKEN=; path=/";
   }
 
   getNearRestaurants(lat: number, long: number): void {
-      //let token = document.cookie.split('=')[ 1 ];
-      let token = document.cookie;
-      console.log(token);
-
-      const url = 'https://dapi.kakao.com/v2/local/search/category.json?category_group_code=PM9&rect=127.0561466,37.5058277,127.0602340,37.5142554'
-      //const url = `https://dapi.kakao.com/v2/local/search/keyword.json?y=${lat}
-      //&x=${long}&radius=200&query=맛집`;
-      //this.headers.append('Access-Control-Allow-Headers', '*');
-      //this.headers.append('Access-Control-Allow_Headers', '*');
+      const url = `https://dapi.kakao.com/v2/local/search/category.json?query="맛집"&category_group_code=FD6
+      &y=${lat}&x=${long}`;
       this.http.get(url, {headers: this.headers})
         .toPromise()
-        .then(res => {console.log(res); })
+        .then(res => {
+          let data = res.json()['documents'];
+          console.log(data);
+          
+        })
         .catch(handleError);
     }
+
 
   /*
   getFreeTimes(id: number): Promise<FreetimeResponseData[]> {

@@ -94,6 +94,7 @@ export function MyCookieStrategy() {
       useFactory : MyCookieStrategy
     },
     */
+
   ],
   bootstrap : [ AppComponent ]
 })
