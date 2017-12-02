@@ -28,6 +28,7 @@ import { IsLoggedIn } from './is-logged-in/is-logged-in';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import {DaumApiService} from './services/daum-api.service';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -84,12 +85,15 @@ export function MyCookieStrategy() {
     MeetService,
     AuthenticationService,
     FreetimeService,
+    DaumApiService,
     AuthGuard,
     IsLoggedIn,
+    /*
     {
       provide : XSRFStrategy,
       useFactory : MyCookieStrategy
-    }
+    },
+    */
   ],
   bootstrap : [ AppComponent ]
 })

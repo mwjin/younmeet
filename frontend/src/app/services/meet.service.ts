@@ -15,6 +15,8 @@ import { TimespanResponseData } from './timespan-response-data';
 import { BesttimeResponseData } from './besttime-response-data';
 
 
+const headers = new Headers({'csrftoken': 'X-CSRFToken'});
+
 function handleError(error: any) {
   console.error('An error occurred: ', error);
   return Promise.reject(error.message || error);
@@ -30,7 +32,6 @@ export class MeetService {
   public timespan: Timespan;
   public currentRoomId: number;
   public currentRoomHash: string;
-
   constructor(private http: Http) {
   }
 

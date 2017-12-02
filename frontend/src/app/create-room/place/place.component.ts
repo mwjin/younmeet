@@ -7,6 +7,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { Location } from '@angular/common';
 import {isUndefined} from "util";
 import {AccountService} from "../../services/account.service";
+import {DaumApiService} from "../../services/daum-api.service";
+
+const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
+
 
 @Component({
   selector: 'app-place',
@@ -34,7 +38,9 @@ export class PlaceComponent implements OnInit {
               private location: Location,
               private accountService: AccountService,
               private router: Router,
-              private cdRef: ChangeDetectorRef) {
+              private cdRef: ChangeDetectorRef,
+              private daumService: DaumApiService,
+  ) {
     this.route.params
       .flatMap(params => {
         this.roomHash = params['hash'];
@@ -66,25 +72,25 @@ export class PlaceComponent implements OnInit {
   }
 
   ngOnInit() {
-    //set google maps defaults
+    // set google maps defaults
     this.zoom = 15;
     let options = {
       componentRestrictions: {country: 'kr'}
     };
 
-    //create search FormControl
+    // create search FormControl
     this.searchControl = new FormControl();
 
-    //load Places Autocomplete
+    // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
           let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
           autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
-              //get the place result
+              // get the place result
               this.place = autocomplete.getPlace();
 
 
-              //verify result
+              // verify result
               if (this.place.geometry === undefined || this.place.geometry === null) {
                 return;
               }
@@ -92,6 +98,7 @@ export class PlaceComponent implements OnInit {
               this.cdRef.detectChanges();
               this.latitude = this.place.geometry.location.lat();
               this.longitude = this.place.geometry.location.lng();
+              this.daumService.getNearRestaurants(this.latitude, this.longitude);
             });
           });
         });
