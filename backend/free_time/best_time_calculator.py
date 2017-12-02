@@ -42,6 +42,12 @@ class BestTimeCalculator:
             self.time_count_tree.insert(time[0], time[1], time[2])
             # inserting (start_time, end_time, member)
 
+    def get_best_times(self):
+        times = []
+        while self.best_k_times.size > 0:
+            times.append(self.best_k_times.extract_max())
+        return times
+
     def get_k_best_times(self):
         k_times = []
         for k in range(self.k):

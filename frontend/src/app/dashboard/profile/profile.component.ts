@@ -4,7 +4,7 @@ import { User } from '../../models/user';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidator } from './passwordValidator';
 import { Location } from '@angular/common';
-import {Router} from "@angular/router";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     this.accountService.putUser(this.currentUser)
       .then(isSuccessToPut => {
         if (isSuccessToPut) {
-          this.router.navigate(['dashboard']);
+          this.router.navigate([ 'dashboard' ]);
         }
       });
   }

@@ -81,53 +81,28 @@ def free_time_list(request, room_id):
 
         best_time_calculator.insert_time(new_free_time_list)
         best_time_calculator.calculate_best_times()
-        k_best_times = best_time_calculator.get_k_best_times()
+        best_times = best_time_calculator.get_best_times()
 
-        for time in k_best_times:
-            if time is not None:
-                full_attend_members = time.full_attend
-                partial_attend_members = time.partial_attend
-                new_best_time = BestTime(
-                    room=current_room,
-                    start_time=time.start,
-                    end_time=time.end,
+        for time in best_times:
+            full_attend_members = time.full_attend
+            partial_attend_members = time.partial_attend
+            new_best_time = BestTime(
+                room=current_room,
+                start_time=time.start,
+                end_time=time.end,
+            )
+            new_best_time.save()
+
+            for username in partial_attend_members.keys():
+                partial_info = PartialAttendInfo(
+                    username=username,
+                    start=partial_attend_members[username]['start'],
+                    end=partial_attend_members[username]['end'],
+                    best_time=new_best_time
                 )
-                new_best_time.save()
-
-                for username in partial_attend_members.keys():
-                    partial_info = PartialAttendInfo(
-                        username=username,
-                        start=partial_attend_members[username]['start'],
-                        end=partial_attend_members[username]['end'],
-                        best_time=new_best_time
-                    )
-                    partial_info.save()
-                for username in full_attend_members:
-                    new_best_time.full_attend.add(User.objects.get(username=username))
+                partial_info.save()
+            for username in full_attend_members:
+                new_best_time.full_attend.add(User.objects.get(username=username))
         return HttpResponse(status=201)
-
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
-
-
-"""
-def free_time_detail(request):
-    
-    if not request.user.is_authenticated():
-        return HttpResponse(status=401)
-    
-    user = request.user
-    
-    if request.method == 'GET':
-        
-        return 1
-  
-    elif request.method == 'PUT':
-        return 1
-  
-    elif request.method == 'DELETE':
-        return 1
-    
-    else:
-        return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
-"""
