@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import {isUndefined} from "util";
 import {AccountService} from "../../services/account.service";
 import {DaumApiService} from "../../services/daum-api.service";
+import {Place} from "../../models/place";
 
 const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
 
@@ -15,7 +16,10 @@ const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
 @Component({
   selector: 'app-place',
   templateUrl: './place.component.html',
-  styleUrls: ['./place.component.css']
+  styleUrls: [
+    './place.component.css',
+    '../../../../node_modules/snazzy-info-window/dist/snazzy-info-window.css'
+  ]
 })
 export class PlaceComponent implements OnInit {
   public latitude: number;
@@ -27,7 +31,9 @@ export class PlaceComponent implements OnInit {
   public place: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
   public placeSelected: boolean;
-  public markers: any[];
+  public restaraunt_list: Place[];
+  public cafe_list: Place[];
+  public cultural_faculty_list: Place[];
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -42,7 +48,9 @@ export class PlaceComponent implements OnInit {
               private cdRef: ChangeDetectorRef,
               private daumService: DaumApiService,
   ) {
-    this.markers = [];
+    this.restaraunt_list = [];
+    this.cafe_list = [];
+    this.cultural_faculty_list = [];
     this.route.params
       .flatMap(params => {
         this.roomHash = params['hash'];
@@ -101,14 +109,8 @@ export class PlaceComponent implements OnInit {
               this.longitude = this.place.geometry.location.lng();
               this.daumService.getNearRestaurants(this.latitude, this.longitude)
                 .then(restaraunt_list => {
-                  restaraunt_list.forEach( res => {
-                      let marker = {lat: res.latitude, lng: res.longitude, label: res.name};
-                      this.markers.push(marker);
-                    });
-                  console.log(this.markers);
+                  this.restaraunt_list = restaraunt_list;
                 });
-              this.daumService.getNearCulturalFaculties(this.latitude, this.longitude);
-              this.cdRef.detectChanges();
 
             });
           });

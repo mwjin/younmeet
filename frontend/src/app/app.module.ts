@@ -29,6 +29,7 @@ import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {DaumApiService} from './services/daum-api.service';
+import {AgmSnazzyInfoWindowModule} from "@agm/snazzy-info-window";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -79,6 +80,7 @@ export function MyCookieStrategy() {
       libraries: ['places']
     }),
     SuiPopupModule,
+    AgmSnazzyInfoWindowModule,
   ],
   providers : [
     AccountService,

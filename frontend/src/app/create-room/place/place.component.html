@@ -9,9 +9,21 @@
   <br/>
 
   <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-    <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-    <agm-marker *ngFor="let m of markers" [latitude]="m.lat"
-                [longitude]="m.lng" [label]="m.label"></agm-marker>
+    <agm-marker [latitude]="latitude" [longitude]="longitude">
+      <agm-snazzy-info-window [maxWidth]="200" [isOpen]="true">
+        <ng-template>
+          My first Snazzy Info Window!
+        </ng-template>
+      </agm-snazzy-info-window>
+    </agm-marker>
+    <agm-marker *ngFor="let m of restaraunt_list" [latitude]="m.latitude"
+                [longitude]="m.longitude">
+      <agm-snazzy-info-window [maxWidth]="200" [isOpen]="true">
+        <ng-template>
+          {{m.name}}
+        </ng-template>
+      </agm-snazzy-info-window>
+    </agm-marker>
   </agm-map>
 </div>
 <div *ngIf= "placeSelected">
