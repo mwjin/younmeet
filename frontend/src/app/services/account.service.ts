@@ -19,7 +19,11 @@ export class AccountService {
 
   putUser(user: User): Promise<boolean> {
     return this.http
-      .put(this.accountUrl, JSON.stringify(user))
+      .put(
+        this.accountUrl,
+        JSON.stringify(user),
+        { headers: getCSRFHeaders() }
+        )
       .toPromise()
       .then(response => response.status === 204)
       .catch(this.handleError);
@@ -32,19 +36,22 @@ export class AccountService {
      * else return something else
      */
     const url = `/api/signup`; // could be /api/user/signup
-    return this.http.post(url,
+    return this.http.post(
+      url,
       JSON.stringify({
         username : username,
         email : email,
         password : password
-      }))
+      }),
+      { headers: getCSRFHeaders() }
+      )
       .toPromise()
       .then(response => response.status === 201)
       .catch(this.handleError);
   }
 
   deleteUser(): Promise<boolean> {
-    return this.http.delete(this.accountUrl)
+    return this.http.delete(this.accountUrl, { headers: getCSRFHeaders() })
       .toPromise()
       .then((response) => {
         return response.status === 200;

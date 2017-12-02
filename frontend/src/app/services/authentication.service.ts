@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { toPromise } from 'rxjs/operator/toPromise';
+import {getCSRFHeaders} from "../../util/headers";
 
 @Injectable()
 export class AuthenticationService {
@@ -20,12 +21,12 @@ export class AuthenticationService {
         JSON.stringify({
           email : usernameOrEmail,
           password : password
-        }), { headers : this.headers, withCredentials : true })
+        }), { headers : getCSRFHeaders(), withCredentials : true })
         .toPromise()
         .then(response => {
           if (response.status === 200) {
             // login success
-            let token = document.cookie.split('=')[ 1 ];
+            const token = document.cookie.split('csrftoken=')[1].split(';')[0];
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
@@ -39,12 +40,12 @@ export class AuthenticationService {
         JSON.stringify({
           username : usernameOrEmail,
           password : password
-        }), { headers : this.headers })
+        }), { headers : getCSRFHeaders() })
         .toPromise()
         .then(response => {
           if (response.status === 200) {
             // login success
-            let token = document.cookie.split('=')[ 1 ];
+            const token = document.cookie.split('csrftoken=')[1].split(';')[0];
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
