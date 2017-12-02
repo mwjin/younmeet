@@ -25,11 +25,6 @@ export class AccountService {
   }
 
   postUserSignUp(username: string, email: string, password: string): Promise<boolean> {
-    /*
-     * Requiest POST for signup
-     * return status 201 if success to make a new user
-     * else return something else
-     */
     const url = `/api/signup`; // could be /api/user/signup
     return this.http.post(url,
       JSON.stringify({
