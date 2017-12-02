@@ -29,6 +29,7 @@ import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GoogleCalendarComponent } from './google-calendar/google-calendar.component';
+import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -44,6 +45,15 @@ const routes: Routes = [
   { path : 'not_found', component : NotFoundComponent },
   { path : '**', redirectTo : '/not_found'}
 ];
+
+/* For Google Calendar API */
+const gapiClientConfig: NgGapiClientConfig = {
+  client_id: '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com',
+  discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+  scope: [
+    'https://www.googleapis.com/auth/calendar.readonly'
+  ].join(' ')
+};
 
 export function MyCookieStrategy() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -80,6 +90,10 @@ export function MyCookieStrategy() {
       libraries: ['places']
     }),
     SuiPopupModule,
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig,
+    }),
   ],
   providers : [
     AccountService,
