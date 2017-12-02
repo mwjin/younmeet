@@ -74,14 +74,6 @@ export class GoogleCalendarComponent implements OnInit {
     gapi.auth2.getAuthInstance().signOut();
   }
 
-  /*
-  private appendPre(message): void {
-    const pre = document.getElementById('content');
-    const textContent = document.createTextNode(message + '\n');
-    pre.appendChild(textContent);
-  }
-  */
-
   /**
    * Print the summary and start datetime/date of the next ten events in
    * the authorized user's calendar. If no events are found an
@@ -102,11 +94,15 @@ export class GoogleCalendarComponent implements OnInit {
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
           const event = events[i];
-          let when = event.start.dateTime;
-          if (!when) {
-            when = event.start.date;
+          let start = event.start.dateTime;
+          let end = event.end.dateTime;
+          if (!start) {
+            start = event.start.date;
           }
-          console.log(event.summary + ' (' + when + ')');
+          if (!end) {
+            end = event.end.date;
+          }
+          console.log(event.summary + ' (' + start + ' ~ ' + end + ')');
         }
       } else {
         console.log('No upcoming events found.');
