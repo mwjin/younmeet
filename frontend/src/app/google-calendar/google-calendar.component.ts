@@ -44,8 +44,6 @@ export class GoogleCalendarComponent implements OnInit {
 
       // Handle the initial sign-in state.
       this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-      this.authorizeButton.onclick = this.handleAuthClick;
-      this.signoutButton.onclick = this.handleSignoutClick;
     });
   }
 
@@ -63,14 +61,14 @@ export class GoogleCalendarComponent implements OnInit {
   /**
    *  Sign in the user upon button click.
    */
-  handleAuthClick(event): void {
+  handleAuthClick(): void {
     gapi.auth2.getAuthInstance().signIn();
   }
 
   /**
    *  Sign out the user upon button click.
    */
-  handleSignoutClick(event): void {
+  handleSignoutClick(): void {
     gapi.auth2.getAuthInstance().signOut();
   }
 
