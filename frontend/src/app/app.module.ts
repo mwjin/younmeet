@@ -28,6 +28,7 @@ import { IsLoggedIn } from './is-logged-in/is-logged-in';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { GoogleCalendarComponent } from './google-calendar/google-calendar.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -60,7 +61,8 @@ export function MyCookieStrategy() {
     TimeSelectComponent,
     ProfileComponent,
     PlaceComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    GoogleCalendarComponent
   ],
   imports : [
     CommonModule,
