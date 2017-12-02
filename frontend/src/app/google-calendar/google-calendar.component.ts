@@ -74,11 +74,13 @@ export class GoogleCalendarComponent implements OnInit {
     gapi.auth2.getAuthInstance().signOut();
   }
 
+  /*
   private appendPre(message): void {
     const pre = document.getElementById('content');
     const textContent = document.createTextNode(message + '\n');
     pre.appendChild(textContent);
   }
+  */
 
   /**
    * Print the summary and start datetime/date of the next ten events in
@@ -95,7 +97,7 @@ export class GoogleCalendarComponent implements OnInit {
       'orderBy': 'startTime'
     }).then( response => {
       const events = response.result.items;
-      this.appendPre('Upcoming events:');
+      console.log('Upcoming events:');
 
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
@@ -104,10 +106,10 @@ export class GoogleCalendarComponent implements OnInit {
           if (!when) {
             when = event.start.date;
           }
-          this.appendPre(event.summary + ' (' + when + ')');
+          console.log(event.summary + ' (' + when + ')');
         }
       } else {
-        this.appendPre('No upcoming events found.');
+        console.log('No upcoming events found.');
       }
     });
   }
