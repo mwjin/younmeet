@@ -1,21 +1,21 @@
 
-export class Restaraunt {
+export class Place {
   public name: string;
   public category: string;
   public latitude: number;
   public longitude: number;
-  public phone: string;
+  public url: string;
 
   constructor(name: string,
               category: string,
               latitude: string,
               longitude: string,
-              phone: string
+              url: string
   ) {
     this.name = name;
     this.category = category;
     this.latitude = +latitude;
     this.longitude = +longitude;
-    this.phone = phone;
+    this.url = url;
   }
 }

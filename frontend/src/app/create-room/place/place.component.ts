@@ -85,7 +85,7 @@ export class PlaceComponent implements OnInit {
 
     // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-          let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
+          const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
           autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
               // get the place result
@@ -97,18 +97,18 @@ export class PlaceComponent implements OnInit {
                 return;
               }
               this.placeSelected = true;
-              this.cdRef.detectChanges();
               this.latitude = this.place.geometry.location.lat();
               this.longitude = this.place.geometry.location.lng();
               this.daumService.getNearRestaurants(this.latitude, this.longitude)
                 .then(restaraunt_list => {
                   restaraunt_list.forEach( res => {
-                      let marker = new google.maps.Marker({
-                        position: {lat: res.latitude, lng: res.longitude}
-                      });
+                      let marker = {lat: res.latitude, lng: res.longitude, label: res.name};
                       this.markers.push(marker);
                     });
+                  console.log(this.markers);
                 });
+              this.daumService.getNearCulturalFaculties(this.latitude, this.longitude);
+              this.cdRef.detectChanges();
 
             });
           });
