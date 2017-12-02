@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Headers, Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
+import {Restaraunt} from "../models/restaraunt";
+import {responseToRestaraunt} from "./daum-rest-interfaces";
 
 
 function handleError(error: any) {
@@ -18,17 +20,25 @@ export class DaumApiService {
   constructor(private http: Http) {
   }
 
-  getNearRestaurants(lat: number, long: number): void {
-      const url = `https://dapi.kakao.com/v2/local/search/category.json?query="맛집"&category_group_code=FD6
+  //
+  getNearRestaurants(lat: number, long: number): Promise<Restaraunt[]> {
+    const min_dist = 500;
+    const url = `https://dapi.kakao.com/v2/local/search/category.json?query="맛집"&category_group_code=FD6
       &y=${lat}&x=${long}`;
-      this.http.get(url, {headers: this.headers})
-        .toPromise()
-        .then(res => {
-          let data = res.json()['documents'];
-          console.log(data);
-          
-        })
-        .catch(handleError);
+    return this.http.get(url, {headers: this.headers})
+      .toPromise()
+      .then(res => {
+        let data_list = res.json()['documents'];
+        let result = [];
+        data_list.forEach(res => {
+          let dist: number = +res['distance'];
+          if (dist < min_dist)
+            result.push(responseToRestaraunt(res));
+        });
+        //console.log(result);
+        return result;
+      })
+      .catch(handleError);
     }
 
 

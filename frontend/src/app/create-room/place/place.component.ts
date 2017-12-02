@@ -26,7 +26,8 @@ export class PlaceComponent implements OnInit {
   public roomHash: string;
   public place: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
-  public  placeSelected: boolean;
+  public placeSelected: boolean;
+  public markers: any[];
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -41,6 +42,7 @@ export class PlaceComponent implements OnInit {
               private cdRef: ChangeDetectorRef,
               private daumService: DaumApiService,
   ) {
+    this.markers = [];
     this.route.params
       .flatMap(params => {
         this.roomHash = params['hash'];
@@ -98,7 +100,16 @@ export class PlaceComponent implements OnInit {
               this.cdRef.detectChanges();
               this.latitude = this.place.geometry.location.lat();
               this.longitude = this.place.geometry.location.lng();
-              this.daumService.getNearRestaurants(this.latitude, this.longitude);
+              this.daumService.getNearRestaurants(this.latitude, this.longitude)
+                .then(restaraunt_list => {
+                  restaraunt_list.forEach( res => {
+                      let marker = new google.maps.Marker({
+                        position: {lat: res.latitude, lng: res.longitude}
+                      });
+                      this.markers.push(marker);
+                    });
+                });
+
             });
           });
         });

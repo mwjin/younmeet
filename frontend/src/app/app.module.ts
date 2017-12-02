@@ -89,6 +89,7 @@ export function MyCookieStrategy() {
     AuthGuard,
     IsLoggedIn,
     /*
+
     {
       provide : XSRFStrategy,
       useFactory : MyCookieStrategy
