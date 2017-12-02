@@ -1,5 +1,6 @@
 import { Besttime } from '../models/besttime';
-import { Partialattendinfo } from '../models/partialattendinfo';
+import { PartialAttendInfo } from '../models/partial-attend-info';
+import { Timespan } from '../models/timespan';
 
 export class BesttimeResponseData {
   start_time: string;
@@ -8,8 +9,8 @@ export class BesttimeResponseData {
   partial_attend: PartialAttendInfoResponseData[];
 
   static responseToBestTime(response: BesttimeResponseData): Besttime {
-    return new Besttime(new Date(response.start_time),
-      new Date(response.end_time),
+    return new Besttime(
+      new Timespan(new Date(response.start_time), new Date(response.end_time)),
       response.full_attend,
       response.partial_attend.map(partialAttendResponse => PartialAttendInfoResponseData.responseToPartialAttend(partialAttendResponse)));
   }
@@ -20,9 +21,8 @@ class PartialAttendInfoResponseData {
   start: string;
   end: string;
 
-  static responseToPartialAttend(response: PartialAttendInfoResponseData): Partialattendinfo {
-    return new Partialattendinfo(response.username,
-      new Date(response.start),
-      new Date(response.end));
+  static responseToPartialAttend(response: PartialAttendInfoResponseData): PartialAttendInfo {
+    return new PartialAttendInfo(response.username,
+      new Timespan(new Date(response.start), new Date(response.end)));
   }
 }

@@ -8,20 +8,24 @@ import { AuthenticationService } from '../services/authentication.service';
   templateUrl : './login.component.html',
   styleUrls : [ './login.component.css' ]
 })
+
+
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   email_username: AbstractControl;
   password: AbstractControl;
+  loginFailed: boolean;
 
   ngOnInit() {
+    this.loginFailed = false;
   }
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private formBuilder: FormBuilder) {
     this.loginForm = formBuilder.group({
-      'email/username' : [ '', Validators.required ],
-      'password' : [ '', Validators.required ]
+      'email/username' : [ '', ],
+      'password' : [ '', ]
     });
     this.email_username = this.loginForm.controls[ 'email/username' ];
     this.password = this.loginForm.controls[ 'password' ];
@@ -36,26 +40,12 @@ export class LoginComponent implements OnInit {
           let redirectUrl = this.authenticationService.redirectUrl;
           if (redirectUrl) {
             this.router.navigateByUrl(redirectUrl);
-          }
-          else {
+          } else {
             this.router.navigate([ 'dashboard' ]);
           }
         }
-      });
-
-  }
-
-  /* TODO
-   * Fill in next to method
-   *  1. Email/Username is invalid when the input is not empty & does not exist in DB
-   *  2. Password is invalid when the input password does not match with the password in DB
-   */
-
-  private emailUsernameValidator(control: FormControl): { [ s: string ]: boolean } {
-    return { inValidEmailUsername : true };
-  }
-
-  private passwordValidator(control: FormControl): { [ s: string]: boolean } {
-    return { inValidPassword : true };
+      }).catch(() => {
+      document.getElementById('loginFail').style.display = 'block';
+    });
   }
 }
