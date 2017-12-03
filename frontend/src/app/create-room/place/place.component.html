@@ -16,20 +16,68 @@
         </ng-template>
       </agm-snazzy-info-window>
     </agm-marker>
-    <agm-marker *ngFor="let m of restaraunt_list" [latitude]="m.latitude"
-                [longitude]="m.longitude">
-      <agm-snazzy-info-window [maxWidth]="200" [isOpen]="true">
-        <ng-template>
-          {{m.name}}
-        </ng-template>
-      </agm-snazzy-info-window>
+    <agm-marker *ngFor="let m of restaurant_list" [latitude]="m.latitude"
+                [longitude]="m.longitude" [markerClickable]="true" [label]="labelOptions">
     </agm-marker>
   </agm-map>
 </div>
-<div *ngIf= "placeSelected">
+
+<div *ngIf= "isPlaceSelected">
   <button (click)="onSubmit()" class="ui secondary button right floated">Submit</button>
 </div>
-<div *ngIf = "!placeSelected">
-  <button (click)="goBack()" class="ui secondary button right floated">Back</button>
+
+<button (click)="goBack()" class="ui secondary button right floated">Back</button>
+
+<br/>
+<br/>
+<div *ngIf="isPlaceSelected">
+<h2>Recommendations</h2>
+  <!-- if no recommendations are found-->
+  <div *ngIf="restaurant_list.length==0&&
+    cafe_list.length==0&&cultural_faculty_list.length==0">
+    None
+  </div>
+
+  <!-- exists places to recommend-->
+  <sui-tabset>
+    <div class="ui top attached tabular menu">
+      <a *ngIf="restaurant_list.length!=0" class="item" suiTabHeader="1">Restaurants</a>
+      <a *ngIf="cafe_list.length!=0" class="item" suiTabHeader="2">Cafes</a>
+      <a *ngIf="cultural_faculty_list.length!=0" class="item" suiTabHeader="3">Cultural Faculties</a>
+    </div>
+    <div class="ui bottom attached segment" suiTabContent="1">
+      <div class = "ui list">
+        <ul *ngFor="let rest of restaurant_list" (click)="onSelectPlace(rest)">
+          <li>
+            <div>{{rest.name}}</div>
+            <div>{{rest.category}}</div>
+            <a>{{rest.url}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="ui bottom attached segment" suiTabContent="2">
+      <div class = "ui list">
+        <ul *ngFor="let cafe of cafe_list" (click)="onSelectPlace(cafe)">
+          <li>
+            <div>{{cafe.name}}</div>
+            <div>{{cafe.category}}</div>
+            <a>{{cafe.url}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="ui bottom attached segment" suiTabContent="3">
+      <div class = "ui list">
+        <ul *ngFor="let cf of cultural_faculty_list" (click)="onSelectPlace(cf)">
+          <li>
+            <div>{{cf.name}}</div>
+            <div>{{cf.category}}</div>
+            <a>{{cf.url}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </sui-tabset>
 </div>
 

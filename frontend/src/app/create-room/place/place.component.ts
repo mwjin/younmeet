@@ -28,12 +28,19 @@ export class PlaceComponent implements OnInit {
   public zoom: number;
   public roomId: number;
   public roomHash: string;
-  public place: google.maps.places.PlaceResult;
+  public googlePlaceResult: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
-  public placeSelected: boolean;
-  public restaraunt_list: Place[];
+  public isPlaceSelected: boolean;
+  public restaurant_list: Place[];
   public cafe_list: Place[];
   public cultural_faculty_list: Place[];
+  public labelOptions = {
+    color: '#CC0000',
+    fontFamily: '',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    text: 'Some Text',
+  }
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -48,7 +55,7 @@ export class PlaceComponent implements OnInit {
               private cdRef: ChangeDetectorRef,
               private daumService: DaumApiService,
   ) {
-    this.restaraunt_list = [];
+    this.restaurant_list = [];
     this.cafe_list = [];
     this.cultural_faculty_list = [];
     this.route.params
@@ -76,7 +83,7 @@ export class PlaceComponent implements OnInit {
           this.longitude = room.longitude;
           this.firstTimePlaceSetting = false;
          }
-        this.placeSelected = false;
+        this.isPlaceSelected = false;
       });
 
   }
@@ -97,25 +104,38 @@ export class PlaceComponent implements OnInit {
           autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
               // get the place result
-              this.place = autocomplete.getPlace();
+              this.googlePlaceResult = autocomplete.getPlace();
 
 
               // verify result
-              if (this.place.geometry === undefined || this.place.geometry === null) {
+              if (this.googlePlaceResult.geometry === undefined || this.googlePlaceResult.geometry === null) {
                 return;
               }
-              this.placeSelected = true;
-              this.latitude = this.place.geometry.location.lat();
-              this.longitude = this.place.geometry.location.lng();
+              this.isPlaceSelected = true;
+              this.latitude = this.googlePlaceResult.geometry.location.lat();
+              this.longitude = this.googlePlaceResult.geometry.location.lng();
               this.daumService.getNearRestaurants(this.latitude, this.longitude)
-                .then(restaraunt_list => {
-                  this.restaraunt_list = restaraunt_list;
+                .then(restaurant_list => {
+                  this.restaurant_list = restaurant_list;
                 });
-
+              this.daumService.getNearCafes(this.latitude, this.longitude)
+                .then(cafe_list => {
+                  this.cafe_list = cafe_list;
+                });
+              this.daumService.getNearCulturalFaculties(this.latitude, this.longitude)
+                .then(cultural_faculty_list => {
+                  this.cultural_faculty_list = cultural_faculty_list;
+                });
+              this.cdRef.detectChanges();
             });
           });
         });
   }
+
+  private onSelectPlace(place: Place): void {
+
+  }
+
 
   private setCurrentPosition() {
     if ("geolocation" in navigator) {
@@ -129,7 +149,7 @@ export class PlaceComponent implements OnInit {
 
   private onSubmit(): void {
     this.zoom = 17;
-    this.meetService.putPlace(this.roomId, this.place.name, this.latitude, this.longitude).then(
+    this.meetService.putPlace(this.roomId, this.googlePlaceResult.name, this.latitude, this.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
           if (this.firstTimePlaceSetting)
