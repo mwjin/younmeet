@@ -74,26 +74,12 @@
         </div>
       </div>
     </div>
+
     <div *ngIf="showingBestTimes < bestTimes.length">
       <div class="ui bottom attached button" tabindex="0" (click)="viewMore()">View More</div>
     </div>
     <br/>
     <button class="ui button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
-    <header>
-      <h2>Location: </h2>
-      <h3>{{room.place}}</h3>
-    </header>
-    <div class="container">
-      <agm-map [latitude]="room.latitude" [longitude]="room.longitude" [scrollwheel]="false" [zoom]="zoom">
-        <agm-marker [latitude]="room.latitude" [longitude]="room.longitude"></agm-marker>
-      </agm-map>
-    </div>
-    <br/>
-    <div *ngIf="isRoomOwner" class="two wide column">
-      <button (click)="goPlaceChangePage()" class="ui button left floated">Change</button>
-    </div>
-  </div>
-  <button class="ui button" (click)="goTimeSelectPage()">Select Available Time</button>
 
   <!-- If there exists Place -->
   <div *ngIf="room.latitude">
@@ -111,7 +97,7 @@
     </div>
     <br/>
     <div *ngIf="isRoomOwner" class="two wide column">
-      <button (click)="goPlaceChangePage()" class="ui button left floated">Change</button>
+      <button (click)="goPlaceChangePage()" class="ui button right floated">Change</button>
     </div>
   </div>
 
@@ -119,6 +105,6 @@
   <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
     <br/>
 
-    <button (click)="goPlaceChangePage()" class="ui button left floated">Select Place</button>
+    <button (click)="goPlaceChangePage()" class="ui button right floated">Select Place</button>
   </div>
 </div>

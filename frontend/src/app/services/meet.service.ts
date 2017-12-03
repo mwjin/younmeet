@@ -12,6 +12,7 @@ import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
 import { BesttimeResponseData } from './besttime-response-data';
+import {getCSRFHeaders} from "../../util/headers";
 
 
 const headers = new Headers({'csrftoken': 'X-CSRFToken'});

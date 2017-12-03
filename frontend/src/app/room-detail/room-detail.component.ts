@@ -36,27 +36,27 @@ export class RoomDetailComponent implements OnInit {
     this.showingBestTimes = 3;
     this.route.params
       .flatMap(params => {
-        let roomHash = params[ 'hash' ];
+        const roomHash = params[ 'hash' ];
         this.shareableLink = `http://localhost:4200/link/${roomHash}`;
         return this.meetService.getRoomByHash(roomHash);
       })
       .flatMap(room => {
         this.room = room;
-        let getMembers = this.meetService.getUsersInRoom(this.room.id)
+        const getMembers = this.meetService.getUsersInRoom(this.room.id)
           .then(members => {
             this.members = members.filter(user => user.id !== room.owner.id);
             this.members.unshift(members.filter(user => user.id === room.owner.id)[ 0 ]);
           });
-        let getBestTime = this.meetService.getBestTime(this.room.id)
+        const getBestTime = this.meetService.getBestTime(this.room.id)
           .then(bestTime => {
-            this.availableTime = bestTime.map(bestTimeResponse => BesttimeResponseData.responseToBestTime(bestTimeResponse));
+            this.bestTimes = bestTime.map(bestTimeResponse => BesttimeResponseData.responseToBestTime(bestTimeResponse));
           });
         this.accountService.getUserDetail().then(currUser => {
           if (currUser.id === this.room.owner.id) {
             this.isRoomOwner = true;
           } else {
             this.isRoomOwner = false;
-        });
+        }});
         return Observable.forkJoin(getMembers, getBestTime);
       })
       .subscribe();
