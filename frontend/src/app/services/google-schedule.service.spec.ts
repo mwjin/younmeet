@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ScheduleService } from './schedule.service';
+import { GoogleScheduleService } from './google-schedule.service';
 
 describe('ScheduleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ScheduleService]
+      providers: [GoogleScheduleService]
     });
   });
 
-  it('should be created', inject([ScheduleService], (service: ScheduleService) => {
+  it('should be created', inject([GoogleScheduleService], (service: GoogleScheduleService) => {
     expect(service).toBeTruthy();
   }));
 });

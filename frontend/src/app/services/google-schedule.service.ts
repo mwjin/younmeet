@@ -3,38 +3,48 @@ import { GoogleApiService } from 'ng-gapi';
 import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
-export class ScheduleService implements OnDestroy {
+export class GoogleScheduleService implements OnDestroy {
+  CLIENT_ID = '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com';
+  API_KEY = 'AIzaSyDomeH3v19BXwuysY3wFhtoDk_CIyza65A';
+  DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+  SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+
   subscriber: Subscription;
 
   constructor(private gapiService: GoogleApiService) {
-  }
-
-  init(): void {
-    console.log('A');
     this.subscriber = this.gapiService.onLoad().subscribe(() => {
-      this.checkAuth();
+      this.handleClientLoad();
     });
   }
 
   ngOnDestroy() {
-    console.log('destroy service')
     this.subscriber.unsubscribe();
   }
 
-  private checkAuth(): void {
-    console.log('B');
-    // Listen for sign-in state changes.
-    gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus.bind(this));
-
-    // Handle the initial sign-in state.
-    this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+  handleClientLoad() {
+    gapi.load('client:auth2', this.initClient.bind(this));
   }
 
-  private updateSigninStatus(isSignedIn): void {
+  initClient(): void {
+    gapi.client.init({
+      apiKey: this.API_KEY,
+      clientId: this.CLIENT_ID,
+      discoveryDocs: this.DISCOVERY_DOCS,
+      scope: this.SCOPES
+    }).then(() => {
+      // Listen for sign-in state changes.
+      gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninState.bind(this));
+
+      // Handle the initial sign-in state.
+      this.updateSigninState(gapi.auth2.getAuthInstance().isSignedIn.get());
+    });
+  }
+
+  private updateSigninState(isSignedIn): void {
     if (isSignedIn) {
       this.listUpcomingEvents();
     } else {
-      // TODO
+      /// TODO
       console.log('Cancel the sync');
     }
   }
@@ -73,5 +83,19 @@ export class ScheduleService implements OnDestroy {
         console.log('No upcoming events found.');
       }
     });
+  }
+
+  /**
+   *  Sign in the user upon button click.
+   */
+  signIn(): void {
+    gapi.auth2.getAuthInstance().signIn();
+  }
+
+  /**
+   *  Sign out the user upon button click.
+   */
+  signOut(): void {
+    gapi.auth2.getAuthInstance().signOut();
   }
 }

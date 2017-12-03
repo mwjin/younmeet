@@ -9,7 +9,6 @@ import {Subscription} from 'rxjs/Subscription';
   styleUrls: ['./google-calendar.component.css']
 })
 export class GoogleCalendarComponent implements OnInit, OnDestroy {
-
   CLIENT_ID = '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com';
   API_KEY = 'AIzaSyDomeH3v19BXwuysY3wFhtoDk_CIyza65A';
   DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
@@ -32,7 +31,6 @@ export class GoogleCalendarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('destroy component');
     this.subscriber.unsubscribe();
   }
 
@@ -41,7 +39,6 @@ export class GoogleCalendarComponent implements OnInit, OnDestroy {
   }
 
   initClient(): void {
-    console.log('init')
     gapi.client.init({
       apiKey: this.API_KEY,
       clientId: this.CLIENT_ID,
@@ -65,20 +62,6 @@ export class GoogleCalendarComponent implements OnInit, OnDestroy {
       this.authorizeButton.style.display = 'block';
       this.signoutButton.style.display = 'none';
     }
-  }
-
-  /**
-   *  Sign in the user upon button click.
-   */
-  handleAuthClick(): void {
-    gapi.auth2.getAuthInstance().signIn();
-  }
-
-  /**
-   *  Sign out the user upon button click.
-   */
-  handleSignoutClick(): void {
-    gapi.auth2.getAuthInstance().signOut();
   }
 
   /**

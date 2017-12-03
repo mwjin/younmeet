@@ -7,6 +7,7 @@ import { MeetService } from '../../services/meet.service';
 import { Timespan } from '../../models/timespan';
 import { Router } from '@angular/router';
 import { FreetimeResponseData } from '../../services/freetime-response-data';
+import { GoogleScheduleService } from '../../services/google-schedule.service';
 
 @Component({
   selector : 'app-time-select',
@@ -19,13 +20,21 @@ export class TimeSelectComponent implements OnInit {
   public previousFreeTimes: Freetime[];
   public calendarOptions: Object;
 
+  private authorizeButton: HTMLElement;
+  private signoutButton: HTMLElement;
+
   constructor(private location: Location,
               private router: Router,
               private freetimeService: FreetimeService,
-              private meetService: MeetService) {
+              private meetService: MeetService,
+              private googleScheduleService: GoogleScheduleService) {
   }
 
   ngOnInit() {
+    // For sync with Google Calendar API
+    this.authorizeButton = document.getElementById('authorize-button');
+    this.signoutButton = document.getElementById('signout-button');
+
     this.timeSpan = this.meetService.getTimeSpan();
     console.log('timespan = ' + this.timeSpan.start + ' to ' + this.timeSpan.end);
     if (!this.timeSpan) {
@@ -81,6 +90,35 @@ export class TimeSelectComponent implements OnInit {
           },
         };
       });
+    console.log('Google Sign in');
+    console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
+
+    gapi.auth2.getAuthInstance().isSignedIn.listen(this.changeGoogleButtonState.bind(this));
+    this.changeGoogleButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
+  }
+
+  private changeGoogleButtonState(isSignedIn): void {
+    if (isSignedIn) {
+      this.authorizeButton.style.display = 'none';
+      this.signoutButton.style.display = 'block';
+    } else {
+      this.authorizeButton.style.display = 'block';
+      this.signoutButton.style.display = 'none';
+    }
+  }
+
+  /**
+   *  Sign in the user upon button click.
+   */
+  handleSyncClick(): void {
+    this.googleScheduleService.signIn();
+  }
+
+  /**
+   *  Sign out the user upon button click.
+   */
+  handleCancelClick(): void {
+    this.googleScheduleService.signOut();
   }
 
   public deleteEvent(): void {

@@ -30,6 +30,7 @@ import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GoogleCalendarComponent } from './google-calendar/google-calendar.component';
 import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
+import { GoogleScheduleService } from './services/google-schedule.service';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -72,7 +73,6 @@ export function MyCookieStrategy() {
     ProfileComponent,
     PlaceComponent,
     NotFoundComponent,
-    GoogleCalendarComponent
   ],
   imports : [
     CommonModule,
@@ -100,6 +100,7 @@ export function MyCookieStrategy() {
     MeetService,
     AuthenticationService,
     FreetimeService,
+    GoogleScheduleService,
     AuthGuard,
     IsLoggedIn,
     {
