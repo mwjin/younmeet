@@ -6,11 +6,11 @@ export class Place {
   public longitude: number;
   public url: string;
 
-  constructor(name: string,
-              category: string,
-              latitude: string,
-              longitude: string,
-              url: string
+  constructor(name = '',
+              category = '',
+              latitude = '',
+              longitude = '',
+              url = ''
   ) {
     this.name = name;
     this.category = category;

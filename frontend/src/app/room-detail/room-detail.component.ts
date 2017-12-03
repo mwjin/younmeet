@@ -43,7 +43,6 @@ export class RoomDetailComponent implements OnInit {
       })
       .flatMap(room => {
         this.room = room;
-        console.log(room);
         let getMembers = this.meetService.getUsersInRoom(this.room.id)
           .then(members => {
             this.members = members.filter(user => user.id !== room.owner.id);
@@ -52,14 +51,12 @@ export class RoomDetailComponent implements OnInit {
         let getBestTime = this.meetService.getBestTime(this.room.id)
           .then(bestTime => {
             this.availableTime = bestTime.map(bestTimeResponse => BesttimeResponseData.responseToBestTime(bestTimeResponse));
-            console.log(this.availableTime);
           });
         this.accountService.getUserDetail().then(currUser => {
           if (currUser.id === this.room.owner.id)
             this.isRoomOwner = true;
           else
             this.isRoomOwner = false;
-          console.log(this.isRoomOwner);
         });
         return Observable.forkJoin(getMembers, getBestTime);
       })

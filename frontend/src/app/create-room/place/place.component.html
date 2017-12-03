@@ -8,11 +8,14 @@
   </form>
   <br/>
 
-  <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-    <agm-marker [latitude]="latitude" [longitude]="longitude"> </agm-marker>
-    <agm-marker *ngFor="let m of restaurant_list" [latitude]="m.latitude"
-                [longitude]="m.longitude" [markerClickable]="true" [label]="labelOptions">
-    </agm-marker>
+  <agm-map [latitude]="place.latitude"
+           [longitude]="place.longitude" [scrollwheel]="false" [zoom]="zoom">
+    <div *ngIf="googleSearchResult">
+    <agm-marker [latitude]="googleSearchResult.geometry.location.lat()"
+                [longitude]="googleSearchResult.geometry.location.lng()"> </agm-marker>
+    </div>
+    <agm-marker [latitude]="place.latitude"
+                [longitude]="place.longitude"> </agm-marker>
   </agm-map>
 </div>
 
