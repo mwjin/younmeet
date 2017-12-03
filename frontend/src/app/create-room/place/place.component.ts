@@ -135,6 +135,12 @@ export class PlaceComponent implements OnInit {
         });
   }
 
+  private onSelectSearchedMarker(): void {
+    this.place.name = this.googleSearchResult.name;
+    this.place.latitude = this.googleSearchResult.geometry.location.lat();
+    this.place.longitude = this.googleSearchResult.geometry.location.lng();
+  }
+
   private onSelectPlace(place: Place): void {
     this.place.name = place.name;
     this.place.latitude = place.latitude;

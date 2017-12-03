@@ -12,12 +12,19 @@
            [longitude]="place.longitude" [scrollwheel]="false" [zoom]="zoom">
     <div *ngIf="googleSearchResult">
     <agm-marker [latitude]="googleSearchResult.geometry.location.lat()"
-                [longitude]="googleSearchResult.geometry.location.lng()"
-                [label]="googleSearchResult.name"> </agm-marker>
+                [longitude]="googleSearchResult.geometry.location.lng()">
+                (click)="onSelectSearchedMarker()">
+      <agm-info-window isOpen="true">
+        {{googleSearchResult.name}}
+      </agm-info-window>
+    </agm-marker>
     </div>
     <agm-marker [latitude]="place.latitude"
-                [longitude]="place.longitude"
-                [label]="place.name"> </agm-marker>
+                [longitude]="place.longitude">
+      <agm-info-window isOpen="true">
+        {{place.name}}
+      </agm-info-window>
+    </agm-marker>
   </agm-map>
 </div>
 
