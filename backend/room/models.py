@@ -30,7 +30,8 @@ class Room(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='owned_rooms',
-        null=True
+        null=False,
+        on_delete=models.CASCADE
     )
 
     members = models.ManyToManyField(
