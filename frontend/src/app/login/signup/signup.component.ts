@@ -19,7 +19,6 @@ export class SignupComponent implements OnInit {
   password: AbstractControl;
   passwordConfirm: AbstractControl;
 
-
   constructor(private accountService: AccountService,
               private router: Router,
               private formBuilder: FormBuilder,
@@ -61,6 +60,8 @@ export class SignupComponent implements OnInit {
             }
           });
       }
+    }).catch(() => {
+      document.getElementById('signUpFail').style.display = 'block';
     });
   }
 }
