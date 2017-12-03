@@ -1,4 +1,16 @@
 <body>
+  <sui-modal>
+    <div class="ui left icon input">
+      <i class="lock icon"></i>
+      <input type="password" name="passwordConfirm" placeholder="Current Password"
+           [(ngModel)]="currPassword">
+    </div>
+    <button class="ui right submit button">Submit
+    </button>
+
+  </sui-modal>
+
+
   <div *ngIf="currentUser">
     <div class="ui main text container">
       <div class="column">

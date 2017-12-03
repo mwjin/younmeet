@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   passwordForm: FormGroup;
   private password: AbstractControl;
   private passwordConfirm: AbstractControl;
+  currPassword: String;
 
   constructor(private accountService: AccountService,
               private location: Location,
@@ -27,7 +28,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.accountService.getUserDetail()
       .then(user => {
-        console.log(user);
         this.currentUser = user;
         this.passwordForm = this.formBuilder.group({
           'password' : [ '', Validators.required ],
@@ -52,6 +52,10 @@ export class ProfileComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  checkCurrentPassword(): void {
+
   }
 
 }
