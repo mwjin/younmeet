@@ -6,7 +6,7 @@ import {Place} from "../models/place";
 import {Http, HttpModule, XHRBackend} from "@angular/http";
 import {MockBackend} from "@angular/http/testing";
 
-// TODO: TEST!
+// TODO: Finish TEST!
 
 const mockPlaceResponseData: PlaceResponse[] = [
   {
@@ -68,8 +68,8 @@ const mockPlaceResponseData: PlaceResponse[] = [
 ];
 
 describe('DaumApiService', () => {
-  let daumAPIService : DaumApiService;
-  let mockBackend : MockBackend;
+  let daumAPIService: DaumApiService;
+  let mockBackend: MockBackend;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
