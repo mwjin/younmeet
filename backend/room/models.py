@@ -16,7 +16,6 @@ class Room(models.Model):
 
     name = models.CharField(max_length=64)
     place= models.CharField(max_length=64, null=True)
-    # place_id = models.CharField(max_length=64, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
 
@@ -31,7 +30,7 @@ class Room(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='owned_rooms',
-        null=False
+        null=True,
     )
 
     members = models.ManyToManyField(

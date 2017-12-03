@@ -18,5 +18,3 @@ class FreeTime(models.Model):
         related_name='free_times',
         null=True
     )
-
-# Create your models here.

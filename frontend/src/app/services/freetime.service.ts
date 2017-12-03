@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Freetime } from '../models/freetime';
 import 'rxjs/add/operator/toPromise';
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { getCSRFHeaders } from '../../util/headers';
+import { Http } from '@angular/http';
 import { FreetimeResponseData } from './freetime-response-data';
 
 function handleError(error: any) {
@@ -25,8 +26,11 @@ export class FreetimeService {
 
 
   postFreeTimes(freetimes: Freetime[], id: number): Promise<boolean> {
-    return this.http.post(`api/rooms/${id}/free-times`,
-      JSON.stringify(freetimes))
+    return this.http.post(
+      `api/rooms/${id}/free-times`,
+      JSON.stringify(freetimes),
+      { headers : getCSRFHeaders() }
+      )
       .toPromise()
       .then(response => response.status === 201)
       .catch(handleError);
