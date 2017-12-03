@@ -1,6 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
 import { Subscription } from 'rxjs/Subscription';
+import { Schedule } from '../models/schedule';
 
 @Injectable()
 export class GoogleScheduleService implements OnDestroy {
@@ -10,6 +11,7 @@ export class GoogleScheduleService implements OnDestroy {
   SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
   subscriber: Subscription;
+  schedules: Schedule[] = [];
 
   constructor(private gapiService: GoogleApiService) {
     this.subscriber = this.gapiService.onLoad().subscribe(() => {
@@ -45,8 +47,7 @@ export class GoogleScheduleService implements OnDestroy {
     if (isSignedIn) {
       this.listUpcomingEvents();
     } else {
-      /// TODO
-      console.log('Cancel the sync');
+      this.schedules = [];
     }
   }
 
@@ -79,6 +80,8 @@ export class GoogleScheduleService implements OnDestroy {
             end = event.end.date;
           }
           console.log(event.summary + ' (' + start + ' ~ ' + end + ')');
+          const schedule = new Schedule(event.summary, new Date(start), new Date(end));
+          this.schedules.push(schedule);
         }
       } else {
         console.log('No upcoming events found.');
@@ -89,14 +92,18 @@ export class GoogleScheduleService implements OnDestroy {
   /**
    *  Sign in the user upon button click.
    */
-  signIn(): void {
+  signInGoogle(): void {
     gapi.auth2.getAuthInstance().signIn();
   }
 
   /**
    *  Sign out the user upon button click.
    */
-  signOut(): void {
+  signOutGoogle(): void {
     gapi.auth2.getAuthInstance().signOut();
+  }
+
+  getSchedules(): Promise<Schedule[]> {
+    return Promise.resolve(this.schedules);
   }
 }

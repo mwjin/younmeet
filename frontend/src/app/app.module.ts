@@ -28,7 +28,6 @@ import { IsLoggedIn } from './is-logged-in/is-logged-in';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { GoogleCalendarComponent } from './google-calendar/google-calendar.component';
 import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
 import { GoogleScheduleService } from './services/google-schedule.service';
 

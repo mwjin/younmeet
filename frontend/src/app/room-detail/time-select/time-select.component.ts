@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import * as $ from 'jquery';
 import { Freetime } from '../../models/freetime';
@@ -12,10 +12,10 @@ import { GoogleScheduleService } from '../../services/google-schedule.service';
 @Component({
   selector : 'app-time-select',
   templateUrl : './time-select.component.html',
-  styleUrls : [ './time-select.component.css' ]
+  styleUrls : [ './time-select.component.css' ],
 })
 
-export class TimeSelectComponent implements OnInit {
+export class TimeSelectComponent implements OnInit, OnDestroy {
   private timeSpan: Timespan;
   public previousFreeTimes: Freetime[];
   public calendarOptions: Object;
@@ -94,6 +94,10 @@ export class TimeSelectComponent implements OnInit {
     this.googleButtonInitializer();
   }
 
+  ngOnDestroy() {
+    this.googleScheduleService.signOutGoogle();
+  }
+
   googleButtonInitializer(): void {
     if (typeof gapi === 'undefined') {
       // Wait until gapi is defined by GoogleScheduleService.
@@ -118,14 +122,15 @@ export class TimeSelectComponent implements OnInit {
    *  Sign in the user upon button click.
    */
   handleSyncClick(): void {
-    this.googleScheduleService.signIn();
+    this.googleScheduleService.signInGoogle();
+    this.googleScheduleService.getSchedules().then(schedules => console.log(schedules));
   }
 
   /**
    *  Sign out the user upon button click.
    */
   handleCancelClick(): void {
-    this.googleScheduleService.signOut();
+    this.googleScheduleService.signOutGoogle();
   }
 
   public deleteEvent(): void {
