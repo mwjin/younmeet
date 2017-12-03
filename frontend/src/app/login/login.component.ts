@@ -14,10 +14,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   email_username: AbstractControl;
   password: AbstractControl;
-  loginFailed: boolean;
 
   ngOnInit() {
-    this.loginFailed = false;
   }
 
   constructor(private authenticationService: AuthenticationService,
