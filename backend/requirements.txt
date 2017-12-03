@@ -3,8 +3,11 @@ chardet==2.3.0
 cloud-init==0.7.9
 command-not-found==0.3
 configobj==5.0.6
+coverage==4.4.2
+coveralls==1.2.0
 cryptography==1.2.3
 Django==1.11.5
+docopt==0.6.2
 hashids==1.2.0
 idna==2.0
 Jinja2==2.8
