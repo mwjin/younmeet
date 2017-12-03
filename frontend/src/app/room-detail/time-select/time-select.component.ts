@@ -7,6 +7,7 @@ import { MeetService } from '../../services/meet.service';
 import { Timespan } from '../../models/timespan';
 import { Router } from '@angular/router';
 import { FreetimeResponseData } from '../../services/freetime-response-data';
+import {ScheduleService} from "../../services/schedule.service";
 
 @Component({
   selector : 'app-time-select',
@@ -22,7 +23,8 @@ export class TimeSelectComponent implements OnInit {
   constructor(private location: Location,
               private router: Router,
               private freetimeService: FreetimeService,
-              private meetService: MeetService,) {
+              private meetService: MeetService,
+              private scheduleService: ScheduleService) {
   }
 
   ngOnInit() {

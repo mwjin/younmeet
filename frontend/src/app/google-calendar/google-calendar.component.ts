@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
+import { ScheduleService } from '../services/schedule.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class GoogleCalendarComponent implements OnInit {
   authorizeButton: HTMLElement;
   signoutButton: HTMLElement;
 
-  constructor(private gapiService: GoogleApiService) {
+  constructor(private gapiService: GoogleApiService,
+              private scheduleService: ScheduleService) {
     gapiService.onLoad().subscribe(() => {
       this.handleClientLoad();
     });
@@ -40,18 +42,18 @@ export class GoogleCalendarComponent implements OnInit {
       scope: this.SCOPES
     }).then(() => {
       // Listen for sign-in state changes.
-      gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus.bind(this));
+      gapi.auth2.getAuthInstance().isSignedIn.listen(this.changeButtonState.bind(this));
 
       // Handle the initial sign-in state.
-      this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+      this.changeButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
+      this.scheduleService.init();
     });
   }
 
-  private updateSigninStatus(isSignedIn): void {
+  private changeButtonState(isSignedIn): void {
     if (isSignedIn) {
       this.authorizeButton.style.display = 'none';
       this.signoutButton.style.display = 'block';
-      this.listUpcomingEvents();
     } else {
       this.authorizeButton.style.display = 'block';
       this.signoutButton.style.display = 'none';
