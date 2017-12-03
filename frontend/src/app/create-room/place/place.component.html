@@ -9,13 +9,7 @@
   <br/>
 
   <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-    <agm-marker [latitude]="latitude" [longitude]="longitude">
-      <agm-snazzy-info-window [maxWidth]="200" [isOpen]="true">
-        <ng-template>
-          My first Snazzy Info Window!
-        </ng-template>
-      </agm-snazzy-info-window>
-    </agm-marker>
+    <agm-marker [latitude]="latitude" [longitude]="longitude"> </agm-marker>
     <agm-marker *ngFor="let m of restaurant_list" [latitude]="m.latitude"
                 [longitude]="m.longitude" [markerClickable]="true" [label]="labelOptions">
     </agm-marker>
@@ -32,18 +26,19 @@
 <br/>
 <div *ngIf="isPlaceSelected">
 <h2>Recommendations</h2>
-  <!-- if no recommendations are found-->
+  <!-- if no recommendations are found
   <div *ngIf="restaurant_list.length==0&&
     cafe_list.length==0&&cultural_faculty_list.length==0">
     None
   </div>
+  -->
 
   <!-- exists places to recommend-->
   <sui-tabset>
     <div class="ui top attached tabular menu">
-      <a *ngIf="restaurant_list.length!=0" class="item" suiTabHeader="1">Restaurants</a>
-      <a *ngIf="cafe_list.length!=0" class="item" suiTabHeader="2">Cafes</a>
-      <a *ngIf="cultural_faculty_list.length!=0" class="item" suiTabHeader="3">Cultural Faculties</a>
+      <a class="item" suiTabHeader="1">Restaurants</a>
+      <a class="item" suiTabHeader="2">Cafes</a>
+      <a class="item" suiTabHeader="3">Cultural Faculties</a>
     </div>
     <div class="ui bottom attached segment" suiTabContent="1">
       <div class = "ui list">

@@ -9,6 +9,7 @@ import {isUndefined} from "util";
 import {AccountService} from "../../services/account.service";
 import {DaumApiService} from "../../services/daum-api.service";
 import {Place} from "../../models/place";
+import {SuiTabset} from "ng2-semantic-ui/dist";
 
 const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
 
@@ -61,7 +62,6 @@ export class PlaceComponent implements OnInit {
     this.route.params
       .flatMap(params => {
         this.roomHash = params['hash'];
-        console.log(this.roomHash);
         return this.meetService.getRoomByHash(this.roomHash);
       })
       .subscribe(room => {
@@ -91,7 +91,7 @@ export class PlaceComponent implements OnInit {
   ngOnInit() {
     // set google maps defaults
     this.zoom = 15;
-    let options = {
+    const options = {
       componentRestrictions: {country: 'kr'}
     };
 
@@ -105,8 +105,6 @@ export class PlaceComponent implements OnInit {
             this.ngZone.run(() => {
               // get the place result
               this.googlePlaceResult = autocomplete.getPlace();
-
-
               // verify result
               if (this.googlePlaceResult.geometry === undefined || this.googlePlaceResult.geometry === null) {
                 return;
