@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import * as $ from 'jquery';
 import { Freetime } from '../../models/freetime';
@@ -38,7 +38,7 @@ export class TimeSelectComponent implements OnInit {
     this.timeSpan = this.meetService.getTimeSpan();
     console.log('timespan = ' + this.timeSpan.start + ' to ' + this.timeSpan.end);
     if (!this.timeSpan) {
-      this.router.navigate([ 'dashboard' ]);
+      this.router.navigate(['dashboard']);
     }
     this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
 
@@ -48,41 +48,41 @@ export class TimeSelectComponent implements OnInit {
         this.previousFreeTimes = freeTimes.map(freetimeDate => FreetimeResponseData.responseToFreetime(freetimeDate));
         console.log(this.previousFreeTimes);
         this.calendarOptions = {
-          locale : 'ko',
-          slotDuration : '00:10:00', // set slot duration
-          scrollTime : '09:00:00', // start scroll from 9AM
-          height : 650,
+          locale: 'ko',
+          slotDuration: '00:10:00', // set slot duration
+          scrollTime: '09:00:00', // start scroll from 9AM
+          height: 650,
           // Do not Modify Below This Comment
-          eventOverlap : false,
-          visibleRange : {
-            'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
-            , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
+          eventOverlap: false,
+          visibleRange: {
+            'start': this.timeSpan.start.toJSON().split('T')[0]
+            , 'end': this.timeSpan.end.toJSON().split('T')[0]
           },
-          events : this.previousFreeTimes,
-          timezone : 'local',
-          defaultView : 'agenda',
-          allDaySlot : false,
-          editable : true,
-          selectable : true,
-          selectHelper : true,
-          selectOverlap : false,
-          select : function (start, end) {
+          events: this.previousFreeTimes,
+          timezone: 'local',
+          defaultView: 'agenda',
+          allDaySlot: false,
+          editable: true,
+          selectable: true,
+          selectHelper: true,
+          selectOverlap: false,
+          select: function (start, end) {
             document.getElementById('deleteButton').style.display = 'none';
             let eventData;
             eventData = {
-              title : '',
-              start : start,
-              end : end
+              title: '',
+              start: start,
+              end: end
             };
             $('#calendar').fullCalendar('renderEvent', eventData, true);
           },
-          unselectAuto : true,
-          eventClick : function (calEvent, jsEvent, view) {
+          unselectAuto: true,
+          eventClick: function (calEvent, jsEvent, view) {
             let selected = $('#calendar').fullCalendar('clientEvents', calEvent._id);
-            let startTime = selected[ 0 ][ 'start' ][ '_d' ]
-              .toString().split(' ')[ 4 ].slice(0, 5);
-            let endTime = selected[ 0 ][ 'end' ][ '_d' ]
-              .toString().split(' ')[ 4 ].slice(0, 5);
+            let startTime = selected[0]['start']['_d']
+              .toString().split(' ')[4].slice(0, 5);
+            let endTime = selected[0]['end']['_d']
+              .toString().split(' ')[4].slice(0, 5);
             document.getElementById('deleteButton').style.display = 'block';
             document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
 
@@ -90,11 +90,18 @@ export class TimeSelectComponent implements OnInit {
           },
         };
       });
-    console.log('Google Sign in');
-    console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
 
-    gapi.auth2.getAuthInstance().isSignedIn.listen(this.changeGoogleButtonState.bind(this));
-    this.changeGoogleButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
+    this.googleButtonInitializer();
+  }
+
+  googleButtonInitializer(): void {
+    if (typeof gapi === 'undefined') {
+      // Wait until gapi is defined by GoogleScheduleService.
+      setTimeout(() => { this.googleButtonInitializer(); }, 500);
+    } else {
+      this.changeGoogleButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
+      gapi.auth2.getAuthInstance().isSignedIn.listen(this.changeGoogleButtonState.bind(this));
+    }
   }
 
   private changeGoogleButtonState(isSignedIn): void {

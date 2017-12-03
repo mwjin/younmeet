@@ -32,11 +32,12 @@ export class GoogleScheduleService implements OnDestroy {
       discoveryDocs: this.DISCOVERY_DOCS,
       scope: this.SCOPES
     }).then(() => {
+      // Default state
+      gapi.auth2.getAuthInstance().signOut();
+
       // Listen for sign-in state changes.
       gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninState.bind(this));
 
-      // Handle the initial sign-in state.
-      this.updateSigninState(gapi.auth2.getAuthInstance().isSignedIn.get());
     });
   }
 
