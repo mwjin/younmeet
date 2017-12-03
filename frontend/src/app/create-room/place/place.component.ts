@@ -119,15 +119,15 @@ export class PlaceComponent implements OnInit {
               const lng = this.googleSearchResult.geometry.location.lng();
               this.daumService.getNearRestaurants(lat, lng)
                 .then(restaurant_list => {
-                  this.restaurant_list = restaurant_list;
+                  this.restaurant_list = restaurant_list.filter(p => p.name !== this.googleSearchResult.name);
                 });
               this.daumService.getNearCafes(lat, lng)
                 .then(cafe_list => {
-                  this.cafe_list = cafe_list;
+                  this.cafe_list = cafe_list.filter(p => p.name !== this.googleSearchResult.name);
                 });
               this.daumService.getNearCulturalFaculties(lat, lng)
                 .then(cultural_faculty_list => {
-                  this.cultural_faculty_list = cultural_faculty_list;
+                  this.cultural_faculty_list = cultural_faculty_list.filter(p => p.name !== this.googleSearchResult.name);
                 });
               this.cdRef.detectChanges();
             });
@@ -135,6 +135,7 @@ export class PlaceComponent implements OnInit {
         });
   }
 
+  // TODO: When clicking back on the searched place, the marker should be one
   private onSelectSearchedMarker(): void {
     this.place.name = this.googleSearchResult.name;
     this.place.latitude = this.googleSearchResult.geometry.location.lat();
@@ -176,5 +177,5 @@ export class PlaceComponent implements OnInit {
   private goBack(): void {
     this.location.back();
   }
-
+  
 }
