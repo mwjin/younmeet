@@ -7,13 +7,12 @@
 
       <form class="ui large form"
             [formGroup]="loginForm"
-            (ngSubmit)="tryLogin(loginForm.value)"
+            (ngSubmit)="tryLogin()"
             [class.error]="!loginForm.valid && loginForm.touched">
         <div class="ui stacked segment">
 
           <div class="required field">
-            <div class="ui left icon input"
-                 [class.error]="!email_username.valid && email_username.touched">
+            <div class="ui left icon input">
               <i class="user icon"></i>
               <input type="text" name="email/username" placeholder="Email/Username"
                      [formControl]="loginForm.controls['email/username']">
@@ -21,15 +20,15 @@
           </div>
 
           <div class="required field">
-            <div class="ui left icon input"
-                 [class.error]="!password.valid && password.touched">
+            <div class="ui left icon input">
               <i class="lock icon"></i>
               <input type="password" name="password" placeholder="Password"
                      [formControl]="loginForm.controls['password']">
             </div>
           </div>
 
-          <div *ngIf="!email_username.valid || !password.valid"
+          <div id="loginFail"
+               style="display: none"
                class="ui error message"> Incorrect Email/Username or Password
           </div>
 

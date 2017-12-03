@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 import { roomFormToCreateResponse, roomFromResponse, RoomResponse, roomToResponse } from './room-rest-interfaces';
-import { getCSRFHeaders } from '../../util/headers';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';

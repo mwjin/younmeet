@@ -131,7 +131,7 @@ export class MeetServiceSpy {
   });
 
   getRoomByHash = jasmine.createSpy('getRoomByHash').and.callFake((hash: string) => {
-    return Promise.resolve(ROOMS_CREATED[0]);
+    return Promise.resolve(ROOMS_CREATED[ 0 ]);
   });
 
   getUsersInRoom = jasmine.createSpy('getUsersInRoom').and.callFake(

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
-import { getCSRFHeaders } from '../../util/headers';
 
 @Injectable()
 export class AccountService {
@@ -30,11 +29,6 @@ export class AccountService {
   }
 
   postUserSignUp(username: string, email: string, password: string): Promise<boolean> {
-    /*
-     * Requiest POST for signup
-     * return status 201 if success to make a new user
-     * else return something else
-     */
     const url = `/api/signup`; // could be /api/user/signup
     return this.http.post(
       url,

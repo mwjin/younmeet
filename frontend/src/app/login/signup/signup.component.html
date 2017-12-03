@@ -6,7 +6,7 @@
       </h2>
       <form class="ui large form"
             [formGroup]="signUpForm"
-            [class.error]="!signUpForm.valid&&signUpForm.touched"
+            [class.error]="!signUpForm.valid"
             (submit)="signUp()">
         <div class="ui stacked segment">
           <!-- Username Input -->
@@ -57,7 +57,10 @@
                class="ui error message"> Must match password.
           </div>
 
-          <button class="ui fluid large submit button" type="submit">Sign Up</button>
+          <button class="ui fluid large submit button"
+                  type="submit"
+                  [disabled]="!signUpForm.valid">Sign Up
+          </button>
         </div>
       </form>
       <div class="ui message">
