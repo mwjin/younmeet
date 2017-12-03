@@ -7,7 +7,7 @@ matrix:
       cache:
         pip: true
       install:
-        - pip install django coverage coveralls python-dateutil hashids
+        - pip install -r backend/requirements.txt
       before_script:
         - cd backend
         - python3 manage.py migrate

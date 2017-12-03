@@ -7,7 +7,8 @@
 
       <form class="ui large form"
             [formGroup]="loginForm"
-            (ngSubmit)="tryLogin(loginForm.value)">
+            (ngSubmit)="tryLogin()"
+            [class.error]="!loginForm.valid && loginForm.touched">
         <div class="ui stacked segment">
 
           <div class="required field">
