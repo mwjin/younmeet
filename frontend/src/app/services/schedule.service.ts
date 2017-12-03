@@ -1,17 +1,24 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
-export class ScheduleService {
+export class ScheduleService implements OnDestroy {
+  subscriber: Subscription;
 
   constructor(private gapiService: GoogleApiService) {
   }
 
   init(): void {
     console.log('A');
-    this.gapiService.onLoad().subscribe(() => {
+    this.subscriber = this.gapiService.onLoad().subscribe(() => {
       this.checkAuth();
     });
+  }
+
+  ngOnDestroy() {
+    console.log('destroy service')
+    this.subscriber.unsubscribe();
   }
 
   private checkAuth(): void {

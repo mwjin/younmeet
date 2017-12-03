@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
-import { ScheduleService } from '../services/schedule.service';
+import {Subscription} from 'rxjs/Subscription';
 
 
 @Component({
@@ -8,7 +8,7 @@ import { ScheduleService } from '../services/schedule.service';
   templateUrl: './google-calendar.component.html',
   styleUrls: ['./google-calendar.component.css']
 })
-export class GoogleCalendarComponent implements OnInit {
+export class GoogleCalendarComponent implements OnInit, OnDestroy {
 
   CLIENT_ID = '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com';
   API_KEY = 'AIzaSyDomeH3v19BXwuysY3wFhtoDk_CIyza65A';
@@ -17,17 +17,23 @@ export class GoogleCalendarComponent implements OnInit {
 
   authorizeButton: HTMLElement;
   signoutButton: HTMLElement;
+  subscriber: Subscription;
 
-  constructor(private gapiService: GoogleApiService,
-              private scheduleService: ScheduleService) {
-    gapiService.onLoad().subscribe(() => {
-      this.handleClientLoad();
-    });
+  constructor(private gapiService: GoogleApiService) {
   }
 
   ngOnInit() {
     this.authorizeButton = document.getElementById('authorize-button');
     this.signoutButton = document.getElementById('signout-button');
+
+    this.subscriber = this.gapiService.onLoad().subscribe(() => {
+      this.handleClientLoad();
+    });
+  }
+
+  ngOnDestroy() {
+    console.log('destroy component');
+    this.subscriber.unsubscribe();
   }
 
   handleClientLoad() {
@@ -35,6 +41,7 @@ export class GoogleCalendarComponent implements OnInit {
   }
 
   initClient(): void {
+    console.log('init')
     gapi.client.init({
       apiKey: this.API_KEY,
       clientId: this.CLIENT_ID,
@@ -46,7 +53,6 @@ export class GoogleCalendarComponent implements OnInit {
 
       // Handle the initial sign-in state.
       this.changeButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
-      this.scheduleService.init();
     });
   }
 
@@ -54,6 +60,7 @@ export class GoogleCalendarComponent implements OnInit {
     if (isSignedIn) {
       this.authorizeButton.style.display = 'none';
       this.signoutButton.style.display = 'block';
+      this.listUpcomingEvents();
     } else {
       this.authorizeButton.style.display = 'block';
       this.signoutButton.style.display = 'none';
