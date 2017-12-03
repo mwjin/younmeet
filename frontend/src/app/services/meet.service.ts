@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 import { roomFormToCreateResponse, roomFromResponse, RoomResponse, roomToResponse } from './room-rest-interfaces';
-import { getCSRFHeaders } from '../../util/headers';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
@@ -131,8 +130,7 @@ export class MeetService {
   putPlace(room_id: number, place: string, latitude: number, longitude: number): Promise<boolean> {
     return this.http.put(
       `api/rooms/${room_id}/place`,
-      {'place': place, 'latitude': latitude, 'longitude': longitude},
-      <RequestOptionsArgs>{ headers : getCSRFHeaders() }
+      {'place': place, 'latitude': latitude, 'longitude': longitude}
     )
       .toPromise()
       .then(response => response.status === 200)

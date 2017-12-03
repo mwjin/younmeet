@@ -271,6 +271,6 @@ class FreeTimeTestCase(TestCase):
 
         self.assertEqual(response.status_code, 201)
         best_times = list(BestTime.objects.filter(room_id=1).values())
-        self.assertEqual(len(best_times), 3)
+        self.assertEqual(len(best_times), 7)
         self.assertEqual(best_times[0]['start_time'], datetime(2017, 11, 1, 12, 20))
         self.assertEqual(best_times[0]['end_time'], datetime(2017, 11, 1, 20, 00))
