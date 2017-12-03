@@ -62,7 +62,6 @@ export class GoogleScheduleService implements OnDestroy {
       'timeMin': (new Date()).toISOString(),
       'showDeleted': false,
       'singleEvents': true,
-      'maxResults': 10,
       'orderBy': 'startTime'
     }).then( response => {
       const events = response.result.items;
@@ -79,6 +78,7 @@ export class GoogleScheduleService implements OnDestroy {
           if (!end) {
             end = event.end.date;
           }
+
           console.log(event.summary + ' (' + start + ' ~ ' + end + ')');
           const schedule = new Schedule(event.summary, new Date(start), new Date(end));
           this.schedules.push(schedule);

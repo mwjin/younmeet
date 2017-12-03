@@ -7,6 +7,7 @@ import { MeetService } from '../../services/meet.service';
 import { Timespan } from '../../models/timespan';
 import { Router } from '@angular/router';
 import { FreetimeResponseData } from '../../services/freetime-response-data';
+import { Schedule } from '../../models/schedule';
 import { GoogleScheduleService } from '../../services/google-schedule.service';
 
 @Component({
@@ -19,9 +20,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   private timeSpan: Timespan;
   public previousFreeTimes: Freetime[];
   public calendarOptions: Object;
+  public schedules: Schedule[];
 
-  private authorizeButton: HTMLElement;
-  private signoutButton: HTMLElement;
+  private syncButton: HTMLElement;
+  private cancelButton: HTMLElement;
 
   constructor(private location: Location,
               private router: Router,
@@ -32,8 +34,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // For sync with Google Calendar API
-    this.authorizeButton = document.getElementById('authorize-button');
-    this.signoutButton = document.getElementById('signout-button');
+    this.syncButton = document.getElementById('authorize-button');
+    this.cancelButton = document.getElementById('signout-button');
 
     this.timeSpan = this.meetService.getTimeSpan();
     console.log('timespan = ' + this.timeSpan.start + ' to ' + this.timeSpan.end);
@@ -103,18 +105,19 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       // Wait until gapi is defined by GoogleScheduleService.
       setTimeout(() => { this.googleButtonInitializer(); }, 500);
     } else {
-      this.changeGoogleButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
-      gapi.auth2.getAuthInstance().isSignedIn.listen(this.changeGoogleButtonState.bind(this));
+      // this.changeGoogleButtonState(gapi.auth2.getAuthInstance().isSignedIn.get());
+      this.changeGoogleButtonState(false);
+      // gapi.auth2.getAuthInstance().isSignedIn.listen(this.changeGoogleButtonState.bind(this));
     }
   }
 
-  private changeGoogleButtonState(isSignedIn): void {
-    if (isSignedIn) {
-      this.authorizeButton.style.display = 'none';
-      this.signoutButton.style.display = 'block';
+  private changeGoogleButtonState(isSynchronized): void {
+    if (isSynchronized) {
+      this.syncButton.style.display = 'none';
+      this.cancelButton.style.display = 'block';
     } else {
-      this.authorizeButton.style.display = 'block';
-      this.signoutButton.style.display = 'none';
+      this.syncButton.style.display = 'block';
+      this.cancelButton.style.display = 'none';
     }
   }
 
@@ -122,15 +125,22 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
    *  Sign in the user upon button click.
    */
   handleSyncClick(): void {
-    this.googleScheduleService.signInGoogle();
-    this.googleScheduleService.getSchedules().then(schedules => console.log(schedules));
+    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      this.googleScheduleService.signInGoogle();
+    }
+    this.googleScheduleService.getSchedules().then(schedules => {
+      this.schedules = schedules;
+      console.log(schedules);
+    });
+    this.changeGoogleButtonState(true);
   }
 
   /**
    *  Sign out the user upon button click.
    */
   handleCancelClick(): void {
-    this.googleScheduleService.signOutGoogle();
+    this.changeGoogleButtonState(false);
+    this.schedules = [];
   }
 
   public deleteEvent(): void {
