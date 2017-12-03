@@ -5,6 +5,8 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http, HttpModule, ResponseOptions, XHRBackend, Response } from '@angular/http';
 import { Freetime } from '../models/freetime';
 import { FreetimeResponseData } from './freetime-response-data';
+import {getCSRFHeaders} from "../../util/headers";
+import {mockCSRFHeaders} from "../../util/mockHeaders";
 
 const mockFreeTimeResponseData: FreetimeResponseData[] = [
   {
@@ -54,6 +56,7 @@ describe('FreetimeService', () => {
       providers : [
         FreetimeService,
         { provide : XHRBackend, useClass : MockBackend }
+        // { provide : getCSRFHeaders, useClass: mockCSRFHeaders}
       ]
     });
   });

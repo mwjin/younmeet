@@ -13,6 +13,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AccountService} from "../../services/account.service";
 import {AccountServiceSpy} from "../../services/account.service.spy";
 import {ClipboardModule} from "ngx-clipboard/dist";
+import {DaumApiService} from "../../services/daum-api.service";
+import {DaumApiServiceSpy} from "../../services/daum-api.service.spy";
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;
@@ -41,7 +43,8 @@ describe('PlaceComponent', () => {
           provide : ActivatedRoute, useValue: {
           params: Observable.of({'id': 1})
         }},
-        { provide: AccountService, useClass: AccountServiceSpy},
+        { provide: AccountService, useClass: AccountServiceSpy },
+        { provide: DaumApiService, useClass: DaumApiServiceSpy },
       ]
     })
       .compileComponents();

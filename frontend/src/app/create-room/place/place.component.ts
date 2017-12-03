@@ -76,12 +76,12 @@ export class PlaceComponent implements OnInit {
         );
         if (room.latitude == null || room.longitude == null) {
           this.setCurrentPosition();
-          console.log(this.place);
           this.firstTimePlaceSetting = true;
         }
         else {
           this.place.latitude = room.latitude;
           this.place.longitude = room.longitude;
+          this.place.name = room.place;
           this.firstTimePlaceSetting = false;
          }
         this.isPlaceSelected = false;
@@ -147,6 +147,7 @@ export class PlaceComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.place.latitude = position.coords.latitude;
         this.place.longitude = position.coords.longitude;
+        this.place.name = "ME";
         this.zoom = 15;
       });
     }

@@ -46,51 +46,16 @@ export class DaumApiService {
     return this.http.get(url, {headers: this.headers})
       .toPromise()
       .then(res => {
-        let data_list = res.json()['documents'];
-        let result = [];
+        const data_list = res.json()['documents'];
+        const result = [];
         data_list.forEach(res => {
-          let dist: number = +res['distance'];
+          const dist: number = +res['distance'];
           if (dist < this.min_dist)
             result.push(responseToPlace(res));
         });
-        console.log(result);
         return result;
       })
       .catch(handleError);
   }
-
-
-
-
-  /*
-  getFreeTimes(id: number): Promise<FreetimeResponseData[]> {
-    return this.http.get(`api/rooms/${id}/free-times`)
-      .toPromise()
-      .then(response => {
-        console.log(response.json());
-        return response.json() as FreetimeResponseData[];
-      })
-      .catch(handleError);
-  }
-
-  	create(articleId: number, authorId: number, content: string): Promise<Comment> {
-		return this.http
-			.post(this.commentsUrl,
-				JSON.stringify({article_id: articleId, author_id: authorId,
-					content: content}),
-				{headers: this.headers})
-			.toPromise()
-			.then (res => res.json().data as Comment)
-	}
-
-
-  postFreeTimes(freetimes: Freetime[], id: number): Promise<boolean> {
-    return this.http.post(`api/rooms/${id}/free-times`,
-      JSON.stringify(freetimes))
-      .toPromise()
-      .then(response => response.status === 201)
-      .catch(handleError);
-  }
-  */
 
 }

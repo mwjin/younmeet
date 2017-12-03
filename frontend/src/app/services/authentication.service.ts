@@ -26,7 +26,9 @@ export class AuthenticationService {
         .then(response => {
           if (response.status === 200) {
             // login success
-            const token = document.cookie.split('csrftoken=')[1].split(';')[0];
+            let token = '';
+            if (document.cookie)
+              token = document.cookie.split('csrftoken=')[1].split(';')[0];
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
@@ -45,7 +47,9 @@ export class AuthenticationService {
         .then(response => {
           if (response.status === 200) {
             // login success
-            const token = document.cookie.split('csrftoken=')[1].split(';')[0];
+            let token = '';
+            if (document.cookie)
+              token = document.cookie.split('csrftoken=')[1].split(';')[0];
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
