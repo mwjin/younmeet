@@ -61,6 +61,10 @@
                   type="submit"
                   [disabled]="!signUpForm.valid">Sign Up
           </button>
+          <div id="signUpFail"
+               style="display: none"
+               class="ui error message"> Username/Email is already exist!
+          </div>
         </div>
       </form>
       <div class="ui message">

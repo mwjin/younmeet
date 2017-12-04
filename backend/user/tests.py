@@ -304,4 +304,62 @@ class UserTestCase(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_user(email='philsik@snu.ac.kr', password='1234', username=None)
 
-    #  endregion
+    def test_check_password_not_logged_in(self):
+        # login and logout to get csrftoken
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+        response = self.client.get('/api/signout')
+        response = self.client.post('/api/user/check-password',
+                                    json.dumps({'password': '1234'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 401)
+
+    def test_check_password_right_password(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+        response = self.client.post('/api/user/check-password',
+                                    json.dumps({'password': '1234'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content.decode())
+        self.assertEqual(data, True)
+
+    def test_check_password_wrong_password(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+
+        response = self.client.post('/api/user/check-password',
+                                    json.dumps({'password': 'wrong password'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content.decode())
+        self.assertEqual(data, False    )
+
+    def test_check_password_put_password(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+
+        response = self.client.put('/api/user/check-password',
+                                   json.dumps({'password': '1234'}),
+                                   content_type='application/json',
+                                   HTTP_X_CSRFTOKEN=csrftoken
+                                   )
+        self.assertEqual(response.status_code, 405)
+
+
+                #  endregion

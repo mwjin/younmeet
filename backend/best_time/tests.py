@@ -74,14 +74,20 @@ class BestTimeTestCase(TestCase):
             json.dumps({'email': 'email1', 'password': 'password1'}),
             content_type=CONTENT_TYPE
         )
+        current_time = datetime.now()
+        start_time = current_time + timedelta(days=2)
+        end_time = current_time + timedelta(days=2, hours=3)
 
-        best_time = BestTime.objects.create(start_time=datetime(2017, 11, 1, 8, 00),
-                                            end_time=datetime(2017, 11, 1, 10, 00),
+        best_time = BestTime.objects.create(start_time=start_time,
+                                            end_time=end_time,
                                             room=Room.objects.get(id=1))
         best_time.full_attend.add(User.objects.get(id=1))
 
-        partial_attend_info = PartialAttendInfo(start=datetime(2017, 11, 1, 9, 00),
-                                                end=datetime(2017, 11, 1, 10, 00),
+        partial_start_time = current_time + timedelta(days=2, hours=2)
+        partial_end_time = end_time
+
+        partial_attend_info = PartialAttendInfo(start=partial_start_time,
+                                                end=partial_end_time,
                                                 username='partial',
                                                 best_time=best_time)
         partial_attend_info.save()
@@ -106,3 +112,23 @@ class BestTimeTestCase(TestCase):
 
         response = self.client.delete('/api/rooms/1/best-times')
         self.assertEqual(response.status_code, 405)
+
+    def test_passed_best_time_return_nothing(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+
+        current_time = datetime.now()
+        start_time = current_time - timedelta(days=2, hours=2)
+        end_time = current_time - timedelta(days=2)
+
+        best_time = BestTime.objects.create(start_time=start_time,
+                                            end_time=end_time,
+                                            room=Room.objects.get(id=1))
+
+        response = self.client.get('/api/rooms/1/best-times')
+        data = json.loads(response.content.decode())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 0)

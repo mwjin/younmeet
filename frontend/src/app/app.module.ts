@@ -5,7 +5,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-import { SuiModule, SuiPopupModule } from 'ng2-semantic-ui';
+import {SuiModalModule, SuiModule, SuiPopupModule} from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
@@ -30,6 +30,9 @@ import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
 import { GoogleScheduleService } from './services/google-schedule.service';
+import {DaumApiService} from './services/daum-api.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -44,6 +47,7 @@ const routes: Routes = [
   { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
   { path : 'not_found', component : NotFoundComponent },
   { path : '**', redirectTo : '/not_found'}
+
 ];
 
 /* For Google Calendar API */
@@ -72,6 +76,7 @@ export function MyCookieStrategy() {
     ProfileComponent,
     PlaceComponent,
     NotFoundComponent,
+    DialogComponent,
   ],
   imports : [
     CommonModule,
@@ -88,7 +93,7 @@ export function MyCookieStrategy() {
       apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
       libraries: ['places']
     }),
-    SuiPopupModule,
+    BrowserAnimationsModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig,
@@ -100,12 +105,17 @@ export function MyCookieStrategy() {
     AuthenticationService,
     FreetimeService,
     GoogleScheduleService,
+    DaumApiService,
     AuthGuard,
     IsLoggedIn,
+    /*
+
     {
       provide : XSRFStrategy,
       useFactory : MyCookieStrategy
-    }
+    },
+    */
+
   ],
   bootstrap : [ AppComponent ]
 })

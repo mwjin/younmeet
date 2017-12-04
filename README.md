@@ -35,7 +35,8 @@ dev:
   - Running the app: ``npm start``
   - Testing: ``npm test``
 - Django
-  - Installing dependencies: ``pip install django coverage coveralls python-dateutil hashids``
+  - Installing dependencies: ``pip install -r requirements.txt``
+    - We strongly recommend to use virtualenv to install packages locally.
   - Running the app: ``python manage.py runserver``
   - Testing: ``python manage.py test``
   - Note: if Python 2 is the default for the system, use python3 command instead of python

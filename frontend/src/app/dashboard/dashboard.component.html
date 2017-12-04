@@ -37,7 +37,7 @@
   <div class="ui bottom attached segment" suiTabContent="1">
     <div class="ui medium header">Urgent</div>
     <app-room-list [rooms]="roomsCreated_Urgent
-                     | roomListFilter: searchText: currentSearchOption">
+                   | roomListFilter: searchText: currentSearchOption">
     </app-room-list>
     <div class="ui divider"></div>
     <div class="ui medium header">Not Urgent</div>
@@ -53,7 +53,7 @@
     <div class="ui divider"></div>
     <div class="ui medium header">Not Urgent</div>
     <app-room-list [rooms]="roomsJoined_NotUrgent
-                   | roomListFilter: searchText: searchOption">
+                   | roomListFilter: searchText: currentSearchOption">
     </app-room-list>
   </div>
 </sui-tabset>

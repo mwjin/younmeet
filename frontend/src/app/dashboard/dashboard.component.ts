@@ -20,11 +20,9 @@ export class DashboardComponent implements OnInit {
   public longitude: number;
   public zoom: number;
 
-  private filters: FilterOptions[] = ["All", "Name", "Location"];
-
-  private searchText: string;
-
-  private currentSearchOption: FilterOptions = "All";
+  filters: FilterOptions[] = ["All", "Name", "Location"];
+  searchText: string;
+  currentSearchOption: FilterOptions = "All";
 
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {

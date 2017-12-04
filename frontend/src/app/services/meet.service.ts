@@ -12,7 +12,10 @@ import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
 import { BesttimeResponseData } from './besttime-response-data';
+import {getCSRFHeaders} from "../../util/headers";
 
+
+const headers = new Headers({'csrftoken': 'X-CSRFToken'});
 
 function handleError(error: any) {
   console.error('An error occurred: ', error);
@@ -29,7 +32,6 @@ export class MeetService {
   public timespan: Timespan;
   public currentRoomId: number;
   public currentRoomHash: string;
-
   constructor(private http: Http) {
   }
 
@@ -65,7 +67,6 @@ export class MeetService {
         return room;
       })
       .then(roomData => {
-        console.log(roomData);
         return roomData;
       })
       .catch(handleError);
@@ -119,7 +120,8 @@ export class MeetService {
   addRoom(roomForm: CreateRoomForm): Promise<Room> {
     return this.http.post(
       `api/rooms`,
-      roomFormToCreateResponse(roomForm)
+      roomFormToCreateResponse(roomForm),
+      { headers: getCSRFHeaders() }
     )
       .toPromise()
       .then(res => res.json() as RoomResponse)
@@ -130,7 +132,8 @@ export class MeetService {
   putPlace(room_id: number, place: string, latitude: number, longitude: number): Promise<boolean> {
     return this.http.put(
       `api/rooms/${room_id}/place`,
-      {'place': place, 'latitude': latitude, 'longitude': longitude}
+      {'place': place, 'latitude': latitude, 'longitude': longitude},
+      { headers : getCSRFHeaders() }
     )
       .toPromise()
       .then(response => response.status === 200)
@@ -138,7 +141,10 @@ export class MeetService {
   }
 
   deleteRoom(roomId: number): Promise<Response> {
-    return this.http.delete(`api/rooms/${roomId}`)
+    return this.http.delete(
+      `api/rooms/${roomId}`,
+      { headers : getCSRFHeaders() }
+    )
       .toPromise()
       .catch(handleError);
   }
