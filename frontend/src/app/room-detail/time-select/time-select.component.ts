@@ -100,6 +100,35 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     this.googleScheduleService.signOutGoogle();
   }
 
+  public deleteEvent(): void {
+    $('#calendar').fullCalendar('removeEvents', localStorage.getItem('deleteButtonId'));
+    document.getElementById('deleteButton').style.display = 'none';
+  }
+
+  public deleteAllEvent(): void {
+    $('#calendar').fullCalendar('removeEvents');
+  }
+
+  public collectFreeTimes(): void {
+    // Collect all events and return array of [start_time, end_time] pair
+    const freeTimes: Freetime[] = [];
+    const selectedAreas = $('#calendar').fullCalendar('clientEvents');
+    for (let index in selectedAreas) {
+      freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
+        selectedAreas[ index ][ 'end' ][ '_d' ]));
+    }
+    console.log(JSON.stringify(freeTimes));
+
+    this.freetimeService.postFreeTimes(freeTimes, this.meetService.getCurrentRoomId())
+      .then(isSuccessToPost => {
+        if (isSuccessToPost) {
+          const roomHash = this.meetService.getCurrentRoomHash();
+          this.router.navigate(['room', roomHash]);
+        }
+      });
+  }
+
+  // For Google Calendar API
   googleButtonInitializer(): void {
     if (typeof gapi === 'undefined') {
       // Wait until gapi is defined by GoogleScheduleService.
@@ -128,11 +157,34 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
       this.googleScheduleService.signInGoogle();
     }
-    this.googleScheduleService.getSchedules().then(schedules => {
-      this.schedules = schedules;
-      console.log(schedules);
-    });
-    this.changeGoogleButtonState(true);
+    this.getSchedules();
+  }
+
+  private getSchedules(): void {
+    if (!this.googleScheduleService.isInit) {
+      setTimeout(() => { this.getSchedules();}, 500);
+    } else {
+      this.googleScheduleService.getSchedules().then(schedules => {
+        this.schedules = schedules;
+
+        console.log(schedules);
+        console.log(schedules.length);
+
+        for (const schedule of schedules) {
+          const event = {
+            name: 'googleSchedule',
+            title: schedule.title,
+            start: schedule.start,
+            end: schedule.end,
+            color: 'red',
+          };
+
+          $('#calendar').fullCalendar('renderEvent', event);
+        }
+      });
+
+      this.changeGoogleButtonState(true);
+    }
   }
 
   /**
@@ -141,35 +193,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   handleCancelClick(): void {
     this.changeGoogleButtonState(false);
     this.schedules = [];
+    $('#calendar').fullCalendar('removeEvents',
+      function(event) { return event.name === 'googleSchedule'});
   }
 
-  public deleteEvent(): void {
-    $('#calendar').fullCalendar('removeEvents', localStorage.getItem('deleteButtonId'));
-    document.getElementById('deleteButton').style.display = 'none';
-  }
-
-  public deleteAllEvent(): void {
-    $('#calendar').fullCalendar('removeEvents');
-  }
-
-  public collectFreeTimes(): void {
-    // Collect all events and return array of [start_time, end_time] pair
-    const freeTimes: Freetime[] = [];
-    const selectedAreas = $('#calendar').fullCalendar('clientEvents');
-    for (let index in selectedAreas) {
-      freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
-        selectedAreas[ index ][ 'end' ][ '_d' ]));
-    }
-    console.log(JSON.stringify(freeTimes));
-
-    this.freetimeService.postFreeTimes(freeTimes, this.meetService.getCurrentRoomId())
-      .then(isSuccessToPost => {
-        if (isSuccessToPost) {
-          const roomHash = this.meetService.getCurrentRoomHash();
-          this.router.navigate(['room', roomHash]);
-        }
-      });
-  }
 }
 
 

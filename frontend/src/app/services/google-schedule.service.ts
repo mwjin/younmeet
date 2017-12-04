@@ -12,6 +12,7 @@ export class GoogleScheduleService implements OnDestroy {
 
   subscriber: Subscription;
   schedules: Schedule[] = [];
+  isInit = false;
 
   constructor(private gapiService: GoogleApiService) {
     this.subscriber = this.gapiService.onLoad().subscribe(() => {
@@ -48,6 +49,7 @@ export class GoogleScheduleService implements OnDestroy {
       this.listUpcomingEvents();
     } else {
       this.schedules = [];
+      this.isInit = false;
     }
   }
 
@@ -64,6 +66,7 @@ export class GoogleScheduleService implements OnDestroy {
       'singleEvents': true,
       'orderBy': 'startTime'
     }).then( response => {
+
       const events = response.result.items;
       console.log('Upcoming events:');
 
@@ -83,9 +86,11 @@ export class GoogleScheduleService implements OnDestroy {
           const schedule = new Schedule(event.summary, new Date(start), new Date(end));
           this.schedules.push(schedule);
         }
+        console.log(this.schedules.length)
       } else {
         console.log('No upcoming events found.');
       }
+      this.isInit = true;
     });
   }
 
