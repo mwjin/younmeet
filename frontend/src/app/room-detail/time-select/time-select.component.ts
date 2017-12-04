@@ -55,7 +55,14 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
           scrollTime: '09:00:00', // start scroll from 9AM
           height: 650,
           // Do not Modify Below This Comment
-          eventOverlap: false,
+          eventOverlap: function (stillEvent, movingEvent) {
+            return stillEvent.name === 'googleSchedule';
+          },
+          eventRender: function(event, element) {
+            if (event.name === 'googleSchedule') {
+              element.append('from Google Calendar');
+            }
+          },
           visibleRange: {
             'start': this.timeSpan.start.toJSON().split('T')[0]
             , 'end': this.timeSpan.end.toJSON().split('T')[0]
@@ -67,7 +74,9 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
           editable: true,
           selectable: true,
           selectHelper: true,
-          selectOverlap: false,
+          selectOverlap: function (stillEvent, movingEvent) {
+            return stillEvent.name === 'googleSchedule';
+          },
           select: function (start, end) {
             document.getElementById('deleteButton').style.display = 'none';
             let eventData;
@@ -75,6 +84,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
               title: '',
               start: start,
               end: end,
+              overlap: false,
             };
             $('#calendar').fullCalendar('renderEvent', eventData, true);
           },
@@ -168,6 +178,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       this.googleScheduleService.getSchedules().then(schedules => {
         this.schedules = schedules;
         const calendar = $('#calendar');
+        /*
         calendar.fullCalendar('removeEvents',
           function(event) {
             for (const schedule of schedules) {
@@ -177,15 +188,15 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             }
             return false;
           });
-
+        */
         for (const schedule of schedules) {
           const event = {
             name: 'googleSchedule',
             title: schedule.title,
             start: schedule.start,
             end: schedule.end,
-            color: 'red',
-            overlap: false,
+            color: 'rgb(230, 0, 0)',
+            overlap: true,
           };
 
           calendar.fullCalendar('renderEvent', event);
