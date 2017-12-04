@@ -1,14 +1,7 @@
 <body>
 
 
-<button (click)="showDialog = !showDialog" class="btn">Open</button>
-
 <app-dialog [(visible)]="showDialog">
-  <h1>Hello World</h1>
-  <button (click)="showDialog = !showDialog" class="btn">Close</button>
-</app-dialog>
-<!--
-<div>
   <h2 class="ui align-middle header"> Input Current Password </h2>
   <div class="ui left icon input">
     <i class="lock icon"></i>
@@ -17,8 +10,9 @@
   </div>
   <button (click)="checkCurrentPassword()" class="ui right submit button">Submit
   </button>
-</div>
--->
+  <button (click)="goBack()" class="ui right submit button">Go Back
+  </button>
+</app-dialog>
 
 <div *ngIf="currentUser">
     <div class="ui main text container">

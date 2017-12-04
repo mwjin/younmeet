@@ -18,8 +18,7 @@ export class ProfileComponent implements OnInit {
   public password: AbstractControl;
   public passwordConfirm: AbstractControl;
   public currPassword: string;
-  public passwordChecked: boolean;
-  public showDialog = false;
+  public showDialog: boolean;
 
 
   constructor (private accountService: AccountService,
@@ -29,7 +28,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.passwordChecked = false;
+    this.showDialog = true;
     this.accountService.getUserDetail()
       .then(user => {
         this.currentUser = user;
@@ -59,14 +58,14 @@ export class ProfileComponent implements OnInit {
   }
 
   checkCurrentPassword(): void {
+
+    // for null value
+    if (!this.currPassword)
+      return
     this.accountService.checkPassword(this.currPassword)
       .then(res => {
-        if (res) {
-          console.log("OK!");
-          this.passwordChecked = true;
-        }
-        else
-          console.log("NOㅠ");
+        if (res)
+          this.showDialog = false;
       });
   }
 
