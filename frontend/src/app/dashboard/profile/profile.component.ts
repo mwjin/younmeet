@@ -13,11 +13,12 @@ import { Router } from '@angular/router';
   styleUrls : [ './profile.component.css' ]
 })
 export class ProfileComponent implements OnInit {
-  currentUser: User;
-  passwordForm: FormGroup;
-  private password: AbstractControl;
-  private passwordConfirm: AbstractControl;
-  currPassword: String;
+  public currentUser: User;
+  public passwordForm: FormGroup;
+  public password: AbstractControl;
+  public passwordConfirm: AbstractControl;
+  public currPassword: string;
+  public passwordChecked: boolean;
 
   constructor(private accountService: AccountService,
               private location: Location,
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.passwordChecked = false;
     this.accountService.getUserDetail()
       .then(user => {
         this.currentUser = user;
@@ -55,7 +57,15 @@ export class ProfileComponent implements OnInit {
   }
 
   checkCurrentPassword(): void {
-
+    this.accountService.checkPassword(this.currPassword)
+      .then(res => {
+        if (res) {
+          console.log("OK!");
+          this.passwordChecked = true;
+        }
+        else
+          console.log("NOㅠ");
+      });
   }
 
 }

@@ -54,6 +54,18 @@ export class AccountService {
       .catch(this.handleError);
   }
 
+
+  checkPassword(password: string): Promise<boolean> {
+    const url = `/api/user/check-password`;
+    return this.http.post(url,
+      JSON.stringify({'password': password}),
+      { headers : getCSRFHeaders() }
+      )
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('Error occured', error);
     return Promise.reject(error.message || error);

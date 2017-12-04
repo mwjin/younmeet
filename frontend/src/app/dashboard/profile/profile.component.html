@@ -1,17 +1,18 @@
 <body>
-  <sui-modal>
-    <div class="ui left icon input">
-      <i class="lock icon"></i>
-      <input type="password" name="passwordConfirm" placeholder="Current Password"
+
+<div>
+  <h2 class="ui align-middle header"> Input Current Password </h2>
+  <div class="ui left icon input">
+    <i class="lock icon"></i>
+    <input type="password" name="passwordConfirm" placeholder="Current Password"
            [(ngModel)]="currPassword">
-    </div>
-    <button class="ui right submit button">Submit
-    </button>
+  </div>
+  <button (click)="checkCurrentPassword()" class="ui right submit button">Submit
+  </button>
+</div>
 
-  </sui-modal>
 
-
-  <div *ngIf="currentUser">
+<div *ngIf="currentUser">
     <div class="ui main text container">
       <div class="column">
         <h2 class="ui align-middle header">
@@ -20,6 +21,7 @@
         </h2>
       </div>
     </div>
+
     <div class="ui main text container">
       <form class="ui large form"
             [formGroup]="passwordForm"
@@ -29,6 +31,7 @@
           <label>Email</label>
           {{currentUser.email}}
         </div>
+
         <!-- Password Input -->
         <div class="required field">
           <div class="ui left icon input">

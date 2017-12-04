@@ -139,9 +139,9 @@ def check_password(request):
         req_data = json.loads(request.body.decode())
         password = req_data['password']
         if user.check_password(password):
-            return JsonResponse('True', safe=False)
+            return JsonResponse(True, safe=False)
         else:
-            return JsonResponse('False', safe=False)
+            return JsonResponse(False, safe=False)
     else:
         return HttpResponseNotAllowed(['POST'])
 

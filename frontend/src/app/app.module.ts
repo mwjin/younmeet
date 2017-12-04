@@ -5,7 +5,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-import { SuiModule, SuiPopupModule } from 'ng2-semantic-ui';
+import {SuiModalModule, SuiModule, SuiPopupModule} from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
@@ -30,6 +30,7 @@ import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {DaumApiService} from './services/daum-api.service';
 import {AgmSnazzyInfoWindowModule} from "@agm/snazzy-info-window";
+import {ModalModule} from "ng2-modal-dialog/dist";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -62,7 +63,7 @@ export function MyCookieStrategy() {
     TimeSelectComponent,
     ProfileComponent,
     PlaceComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports : [
     CommonModule,
@@ -81,6 +82,8 @@ export function MyCookieStrategy() {
     }),
     SuiPopupModule,
     AgmSnazzyInfoWindowModule,
+    ModalModule,
+    SuiModalModule,
   ],
   providers : [
     AccountService,
