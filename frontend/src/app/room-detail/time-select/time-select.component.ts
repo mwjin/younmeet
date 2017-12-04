@@ -74,7 +74,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             eventData = {
               title: '',
               start: start,
-              end: end
+              end: end,
             };
             $('#calendar').fullCalendar('renderEvent', eventData, true);
           },
@@ -112,7 +112,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   public collectFreeTimes(): void {
     // Collect all events and return array of [start_time, end_time] pair
     const freeTimes: Freetime[] = [];
-    const selectedAreas = $('#calendar').fullCalendar('clientEvents');
+    const selectedAreas = $('#calendar').fullCalendar('clientEvents',
+      function(event) { return event.name !== 'googleSchedule' });
     for (let index in selectedAreas) {
       freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
         selectedAreas[ index ][ 'end' ][ '_d' ]));
@@ -167,9 +168,6 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       this.googleScheduleService.getSchedules().then(schedules => {
         this.schedules = schedules;
 
-        console.log(schedules);
-        console.log(schedules.length);
-
         for (const schedule of schedules) {
           const event = {
             name: 'googleSchedule',
@@ -177,6 +175,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             start: schedule.start,
             end: schedule.end,
             color: 'red',
+            overlap: false,
           };
 
           $('#calendar').fullCalendar('renderEvent', event);
