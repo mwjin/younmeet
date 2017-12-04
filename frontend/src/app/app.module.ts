@@ -29,8 +29,8 @@ import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {DaumApiService} from './services/daum-api.service';
-import {AgmSnazzyInfoWindowModule} from "@agm/snazzy-info-window";
-import {ModalModule} from "ng2-modal-dialog/dist";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -45,6 +45,7 @@ const routes: Routes = [
   { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
   { path : 'not_found', component : NotFoundComponent },
   { path : '**', redirectTo : '/not_found'}
+
 ];
 
 export function MyCookieStrategy() {
@@ -64,6 +65,7 @@ export function MyCookieStrategy() {
     ProfileComponent,
     PlaceComponent,
     NotFoundComponent,
+    DialogComponent,
   ],
   imports : [
     CommonModule,
@@ -80,10 +82,7 @@ export function MyCookieStrategy() {
       apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
       libraries: ['places']
     }),
-    SuiPopupModule,
-    AgmSnazzyInfoWindowModule,
-    ModalModule,
-    SuiModalModule,
+    BrowserAnimationsModule
   ],
   providers : [
     AccountService,

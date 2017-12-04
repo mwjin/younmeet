@@ -19,8 +19,10 @@ export class ProfileComponent implements OnInit {
   public passwordConfirm: AbstractControl;
   public currPassword: string;
   public passwordChecked: boolean;
+  public showDialog = false;
 
-  constructor(private accountService: AccountService,
+
+  constructor (private accountService: AccountService,
               private location: Location,
               private formBuilder: FormBuilder,
               private router: Router) {
