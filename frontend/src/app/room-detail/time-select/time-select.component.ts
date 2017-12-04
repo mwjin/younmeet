@@ -167,6 +167,16 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     } else {
       this.googleScheduleService.getSchedules().then(schedules => {
         this.schedules = schedules;
+        const calendar = $('#calendar');
+        calendar.fullCalendar('removeEvents',
+          function(event) {
+            for (const schedule of schedules) {
+              if (!(schedule.start >= event.end || schedule.end <= event.start)) {
+                return true;
+              }
+            }
+            return false;
+          });
 
         for (const schedule of schedules) {
           const event = {
@@ -178,8 +188,9 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             overlap: false,
           };
 
-          $('#calendar').fullCalendar('renderEvent', event);
+          calendar.fullCalendar('renderEvent', event);
         }
+
       });
 
       this.changeGoogleButtonState(true);
