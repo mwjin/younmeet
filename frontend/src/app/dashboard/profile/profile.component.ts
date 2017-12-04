@@ -13,21 +13,24 @@ import { Router } from '@angular/router';
   styleUrls : [ './profile.component.css' ]
 })
 export class ProfileComponent implements OnInit {
-  currentUser: User;
-  passwordForm: FormGroup;
-  private password: AbstractControl;
-  private passwordConfirm: AbstractControl;
+  public currentUser: User;
+  public passwordForm: FormGroup;
+  public password: AbstractControl;
+  public passwordConfirm: AbstractControl;
+  public currPassword: string;
+  public showDialog: boolean;
 
-  constructor(private accountService: AccountService,
+
+  constructor (private accountService: AccountService,
               private location: Location,
               private formBuilder: FormBuilder,
               private router: Router) {
   }
 
   ngOnInit() {
+    this.showDialog = true;
     this.accountService.getUserDetail()
       .then(user => {
-        console.log(user);
         this.currentUser = user;
         this.passwordForm = this.formBuilder.group({
           'password' : [ '', Validators.required ],
@@ -52,6 +55,18 @@ export class ProfileComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  checkCurrentPassword(): void {
+
+    // for null value
+    if (!this.currPassword)
+      return
+    this.accountService.checkPassword(this.currPassword)
+      .then(res => {
+        if (res)
+          this.showDialog = false;
+      });
   }
 
 }

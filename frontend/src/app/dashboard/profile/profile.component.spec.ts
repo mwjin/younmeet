@@ -8,6 +8,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AccountService} from "../../services/account.service";
 import {AccountServiceSpy} from "../../services/account.service.spy";
 import { RouterLinkStubDirective } from '../../../testing/router-stubs';
+import {DialogComponent} from "./dialog/dialog.component";
+import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
 
 @Component({
   template: ``
@@ -27,12 +29,15 @@ describe('ProfileComponent', () => {
         ]),
         FormsModule,
         SuiModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule,
       ],
       declarations: [
         ProfileComponent,
         ProfileComponentMock,
-        RouterLinkStubDirective
+        RouterLinkStubDirective,
+        DialogComponent,
       ],
       providers: [
         { provide: AccountService, useClass: AccountServiceSpy }

@@ -12,18 +12,14 @@ https://groups.google.com/forum/#!topic/django-users/pm6F9RSEGPk
 
 class Room(models.Model):
 
-    hashid = models.CharField(max_length=16, null=True, blank=True)
 
     name = models.CharField(max_length=64)
     place= models.CharField(max_length=64, null=True)
-    latitude = models.FloatField(null=True)
-    longitude = models.FloatField(null=True)
-
-    min_time_required = models.DurationField(null=True, blank=True)
-    created_time = models.DateTimeField(auto_now_add=True)
 
     time_span_start = models.DateTimeField(null=True)
     time_span_end = models.DateTimeField(null=True)
+    min_time_required = models.DurationField(null=True, blank=True)
+    created_time = models.DateTimeField(auto_now_add=True)
 
     min_members = models.IntegerField(default=1)
 
@@ -37,6 +33,10 @@ class Room(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='joined_rooms',
     )
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+
+    hashid = models.CharField(max_length=16, null=True, blank=True)
 
     hashids = Hashids(salt='lasagna is very delicious', min_length=7)
     

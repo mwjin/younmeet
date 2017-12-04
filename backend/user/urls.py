@@ -8,4 +8,5 @@ urlpatterns = [
     url('^user$', views.user_detail, name='user_detail'),
     url('^user/owned-rooms$', views.user_owned_room_list, name='user_owned_room_list'),
     url('^user/joined-rooms$', views.user_joined_room_list, name='user_joined_room_list'),
+    url('^user/check-password$', views.check_password, name='check_password'),
 ]
