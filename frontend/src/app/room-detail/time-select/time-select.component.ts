@@ -107,7 +107,6 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.googleScheduleService.signOutGoogle();
   }
 
   public deleteEvent(): void {
@@ -216,6 +215,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     this.schedules = [];
     $('#calendar').fullCalendar('removeEvents',
       function(event) { return event.name === 'googleSchedule'});
+    this.googleScheduleService.signOutGoogle();
   }
 
 }
