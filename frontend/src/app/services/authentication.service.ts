@@ -80,6 +80,11 @@ export class AuthenticationService {
     }
     return false;
   }
+  /*
+  checkPassword(password: string): Promise<boolean> {
+    const url = `/api/checkPassword`;
+  }
+  */
 
   private handleError(error: any): Promise<any> {
     console.error('Error occured', error);
