@@ -10,7 +10,7 @@
 
   <agm-map [latitude]="place.latitude"
            [longitude]="place.longitude" [scrollwheel]="false" [zoom]="zoom">
-    <div *ngIf="googleSearchResult">
+    <div *ngIf="googleSearchResult&&googleSearchResult.geometry">
     <agm-marker [latitude]="googleSearchResult.geometry.location.lat()"
                 [longitude]="googleSearchResult.geometry.location.lng()">
                 (click)="onSelectSearchedMarker()">
