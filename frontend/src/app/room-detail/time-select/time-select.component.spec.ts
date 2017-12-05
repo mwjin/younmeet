@@ -11,6 +11,8 @@ import { MeetService } from '../../services/meet.service';
 import { MeetServiceSpy } from '../../services/meet.service.spy';
 import { FreetimeServiceSpy } from '../../services/freetime.service.spy';
 import * as $ from 'jquery';
+import {GoogleScheduleService} from "../../services/google-schedule.service";
+import {GoogleApiModule, GoogleApiService, NG_GAPI_CONFIG, NgGapiClientConfig} from "ng-gapi";
 
 const fakeCalendarEvents: Object[] = [
   {
@@ -31,6 +33,14 @@ const fakeCalendarEvents: Object[] = [
   },
 ];
 
+/* For Google Calendar API */
+const gapiClientConfig: NgGapiClientConfig = {
+  client_id: '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com',
+  discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+  scope: [
+    'https://www.googleapis.com/auth/calendar.readonly'
+  ].join(' ')
+};
 
 describe('TimeSelectComponent', () => {
   let component: TimeSelectComponent;
@@ -42,9 +52,16 @@ describe('TimeSelectComponent', () => {
     TestBed.configureTestingModule({
       imports : [ CalendarModule.forRoot(),
         RouterTestingModule,
-        HttpModule ],
+        HttpModule,
+        GoogleApiModule.forRoot({
+          provide: NG_GAPI_CONFIG,
+          useValue: gapiClientConfig,
+        }),
+      ],
       declarations : [ TimeSelectComponent ],
       providers : [ Location,
+        GoogleScheduleService,
+        GoogleApiService,
         { provide : FreetimeService, useClass : FreetimeServiceSpy },
         { provide : MeetService, useClass : MeetServiceSpy },
         { provide : LocationStrategy, useClass : PathLocationStrategy },
