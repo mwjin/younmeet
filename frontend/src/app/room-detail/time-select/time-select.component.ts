@@ -10,8 +10,8 @@ import { FreetimeResponseData } from '../../services/freetime-response-data';
 import { Room } from '../../models/room';
 
 import { Observable } from 'rxjs/Observable';
-import "rxjs/add/observable/fromPromise";
-import "rxjs/add/operator/mergeMap"
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
   selector : 'app-time-select',
@@ -43,13 +43,13 @@ export class TimeSelectComponent implements OnInit {
         this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
         this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
         console.log(this.timeSpan);
-        return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id))
+        return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
       })
       .subscribe(freeTimes => {
         this.previousFreeTimes = freeTimes.map(freetimeDate => FreetimeResponseData.responseToFreetime(freetimeDate));
         console.log(this.previousFreeTimes);
         this.setCalendarOptions();
-      })
+      });
   }
 
   public deleteEvent(): void {
@@ -74,7 +74,7 @@ export class TimeSelectComponent implements OnInit {
     this.freetimeService.postFreeTimes(freeTimes, this.currentRoom.id)
       .then(isSuccessToPost => {
         if (isSuccessToPost) {
-          this.router.navigate(['room', this.currentRoom.hashid]);
+          this.router.navigate([ 'room', this.currentRoom.hashid ]);
         }
       });
   }
@@ -99,6 +99,7 @@ export class TimeSelectComponent implements OnInit {
       selectable : true,
       selectHelper : true,
       selectOverlap : false,
+      longPressDelay : 10,
       select : function (start, end) {
         document.getElementById('deleteButton').style.display = 'none';
         let eventData;
