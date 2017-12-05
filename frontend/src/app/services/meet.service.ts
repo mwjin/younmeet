@@ -34,7 +34,7 @@ let TEST_AVAILABLE_TIME = [
 export class MeetService {
   timespan: Timespan;
   currentRoom: Room | null = null;
-  constructor(private http: Http, private route: ActivatedRoute) {
+  constructor(private http: Http) {
   }
 
   getRoomsCreatedByMe(): Promise<Room[]> {

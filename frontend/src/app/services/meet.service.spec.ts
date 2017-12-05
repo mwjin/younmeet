@@ -7,8 +7,9 @@ import { Room } from '../models/room';
 import { Timespan } from '../models/timespan';
 import { User } from '../models/user';
 import { RoomResponse } from './room-rest-interfaces';
-import { FormsModule } from '@angular/forms';
 import { CreateRoomForm } from '../create-room/create-room-form';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute } from '@angular/router';
 
 let TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
@@ -106,6 +107,45 @@ describe('MeetService', () => {
         expect(res.hashid).toBe('asdf');
       });
     }))
+  });
+
+  describe('setCurrentRoom', () => {
+    it('sets the current room', async(() => {
+      let room: Room = <Room> {name: 'Room'};
+      meetService.setCurrentRoom(room);
+      expect(meetService.currentRoom.name).toBe('Room');
+    }));
+  });
+
+  describe('getCurrentRoom', () => {
+    let route = <ActivatedRoute> { params: Observable.of({hash: 'testhash'}) };
+    let newRoom = <Room> {name: 'New Room', hashid: 'new'};
+
+    beforeEach(() => {
+      meetService.getRoomByHash = jasmine.createSpy('getRoomByHash')
+        .and.returnValue(Observable.of(newRoom));
+    });
+
+    describe('When room info is cached', () => {
+      it('gets the current room from the cached room info', async(() => {
+        meetService.currentRoom = <Room> {name: 'Cached Room', hashid: 'cached'};
+        meetService.getCurrentRoom(route).subscribe(room => {
+          expect(room.name).toBe('Cached Room');
+          expect(room.hashid).toBe('cached');
+          expect(meetService.getRoomByHash).not.toHaveBeenCalled();
+        });
+      }));
+    });
+    describe('When room info is not cached', () => {
+      it('gets the current room from getRoomByHash()', () => {
+        meetService.currentRoom = null;
+        meetService.getCurrentRoom(route).subscribe(room => {
+          expect(room.name).toBe('New Room');
+          expect(room.hashid).toBe('new');
+          expect(meetService.getRoomByHash).toHaveBeenCalledWith('testhash', true);
+        })
+      })
+    })
   });
 
   describe('getUsersInRoom', () => {
