@@ -10,6 +10,10 @@ import {AccountService} from "../../services/account.service";
 import {DaumApiService} from "../../services/daum-api.service";
 import {Place} from "../../models/place";
 import {SuiTabset} from "ng2-semantic-ui/dist";
+import { Observable } from 'rxjs/Observable';
+
+import "rxjs/add/observable/fromPromise";
+import { Room } from '../../models/room';
 
 const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
 
@@ -26,8 +30,7 @@ export class PlaceComponent implements OnInit {
   public place: Place;
   public searchControl: FormControl;
   public zoom: number;
-  public roomId: number;
-  public roomHash: string;
+  public currentRoom: Room;
   public googleSearchResult: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
   public isPlaceSelected: boolean;
@@ -40,7 +43,10 @@ export class PlaceComponent implements OnInit {
     fontSize: '14px',
     fontWeight: 'bold',
     text: 'Some Text',
-  }
+  };
+  googleMapOptions = {
+    componentRestrictions: {country: 'kr'}
+  };
 
   @ViewChild('search')
   public searchElementRef: ElementRef;
@@ -59,18 +65,24 @@ export class PlaceComponent implements OnInit {
     this.cafe_list = [];
     this.cultural_faculty_list = [];
     this.place = new Place();
-    this.route.params
-      .flatMap(params => {
-        this.roomHash = params['hash'];
-        return this.meetService.getRoomByHash(this.roomHash);
-      })
-      .subscribe(room => {
-        this.roomId = room.id;
-        accountService.getUserDetail().then(
+
+    // set google maps defaults
+    this.zoom = 15;
+
+    // create search FormControl
+    this.searchControl = new FormControl();
+  }
+
+  ngOnInit() {
+    this.meetService.getCurrentRoom(this.route)
+      .flatMap(room => {
+        console.log('asdf');
+        this.currentRoom = room;
+        this.accountService.getUserDetail().then(
           currUser => {
             if (currUser.id !== room.owner.id) {
               alert("Not allowed!\nNot owner of this room!");
-              location.back();
+              this.location.back();
             }
           }
         );
@@ -85,54 +97,42 @@ export class PlaceComponent implements OnInit {
           this.firstTimePlaceSetting = false;
          }
         this.isPlaceSelected = false;
-      });
-
-  }
-
-  ngOnInit() {
-    // set google maps defaults
-    this.zoom = 15;
-    const options = {
-      componentRestrictions: {country: 'kr'}
-    };
-
-    // create search FormControl
-    this.searchControl = new FormControl();
-
+        return Observable.fromPromise(this.mapsAPILoader.load());
+      })
     // load Places Autocomplete
-    this.mapsAPILoader.load().then(() => {
-          const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options);
-          autocomplete.addListener("place_changed", () => {
-            this.ngZone.run(() => {
-              // get the place result
-              this.googleSearchResult = autocomplete.getPlace();
-              // verify result
-              if (this.googleSearchResult.geometry === undefined || this.googleSearchResult.geometry === null) {
-                return;
-              }
-              this.isPlaceSelected = true;
-              this.place.name = this.googleSearchResult.name;
-              this.place.latitude = this.googleSearchResult.geometry.location.lat();
-              this.place.longitude = this.googleSearchResult.geometry.location.lng();
+      .subscribe(() => {
+        const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, this.googleMapOptions);
+        autocomplete.addListener("place_changed", () => {
+          this.ngZone.run(() => {
+            // get the place result
+            this.googleSearchResult = autocomplete.getPlace();
+            // verify result
+            if (this.googleSearchResult.geometry === undefined || this.googleSearchResult.geometry === null) {
+              return;
+            }
+            this.isPlaceSelected = true;
+            this.place.name = this.googleSearchResult.name;
+            this.place.latitude = this.googleSearchResult.geometry.location.lat();
+            this.place.longitude = this.googleSearchResult.geometry.location.lng();
 
-              const lat = this.googleSearchResult.geometry.location.lat();
-              const lng = this.googleSearchResult.geometry.location.lng();
-              this.daumService.getNearRestaurants(lat, lng)
-                .then(restaurant_list => {
-                  this.restaurant_list = restaurant_list.filter(p => p.name !== this.googleSearchResult.name);
-                });
-              this.daumService.getNearCafes(lat, lng)
-                .then(cafe_list => {
-                  this.cafe_list = cafe_list.filter(p => p.name !== this.googleSearchResult.name);
-                });
-              this.daumService.getNearCulturalFaculties(lat, lng)
-                .then(cultural_faculty_list => {
-                  this.cultural_faculty_list = cultural_faculty_list.filter(p => p.name !== this.googleSearchResult.name);
-                });
-              this.cdRef.detectChanges();
-            });
+            const lat = this.googleSearchResult.geometry.location.lat();
+            const lng = this.googleSearchResult.geometry.location.lng();
+            this.daumService.getNearRestaurants(lat, lng)
+              .then(restaurant_list => {
+                this.restaurant_list = restaurant_list.filter(p => p.name !== this.googleSearchResult.name);
+              });
+            this.daumService.getNearCafes(lat, lng)
+              .then(cafe_list => {
+                this.cafe_list = cafe_list.filter(p => p.name !== this.googleSearchResult.name);
+              });
+            this.daumService.getNearCulturalFaculties(lat, lng)
+              .then(cultural_faculty_list => {
+                this.cultural_faculty_list = cultural_faculty_list.filter(p => p.name !== this.googleSearchResult.name);
+              });
+            this.cdRef.detectChanges();
           });
         });
+      });
   }
 
   // TODO: When clicking back on the searched place, the marker should be one
@@ -162,13 +162,15 @@ export class PlaceComponent implements OnInit {
 
   private onSubmit(): void {
     this.zoom = 17;
-    this.meetService.putPlace(this.roomId, this.place.name, this.place.latitude, this.place.longitude).then(
+    this.meetService.putPlace(this.currentRoom.id, this.place.name, this.place.latitude, this.place.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
+          console.log(this.firstTimePlaceSetting);
+          console.log(this.currentRoom.hashid);
           if (this.firstTimePlaceSetting)
-            this.router.navigate(['room', this.roomHash, 'time']);
+            this.router.navigate(['room', this.currentRoom.hashid, 'time']);
           else
-            this.router.navigate(['room', this.roomHash]);
+            this.router.navigate(['room', this.currentRoom.hashid]);
         }
       }
     );
@@ -177,5 +179,5 @@ export class PlaceComponent implements OnInit {
   private goBack(): void {
     this.location.back();
   }
-  
+
 }

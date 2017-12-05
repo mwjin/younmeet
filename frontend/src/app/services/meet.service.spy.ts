@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Room } from '../models/room';
 import { Timespan } from '../models/timespan';
 import { User } from '../models/user';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+
+import "rxjs/add/observable/of"
 
 let ROOMS_CREATED: Room[] = [
   <Room>{
@@ -132,6 +136,12 @@ export class MeetServiceSpy {
 
   getRoomByHash = jasmine.createSpy('getRoomByHash').and.callFake((hash: string) => {
     return Promise.resolve(ROOMS_CREATED[ 0 ]);
+  });
+
+  setCurrentRoom = jasmine.createSpy('setCurrentRoom');
+
+  getCurrentRoom = jasmine.createSpy('getCurrentRoom').and.callFake((route: ActivatedRoute) => {
+    return Observable.of(ROOMS_CREATED[0]);
   });
 
   getUsersInRoom = jasmine.createSpy('getUsersInRoom').and.callFake(
