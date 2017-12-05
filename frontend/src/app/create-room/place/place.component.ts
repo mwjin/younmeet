@@ -13,6 +13,7 @@ import {SuiTabset} from "ng2-semantic-ui/dist";
 import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/fromPromise";
+import { Room } from '../../models/room';
 
 const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
 
@@ -29,8 +30,7 @@ export class PlaceComponent implements OnInit {
   public place: Place;
   public searchControl: FormControl;
   public zoom: number;
-  public roomId: number;
-  public roomHash: string;
+  public currentRoom: Room;
   public googleSearchResult: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
   public isPlaceSelected: boolean;
@@ -77,7 +77,7 @@ export class PlaceComponent implements OnInit {
     this.meetService.getCurrentRoom(this.route)
       .flatMap(room => {
         console.log('asdf');
-        this.roomId = room.id;
+        this.currentRoom = room;
         this.accountService.getUserDetail().then(
           currUser => {
             if (currUser.id !== room.owner.id) {
@@ -162,13 +162,15 @@ export class PlaceComponent implements OnInit {
 
   private onSubmit(): void {
     this.zoom = 17;
-    this.meetService.putPlace(this.roomId, this.place.name, this.place.latitude, this.place.longitude).then(
+    this.meetService.putPlace(this.currentRoom.id, this.place.name, this.place.latitude, this.place.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
+          console.log(this.firstTimePlaceSetting);
+          console.log(this.currentRoom.hashid);
           if (this.firstTimePlaceSetting)
-            this.router.navigate(['room', this.roomHash, 'time']);
+            this.router.navigate(['room', this.currentRoom.hashid, 'time']);
           else
-            this.router.navigate(['room', this.roomHash]);
+            this.router.navigate(['room', this.currentRoom.hashid]);
         }
       }
     );
