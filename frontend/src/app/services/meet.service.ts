@@ -6,6 +6,8 @@ import { Headers, Http, RequestOptionsArgs, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/observable/of';
 
 import { roomFormToCreateResponse, roomFromResponse, RoomResponse, roomToResponse } from './room-rest-interfaces';
 import { UserInfo } from '../models/user-info';
@@ -13,6 +15,8 @@ import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
 import { BesttimeResponseData } from './besttime-response-data';
 import {getCSRFHeaders} from "../../util/headers";
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 
 const headers = new Headers({'csrftoken': 'X-CSRFToken'});
@@ -28,13 +32,10 @@ let TEST_AVAILABLE_TIME = [
 
 @Injectable()
 export class MeetService {
-  private headers = new Headers({ 'Content-Type' : 'application/json' });
-  public timespan: Timespan;
-  public currentRoomId: number;
-  public currentRoomHash: string;
-  constructor(private http: Http) {
+  timespan: Timespan;
+  currentRoom: Room | null = null;
+  constructor(private http: Http, private route: ActivatedRoute) {
   }
-
 
   getRoomsCreatedByMe(): Promise<Room[]> {
     return this.http.get(`api/user/owned-rooms`)
@@ -59,41 +60,45 @@ export class MeetService {
   handleRoomResponse(room: Promise<Response>): Promise<Room> {
     return room
       .then(res => res.json() as RoomResponse)
-      .then(roomData => {
-        let room = roomFromResponse(roomData);
-        this.timespan = new Timespan(new Date(room.timespan.start), new Date(room.timespan.end));
-        this.currentRoomId = room.id;
-        this.currentRoomHash = room.hashid;
-        return room;
-      })
-      .then(roomData => {
-        return roomData;
-      })
+      .then(roomData => roomFromResponse(roomData))
       .catch(handleError);
-
   }
-  getRoomById(id: number): Promise<Room> {
+
+  getRoomById(id: number, setToCurrent: boolean = false): Promise<Room> {
     return this.handleRoomResponse(
       this.http.get(`api/rooms/${id}`).toPromise()
-    );
+    ).then(room => {
+      if (setToCurrent) this.setCurrentRoom(room);
+      return room;
+    });
   }
 
-  getRoomByHash(hash: string): Promise<Room> {
+  getRoomByHash(hash: string, setToCurrent: boolean = false): Promise<Room> {
     return this.handleRoomResponse((
       this.http.get(`api/rooms/hash/${hash}`).toPromise()
-    ));
+    ))
+      .then(room => {
+      if (setToCurrent) this.setCurrentRoom(room);
+      return room;
+    });
   }
 
-  getTimeSpan(): Timespan {
-    return this.timespan;
+  setCurrentRoom(room: Room) {
+    this.currentRoom = room;
   }
 
-  getCurrentRoomId(): number {
-    return this.currentRoomId;
-  }
-
-  getCurrentRoomHash(): string {
-    return this.currentRoomHash;
+  getCurrentRoom(route: ActivatedRoute): Observable<Room> {
+    if (this.currentRoom === null) {
+      return route.params
+        .map(params => {
+          console.log(params);
+          return params['hash'];
+        })
+        .flatMap(hash => this.getRoomByHash(hash, true));
+    }
+    else {
+      return Observable.of(this.currentRoom);
+    }
   }
 
   getUsersInRoom(id: number): Promise<UserInfo[]> {
