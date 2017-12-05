@@ -61,14 +61,20 @@ export class GoogleScheduleService implements OnDestroy {
    * appropriate message is printed.
    */
   private listUpcomingEvents(): void {
-    gapi.client.calendar.events.list({
-      'calendarId': 'primary',
-      'timeMin': (new Date()).toISOString(),
-      'showDeleted': false,
-      'singleEvents': true,
-      'orderBy': 'startTime'
-    }).then( response => {
-
+    gapi.client.request({
+        'path': '/calendar/v3/calendars/calendarId/events',
+        'method': 'GET',
+        'params':
+          {
+            'calendarId': 'primary',
+            'timeMin': (new Date()).toISOString(),
+            'showDeleted': false,
+            'singleEvents': true,
+            'maxResults': 10,
+            'orderBy': 'startTime'
+          },
+      }
+    ).then( response => {
       const events = response.result.items;
       console.log('Upcoming events:');
 
