@@ -3,6 +3,8 @@ import { GoogleApiService } from 'ng-gapi';
 import { Subscription } from 'rxjs/Subscription';
 import { Schedule } from '../models/schedule';
 
+/// <reference path="gapi-calendar.ts" />
+
 @Injectable()
 export class GoogleScheduleService implements OnDestroy {
   CLIENT_ID = '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com';
@@ -86,7 +88,7 @@ export class GoogleScheduleService implements OnDestroy {
           const schedule = new Schedule(event.summary, new Date(start), new Date(end));
           this.schedules.push(schedule);
         }
-        console.log(this.schedules.length)
+        console.log(this.schedules.length);
       } else {
         console.log('No upcoming events found.');
       }
