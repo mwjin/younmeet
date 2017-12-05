@@ -1,4 +1,18 @@
 <h2 class="ui header">Select Available Time
+  <button id="authorize-button"
+          class="ui secondary google plus button right floated"
+          (click)="handleSyncClick()"
+          style="display: none; width: 180px">
+    <i class="google plus icon"></i>
+    Sync with Google
+  </button>
+  <button id="signout-button"
+          class="ui secondary google plus button right floated"
+          (click)="handleCancelClick()"
+          style="display: none; width: 180px">
+    <i class="google plus icon"></i>
+    Cancel the Sync
+  </button>
   <button (click)="collectFreeTimes()" class="ui secondary button right floated">Submit</button>
   <button (click)="deleteAllEvent()" class="ui secondary button right floated">Clear</button>
   <button (click)="deleteEvent()" class="ui red button right floated"
