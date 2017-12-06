@@ -71,7 +71,6 @@ describe('AccountService', () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.getUserDetail()
         .then(user => {
-          console.log(`first user = ${user}`);
           expect(user).toEqual(fakeUsers[ 0 ]);
         });
     })));

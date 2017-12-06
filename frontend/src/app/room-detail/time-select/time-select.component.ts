@@ -48,16 +48,13 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     // Option Set for calendar display
     this.meetService.getCurrentRoom(this.route)
       .flatMap(room => {
-        console.log(room);
         this.currentRoom = room;
         this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
         this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
-        console.log(this.timeSpan);
         return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
       })
       .subscribe(freeTimes => {
         this.previousFreeTimes = freeTimes.map(freetimeDate => FreetimeResponseData.responseToFreetime(freetimeDate));
-        console.log(this.previousFreeTimes);
         this.setCalendarOptions();
       });
 
@@ -86,7 +83,6 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
         selectedAreas[ index ][ 'end' ][ '_d' ]));
     }
-    console.log(JSON.stringify(freeTimes));
 
     this.freetimeService.postFreeTimes(freeTimes, this.currentRoom.id)
       .then(isSuccessToPost => {

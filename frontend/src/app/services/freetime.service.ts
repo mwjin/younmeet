@@ -17,10 +17,7 @@ export class FreetimeService {
   getFreeTimes(id: number): Promise<FreetimeResponseData[]> {
     return this.http.get(`api/rooms/${id}/free-times`)
       .toPromise()
-      .then(response => {
-        console.log(response.json());
-        return response.json() as FreetimeResponseData[];
-      })
+      .then(response => response.json() as FreetimeResponseData[])
       .catch(handleError);
   }
 
