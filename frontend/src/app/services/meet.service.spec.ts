@@ -172,7 +172,6 @@ describe('MeetService', () => {
       expectUrl(mockBackend, 'api/rooms', mockResponse);
       let roomForm = new CreateRoomForm('Room to submit', 30, 1, new Timespan(), false);
       meetService.addRoom(roomForm).then(res => {
-        console.log(res);
         expect(res.name).toBe('Room to submit');
         expect(res.id).toBe(42);
       });

@@ -76,7 +76,6 @@ export class PlaceComponent implements OnInit {
   ngOnInit() {
     this.meetService.getCurrentRoom(this.route)
       .flatMap(room => {
-        console.log('asdf');
         this.currentRoom = room;
         this.accountService.getUserDetail().then(
           currUser => {
@@ -165,8 +164,6 @@ export class PlaceComponent implements OnInit {
     this.meetService.putPlace(this.currentRoom.id, this.place.name, this.place.latitude, this.place.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
-          console.log(this.firstTimePlaceSetting);
-          console.log(this.currentRoom.hashid);
           if (this.firstTimePlaceSetting)
             this.router.navigate(['room', this.currentRoom.hashid, 'time']);
           else
