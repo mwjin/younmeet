@@ -92,7 +92,6 @@ export class GoogleScheduleService implements OnDestroy {
           const schedule = new Schedule(event.summary, new Date(start), new Date(end));
           this.schedules.push(schedule);
         }
-        console.log(this.schedules.length);
       } else {
         console.log('No upcoming events found.');
       }
