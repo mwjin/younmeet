@@ -25,8 +25,6 @@ export class RoomListFilterPipe implements PipeTransform {
         return items.filter(it =>
           it.place.toLowerCase().includes(searchText)
         );
-      default:
-        console.log(searchOption);
     }
   }
 }

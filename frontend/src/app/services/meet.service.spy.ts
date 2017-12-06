@@ -130,7 +130,6 @@ export class MeetServiceSpy {
     let room = ROOMS_CREATED
       .concat(ROOMS_JOINED)
       .filter(room => room.id === id)[ 0 ];
-    console.log(room);
     return Promise.resolve(room);
   });
 
