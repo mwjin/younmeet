@@ -93,7 +93,6 @@ describe('FreetimeService', () => {
       mockBackend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       freetimeService.getFreeTimes(1)
         .then(responseData => {
-          console.log(responseData);
           expect(responseData.length).toBe(4);
         });
     })));
@@ -103,7 +102,6 @@ describe('FreetimeService', () => {
       mockBackend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       freetimeService.getFreeTimes(4)
         .then(freeTimeResponseData => {
-          console.log(freeTimeResponseData);
           expect(freeTimeResponseData).toBeNull();
         });
     })));

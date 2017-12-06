@@ -83,8 +83,6 @@ describe('AuthenticationService', () => {
 
       service.logIn('user1', 'iluvswpp')
         .then(result => {
-          console.log(localStorage.getItem('currentUser'));
-          console.log(result);
           expect(result).toBe(true);
           expect(localStorage.getItem('currentUser')).not.toBeNull();
         });
@@ -93,7 +91,6 @@ describe('AuthenticationService', () => {
     it('could sign in with email', async(inject([], () => {
       service.logIn('swpp2017@gmail.com', 'iluvswpp')
         .then(result => {
-          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(true);
           expect(localStorage.getItem('currentUser')).not.toBeNull();
         });
@@ -122,7 +119,6 @@ describe('AuthenticationService', () => {
 
       service.logIn('nouser', 'iluvswpp')
         .then(result => {
-          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(false);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
@@ -132,7 +128,6 @@ describe('AuthenticationService', () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.logIn('nono@gmail.com', 'iluvswpp')
         .then(result => {
-          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(false);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
@@ -154,22 +149,18 @@ describe('AuthenticationService', () => {
     it('could log out when current user exists', async(inject([], () => {
       response = new Response(new ResponseOptions({ status : 200 }));
       localStorage.setItem('currentUser', JSON.stringify(fakeUsers[ 0 ]));
-      console.log(localStorage.getItem('currentUser'));
       expect(localStorage.getItem('currentUser')).not.toBeNull();
       service.logOut()
         .then((result) => {
-          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(true);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));
     it('could not log out when current user does not exist', async(inject([], () => {
       response = new Response(new ResponseOptions({ status : 403 }));
-      console.log(localStorage.getItem('currentUser'));
       expect(localStorage.getItem('currentUser')).toBeNull();
       service.logOut()
         .then((result) => {
-          console.log(localStorage.getItem('currentUser'));
           expect(result).toBe(false);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
