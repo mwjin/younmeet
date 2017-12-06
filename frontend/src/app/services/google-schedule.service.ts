@@ -68,7 +68,7 @@ export class GoogleScheduleService implements OnDestroy {
             'timeMin': (new Date()).toISOString(),
             'showDeleted': false,
             'singleEvents': true,
-            'maxResults': 10,
+            'maxResults': 50,
             'orderBy': 'startTime'
           },
       }

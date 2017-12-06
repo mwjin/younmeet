@@ -189,7 +189,11 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       setTimeout(() => { this.getSchedules();}, 500);
     } else {
       this.googleScheduleService.getSchedules().then(schedules => {
-        this.schedules = schedules;
+        this.schedules = schedules.filter((schedule) => {
+          schedule.start >= this.timeSpan.start;
+          schedule.end <= this.timeSpan.end;
+        });
+
         const calendar = $('#calendar');
 
         for (const schedule of schedules) {
