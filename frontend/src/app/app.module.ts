@@ -28,6 +28,8 @@ import { IsLoggedIn } from './is-logged-in/is-logged-in';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
+import { GoogleScheduleService } from './services/google-schedule.service';
 import {DaumApiService} from './services/daum-api.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
@@ -47,6 +49,15 @@ const routes: Routes = [
   { path : '**', redirectTo : '/not_found'}
 
 ];
+
+/* For Google Calendar API */
+const gapiClientConfig: NgGapiClientConfig = {
+  client_id: '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com',
+  discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+  scope: [
+    'https://www.googleapis.com/auth/calendar.readonly'
+  ].join(' ')
+};
 
 export function MyCookieStrategy() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -82,13 +93,18 @@ export function MyCookieStrategy() {
       apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
       libraries: ['places']
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig,
+    }),
   ],
   providers : [
     AccountService,
     MeetService,
     AuthenticationService,
     FreetimeService,
+    GoogleScheduleService,
     DaumApiService,
     AuthGuard,
     IsLoggedIn,
