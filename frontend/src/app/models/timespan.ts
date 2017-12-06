@@ -2,7 +2,10 @@ import * as moment from 'moment';
 
 export class Timespan {
   constructor(public start: Date = new Date(),
-              public end: Date = new Date()) {}
+              public end: Date = new Date()) {
+    this.start = new Date(start);
+    this.end = new Date(end);
+  }
 
   getDate(): [string, string] {
     let startDateStr = moment(this.start).format("MMMM Do (dddd)");

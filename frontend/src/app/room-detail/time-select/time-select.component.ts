@@ -5,10 +5,15 @@ import { Freetime } from '../../models/freetime';
 import { FreetimeService } from '../../services/freetime.service';
 import { MeetService } from '../../services/meet.service';
 import { Timespan } from '../../models/timespan';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FreetimeResponseData } from '../../services/freetime-response-data';
 import { Schedule } from '../../models/schedule';
 import { GoogleScheduleService } from '../../services/google-schedule.service';
+import { Room } from '../../models/room';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
   selector : 'app-time-select',
@@ -25,7 +30,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   private syncButton: HTMLElement;
   private cancelButton: HTMLElement;
 
+  currentRoom: Room;
+
   constructor(private location: Location,
+              private route: ActivatedRoute,
               private router: Router,
               private freetimeService: FreetimeService,
               private meetService: MeetService,
@@ -37,70 +45,20 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     this.syncButton = document.getElementById('authorize-button');
     this.cancelButton = document.getElementById('signout-button');
 
-    this.timeSpan = this.meetService.getTimeSpan();
-    console.log('timespan = ' + this.timeSpan.start + ' to ' + this.timeSpan.end);
-    if (!this.timeSpan) {
-      this.router.navigate(['dashboard']);
-    }
-    this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
-
     // Option Set for calendar display
-    this.freetimeService.getFreeTimes(this.meetService.getCurrentRoomId())
-      .then(freeTimes => {
+    this.meetService.getCurrentRoom(this.route)
+      .flatMap(room => {
+        console.log(room);
+        this.currentRoom = room;
+        this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
+        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
+        console.log(this.timeSpan);
+        return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
+      })
+      .subscribe(freeTimes => {
         this.previousFreeTimes = freeTimes.map(freetimeDate => FreetimeResponseData.responseToFreetime(freetimeDate));
         console.log(this.previousFreeTimes);
-        this.calendarOptions = {
-          locale: 'ko',
-          slotDuration: '00:10:00', // set slot duration
-          scrollTime: '09:00:00', // start scroll from 9AM
-          height: 650,
-          // Do not Modify Below This Comment
-          eventOverlap: function (stillEvent, movingEvent) {
-            return stillEvent.name === 'googleSchedule';
-          },
-          eventRender: function(event, element) {
-            if (event.name === 'googleSchedule') {
-              element.append('from Google Calendar');
-            }
-          },
-          visibleRange: {
-            'start': this.timeSpan.start.toJSON().split('T')[0]
-            , 'end': this.timeSpan.end.toJSON().split('T')[0]
-          },
-          events: this.previousFreeTimes,
-          timezone: 'local',
-          defaultView: 'agenda',
-          allDaySlot: false,
-          editable: true,
-          selectable: true,
-          selectHelper: true,
-          selectOverlap: function (stillEvent, movingEvent) {
-            return stillEvent.name === 'googleSchedule';
-          },
-          select: function (start, end) {
-            document.getElementById('deleteButton').style.display = 'none';
-            let eventData;
-            eventData = {
-              title: '',
-              start: start,
-              end: end,
-              overlap: false,
-            };
-            $('#calendar').fullCalendar('renderEvent', eventData, true);
-          },
-          unselectAuto: true,
-          eventClick: function (calEvent, jsEvent, view) {
-            let selected = $('#calendar').fullCalendar('clientEvents', calEvent._id);
-            let startTime = selected[0]['start']['_d']
-              .toString().split(' ')[4].slice(0, 5);
-            let endTime = selected[0]['end']['_d']
-              .toString().split(' ')[4].slice(0, 5);
-            document.getElementById('deleteButton').style.display = 'block';
-            document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
-
-            localStorage.setItem('deleteButtonId', calEvent._id);
-          },
-        };
+        this.setCalendarOptions();
       });
 
     this.googleButtonInitializer();
@@ -130,11 +88,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     }
     console.log(JSON.stringify(freeTimes));
 
-    this.freetimeService.postFreeTimes(freeTimes, this.meetService.getCurrentRoomId())
+    this.freetimeService.postFreeTimes(freeTimes, this.currentRoom.id)
       .then(isSuccessToPost => {
         if (isSuccessToPost) {
-          const roomHash = this.meetService.getCurrentRoomHash();
-          this.router.navigate(['room', roomHash]);
+          this.router.navigate([ 'room', this.currentRoom.hashid ]);
         }
       });
   }
@@ -178,17 +135,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       this.googleScheduleService.getSchedules().then(schedules => {
         this.schedules = schedules;
         const calendar = $('#calendar');
-        /*
-        calendar.fullCalendar('removeEvents',
-          function(event) {
-            for (const schedule of schedules) {
-              if (!(schedule.start >= event.end || schedule.end <= event.start)) {
-                return true;
-              }
-            }
-            return false;
-          });
-        */
+
         for (const schedule of schedules) {
           const event = {
             name: 'googleSchedule',
@@ -216,9 +163,63 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     this.schedules = [];
     $('#calendar').fullCalendar('removeEvents',
       function(event) { return event.name === 'googleSchedule'});
-    this.googleScheduleService.signOutGoogle();
   }
 
+  private setCalendarOptions() {
+    this.calendarOptions = {
+      locale : 'ko',
+      slotDuration : '00:10:00', // set slot duration
+      scrollTime : '09:00:00', // start scroll from 9AM
+      height : 650,
+      // Do not Modify Below This Comment
+      eventOverlap: function (stillEvent, movingEvent) {
+        return stillEvent.name === 'googleSchedule';
+      },
+      eventRender: function(event, element) {
+        if (event.name === 'googleSchedule') {
+          element.append('from Google Calendar');
+        }
+      },
+      visibleRange : {
+        'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
+        , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
+      },
+      events : this.previousFreeTimes,
+      timezone : 'local',
+      defaultView : 'agenda',
+      allDaySlot : false,
+      editable : true,
+      selectable : true,
+      selectHelper : true,
+      selectOverlap: function (stillEvent, movingEvent) {
+        return stillEvent.name === 'googleSchedule';
+      },
+      longPressDelay : 10,
+      select : function (start, end) {
+        document.getElementById('deleteButton').style.display = 'none';
+        let eventData;
+        eventData = {
+          title : '',
+          start : start,
+          end : end,
+          overlap: false,
+        };
+        $('#calendar').fullCalendar('renderEvent', eventData, true);
+      },
+      unselectAuto : true,
+      eventClick : function (calEvent, jsEvent, view) {
+        let selected = $('#calendar').fullCalendar('clientEvents', calEvent._id);
+        let startTime = selected[ 0 ][ 'start' ][ '_d' ]
+          .toString().split(' ')[ 4 ].slice(0, 5);
+        let endTime = selected[ 0 ][ 'end' ][ '_d' ]
+          .toString().split(' ')[ 4 ].slice(0, 5);
+        document.getElementById('deleteButton').style.display = 'block';
+        document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
+
+        localStorage.setItem('deleteButtonId', calEvent._id);
+      },
+    };
+  }
 }
 
 
