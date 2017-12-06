@@ -11,8 +11,9 @@ import { MeetService } from '../../services/meet.service';
 import { MeetServiceSpy } from '../../services/meet.service.spy';
 import { FreetimeServiceSpy } from '../../services/freetime.service.spy';
 import * as $ from 'jquery';
-import {GoogleScheduleService} from "../../services/google-schedule.service";
-import {GoogleApiModule, GoogleApiService, NG_GAPI_CONFIG, NgGapiClientConfig} from "ng-gapi";
+import { GoogleScheduleService} from '../../services/google-schedule.service';
+import { GoogleApiModule, GoogleApiService, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
+import { GoogleScheduleServiceSpy } from '../../services/google-schedule.service.spy';
 
 const fakeCalendarEvents: Object[] = [
   {
@@ -60,8 +61,8 @@ describe('TimeSelectComponent', () => {
       ],
       declarations : [ TimeSelectComponent ],
       providers : [ Location,
-        GoogleScheduleService,
         GoogleApiService,
+        { provide : GoogleScheduleService, useClass : GoogleScheduleServiceSpy },
         { provide : FreetimeService, useClass : FreetimeServiceSpy },
         { provide : MeetService, useClass : MeetServiceSpy },
         { provide : LocationStrategy, useClass : PathLocationStrategy },

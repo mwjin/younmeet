@@ -22,7 +22,7 @@ describe('ScheduleService', () => {
         }),
       ],
       providers: [GoogleScheduleService, GoogleApiService]
-    });
+    }).compileComponents();
   });
 
   it('should be created', inject([GoogleScheduleService], (service: GoogleScheduleService) => {

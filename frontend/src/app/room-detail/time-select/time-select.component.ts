@@ -107,6 +107,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.googleScheduleService.signOutGoogle();
   }
 
   public deleteEvent(): void {
