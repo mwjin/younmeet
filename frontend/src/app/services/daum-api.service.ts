@@ -41,6 +41,12 @@ export class DaumApiService {
     return this.getPlaces(url);
   }
 
+  getQueryPlaces(query: string): Promise<Place[]> {
+    const size = 5;
+    const url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${query}&size=${size}&sort=accuracy`;
+    return this.getPlaces(url);
+  }
+
 
   getPlaces(url: string): Promise<Place[]> {
     return this.http.get(url, {headers: this.headers})

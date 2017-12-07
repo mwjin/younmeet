@@ -11,6 +11,9 @@ import { BesttimeResponseData } from '../services/besttime-response-data';
 import { AccountService } from '../services/account.service';
 import { Besttime } from '../models/besttime';
 
+
+declare var daum: any;
+
 @Component({
   selector : 'app-room-detail',
   templateUrl : './room-detail.component.html',

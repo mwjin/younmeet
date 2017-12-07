@@ -33,6 +33,8 @@ import { GoogleScheduleService } from './services/google-schedule.service';
 import {DaumApiService} from './services/daum-api.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
+import {Ng2AutoCompleteModule} from "ng2-auto-complete";
+import {NguiAutoCompleteModule} from "@ngui/auto-complete";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -81,7 +83,6 @@ export function MyCookieStrategy() {
   imports : [
     CommonModule,
     BrowserModule,
-
     RouterModule.forRoot(routes),
     FormsModule,
     HttpModule,
@@ -98,6 +99,8 @@ export function MyCookieStrategy() {
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig,
     }),
+    Ng2AutoCompleteModule,
+    NguiAutoCompleteModule,
   ],
   providers : [
     AccountService,

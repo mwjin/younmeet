@@ -7,7 +7,6 @@
            #search [formControl]="searchControl">
   </form>
   <br/>
-
   <agm-map [latitude]="place.latitude"
            [longitude]="place.longitude" [scrollwheel]="false" [zoom]="zoom">
     <div *ngIf="googleSearchResult&&googleSearchResult.geometry">
@@ -33,6 +32,12 @@
 </div>
 
 <button (click)="goBack()" class="ui secondary button right floated">Back</button>
+
+<input  ngui-auto-complete
+        [(ngModel)]="selected"
+        [source]="observableSource.bind(this)"
+        list-formatter="formatted_address" />
+<br/>selected model: {{selected | json}}<br/><br/>
 
 <br/>
 <br/>

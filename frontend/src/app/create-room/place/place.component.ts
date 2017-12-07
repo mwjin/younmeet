@@ -5,17 +5,14 @@ import {FormControl} from "@angular/forms";
 import {MeetService} from "../../services/meet.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import { Location } from '@angular/common';
-import {isUndefined} from "util";
 import {AccountService} from "../../services/account.service";
 import {DaumApiService} from "../../services/daum-api.service";
 import {Place} from "../../models/place";
-import {SuiTabset} from "ng2-semantic-ui/dist";
 import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/fromPromise";
 import { Room } from '../../models/room';
-
-const REST_API_KEY = '7580e2a44a5e572cbd87ee388f620122';
+import {Http, Headers} from "@angular/http";
 
 
 @Component({
@@ -37,6 +34,13 @@ export class PlaceComponent implements OnInit {
   public restaurant_list: Place[];
   public cafe_list: Place[];
   public cultural_faculty_list: Place[];
+  public selected: string;
+
+  private API_KEY = '7580e2a44a5e572cbd87ee388f620122';
+  // headers cannot have CSRF tokens
+  private headers = new Headers({'Authorization': 'KakaoAK ' + this.API_KEY});
+
+
   public labelOptions = {
     color: '#CC0000',
     fontFamily: '',
@@ -60,6 +64,7 @@ export class PlaceComponent implements OnInit {
               private router: Router,
               private cdRef: ChangeDetectorRef,
               private daumService: DaumApiService,
+              private http: Http,
   ) {
     this.restaurant_list = [];
     this.cafe_list = [];
@@ -77,10 +82,11 @@ export class PlaceComponent implements OnInit {
     this.meetService.getCurrentRoom(this.route)
       .flatMap(room => {
         this.currentRoom = room;
+        // check user
         this.accountService.getUserDetail().then(
           currUser => {
             if (currUser.id !== room.owner.id) {
-              alert("Not allowed!\nNot owner of this room!");
+              alert('Not allowed!\nNot owner of this room!');
               this.location.back();
             }
           }
@@ -100,8 +106,9 @@ export class PlaceComponent implements OnInit {
       })
     // load Places Autocomplete
       .subscribe(() => {
+      // use google service
         const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, this.googleMapOptions);
-        autocomplete.addListener("place_changed", () => {
+        autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
             // get the place result
             this.googleSearchResult = autocomplete.getPlace();
@@ -147,13 +154,23 @@ export class PlaceComponent implements OnInit {
     this.place.longitude = place.longitude;
   }
 
+  observableSource = (keyword: any): Observable<any[]> => {
+    const size = 5;
+    const url: string = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${keyword}&size=${size}`;
+    if (keyword) {
+      return Observable.fromPromise(this.daumService.getQueryPlaces(keyword));
+    } else {
+      return Observable.of([]);
+    }
+  }
+
 
   private setCurrentPosition() {
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.place.latitude = position.coords.latitude;
         this.place.longitude = position.coords.longitude;
-        this.place.name = "ME";
+        this.place.name = 'ME';
         this.zoom = 15;
       });
     }
