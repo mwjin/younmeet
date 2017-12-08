@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'younmeet.urls'
@@ -121,4 +123,8 @@ USE_TZ = False
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.User'
 
+# Root for static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# CORS headers settings
+CORS_ORIGIN_ALLOW_ALL = True
