@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from django.views.generic import RedirectView
+from django.contrib.staticfiles.views import serve
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('user.urls')),
     url(r'^api/', include('room.urls')),
     url(r'^api/', include('free_time.urls')),
-    url(r'^api/', include('best_time.urls')),
-
+    url(r'^api/', include('best_time.urls'))
 ]

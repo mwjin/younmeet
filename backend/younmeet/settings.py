@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'l)j07!#2#4d24exgiv14@wx#7h_qjgae*u$f7nu6a-54l4!p$x'
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.78.6.209', 'localhost']
+ALLOWED_HOSTS = ['52.78.6.209', 'localhost', 'ec2-52-78-6-209.ap-northeast-2.compute.amazonaws.com']
 
 # Application definition
 
@@ -120,3 +120,5 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.User'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
