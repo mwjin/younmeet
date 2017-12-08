@@ -130,6 +130,10 @@ export class PlaceComponent implements OnInit {
     }
   }
 
+  public goToTimeSelect() {
+    this.router.navigate(['room', this.currentRoom.hashid, 'time']);
+  }
+
   private goToUrl(place: Place) {
     window.open(place.url, '_blank');
   }

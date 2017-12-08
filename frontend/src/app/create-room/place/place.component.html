@@ -1,6 +1,7 @@
 <div class="container">
   <h1>Select Place to MEet</h1>
-  <button (click)="goBack()" class="ui secondary button right floated">Back</button>
+  <button (click)="goBack()" class="ui button right floated">Back</button>
+  <button *ngIf="goToTimeOnSubmit" (click)="goToTimeSelect()" class="ui button right floated">Skip</button>
   <div class="ui icon left input">
     <input
       ngui-auto-complete
@@ -29,7 +30,7 @@
       </div>
     </agm-map>
     <div *ngIf="isPlaceSelected">
-      <button (click)="onSubmit()" class="ui secondary button right floated">Submit</button>
+      <button (click)="onSubmit()" class="ui button right floated">Submit</button>
       <h2>Recommendations</h2>
     <!-- exists places to recommend-->
       <sui-tabset>
