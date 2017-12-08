@@ -1,0 +1,12 @@
+<agm-map [latitude]="place.latitude"
+         [longitude]="place.longitude" [scrollwheel]="false" [zoom]="zoom">
+  <div *ngIf="place.name">
+    <agm-marker [latitude]="place.latitude"
+                [longitude]="place.longitude">
+      <agm-info-window isOpen="true">
+        {{place.name}}
+      </agm-info-window>
+    </agm-marker>
+  </div>
+
+</agm-map>

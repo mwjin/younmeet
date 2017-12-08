@@ -1,4 +1,7 @@
-import {ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef, Component, ElementRef, EventEmitter, NgZone, OnInit, Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
 import {FormControl} from "@angular/forms";
@@ -23,25 +26,19 @@ import { Room } from '../../models/room';
   ]
 })
 export class PlaceComponent implements OnInit {
-  public place: Place;
   public searchControl: FormControl;
   public zoom: number;
   public currentRoom: Room;
-  public googleSearchResult: google.maps.places.PlaceResult;
   public firstTimePlaceSetting: boolean;
   public isPlaceSelected: boolean;
   public restaurant_list: Place[];
   public cafe_list: Place[];
   public cultural_faculty_list: Place[];
-  public selected: any;
-  public selected_places: Place;
-  public auto_complete_list: Place[];
-  googleMapOptions = {
-    componentRestrictions: {country: 'kr'}
-  };
+  public selected: Place;
+  public prev_selected: Place;
 
-  @ViewChild('search')
-  public searchElementRef: ElementRef;
+  @Output()
+  isSelected = new EventEmitter<void>();
 
   constructor(private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
@@ -56,7 +53,7 @@ export class PlaceComponent implements OnInit {
     this.restaurant_list = [];
     this.cafe_list = [];
     this.cultural_faculty_list = [];
-    this.place = new Place();
+    this.selected = new Place();
 
     // set google maps defaults
     this.zoom = 15;
@@ -83,9 +80,9 @@ export class PlaceComponent implements OnInit {
           this.firstTimePlaceSetting = true;
         }
         else {
-          this.place.latitude = room.latitude;
-          this.place.longitude = room.longitude;
-          this.place.name = room.place;
+          this.selected.latitude = room.latitude;
+          this.selected.longitude = room.longitude;
+          this.selected.name = room.place;
           this.firstTimePlaceSetting = false;
          }
         this.isPlaceSelected = false;
@@ -94,22 +91,9 @@ export class PlaceComponent implements OnInit {
     // load Places Autocomplete
       .subscribe(() => {
       // use google service
+        /*
         const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, this.googleMapOptions);
         autocomplete.addListener('place_changed', () => {
-          this.ngZone.run(() => {
-            // get the place result
-            this.googleSearchResult = autocomplete.getPlace();
-            // verify result
-            if (this.googleSearchResult.geometry === undefined || this.googleSearchResult.geometry === null) {
-              return;
-            }
-            this.isPlaceSelected = true;
-            this.place.name = this.googleSearchResult.name;
-            this.place.latitude = this.googleSearchResult.geometry.location.lat();
-            this.place.longitude = this.googleSearchResult.geometry.location.lng();
-
-            const lat = this.googleSearchResult.geometry.location.lat();
-            const lng = this.googleSearchResult.geometry.location.lng();
             this.daumService.getNearRestaurants(lat, lng)
               .then(restaurant_list => {
                 this.restaurant_list = restaurant_list.filter(p => p.name !== this.googleSearchResult.name);
@@ -125,20 +109,44 @@ export class PlaceComponent implements OnInit {
             this.cdRef.detectChanges();
           });
         });
+        */
       });
   }
 
   // TODO: When clicking back on the searched place, the marker should be one
-  private onSelectSearchedMarker(): void {
-    this.place.name = this.googleSearchResult.name;
-    this.place.latitude = this.googleSearchResult.geometry.location.lat();
-    this.place.longitude = this.googleSearchResult.geometry.location.lng();
-  }
 
+  /*
   private onSelectPlace(place: Place): void {
     this.place.name = place.name;
     this.place.latitude = place.latitude;
     this.place.longitude = place.longitude;
+  }
+  */
+
+  ngOnChanges(changes: SimpleChanges) {
+    // You can also use categoryId.previousValue and
+    // categoryId.firstChange for comparing old and new values
+
+  }
+
+  public onPlaceChange() {
+    if(this.selected.latitude) {
+      this.prev_selected = this.selected;
+      const lat = this.selected.latitude;
+      const lng = this.selected.longitude;
+      this.daumService.getNearRestaurants(lat, lng)
+        .then(restaurant_list => {
+          this.restaurant_list = restaurant_list.filter(p => p.name !== this.selected.name);
+        });
+      this.daumService.getNearCafes(lat, lng)
+        .then(cafe_list => {
+          this.cafe_list = cafe_list.filter(p => p.name !== this.selected.name);
+        });
+      this.daumService.getNearCulturalFaculties(lat, lng)
+        .then(cultural_faculty_list => {
+          this.cultural_faculty_list = cultural_faculty_list.filter(p => p.name !== this.selected.name);
+        });
+    }
   }
 
   observableSource = (keyword: any): Observable<any[]> => {
@@ -158,15 +166,12 @@ export class PlaceComponent implements OnInit {
     return `${data['name']}`;
   }
 
-
-
-
   private setCurrentPosition() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.place.latitude = position.coords.latitude;
-        this.place.longitude = position.coords.longitude;
-        this.place.name = 'ME';
+        this.selected.latitude = position.coords.latitude;
+        this.selected.longitude = position.coords.longitude;
+        this.selected.name = 'ME';
         this.zoom = 15;
       });
     }
@@ -174,7 +179,7 @@ export class PlaceComponent implements OnInit {
 
   private onSubmit(): void {
     this.zoom = 17;
-    this.meetService.putPlace(this.currentRoom.id, this.place.name, this.place.latitude, this.place.longitude).then(
+    this.meetService.putPlace(this.currentRoom.id, this.selected.name, this.selected.latitude, this.selected.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
           if (this.firstTimePlaceSetting)

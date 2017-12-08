@@ -35,6 +35,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
 import {Ng2AutoCompleteModule} from "ng2-auto-complete";
 import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import { MapComponent } from './create-room/place/map/map.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -79,6 +80,7 @@ export function MyCookieStrategy() {
     PlaceComponent,
     NotFoundComponent,
     DialogComponent,
+    MapComponent,
   ],
   imports : [
     CommonModule,
