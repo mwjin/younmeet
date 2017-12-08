@@ -24,7 +24,12 @@ else:
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l)j07!#2#4d24exgiv14@wx#7h_qjgae*u$f7nu6a-54l4!p$x'
+if is_prod:
+    key_file = open("/etc/younmeet/key", "r")
+    SECRET_KEY = key_file.read()
+else:
+    SECRET_KEY = 'l)j07!#2#4d24exgiv14@wx#7h_qjgae*u$f7nu6a-54l4!p$x'
+
 DEBUG = True
 
 ALLOWED_HOSTS = ['52.78.6.209', 'localhost', 'ec2-52-78-6-209.ap-northeast-2.compute.amazonaws.com', 'younmeet.com']
