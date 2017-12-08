@@ -130,6 +130,10 @@ export class PlaceComponent implements OnInit {
     }
   }
 
+  private goToUrl(place: Place) {
+    window.open(place.url, '_blank');
+  }
+
   private onSubmit(): void {
     this.meetService.putPlace(this.currentRoom.id, this.selected.name, this.selected.latitude, this.selected.longitude).then(
        isPutPlaceSuccess => {
