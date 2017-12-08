@@ -38,7 +38,7 @@
           <a class="item" suiTabHeader="2">Cafes</a>
           <a class="item" suiTabHeader="3">Cultural Faculties</a>
         </div>
-        <div class="ui bottom attached segment" suiTabContent="1">
+        <div class="tab ui bottom attached segment" suiTabContent="1">
           <div class = "ui list">
             <ul *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
               <li>
@@ -49,7 +49,7 @@
             </ul>
           </div>
         </div>
-        <div class="ui bottom attached segment" suiTabContent="2">
+        <div class="tab ui bottom attached segment" suiTabContent="2">
           <div class = "ui list">
             <ul *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
               <li>
@@ -60,7 +60,7 @@
             </ul>
           </div>
         </div>
-        <div class="ui bottom attached segment" suiTabContent="3">
+        <div class="tab ui bottom attached segment" suiTabContent="3">
           <div class = "ui list">
             <ul *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
               <li>
