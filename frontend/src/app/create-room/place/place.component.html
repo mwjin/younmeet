@@ -35,9 +35,12 @@
 
 <input  ngui-auto-complete
         [(ngModel)]="selected"
-        [source]="observableSource.bind(this)"
-        list-formatter="formatted_address" />
-<br/>selected model: {{selected | json}}<br/><br/>
+        [source]="observableSource"
+        [list-formatter]="list_formatter"
+        [value-formatter]="value_formatter"/>
+<div *ngIf="selected">
+<br/>selected model: {{selected.name}}<br/><br/>
+</div>
 
 <br/>
 <br/>

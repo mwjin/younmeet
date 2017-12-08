@@ -12,7 +12,6 @@ import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/fromPromise";
 import { Room } from '../../models/room';
-import {Http, Headers} from "@angular/http";
 
 
 @Component({
@@ -34,20 +33,9 @@ export class PlaceComponent implements OnInit {
   public restaurant_list: Place[];
   public cafe_list: Place[];
   public cultural_faculty_list: Place[];
-  public selected: string;
-
-  private API_KEY = '7580e2a44a5e572cbd87ee388f620122';
-  // headers cannot have CSRF tokens
-  private headers = new Headers({'Authorization': 'KakaoAK ' + this.API_KEY});
-
-
-  public labelOptions = {
-    color: '#CC0000',
-    fontFamily: '',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    text: 'Some Text',
-  };
+  public selected: any;
+  public selected_places: Place;
+  public auto_complete_list: Place[];
   googleMapOptions = {
     componentRestrictions: {country: 'kr'}
   };
@@ -64,7 +52,6 @@ export class PlaceComponent implements OnInit {
               private router: Router,
               private cdRef: ChangeDetectorRef,
               private daumService: DaumApiService,
-              private http: Http,
   ) {
     this.restaurant_list = [];
     this.cafe_list = [];
@@ -155,14 +142,23 @@ export class PlaceComponent implements OnInit {
   }
 
   observableSource = (keyword: any): Observable<any[]> => {
-    const size = 5;
-    const url: string = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${keyword}&size=${size}`;
     if (keyword) {
+      console.log(this.selected);
       return Observable.fromPromise(this.daumService.getQueryPlaces(keyword));
     } else {
       return Observable.of([]);
     }
   }
+
+  list_formatter(data: any): string {
+    return `${data['name']}`;
+  }
+
+  value_formatter(data: any): string {
+    return `${data['name']}`;
+  }
+
+
 
 
   private setCurrentPosition() {
