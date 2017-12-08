@@ -1,15 +1,20 @@
 <div class="container">
   <h1>Select Place to MEet</h1>
   <button (click)="goBack()" class="ui secondary button right floated">Back</button>
-
-  <input
-    ngui-auto-complete
-    [(ngModel)]="search_place"
-    [source]="observableSource"
-    [list-formatter]="list_formatter"
-    [value-formatter]="value_formatter"
-    (valueChanged)="onPlaceChange()"/>
-  <br><br>
+  <div class="ui icon left input">
+    <input
+      ngui-auto-complete
+      type="text"
+      [(ngModel)]="search_place"
+      [source]="observableSource"
+      [list-formatter]="list_formatter"
+      [value-formatter]="value_formatter"
+      (valueChanged)="onPlaceChange()"
+      size="27">
+    <i class="search icon"></i>
+  </div>
+  <br>
+  <br>
 
   <div>
     <agm-map [latitude]="selected.latitude"
