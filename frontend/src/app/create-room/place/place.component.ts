@@ -26,7 +26,6 @@ import { Room } from '../../models/room';
   ]
 })
 export class PlaceComponent implements OnInit {
-  public searchControl: FormControl;
   public zoom: number;
   public currentRoom: Room;
   public firstTimePlaceSetting: boolean;
@@ -36,35 +35,27 @@ export class PlaceComponent implements OnInit {
   public cultural_faculty_list: Place[];
   public selected: Place;
   public prev_selected: Place;
-
-  @Output()
-  isSelected = new EventEmitter<void>();
+  public search_place: Place;
 
   constructor(private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone,
               private meetService: MeetService,
               private route: ActivatedRoute,
               private location: Location,
               private accountService: AccountService,
               private router: Router,
-              private cdRef: ChangeDetectorRef,
               private daumService: DaumApiService,
   ) {
     this.restaurant_list = [];
     this.cafe_list = [];
     this.cultural_faculty_list = [];
     this.selected = new Place();
-
     // set google maps defaults
     this.zoom = 15;
-
-    // create search FormControl
-    this.searchControl = new FormControl();
   }
 
   ngOnInit() {
     this.meetService.getCurrentRoom(this.route)
-      .flatMap(room => {
+      .subscribe(room => {
         this.currentRoom = room;
         // check user
         this.accountService.getUserDetail().then(
@@ -86,51 +77,15 @@ export class PlaceComponent implements OnInit {
           this.firstTimePlaceSetting = false;
          }
         this.isPlaceSelected = false;
-        return Observable.fromPromise(this.mapsAPILoader.load());
-      })
-    // load Places Autocomplete
-      .subscribe(() => {
-      // use google service
-        /*
-        const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, this.googleMapOptions);
-        autocomplete.addListener('place_changed', () => {
-            this.daumService.getNearRestaurants(lat, lng)
-              .then(restaurant_list => {
-                this.restaurant_list = restaurant_list.filter(p => p.name !== this.googleSearchResult.name);
-              });
-            this.daumService.getNearCafes(lat, lng)
-              .then(cafe_list => {
-                this.cafe_list = cafe_list.filter(p => p.name !== this.googleSearchResult.name);
-              });
-            this.daumService.getNearCulturalFaculties(lat, lng)
-              .then(cultural_faculty_list => {
-                this.cultural_faculty_list = cultural_faculty_list.filter(p => p.name !== this.googleSearchResult.name);
-              });
-            this.cdRef.detectChanges();
-          });
-        });
-        */
       });
   }
 
   // TODO: When clicking back on the searched place, the marker should be one
 
-  /*
-  private onSelectPlace(place: Place): void {
-    this.place.name = place.name;
-    this.place.latitude = place.latitude;
-    this.place.longitude = place.longitude;
-  }
-  */
-
-  ngOnChanges(changes: SimpleChanges) {
-    // You can also use categoryId.previousValue and
-    // categoryId.firstChange for comparing old and new values
-
-  }
-
   public onPlaceChange() {
-    if(this.selected.latitude) {
+    if (this.search_place.latitude) {
+      this.selected = this.search_place;
+      this.isPlaceSelected = true;
       this.prev_selected = this.selected;
       const lat = this.selected.latitude;
       const lng = this.selected.longitude;
@@ -151,7 +106,6 @@ export class PlaceComponent implements OnInit {
 
   observableSource = (keyword: any): Observable<any[]> => {
     if (keyword) {
-      console.log(this.selected);
       return Observable.fromPromise(this.daumService.getQueryPlaces(keyword));
     } else {
       return Observable.of([]);
