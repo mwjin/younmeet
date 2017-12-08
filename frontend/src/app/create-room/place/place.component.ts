@@ -15,35 +15,32 @@ import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/fromPromise";
 import { Room } from '../../models/room';
+import {FreetimeService} from "../../services/freetime.service";
 
 
 @Component({
   selector: 'app-place',
   templateUrl: './place.component.html',
-  styleUrls: [
-    './place.component.css',
-    '../../../../node_modules/snazzy-info-window/dist/snazzy-info-window.css'
-  ]
+  styleUrls: ['./place.component.css',]
 })
 export class PlaceComponent implements OnInit {
   public zoom: number;
   public currentRoom: Room;
-  public firstTimePlaceSetting: boolean;
+  public goToTimeOnSubmit: boolean;
   public isPlaceSelected: boolean;
   public restaurant_list: Place[];
   public cafe_list: Place[];
   public cultural_faculty_list: Place[];
   public selected: Place;
-  public prev_selected: Place;
   public search_place: Place;
 
-  constructor(private mapsAPILoader: MapsAPILoader,
-              private meetService: MeetService,
+  constructor(private meetService: MeetService,
               private route: ActivatedRoute,
               private location: Location,
               private accountService: AccountService,
               private router: Router,
               private daumService: DaumApiService,
+              private freetimeService: FreetimeService
   ) {
     this.restaurant_list = [];
     this.cafe_list = [];
@@ -68,25 +65,24 @@ export class PlaceComponent implements OnInit {
         );
         if (room.latitude == null || room.longitude == null) {
           this.setCurrentPosition();
-          this.firstTimePlaceSetting = true;
+          // if the person has not selected room
+          // think that the person has not selected time
+          this.goToTimeOnSubmit = true;
         }
         else {
           this.selected.latitude = room.latitude;
           this.selected.longitude = room.longitude;
           this.selected.name = room.place;
-          this.firstTimePlaceSetting = false;
+          this.goToTimeOnSubmit = false;
          }
         this.isPlaceSelected = false;
       });
   }
 
-  // TODO: When clicking back on the searched place, the marker should be one
-
   public onPlaceChange() {
     if (this.search_place.latitude) {
       this.selected = this.search_place;
       this.isPlaceSelected = true;
-      this.prev_selected = this.selected;
       const lat = this.selected.latitude;
       const lng = this.selected.longitude;
       this.daumService.getNearRestaurants(lat, lng)
@@ -113,11 +109,15 @@ export class PlaceComponent implements OnInit {
   }
 
   list_formatter(data: any): string {
-    return `${data['name']}`;
+    return `${data['name']}, ${data['address_name']}`;
   }
 
   value_formatter(data: any): string {
     return `${data['name']}`;
+  }
+
+  public onSelectRecommendation(place: Place) {
+    this.selected = place;
   }
 
   private setCurrentPosition() {
@@ -126,17 +126,15 @@ export class PlaceComponent implements OnInit {
         this.selected.latitude = position.coords.latitude;
         this.selected.longitude = position.coords.longitude;
         this.selected.name = 'ME';
-        this.zoom = 15;
       });
     }
   }
 
   private onSubmit(): void {
-    this.zoom = 17;
     this.meetService.putPlace(this.currentRoom.id, this.selected.name, this.selected.latitude, this.selected.longitude).then(
        isPutPlaceSuccess => {
         if (isPutPlaceSuccess) {
-          if (this.firstTimePlaceSetting)
+          if (this.goToTimeOnSubmit)
             this.router.navigate(['room', this.currentRoom.hashid, 'time']);
           else
             this.router.navigate(['room', this.currentRoom.hashid]);

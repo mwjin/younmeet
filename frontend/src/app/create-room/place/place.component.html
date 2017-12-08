@@ -40,7 +40,7 @@
         </div>
         <div class="ui bottom attached segment" suiTabContent="1">
           <div class = "ui list">
-            <ul *ngFor="let rest of restaurant_list" (click)="onSelectPlace(rest)">
+            <ul *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
               <li>
                 <div>{{rest.name}}</div>
                 <div>{{rest.category}}</div>
@@ -51,7 +51,7 @@
         </div>
         <div class="ui bottom attached segment" suiTabContent="2">
           <div class = "ui list">
-            <ul *ngFor="let cafe of cafe_list" (click)="onSelectPlace(cafe)">
+            <ul *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
               <li>
                 <div>{{cafe.name}}</div>
                 <div>{{cafe.category}}</div>
@@ -62,7 +62,7 @@
         </div>
         <div class="ui bottom attached segment" suiTabContent="3">
           <div class = "ui list">
-            <ul *ngFor="let cf of cultural_faculty_list" (click)="onSelectPlace(cf)">
+            <ul *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
               <li>
                 <div>{{cf.name}}</div>
                 <div>{{cf.category}}</div>
