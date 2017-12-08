@@ -175,8 +175,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
    */
   handleSyncClick(): void {
     if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      this.googleScheduleService.assignTimeSpan(this.timeSpan);
       this.googleScheduleService.signInGoogle();
     }
+
     this.getSchedules();
   }
 
@@ -185,10 +187,6 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       setTimeout(() => { this.getSchedules();}, 500);
     } else {
       this.googleScheduleService.getSchedules().then(schedules => {
-        this.schedules = schedules.filter((schedule) => {
-          schedule.start >= this.timeSpan.start;
-          schedule.end <= this.timeSpan.end;
-        });
 
         const calendar = $('#calendar');
 
