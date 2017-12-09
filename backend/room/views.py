@@ -28,7 +28,6 @@ def room_list(request):
         time_span_end = parse(data['time_span_end'], ignoretz=True)
         time = int(data['min_time_required'])
         min_members = int(data['min_members'])
-
         min_time_required = timedelta(hours=int(time / 60), minutes=time % 60)
 
         new_room = Room(
@@ -52,6 +51,7 @@ def room_list(request):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
+
 def room_detail_handle_request(request, room):
     '''  
     TODO: Object of type 'User' is not JSON serializable
@@ -65,6 +65,7 @@ def room_detail_handle_request(request, room):
         return HttpResponse(status=204)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
+
 
 def room_detail(request, room_id):
     if not request.user.is_authenticated():
@@ -89,6 +90,7 @@ def room_detail_hash(request, room_hash):
 
     return room_detail_handle_request(request, room)
 
+
 def room_members(request, room_id):
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
@@ -104,8 +106,8 @@ def room_members(request, room_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-def set_place(request, room_id):
 
+def set_place(request, room_id):
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
 
@@ -128,9 +130,3 @@ def set_place(request, room_id):
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['PUT'])
-
-
-
-
-
-
