@@ -14,12 +14,12 @@ import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';
 import { BesttimeResponseData } from './besttime-response-data';
-import {getCSRFHeaders} from "../../util/headers";
+import { getCSRFHeaders } from '../../util/headers';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 
-const headers = new Headers({'csrftoken': 'X-CSRFToken'});
+const headers = new Headers({ 'csrftoken' : 'X-CSRFToken' });
 
 function handleError(error: any) {
   console.error('An error occurred: ', error);
@@ -34,6 +34,7 @@ let TEST_AVAILABLE_TIME = [
 export class MeetService {
   timespan: Timespan;
   currentRoom: Room | null = null;
+
   constructor(private http: Http) {
   }
 
@@ -78,9 +79,9 @@ export class MeetService {
       this.http.get(`api/rooms/hash/${hash}`).toPromise()
     ))
       .then(room => {
-      if (setToCurrent) this.setCurrentRoom(room);
-      return room;
-    });
+        if (setToCurrent) this.setCurrentRoom(room);
+        return room;
+      });
   }
 
   setCurrentRoom(room: Room) {
@@ -89,9 +90,9 @@ export class MeetService {
 
   getCurrentRoom(route: ActivatedRoute): Observable<Room> {
     //if (this.currentRoom === null) {
-      return route.params
-        .map(params => params['hash'])
-        .flatMap(hash => this.getRoomByHash(hash, true));
+    return route.params
+      .map(params => params[ 'hash' ])
+      .flatMap(hash => this.getRoomByHash(hash, true));
     /*
     }
     else {
@@ -125,7 +126,7 @@ export class MeetService {
     return this.http.post(
       `api/rooms`,
       roomFormToCreateResponse(roomForm),
-      { headers: getCSRFHeaders() }
+      { headers : getCSRFHeaders() }
     )
       .toPromise()
       .then(res => res.json() as RoomResponse)
@@ -136,7 +137,7 @@ export class MeetService {
   putPlace(room_id: number, place: string, latitude: number, longitude: number): Promise<boolean> {
     return this.http.put(
       `api/rooms/${room_id}/place`,
-      {'place': place, 'latitude': latitude, 'longitude': longitude},
+      { 'place' : place, 'latitude' : latitude, 'longitude' : longitude },
       { headers : getCSRFHeaders() }
     )
       .toPromise()
