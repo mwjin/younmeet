@@ -1,0 +1,9 @@
+#bodyId .ui.create-new-room {
+  border-radius: 0;
+  background-color: #32CD32;
+}
+
+#bodyId .ui.color2.button {
+  background-color: #F9A0A0;
+  color: #fff;
+}

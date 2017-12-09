@@ -40,36 +40,34 @@
           <a class="item" suiTabHeader="3">Cultural Faculties</a>
         </div>
         <div class="tab ui bottom attached segment" suiTabContent="1">
-          <div class = "ui list">
-            <ul *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
-              <li>
-                <div>{{rest.name}}</div>
-                <div>{{rest.category}}</div>
-                <a (click)="goToUrl(rest)">Details</a>
-              </li>
-            </ul>
+          <div class = "ui relaxed divided list">
+            <div class="item" *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
+              <div class="header">{{rest.name}}</div>
+              <div>{{rest.category}}</div>
+              <a (click)="goToUrl(rest)">Details</a>
+            </div>
           </div>
         </div>
         <div class="tab ui bottom attached segment" suiTabContent="2">
-          <div class = "ui list">
-            <ul *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
-              <li>
-                <div>{{cafe.name}}</div>
+          <div class ="ui relaxed divided list">
+            <div class="item" *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
+              <div class="content">
+                <div class="header">{{cafe.name}}</div>
                 <div>{{cafe.category}}</div>
                 <a (click)="goToUrl(cafe)">Details</a>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
         <div class="tab ui bottom attached segment" suiTabContent="3">
-          <div class = "ui list">
-            <ul *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
-              <li>
-                <div>{{cf.name}}</div>
+          <div class = "ui relaxed divided list">
+            <div class="item" *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
+              <div class="content">
+                <div class="header">{{cf.name}}</div>
                 <div>{{cf.category}}</div>
                 <a (click)="goToUrl(cf)">Details</a>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </sui-tabset>
