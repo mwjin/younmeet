@@ -44,38 +44,77 @@
       <div *ngIf="bestTimes.length == 0">
         <h4>No Recommended Times Yet!</h4>
       </div>
-      <div class="ui list" *ngFor="let bestTime of bestTimes; let i = index">
-        <div *ngIf="i < showingBestTimes">
-          <div class="item">
-            <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
-            <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
-            {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
-            ({{bestTime.getDuration()}})
-            <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
-                 [popupPlacement]="right"
-                 [popupTemplate]="popupTemplate">
-              <a style="color:black; cursor: pointer" title="Attend Info"><i class="users icon"></i></a>
-            </div>
+      <div *ngIf="room.anonymity;then hideName else revealName"></div>
 
-            <ng-template let-popup #popupTemplate>
-              <div class="header">Fully Attend Members</div>
-              <div class="ui list" *ngFor="let username of bestTime.full_attend; let j = index">
-                <div class="item">
-                  &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> {{username}}
-                </div>
+      <ng-template #hideName>
+        <div class="ui list" *ngFor="let bestTime of bestTimes; let i = index">
+          <div *ngIf="i < showingBestTimes">
+            <div class="item">
+              <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
+              <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+              {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
+              ({{bestTime.getDuration()}})
+              <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
+                   [popupPlacement]="right"
+                   [popupTemplate]="popupTemplate">
+                <a style="color:black; cursor: pointer" title="Attend Info"><i class="users icon"></i></a>
               </div>
-              <div class="header">Partially Attend Members</div>
-              <div class="ui list" *ngFor="let partial of bestTime.partial_attend; let j=index">
-                <div class="item">
-                  &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> {{partial.username}} ({{partial.getStartTime()}} ~
-                  {{partial.getEndTime()}})
+
+              <ng-template let-popup #popupTemplate>
+                <div class="header">Fully Attend Members</div>
+                <div class="ui list" *ngFor="let username of bestTime.full_attend; let j = index">
+                  <div class="item">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> ---
+                  </div>
                 </div>
-              </div>
-            </ng-template>
-            <br>
+                <div class="header">Partially Attend Members</div>
+                <div class="ui list" *ngFor="let partial of bestTime.partial_attend; let j=index">
+                  <div class="item">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> --- ({{partial.getStartTime()}} ~
+                    {{partial.getEndTime()}})
+                  </div>
+                </div>
+              </ng-template>
+              <br>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-template>
+
+      <ng-template #revealName>
+        <div class="ui list" *ngFor="let bestTime of bestTimes; let i = index">
+          <div *ngIf="i < showingBestTimes">
+            <div class="item">
+              <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
+              <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+              {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
+              ({{bestTime.getDuration()}})
+              <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
+                   [popupPlacement]="right"
+                   [popupTemplate]="popupTemplate">
+                <a style="color:black; cursor: pointer" title="Attend Info"><i class="users icon"></i></a>
+              </div>
+
+              <ng-template let-popup #popupTemplate>
+                <div class="header">Fully Attend Members</div>
+                <div class="ui list" *ngFor="let username of bestTime.full_attend; let j = index">
+                  <div class="item">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> {{username}}
+                  </div>
+                </div>
+                <div class="header">Partially Attend Members</div>
+                <div class="ui list" *ngFor="let partial of bestTime.partial_attend; let j=index">
+                  <div class="item">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>{{j + 1}}:</b> {{partial.username}} ({{partial.getStartTime()}} ~
+                    {{partial.getEndTime()}})
+                  </div>
+                </div>
+              </ng-template>
+              <br>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </div>
 
     <div *ngIf="showingBestTimes < bestTimes.length">

@@ -64,7 +64,8 @@ export class RoomDetailComponent implements OnInit {
             this.isRoomOwner = true;
           } else {
             this.isRoomOwner = false;
-          }});
+          }
+        });
         return Observable.forkJoin(getMembers, getBestTime);
       })
       .subscribe();

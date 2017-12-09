@@ -2,6 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
 import { Subscription } from 'rxjs/Subscription';
 import { Schedule } from '../models/schedule';
+import { Timespan } from '../models/timespan';
 
 @Injectable()
 export class GoogleScheduleService implements OnDestroy {
@@ -13,6 +14,8 @@ export class GoogleScheduleService implements OnDestroy {
   subscriber: Subscription;
   schedules: Schedule[] = [];
   isInit = false;
+
+  private timeSpan: Timespan;
 
   constructor(private gapiService: GoogleApiService) {
     this.subscriber = this.gapiService.onLoad().subscribe(() => {
@@ -53,6 +56,10 @@ export class GoogleScheduleService implements OnDestroy {
     }
   }
 
+  assignTimeSpan(timeSpan: Timespan): void {
+    this.timeSpan = timeSpan;
+  }
+
   /**
    * Print the summary and start datetime/date of the next ten events in
    * the authorized user's calendar. If no events are found an
@@ -65,10 +72,10 @@ export class GoogleScheduleService implements OnDestroy {
         'params':
           {
             'calendarId': 'primary',
-            'timeMin': (new Date()).toISOString(),
+            'timeMin': this.timeSpan.start.toISOString(),
+            'timeMax': this.timeSpan.end.toISOString(),
             'showDeleted': false,
             'singleEvents': true,
-            'maxResults': 50,
             'orderBy': 'startTime'
           },
       }

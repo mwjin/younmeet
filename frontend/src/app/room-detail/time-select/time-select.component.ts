@@ -50,7 +50,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       .flatMap(room => {
         this.currentRoom = room;
         this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
-        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
+        this.timeSpan.start.setDate(this.timeSpan.start.getDate() + 1);
+        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 2);
         return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
       })
       .subscribe(freeTimes => {
@@ -78,7 +79,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     // Collect all events and return array of [start_time, end_time] pair
     const freeTimes: Freetime[] = [];
     const selectedAreas = $('#calendar').fullCalendar('clientEvents',
-      function(event) { return event.name !== 'googleSchedule' });
+      function (event) { return event.name !== 'googleSchedule'; });
     for (let index in selectedAreas) {
       freeTimes.push(new Freetime(selectedAreas[ index ][ 'start' ][ '_d' ],
         selectedAreas[ index ][ 'end' ][ '_d' ]));
@@ -99,10 +100,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       scrollTime : '09:00:00', // start scroll from 9AM
       height : 650,
       // Do not Modify Below This Comment
-      eventOverlap: function (stillEvent, movingEvent) {
+      eventOverlap : function (stillEvent, movingEvent) {
         return stillEvent.name === 'googleSchedule';
       },
-      eventRender: function(event, element) {
+      eventRender : function (event, element) {
         if (event.name === 'googleSchedule') {
           element.append('from Google Calendar');
         }
@@ -118,7 +119,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       editable : true,
       selectable : true,
       selectHelper : true,
-      selectOverlap: function (stillEvent, movingEvent) {
+      selectOverlap : function (stillEvent, movingEvent) {
         return stillEvent.name === 'googleSchedule';
       },
       longPressDelay : 10,
@@ -129,7 +130,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
           title : '',
           start : start,
           end : end,
-          overlap: false,
+          overlap : false,
         };
         $('#calendar').fullCalendar('renderEvent', eventData, true);
       },
@@ -175,8 +176,10 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
    */
   handleSyncClick(): void {
     if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      this.googleScheduleService.assignTimeSpan(this.timeSpan);
       this.googleScheduleService.signInGoogle();
     }
+
     this.getSchedules();
   }
 
@@ -185,21 +188,17 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       setTimeout(() => { this.getSchedules();}, 500);
     } else {
       this.googleScheduleService.getSchedules().then(schedules => {
-        this.schedules = schedules.filter((schedule) => {
-          schedule.start >= this.timeSpan.start;
-          schedule.end <= this.timeSpan.end;
-        });
 
         const calendar = $('#calendar');
 
         for (const schedule of schedules) {
           const event = {
-            name: 'googleSchedule',
-            title: schedule.title,
-            start: schedule.start,
-            end: schedule.end,
-            color: 'rgb(230, 0, 0)',
-            overlap: true,
+            name : 'googleSchedule',
+            title : schedule.title,
+            start : schedule.start,
+            end : schedule.end,
+            color : 'rgb(230, 0, 0)',
+            overlap : true,
           };
 
           calendar.fullCalendar('renderEvent', event);
@@ -218,7 +217,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
     this.changeGoogleButtonState(false);
     this.schedules = [];
     $('#calendar').fullCalendar('removeEvents',
-      function(event) { return event.name === 'googleSchedule'});
+      function (event) { return event.name === 'googleSchedule';});
   }
 }
 
