@@ -3,8 +3,8 @@ import * as moment from 'moment';
 export class Timespan {
   constructor(public start: Date = new Date(),
               public end: Date = new Date()) {
-    this.start = start;
-    this.end = end;
+    this.start = new Date(start);
+    this.end = new Date(end);
   }
 
   getDate(): [ string, string ] {

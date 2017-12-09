@@ -79,7 +79,9 @@ export class MeetService {
       this.http.get(`api/rooms/hash/${hash}`).toPromise()
     ))
       .then(room => {
-        if (setToCurrent) this.setCurrentRoom(room);
+        if (setToCurrent) {
+          this.setCurrentRoom(room);
+        }
         return room;
       });
   }

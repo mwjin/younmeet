@@ -10,6 +10,7 @@ export interface RoomResponse {
   place: string;
   latitude: number;
   longitude: number;
+  anonymity: boolean,
   best_start_time: Date;
   best_end_time: Date;
   min_time_required: number;
@@ -28,6 +29,7 @@ export function roomToResponse(room: Room): RoomResponse {
     place : room.place,
     latitude : room.latitude,
     longitude : room.longitude,
+    anonymity : room.anonymity,
     best_start_time : null,
     best_end_time : null,
     min_time_required : room.duration,
@@ -45,7 +47,7 @@ export function roomFromResponse(res: RoomResponse): Room {
     hashid : res.hashid,
     duration : res.min_time_required,
     timespan : new Timespan(res.time_span_start, res.time_span_end),
-    anonymity : false,
+    anonymity : res.anonymity,
     place : res.place,
     latitude : res.latitude,
     longitude : res.longitude,
@@ -64,6 +66,7 @@ export interface RoomCreateRequest {
   min_members: number;
   time_span_start: Date;
   time_span_end: Date;
+  anonymity: boolean;
 }
 
 export function roomFormToCreateResponse(roomForm: CreateRoomForm): RoomCreateRequest {
@@ -73,6 +76,7 @@ export function roomFormToCreateResponse(roomForm: CreateRoomForm): RoomCreateRe
     min_time_required : roomForm.duration,
     min_members : roomForm.minPeople,
     time_span_start : roomForm.timeSpan.start,
-    time_span_end : roomForm.timeSpan.end
+    time_span_end : roomForm.timeSpan.end,
+    anonymity : roomForm.anonymity
   };
 }
