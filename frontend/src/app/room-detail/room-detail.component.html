@@ -16,11 +16,11 @@
       </div>
       <div class="eight wide column"></div>
       <div class="two wide column">
-        <button (click)="goBack()" class="ui button right floated">Back</button>
+        <button (click)="goBack()" class="ui yellow button right floated">Back</button>
       </div>
     </div>
   </div>
-
+  <div class="ui hidden divider"></div>
   <h2>List of participants</h2>
   <div *ngIf="members && room.owner">
     <div class="ui horizontal list" *ngFor="let member of members">
@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <br/>
+  <div class="ui hidden divider"></div>
   <header>
     <h2>Recommended Times</h2>
   </header>
@@ -118,10 +118,10 @@
     </div>
 
     <div *ngIf="showingBestTimes < bestTimes.length">
-      <div class="ui bottom attached button" tabindex="0" (click)="viewMore()">View More</div>
+      <div class="ui bottom attached teal basic button" tabindex="0" (click)="viewMore()">View More</div>
     </div>
     <br/>
-    <button class="ui button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+    <button class="ui orange button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
 
     <!-- If there exists Place -->
     <div *ngIf="room.latitude">
@@ -139,18 +139,17 @@
       </div>
       <br/>
       <div *ngIf="isRoomOwner" class="two wide column">
-        <button (click)="goPlaceChangePage()" class="ui button right floated">Change</button>
+        <button (click)="goPlaceChangePage()" class="ui green button right floated">Change</button>
       </div>
     </div>
 
     <!-- Place does not exist-->
     <div *ngIf="!room.latitude">
-      <br>
-      <h2>Location not selected</h2>
+          <h2>Location not selected</h2>
     </div>
     <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
       <br/>
-      <button (click)="goPlaceChangePage()" class="ui button right floated">Select Place</button>
+      <button (click)="goPlaceChangePage()" class="ui green button right floated">Select Place</button>
     </div>
   </div>
 <br/>
