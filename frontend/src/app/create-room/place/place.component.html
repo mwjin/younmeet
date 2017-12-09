@@ -2,7 +2,7 @@
   <h1>Select Place to MEet</h1>
   <button (click)="goBack()" class="ui button right floated">Back</button>
   <button *ngIf="goToTimeOnSubmit" (click)="goToTimeSelect()" class="ui button right floated">Skip</button>
-  <div class="ui icon left input">
+  <div id="autocomplete" class="ui icon left input">
     <input
       ngui-auto-complete
       type="text"

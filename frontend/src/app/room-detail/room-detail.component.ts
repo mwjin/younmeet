@@ -69,7 +69,7 @@ export class RoomDetailComponent implements OnInit {
       })
       .subscribe();
   }
- 
+
   goBack(): void {
     this.router.navigate([ 'dashboard' ]);
   }

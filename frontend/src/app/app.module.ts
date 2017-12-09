@@ -100,7 +100,6 @@ export function MyCookieStrategy() {
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig,
     }),
-    Ng2AutoCompleteModule,
     NguiAutoCompleteModule,
   ],
   providers : [

@@ -1,10 +1,5 @@
-import {
-  ChangeDetectorRef, Component, ElementRef, EventEmitter, NgZone, OnInit, Output, SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { } from 'googlemaps';
-import { MapsAPILoader } from '@agm/core';
-import {FormControl} from "@angular/forms";
 import {MeetService} from "../../services/meet.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import { Location } from '@angular/common';
@@ -40,7 +35,6 @@ export class PlaceComponent implements OnInit {
               private accountService: AccountService,
               private router: Router,
               private daumService: DaumApiService,
-              private freetimeService: FreetimeService
   ) {
     this.restaurant_list = [];
     this.cafe_list = [];
@@ -55,8 +49,7 @@ export class PlaceComponent implements OnInit {
       .subscribe(room => {
         this.currentRoom = room;
         // check user
-        this.accountService.getUserDetail().then(
-          currUser => {
+        this.accountService.getUserDetail().then(currUser => {
             if (currUser.id !== room.owner.id) {
               alert('Not allowed!\nNot owner of this room!');
               this.location.back();

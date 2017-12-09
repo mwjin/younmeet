@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/of"
 
-let ROOMS_CREATED: Room[] = [
+const ROOMS_CREATED: Room[] = [
   <Room>{
     name : 'Room 1',
     duration : 30,
@@ -79,19 +79,19 @@ let ROOMS_JOINED: Room[] = [
   },
 ];
 
-let TEST_USERS: User[] = [
+const TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
   new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
   new User(3, 'chris', 'chris@snu.ac.kr', 'chris'),
 ];
 
-let TEST_AVAILABLE_TIME: Timespan[] = [
+const TEST_AVAILABLE_TIME: Timespan[] = [
   new Timespan(),
   new Timespan(),
   new Timespan()
 ];
 
-let TEST_TIME_SPAN: Timespan = new Timespan(
+const TEST_TIME_SPAN: Timespan = new Timespan(
   new Date('2017-11-10'),
   new Date('2017-11-15')
 );
