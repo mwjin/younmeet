@@ -29,7 +29,8 @@ def room_list(request):
         time = int(data['min_time_required'])
         min_members = int(data['min_members'])
         min_time_required = timedelta(hours=int(time / 60), minutes=time % 60)
-
+        print(data)
+        anonymity = data['anonymity']
         new_room = Room(
             name=name,
             place=place,
@@ -37,7 +38,8 @@ def room_list(request):
             min_members=min_members,
             time_span_end=time_span_end,
             time_span_start=time_span_start,
-            owner=user
+            owner=user,
+            anonymity=anonymity
         )
         new_room.save()
 

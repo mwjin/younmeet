@@ -21,6 +21,9 @@ def best_time_list(request, room_id):
         best_times_list = []
         current_time = datetime.now()
         for best_time in best_times:
+            print(best_time)
+            print(current_time)
+            print(best_time.start_time)
             if best_time.start_time > current_time:
                 best_time_dict = dict()
                 best_time_dict['start_time'] = best_time.start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
