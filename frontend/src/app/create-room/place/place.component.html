@@ -2,18 +2,17 @@
   <h1>Select Place to MEet</h1>
   <button (click)="goBack()" class="ui yellow button right floated">Back</button>
   <button *ngIf="goToTimeOnSubmit" (click)="goToTimeSelect()" class="ui orange button right floated">Skip</button>
-  <div id="autocomplete" class="ui icon left input">
+  <div id="autocomplete" class="ui search icon left input">
+    <i class="search icon"></i>
     <input
       ngui-auto-complete
-      type="text"
-      placeholder="Search"
+      placeholder="Search Places"
       [(ngModel)]="search_place"
       [source]="observableSource"
       [list-formatter]="list_formatter"
       [value-formatter]="value_formatter"
       (valueChanged)="onPlaceChange()"
-      size="27">
-    <i class="search icon"></i>
+      size="15">
   </div>
   <br>
   <br>
