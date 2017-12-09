@@ -7,7 +7,7 @@ import { FilterOptions } from './room-list-filter-options';
 @Component({
   selector : 'app-dashboard',
   templateUrl : './dashboard.component.html',
-  styles : []
+  styles : ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
 

@@ -20,7 +20,7 @@
 }
 
 body {
-  background-color: #FFFFFF;
+  background-color: white;
   font-size: 16px;
 
 }
@@ -29,3 +29,9 @@ body {
   margin-top: 7em;
 }
 
+
+
+@font-face {
+  font-family: 'Kollektif';
+  src: local('./assets/Fonts/Kollektif.ttf');
+}

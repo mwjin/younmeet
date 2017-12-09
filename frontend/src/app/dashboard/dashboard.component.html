@@ -1,7 +1,7 @@
 <h1>Dashboard</h1>
 <div class="ui grid">
   <div class="eight wide column">
-    <button class="ui button" [routerLink]="['/room/create']">
+    <button class="ui blue button" [routerLink]="['/room/create']">
       Create
     </button>
   </div>
@@ -31,21 +31,10 @@
 <div class="ui divider"></div>
 <sui-tabset>
   <div class="ui top attached tabular menu">
-    <a class="item" suiTabHeader="1">Created</a>
-    <a class="item" suiTabHeader="2">Joined</a>
+    <a class="item" suiTabHeader="1">Joined</a>
+    <a class="item" suiTabHeader="2">Created</a>
   </div>
   <div class="ui bottom attached segment" suiTabContent="1">
-    <div class="ui medium header">Urgent</div>
-    <app-room-list [rooms]="roomsCreated_Urgent
-                   | roomListFilter: searchText: currentSearchOption">
-    </app-room-list>
-    <div class="ui divider"></div>
-    <div class="ui medium header">Not Urgent</div>
-    <app-room-list [rooms]="roomsCreated_NotUrgent
-                   | roomListFilter: searchText: currentSearchOption">
-    </app-room-list>
-  </div>
-  <div class="ui bottom attached segment" suiTabContent="2">
     <div class="ui medium header">Urgent</div>
     <app-room-list [rooms]="roomsJoined_Urgent
                    | roomListFilter: searchText: currentSearchOption">
@@ -53,6 +42,17 @@
     <div class="ui divider"></div>
     <div class="ui medium header">Not Urgent</div>
     <app-room-list [rooms]="roomsJoined_NotUrgent
+                   | roomListFilter: searchText: currentSearchOption">
+    </app-room-list>
+  </div>
+  <div class="ui bottom attached segment" suiTabContent="2">
+    <div class="ui medium header">Urgent</div>
+    <app-room-list [rooms]="roomsCreated_Urgent
+                   | roomListFilter: searchText: currentSearchOption">
+    </app-room-list>
+    <div class="ui divider"></div>
+    <div class="ui medium header">Not Urgent</div>
+    <app-room-list [rooms]="roomsCreated_NotUrgent
                    | roomListFilter: searchText: currentSearchOption">
     </app-room-list>
   </div>
