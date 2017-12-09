@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit {
   public roomsJoined_NotUrgent: Room[];
   public latitude: number;
   public longitude: number;
-  public zoom: number;
 
   filters: FilterOptions[] = ["All", "Name", "Location"];
   searchText: string;

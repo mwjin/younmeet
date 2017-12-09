@@ -3,3 +3,12 @@ agm-map {
 }
 .gm-style
 div{color: #fff !important; font-weight: bold;}
+
+
+
+div.tab {
+  height: 210px;
+  overflow: scroll;
+}
+
+

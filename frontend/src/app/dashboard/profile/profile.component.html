@@ -3,15 +3,19 @@
 
 <app-dialog [(visible)]="showDialog">
   <h2 class="ui align-middle header">Check Password</h2>
-  <div class="ui left icon input">
+
+  <div class="ui left icon input fluid">
     <i class="lock icon"></i>
     <input type="password" name="passwordConfirm" placeholder="Password"
            [(ngModel)]="currPassword">
   </div>
-  <button (click)="checkCurrentPassword()" class="ui right submit button">Check
+  <br>
+  <button (click)="goBack()" class="ui left floated submit button">Back
   </button>
-  <button (click)="goBack()" class="ui right submit button">Go Back
+
+  <button (click)="checkCurrentPassword()" class="ui right floated submit button">Check
   </button>
+
 </app-dialog>
 
 <div *ngIf="currentUser">

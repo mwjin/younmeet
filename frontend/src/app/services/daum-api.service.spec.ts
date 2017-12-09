@@ -1,10 +1,10 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {TestBed, inject, async} from '@angular/core/testing';
 
 import { DaumApiService } from './daum-api.service';
 import {PlaceResponse, responseToPlace} from "./daum-rest-interfaces";
 import {Place} from "../models/place";
-import {Http, HttpModule, XHRBackend} from "@angular/http";
-import {MockBackend} from "@angular/http/testing";
+import {Http, HttpModule, ResponseOptions, XHRBackend, Response} from "@angular/http";
+import {MockBackend, MockConnection} from "@angular/http/testing";
 
 // TODO: Finish TEST!
 
@@ -89,5 +89,62 @@ describe('DaumApiService', () => {
     mockBackend = mb;
     daumAPIService = new DaumApiService(http);
   }));
+
+
+  describe('when get near recommended places', () => {
+    let fakePlaces: any;
+    let response: Response;
+    beforeEach(() => {
+      fakePlaces = {'documents': mockPlaceResponseData};
+    });
+
+    it('should get near restaurants', async(inject([], () => {
+      response = new Response(new ResponseOptions({ status : 200, body : fakePlaces }));
+      mockBackend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+      daumAPIService.getNearRestaurants(10, 10)
+        .then(responseData => {
+          expect(responseData.length).toBe(4);
+        });
+    })));
+
+    it('should get near cafes', async(inject([], () => {
+      response = new Response(new ResponseOptions({ status : 200, body : fakePlaces }));
+      mockBackend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+      daumAPIService.getNearCafes(10, 10)
+        .then(responseData => {
+          expect(responseData.length).toBe(4);
+        });
+    })));
+
+    it('should get near cultural faculties', async(inject([], () => {
+      response = new Response(new ResponseOptions({ status : 200, body : fakePlaces }));
+      mockBackend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+      daumAPIService.getNearCulturalFaculties(10, 10)
+        .then(responseData => {
+          expect(responseData.length).toBe(4);
+        });
+    })));
+  });
+
+  describe('when get queries', () => {
+    let fakePlaces: any;
+    let response: Response;
+
+    // query responses don't have distance as response
+    mockPlaceResponseData.forEach(res => delete res.distance);
+    beforeEach(() => {
+      fakePlaces = {'documents': mockPlaceResponseData};
+    });
+
+    it('should get queries', async(inject([], () => {
+      response = new Response(new ResponseOptions({ status : 200, body : fakePlaces }));
+      mockBackend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+      daumAPIService.getQueryPlaces('서울대입구역')
+        .then(responseData => {
+          expect(responseData.length).toBe(4);
+        });
+    })));
+  });
+
 
 });

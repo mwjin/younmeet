@@ -3,17 +3,17 @@ import { User } from '../models/user';
 export class AccountServiceSpy {
 
   private TEST_USERS = [
-      new User(0, 'Alice', 'alice@gmail.com', 'alice_ps'),
-      new User(1, 'Bob', 'bob@gmail.com', 'bob_ps'),
-      new User(2, 'Chris', 'chris@gmail.com', 'chris_ps'),
+      new User(1, 'Alice', 'alice@gmail.com', 'alice_ps'),
+      new User(2, 'Bob', 'bob@gmail.com', 'bob_ps'),
+      new User(3, 'Chris', 'chris@gmail.com', 'chris_ps'),
   ];
 
-  getUserDetail = jasmine.createSpy('getUser').and.callFake((id: number) => {
-    return Promise.resolve(this.TEST_USERS[id]);
+  getUserDetail = jasmine.createSpy('getUser').and.callFake(() => {
+    return Promise.resolve(this.TEST_USERS[0]);
   });
 
   putUser = jasmine.createSpy('putUser').and.callFake((user: User) => {
-    let found = this.TEST_USERS.filter(u => u.id === user.id)[0];
+    const found = this.TEST_USERS.filter(u => u.id === user.id)[0];
     found.username = user.username;
     found.email = user.email;
     found.password = user.password;

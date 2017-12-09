@@ -144,9 +144,15 @@
     </div>
 
     <!-- Place does not exist-->
+    <div *ngIf="!room.latitude">
+      <br>
+      <h2>Location not selected</h2>
+    </div>
     <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
       <br/>
-
       <button (click)="goPlaceChangePage()" class="ui button right floated">Select Place</button>
     </div>
   </div>
+<br/>
+  <br/>
+  <br/>
