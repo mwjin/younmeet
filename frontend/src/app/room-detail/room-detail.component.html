@@ -4,15 +4,17 @@
   <div class="ui grid">
     <div class="row">
       <div class="six wide column">
+        <!--
         <div class="ui fluid action input">
           <input type="text" [(ngModel)]="shareableLink" readonly="" #inputTarget>
-          <button class="ui teal right labeled icon button" type="button"
+          -->
+          <button class="ui teal left labeled icon button" type="button"
                   ngxClipboard [cbContent]="shareableLink" (cbOnSuccess)="isCopied = true">
             <i class="copy icon"></i>
-            <div *ngIf="!isCopied">Copy</div>
+            <div *ngIf="!isCopied">Copy Link</div>
             <div *ngIf="isCopied">Copied!</div>
           </button>
-        </div>
+        <!--</div>-->
       </div>
       <div class="eight wide column"></div>
       <div class="two wide column">
