@@ -10,6 +10,7 @@ export interface RoomResponse {
   place: string;
   latitude: number;
   longitude: number;
+  anonymity: boolean,
   best_start_time: Date;
   best_end_time: Date;
   min_time_required: number;
@@ -22,38 +23,39 @@ export interface RoomResponse {
 
 export function roomToResponse(room: Room): RoomResponse {
   return {
-    id: room.id,
-    hashid: room.hashid,
-    name: room.name,
-    place: room.place,
-    latitude: room.latitude,
-    longitude: room.longitude,
-    best_start_time: null,
-    best_end_time: null,
-    min_time_required: room.duration,
-    created_time: room.createdTime,
-    owner: room.owner.id,
-    members: room.users.map(user => user.id),
-    time_span_start: room.timespan.start,
-    time_span_end: room.timespan.end
-  }
+    id : room.id,
+    hashid : room.hashid,
+    name : room.name,
+    place : room.place,
+    latitude : room.latitude,
+    longitude : room.longitude,
+    anonymity : room.anonymity,
+    best_start_time : null,
+    best_end_time : null,
+    min_time_required : room.duration,
+    created_time : room.createdTime,
+    owner : room.owner.id,
+    members : room.users.map(user => user.id),
+    time_span_start : room.timespan.start,
+    time_span_end : room.timespan.end
+  };
 }
 
 export function roomFromResponse(res: RoomResponse): Room {
   return {
-    name: res.name,
-    hashid: res.hashid,
-    duration: res.min_time_required,
-    timespan: new Timespan(res.time_span_start, res.time_span_end),
-    anonymity: false,
-    place: res.place,
-    latitude: res.latitude,
-    longitude: res.longitude,
-    urgent: true,
-    createdTime: res.created_time,
-    users: res.members? res.members.map(id => new UserInfo(id)) : [],
-    owner: new UserInfo(res.owner),
-    id: res.id,
+    name : res.name,
+    hashid : res.hashid,
+    duration : res.min_time_required,
+    timespan : new Timespan(res.time_span_start, res.time_span_end),
+    anonymity : res.anonymity,
+    place : res.place,
+    latitude : res.latitude,
+    longitude : res.longitude,
+    urgent : true,
+    createdTime : res.created_time,
+    users : res.members ? res.members.map(id => new UserInfo(id)) : [],
+    owner : new UserInfo(res.owner),
+    id : res.id,
   };
 }
 
@@ -64,6 +66,7 @@ export interface RoomCreateRequest {
   min_members: number;
   time_span_start: Date;
   time_span_end: Date;
+  anonymity: boolean;
 }
 
 export function roomFormToCreateResponse(roomForm: CreateRoomForm): RoomCreateRequest {
@@ -72,7 +75,8 @@ export function roomFormToCreateResponse(roomForm: CreateRoomForm): RoomCreateRe
     place : '',
     min_time_required : roomForm.duration,
     min_members : roomForm.minPeople,
-    time_span_start : roomForm.timespan.start,
-    time_span_end : roomForm.timespan.end
+    time_span_start : roomForm.timeSpan.start,
+    time_span_end : roomForm.timeSpan.end,
+    anonymity : roomForm.anonymity
   };
 }
