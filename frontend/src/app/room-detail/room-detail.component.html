@@ -8,7 +8,7 @@
         <div class="ui fluid action input">
           <input type="text" [(ngModel)]="shareableLink" readonly="" #inputTarget>
           -->
-          <button class="ui teal left labeled icon button" type="button"
+          <button class="ui orange left labeled icon button" type="button"
                   ngxClipboard [cbContent]="shareableLink" (cbOnSuccess)="isCopied = true">
             <i class="copy icon"></i>
             <div *ngIf="!isCopied">Copy Link</div>
@@ -123,7 +123,9 @@
       <div class="ui bottom attached teal basic button" tabindex="0" (click)="viewMore()">View More</div>
     </div>
     <br/>
-    <button class="ui orange button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+    <button class="ui teal button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+
+    <div class="ui hidden divider"></div>
 
     <!-- If there exists Place -->
     <div *ngIf="room.latitude">
@@ -141,7 +143,7 @@
       </div>
       <br/>
       <div *ngIf="isRoomOwner" class="two wide column">
-        <button (click)="goPlaceChangePage()" class="ui green button right floated">Change</button>
+        <button (click)="goPlaceChangePage()" class="ui orange button right floated">Change Place</button>
       </div>
     </div>
 
@@ -151,7 +153,7 @@
     </div>
     <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
       <br/>
-      <button (click)="goPlaceChangePage()" class="ui green button right floated">Select Place</button>
+      <button (click)="goPlaceChangePage()" class="ui orange button right floated">Select Place</button>
     </div>
   </div>
 <br/>

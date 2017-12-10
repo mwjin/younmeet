@@ -8,11 +8,11 @@
       {{room.place}}
     </a>
   </div>
-  <button class="fluid blue basic ui button"
+  <button class="fluid orange basic ui button"
           *ngIf="rooms.length > numRoomsShown" (click)="numRoomsShown = rooms.length">
     View more
   </button>
-  <button class="fluid blue basic ui button"
+  <button class="fluid orange basic ui button"
           *ngIf="rooms.length <= numRoomsShown && rooms.length > numRoomsShownMin"
           (click)="numRoomsShown = numRoomsShownMin">
     View less

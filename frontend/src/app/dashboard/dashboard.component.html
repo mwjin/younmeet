@@ -1,18 +1,20 @@
-<h1>Dashboard</h1>
+<img src="../../assets/images/dashboard_orange.png" width="220" height="50">
 <div class="ui grid">
-  <div class="eight wide column">
-    <button class="ui green button" [routerLink]="['/room/create']">
+  <div class="sixteen wide column">
+    <button class="ui teal button right floated" [routerLink]="['/room/create']">
       Create
     </button>
   </div>
+</div>
+<div class="ui hidden divider"></div>
+
+<div>
   <div class="four wide column">
     <div class="ui search icon input">
       <i class="search icon"></i>
       <input type="text" name="search" placeholder="Search Rooms"
-             [(ngModel)]="searchText" size="auto">
+             [(ngModel)]="searchText" size="16">
     </div>
-  </div>
-  <div class="four wide column">
     <sui-select class="ui yellow right floated labeled icon button"
                 icon="filter"
                 [options]="filters"
@@ -28,6 +30,7 @@
     </sui-select>
   </div>
 </div>
+<div class="ui hidden divider"></div>
 <sui-tabset>
   <div class="ui top attached tabular menu">
     <a class="item" suiTabHeader="1">Joined</a>

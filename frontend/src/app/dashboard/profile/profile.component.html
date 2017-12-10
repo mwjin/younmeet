@@ -10,7 +10,7 @@
            [(ngModel)]="currPassword">
   </div>
   <br>
-  <button (click)="checkCurrentPassword()" class="ui right floated submit pink button">Check
+  <button (click)="checkCurrentPassword()" class="ui right floated submit teal button">Check
   </button>
   <button (click)="goBack()" class="ui right floated submit yellow button">Back
   </button>
@@ -63,7 +63,7 @@
         <div *ngIf="passwordConfirm.hasError('invalidPasswordConfirm')&&passwordConfirm.touched"
              class="ui error message"> Must match password.
         </div>
-        <button class="ui right floated submit pink button"
+        <button class="ui right floated submit teal button"
                 type="submit"
                 [disabled]="!passwordForm.valid">Submit
         </button>
