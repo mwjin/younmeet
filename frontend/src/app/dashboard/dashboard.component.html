@@ -1,4 +1,13 @@
-<img src="../../assets/images/dashboard_orange.png" width="220" height="50">
+
+<h2 id="dashboard">
+  Dashboard
+</h2>
+<!--
+<img src="../../assets/images/dashboard_yellow.png"
+     width="220" height="50" draggable="false">
+
+-->
+<!--
 <div class="ui grid">
   <div class="sixteen wide column">
     <button class="ui teal button right floated" [routerLink]="['/room/create']">
@@ -6,6 +15,7 @@
     </button>
   </div>
 </div>
+-->
 <div class="ui hidden divider"></div>
 
 <div>
@@ -15,7 +25,11 @@
       <input type="text" name="search" placeholder="Search Rooms"
              [(ngModel)]="searchText" size="16">
     </div>
-    <sui-select class="ui yellow right floated labeled icon button"
+    <button class="ui yellow button right floated" [routerLink]="['/room/create']">
+      Create
+    </button>
+    <!--
+    <sui-select class="ui orange right floated labeled icon button"
                 icon="filter"
                 [options]="filters"
                 [isSearchable]="true"
@@ -28,13 +42,14 @@
       </div>
       <sui-select-option *ngFor="let o of filterSelect.filteredOptions" [value]="o"></sui-select-option>
     </sui-select>
+    -->
   </div>
 </div>
 <div class="ui hidden divider"></div>
 <sui-tabset>
   <div class="ui top attached tabular menu">
-    <a class="item" suiTabHeader="1">Joined</a>
-    <a class="item" suiTabHeader="2">Created</a>
+    <a id="joined" class="item" suiTabHeader="1">Joined</a>
+    <a id="created" class="item" suiTabHeader="2">Created</a>
   </div>
   <div class="ui bottom attached segment" suiTabContent="1">
     <app-room-list [rooms]="roomsJoined_Urgent

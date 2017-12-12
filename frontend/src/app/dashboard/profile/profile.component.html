@@ -1,8 +1,6 @@
 <body>
-
-
 <app-dialog [(visible)]="showDialog">
-  <h2 class="ui align-middle header">Check Password</h2>
+  <img src="../../../assets/images/check_password_orange.png" width="270" height="40">
 
   <div class="ui left icon input fluid">
     <i class="lock icon"></i>
@@ -20,11 +18,12 @@
 <div *ngIf="currentUser">
     <div class="ui main text container">
       <div class="column">
-        <h2 class="ui align-middle header">
+        <h2 id="username" class="ui align-middle header">
           {{currentUser.username}}
-          <button class="ui yellow button right floated" (click)="goBack()">Back</button>
         </h2>
       </div>
+      <button class="ui yellow button right floated" (click)="goBack()">Back</button>
+
     </div>
 
     <div class="ui main text container">

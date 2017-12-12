@@ -120,10 +120,10 @@
     </div>
 
     <div *ngIf="showingBestTimes < bestTimes.length">
-      <div class="ui bottom attached teal basic button" tabindex="0" (click)="viewMore()">View More</div>
+      <div class="ui bottom attached yellow basic button" tabindex="0" (click)="viewMore()">View More</div>
     </div>
     <br/>
-    <button class="ui teal button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+    <button class="ui yellow button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
 
     <div class="ui hidden divider"></div>
 
@@ -143,7 +143,7 @@
       </div>
       <br/>
       <div *ngIf="isRoomOwner" class="two wide column">
-        <button (click)="goPlaceChangePage()" class="ui orange button right floated">Change Place</button>
+        <button (click)="goPlaceChangePage()" class="ui yellow button right floated">Change Place</button>
       </div>
     </div>
 
@@ -153,7 +153,7 @@
     </div>
     <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
       <br/>
-      <button (click)="goPlaceChangePage()" class="ui orange button right floated">Select Place</button>
+      <button (click)="goPlaceChangePage()" class="ui yellow button right floated">Select Place</button>
     </div>
   </div>
 <br/>

@@ -52,3 +52,16 @@ div.tab {
 .auto-complete ul li:hover {
   background-color: powderblue;
 }
+
+
+h1 {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 250%
+}
+
+h2 {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 200%
+}

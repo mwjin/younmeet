@@ -4,15 +4,15 @@
   | slice: 0: numRoomsShown
   as filteredRooms">
     <a [routerLink]="['/room', room.hashid]" class="content">
-      <div class="header">{{room.name}}</div>
+      <div id="room-name" class="header">{{room.name}}</div>
       {{room.place}}
     </a>
   </div>
-  <button class="fluid orange basic ui button"
+  <button class="fluid teal basic ui button"
           *ngIf="rooms.length > numRoomsShown" (click)="numRoomsShown = rooms.length">
     View more
   </button>
-  <button class="fluid orange basic ui button"
+  <button class="fluid teal basic ui button"
           *ngIf="rooms.length <= numRoomsShown && rooms.length > numRoomsShownMin"
           (click)="numRoomsShown = numRoomsShownMin">
     View less
