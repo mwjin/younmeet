@@ -19,7 +19,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="email/username" placeholder="Email/Username"
+              <input id="email" type="text" name="email/username" placeholder="Email/Username"
                      [formControl]="loginForm.controls['email/username']">
             </div>
           </div>
@@ -27,7 +27,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" name="password" placeholder="Password"
+              <input id="password" class="input" type="password" name="password" placeholder="Password"
                      [formControl]="loginForm.controls['password']">
             </div>
           </div>

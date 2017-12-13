@@ -2,8 +2,9 @@
 <div class="ui fixed menu">
   <div class="ui container">
 
-    <a class="header item" href="dashboard">
-      <img class="ui icon" src="../assets/images/logo_white.png" width="85" height="20">
+    <a class="header item" href="dashboard" draggable="false">
+      <img class="ui icon" src="../assets/images/logo_white.png" width="85" height="20"
+        draggable="false">
 
     </a>
     <div *ngIf="hasCurrentUser()" class="ui simple right aligned dropdown item">
@@ -11,10 +12,10 @@
            width="15" height="15">
       <div class="menu">
         <div class="header">
-          <a href="profile" style="color:black">Profile</a>
+          <a href="profile" style="color:black" draggable="false">Profile</a>
         </div>
         <div class="header">
-          <a (click)="logOut()" style="color:black; cursor: pointer">LogOut</a>
+          <a (click)="logOut()" style="color:black; cursor: pointer" draggable="false">LogOut</a>
         </div>
       </div>
     </div>
