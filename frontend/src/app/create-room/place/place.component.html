@@ -42,9 +42,9 @@
         <div class="tab ui bottom attached segment" suiTabContent="1">
           <div class = "ui relaxed divided list">
             <div class="item" *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
-              <div class="header">{{rest.name}}</div>
-              <div>{{rest.category}}</div>
-              <a (click)="goToUrl(rest)">Details</a>
+              <div class="header not-details">{{rest.name}}</div>
+              <div class="not-details">{{rest.category}}</div>
+              <a class="details" (click)="goToUrl(rest)">Details</a>
             </div>
           </div>
         </div>
@@ -52,9 +52,9 @@
           <div class ="ui relaxed divided list">
             <div class="item" *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
               <div class="content">
-                <div class="header">{{cafe.name}}</div>
-                <div>{{cafe.category}}</div>
-                <a (click)="goToUrl(cafe)">Details</a>
+                <div class="header not-details">{{cafe.name}}</div>
+                <div class="not-details">{{cafe.category}}</div>
+                <a class="details" (click)="goToUrl(cafe)">Details</a>
               </div>
             </div>
           </div>
@@ -63,9 +63,9 @@
           <div class = "ui relaxed divided list">
             <div class="item" *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
               <div class="content">
-                <div class="header">{{cf.name}}</div>
-                <div>{{cf.category}}</div>
-                <a (click)="goToUrl(cf)">Details</a>
+                <div class="header not-details">{{cf.name}}</div>
+                <div class="not-details">{{cf.category}}</div>
+                <a class="details" (click)="goToUrl(cf)">Details</a>
               </div>
             </div>
           </div>

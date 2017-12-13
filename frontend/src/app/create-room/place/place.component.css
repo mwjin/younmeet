@@ -66,11 +66,9 @@ h2 {
   font-size: 200%
 }
 
-/*
-#room-name {
-  color: #5C656E;
+.not-details {
+  color: #5C656E !important;
 }
-*/
 
 .tab-header {
   color: #FB6F24 !important;
@@ -80,11 +78,8 @@ h2 {
 orange: #F56E0E
 teal: #02B7A9
  */
-
-#created {
-  color: #FB6F24;
-  font-family: Kollektif;
-  font-size: 120%
+.details {
+  color: #02B7A9;
 }
 
 
