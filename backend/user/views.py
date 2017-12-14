@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 from user.models import User
 from room.models import Room
 import json
-
+from datetime import datetime
 
 """
 @ensure_csrf_cookie
@@ -112,7 +112,9 @@ def user_owned_room_list(request):
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        return JsonResponse(list(user.owned_rooms.all().values()), safe=False)
+        current_date = datetime.now()
+        return JsonResponse(list(filter(lambda room: room['time_span_end'] > current_date,
+                                        list(user.owned_rooms.all().values()))), safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -125,7 +127,9 @@ def user_joined_room_list(request):
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        return JsonResponse(list(user.joined_rooms.all().values()), safe=False)
+        current_date = datetime.now()
+        return JsonResponse(list(filter(lambda room: room['time_span_end'] > current_date,
+                                        list(user.joined_rooms.all().values()))), safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -144,4 +148,3 @@ def check_password(request):
             return JsonResponse(False, safe=False)
     else:
         return HttpResponseNotAllowed(['POST'])
-
