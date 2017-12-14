@@ -44,7 +44,7 @@
   <div *ngIf="bestTimes">
     <div class="ui attached segment">
       <div *ngIf="bestTimes.length == 0">
-        <h4>No Recommended Times Yet!</h4>
+        <h4 class="recommended-times">No Recommended Times Yet!</h4>
       </div>
       <div *ngIf="room.anonymity;then hideName else revealName"></div>
 
@@ -53,7 +53,7 @@
           <div *ngIf="i < showingBestTimes">
             <div class="item">
               <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
-              <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+              <b class="recommended-times">{{bestTime.getDate()[0]}}: &nbsp;</b>
               {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
               ({{bestTime.getDuration()}})
               <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
