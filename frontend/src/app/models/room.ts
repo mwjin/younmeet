@@ -13,7 +13,7 @@ export interface Room {
   longitude: number;
   urgent: boolean;
   createdTime: Date;
-  users: UserInfo[];
+  member_count: number;
   owner: UserInfo;
   id?: number;
 }
