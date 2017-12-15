@@ -39,11 +39,12 @@ import { TutorialComponent } from './tutorial/tutorial.component';
 import { SwiperConfigInterface, SwiperModule } from 'ngx-swiper-wrapper';
 import { NonUserNotAllowedComponent } from './non-user-not-allowed/non-user-not-allowed.component';
 import { NonUserGuard } from './guard/non-user.guard';
+import { UserGuard } from "./guard/user.guard";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
   { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
-  { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
+  { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard, UserGuard ] },
   { path : 'room/:hash', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'link/:hash', redirectTo : 'room/:hash', pathMatch : 'full' },
   { path : 'login', component : LoginComponent, resolve: [ IsLoggedIn ] },
@@ -51,7 +52,7 @@ const routes: Routes = [
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
-  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
+  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard, UserGuard ] },
   { path : 'tutorial', component : TutorialComponent },
   { path : 'not_found', component : NotFoundComponent },
   { path : 'not_allowed', component : NonUserNotAllowedComponent, canActivate: [ NonUserGuard ] },
@@ -128,6 +129,7 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     GoogleScheduleService,
     DaumApiService,
     AuthGuard,
+    UserGuard,
     NonUserGuard,
     IsLoggedIn,
   ],

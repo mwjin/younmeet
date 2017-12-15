@@ -44,12 +44,6 @@ export class ProfileComponent implements OnInit {
       .then(user => {
         this.currentUser = user;
 
-        console.log(user);
-
-        if (user.is_fake) {
-          this.goNotAllowedPage();
-        }
-
         // password change form
         this.passwordForm = this.formBuilder.group({
           'currentPassword' : [ '', ],
