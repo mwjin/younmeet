@@ -11,6 +11,7 @@ export class TutorialComponent implements OnInit {
   private tutorialUrl = '../../assets/images/tutorial/';
 
   public slides = [
+    this.tutorialUrl + 'testing.png',
     this.tutorialUrl + 'login.png',
     this.tutorialUrl + 'dashboard.png',
     this.tutorialUrl + 'room_detail.png',
