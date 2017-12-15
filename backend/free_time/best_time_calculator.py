@@ -1,6 +1,5 @@
 from .time_count_tree import TimeCountTree
 from .best_time_heap import BestTimeHeap
-from functools import reduce
 
 
 class BestTimeCalculator:
