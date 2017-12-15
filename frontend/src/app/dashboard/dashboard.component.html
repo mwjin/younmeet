@@ -18,13 +18,28 @@
 -->
 <div class="ui hidden divider"></div>
 
-<div>
+<div class="ui grid">
   <div class="four wide column">
     <div class="ui search icon input">
       <i class="search icon"></i>
       <input type="text" name="search" placeholder="Search Rooms"
              [(ngModel)]="searchText" size="16">
     </div>
+  </div>
+  <div class="four wide column">
+    <sui-select class="ui orange right floated icon button"
+                icon="sort"
+                [options]="sortOptions"
+                placeholder="Best Time" #sortSelect
+                [(ngModel)]="currentSortOption">
+      <div class="header">
+        <i class="tags icon"></i>
+      </div>
+      <sui-select-option *ngFor="let o of sortOptions" [value]="o"></sui-select-option>
+    </sui-select>
+  </div>
+  <div class="four wide column"></div>
+  <div class="four wide column">
     <button class="ui yellow button right floated" [routerLink]="['/room/create']">
       Create
     </button>
@@ -43,6 +58,7 @@
       <sui-select-option *ngFor="let o of filterSelect.filteredOptions" [value]="o"></sui-select-option>
     </sui-select>
     -->
+
   </div>
 </div>
 <div class="ui hidden divider"></div>
@@ -52,13 +68,13 @@
     <a id="created" class="item" suiTabHeader="2">Created</a>
   </div>
   <div class="ui bottom attached segment" suiTabContent="1">
-    <app-room-list [rooms]="roomsJoined_Urgent
-                   | roomListFilter: searchText: currentSearchOption">
+    <app-room-list [rooms]="roomsJoined
+                   | roomSorter: currentSortOption">
     </app-room-list>
   </div>
   <div class="ui bottom attached segment" suiTabContent="2">
-    <app-room-list [rooms]="roomsCreated_Urgent
-                   | roomListFilter: searchText: currentSearchOption">
+    <app-room-list [rooms]="roomsCreated
+                   | roomSorter: currentSortOption">
     </app-room-list>
 
   </div>

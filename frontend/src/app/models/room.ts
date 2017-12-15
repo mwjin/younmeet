@@ -7,12 +7,13 @@ export interface Room {
   hashid: string;
   duration: number;
   timespan: Timespan;
+  bestTimespan: Timespan;
   anonymity: boolean;
   place: string;
   latitude: number;
   longitude: number;
   createdTime: Date;
-  member_count: number;
+  memberCount: number;
   owner: UserInfo;
   id?: number;
 }

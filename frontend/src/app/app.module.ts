@@ -35,6 +35,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
 import {Ng2AutoCompleteModule} from "ng2-auto-complete";
 import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import { RoomListSortPipe } from './dashboard/room-list-sort.pipe';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -74,7 +75,7 @@ export function MyCookieStrategy() {
     RoomListComponent,
     CreateRoomComponent,
     RoomDetailComponent,
-    RoomListFilterPipe,
+    RoomListSortPipe,
     TimeSelectComponent,
     ProfileComponent,
     PlaceComponent,

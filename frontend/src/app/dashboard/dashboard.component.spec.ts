@@ -10,6 +10,7 @@ import {MeetService} from "../services/meet.service";
 import {SuiModule} from "ng2-semantic-ui";
 import {FormsModule} from "@angular/forms";
 import { RoomListFilterPipe } from './room-list-filter.pipe';
+import { RoomListSortPipe } from './room-list-sort.pipe';
 
 @Component({
   template: ``
@@ -34,7 +35,7 @@ describe('DashboardComponent', () => {
         DashboardComponent,
         CreateRoomComponentMock,
         RouterLinkStubDirective,
-        RoomListFilterPipe,
+        RoomListSortPipe,
         MockComponent({ selector: 'app-room-list', inputs: ['rooms', 'searchText', 'searchOption'] })
       ],
       providers: [
