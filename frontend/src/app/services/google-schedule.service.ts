@@ -6,8 +6,8 @@ import { Timespan } from '../models/timespan';
 
 @Injectable()
 export class GoogleScheduleService implements OnDestroy {
-  CLIENT_ID = '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com';
-  API_KEY = 'AIzaSyDomeH3v19BXwuysY3wFhtoDk_CIyza65A';
+  CLIENT_ID = '25518841710-5n8lt12ndapgo13uina8o36sb97dncol.apps.googleusercontent.com';
+  API_KEY = 'AIzaSyCwB4a9uBGMkgK3SoZoHaZyB5eEHYqFjXU';
   DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
