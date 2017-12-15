@@ -52,5 +52,5 @@ app-root {
 
 @font-face {
   font-family: 'Kollektif';
-  src: local('./assets/Fonts/Kollektif.ttf');
+  src: url('./assets/Fonts/Kollektif.ttf');
 }
