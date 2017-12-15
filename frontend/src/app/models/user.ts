@@ -3,5 +3,6 @@ export class User {
               public username: string,
               public email: string,
               public password: string,
-              public name: string) {}
+              public name: string,
+              public is_fake: boolean = false) {}
 }

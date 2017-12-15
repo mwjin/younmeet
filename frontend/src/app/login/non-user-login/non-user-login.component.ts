@@ -14,8 +14,7 @@ export class NonUserLoginComponent implements OnInit {
   signUpForm: FormGroup;
   name: AbstractControl;
 
-  constructor(private accountService: AccountService,
-              private router: Router,
+  constructor(private router: Router,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService) {
 
