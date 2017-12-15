@@ -1,3 +1,10 @@
-<p>
-  non-user-not-allowed works!
-</p>
+<sui-modal [isClosable]="true" (dismissed)="goBack()" #modal>
+  <div class="header">Non-Users are Forbidden</div>
+  <div class="content">
+    <!-- Name Input -->
+    <h4>This page is allowed for only regular users.</h4>
+    <button class="ui green button" (click)="modal.approve('done'); goSignUp()" autofocus>Sign Up</button>
+    <button class="ui red button" (click)="modal.deny(); goBack()">Back</button>
+  </div>
+</sui-modal>
+

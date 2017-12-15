@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Location} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-non-user-not-allowed',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NonUserNotAllowedComponent implements OnInit {
 
-  constructor() {}
+  constructor(private location: Location, private router: Router) {}
 
   ngOnInit() {
   }
 
+  goBack(): void {
+    this.location.back();
+  }
+
+  goSignUp(): void {
+    this.router.navigate(['signup']);
+  }
 }

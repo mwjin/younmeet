@@ -18,7 +18,7 @@ export class UserGuard implements CanActivate {
         if (!user.is_fake) {
           return true;
         } else {
-          this.router.navigate(['not-allowed']);
+          this.router.navigate(['not_allowed']);
           return false;
         }
       }
