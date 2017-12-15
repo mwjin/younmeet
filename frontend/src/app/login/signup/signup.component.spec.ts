@@ -97,7 +97,7 @@ describe('SignupComponent', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         expect(accountServiceSpy.postUserSignUp)
-            .toHaveBeenCalledWith(email, username, password, name);
+            .toHaveBeenCalledWith(username, email, password, name);
         expect(authServiceSpy.logIn)
             .toHaveBeenCalledWith(username, password);
       });
