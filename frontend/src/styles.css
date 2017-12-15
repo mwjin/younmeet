@@ -10,9 +10,9 @@
 }
 
 .fc-event {
-  background-color: black;
+  background-color: #FFBC06;
   font-size: .90em;
-  border: solid 1px black;
+  border: solid 1px #FFBC06;
 }
 
 .fc-unthemed td.fc-today {
@@ -52,5 +52,5 @@ app-root {
 
 @font-face {
   font-family: 'Kollektif';
-  src: local('./assets/Fonts/Kollektif.ttf');
+  src: url('assets/Fonts/Kollektif.ttf');
 }

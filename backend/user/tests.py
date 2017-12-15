@@ -220,7 +220,7 @@ class UserTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data), 1)
-        self.assertEqual(len([room for room in data if room['owner_id'] == 1]), 1)
+        self.assertEqual(len([room for room in data if room['owner'] == 1]), 1)
 
     def test_user_owned_room_list_invalid_methods(self):
         response = self.client.post('/api/signin',
