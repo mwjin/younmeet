@@ -45,7 +45,7 @@ export class RoomDetailComponent implements OnInit {
     this.route.params
       .flatMap(params => {
         const roomHash = params[ 'hash' ];
-        this.shareableLink = `http://localhost:4200/link/${roomHash}`;
+        this.shareableLink = window.location.href.replace("room", "link");
         return this.meetService.getRoomByHash(roomHash, true);
       })
       .flatMap(room => {
