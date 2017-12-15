@@ -15,7 +15,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class SignupComponent implements OnInit {
   signUpForm: FormGroup;
   email: AbstractControl;
-  username: AbstractControl;
+  username: AbstractControl;  // ID
   password: AbstractControl;
   passwordConfirm: AbstractControl;
 
