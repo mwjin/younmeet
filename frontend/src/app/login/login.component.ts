@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         if (isSignInSuccess) {
           const redirectUrl = this.authenticationService.redirectUrl;
           if (redirectUrl) {
-            this.router.navigateByUrl(this.redirectUrl);
+            this.router.navigateByUrl(redirectUrl);
           } else {
             this.router.navigate([ 'dashboard' ]);
           }
