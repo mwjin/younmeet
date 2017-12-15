@@ -15,12 +15,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/mergeMap';
 
+
 @Component({
   selector : 'app-time-select',
   templateUrl : './time-select.component.html',
   styleUrls : [ './time-select.component.css' ],
 })
-
 export class TimeSelectComponent implements OnInit, OnDestroy {
   private timeSpan: Timespan;
   public previousFreeTimes: Freetime[];
@@ -30,6 +30,9 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   private syncButton: HTMLElement;
   private cancelButton: HTMLElement;
 
+  private timeViewRanges: string[];
+  private viewStart: number;
+  private viewEnd: number;
   currentRoom: Room;
 
   constructor(private location: Location,
@@ -50,8 +53,23 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       .flatMap(room => {
         this.currentRoom = room;
         this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
-        this.timeSpan.start.setDate(this.timeSpan.start.getDate() + 1);
-        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 2);
+        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
+        this.timeViewRanges = [];
+
+        let date: Date = this.timeSpan.start;
+        while (this.compareTwoDateJustDate(date, this.timeSpan.end) <= 0) {
+          this.timeViewRanges.push(this.convertDateToMomentString(date));
+          date.setDate(date.getDate() + 1);
+        }
+
+        if (this.timeViewRanges.length > 3) {
+          this.viewStart = 0;
+          this.viewEnd = 3;
+        } else {
+          this.viewStart = 0;
+          this.viewEnd = this.timeViewRanges.length - 1;
+        }
+
         return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
       })
       .subscribe(freeTimes => {
@@ -93,13 +111,74 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       });
   }
 
+  public seePreviousDays(): void {
+    // if user can press this button, it means that viewStart >= 3
+    if (this.viewEnd - this.viewStart < 3) {
+      this.viewStart -= 3;
+      this.viewEnd = this.viewStart + 3;
+    } else {
+      this.viewStart -= 3;
+      this.viewEnd -= 3;
+    }
+    $('#calendar').fullCalendar('option', 'visibleRange', {
+      'start' : this.timeViewRanges[ this.viewStart ]
+      , 'end' : this.timeViewRanges[ this.viewEnd ]
+    });
+  }
+
+  public seeNextDays(): void {
+    // if user can press this button, it means that viewEnd <= viewRangeLength
+    if (this.viewEnd + 3 >= this.timeViewRanges.length) {
+      this.viewEnd = this.timeViewRanges.length - 1;
+      this.viewStart += 3;
+    } else {
+      this.viewEnd += 3;
+      this.viewStart += 3;
+    }
+    $('#calendar').fullCalendar('option', 'visibleRange', {
+      'start' : this.timeViewRanges[ this.viewStart ]
+      , 'end' : this.timeViewRanges[ this.viewEnd ]
+    });
+  }
+
+  private compareTwoDateJustDate(date1: Date, date2: Date) {
+    if (date1.getFullYear() === date2.getFullYear()) {
+      if (date1.getMonth() === date2.getMonth()) {
+        return date1.getDate() - date2.getDate();
+      }
+      return date1.getMonth() - date2.getMonth();
+    }
+    return date1.getFullYear() - date2.getFullYear();
+  }
+
+  private convertDateToMomentString(date: Date): string {
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const day = date.getDate();
+
+    let momentString = '';
+    momentString += year.toString();
+    momentString += '-';
+    if (month.toString().length === 1) {
+      momentString += '0';
+    }
+    momentString += month.toString();
+    momentString += '-';
+    if (day.toString().length === 1) {
+      momentString += '0';
+    }
+    momentString += day.toString();
+    return momentString;
+  }
+
   private setCalendarOptions() {
     this.calendarOptions = {
       locale : 'ko',
       slotDuration : '00:10:00', // set slot duration
       scrollTime : '09:00:00', // start scroll from 9AM
-      height : 650,
+      height : 600,
       // Do not Modify Below This Comment
+      columnFormat : 'ddd M/D',
       eventOverlap : function (stillEvent, movingEvent) {
         return stillEvent.name === 'googleSchedule';
       },
@@ -109,8 +188,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
         }
       },
       visibleRange : {
-        'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
-        , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
+        'start' : this.timeViewRanges[ this.viewStart ]
+        , 'end' : this.timeViewRanges[ this.viewEnd ]
       },
       events : this.previousFreeTimes,
       timezone : 'local',

@@ -58,6 +58,16 @@ export class MeetService {
       .catch(handleError);
   }
 
+  getRoomsJoinedPast(): Promise<Room[]> {
+    return this.http.get(`api/user/joined-rooms/past`)
+      .toPromise()
+      .then(res => res.json() as RoomResponse[])
+      .then(roomDataList => roomDataList.map(
+        roomData => roomFromResponse(roomData)
+      ))
+      .catch(handleError);
+  }
+
   handleRoomResponse(room: Promise<Response>): Promise<Room> {
     return room
       .then(res => res.json() as RoomResponse)
@@ -91,16 +101,9 @@ export class MeetService {
   }
 
   getCurrentRoom(route: ActivatedRoute): Observable<Room> {
-    //if (this.currentRoom === null) {
     return route.params
       .map(params => params[ 'hash' ])
       .flatMap(hash => this.getRoomByHash(hash, true));
-    /*
-    }
-    else {
-      return Observable.of(this.currentRoom);
-    }
-    */
   }
 
   getUsersInRoom(id: number): Promise<UserInfo[]> {

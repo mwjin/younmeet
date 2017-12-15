@@ -9,11 +9,11 @@ export class AccountServiceSpy {
   ];
 
   getUserDetail = jasmine.createSpy('getUser').and.callFake(() => {
-    return Promise.resolve(this.TEST_USERS[0]);
+    return Promise.resolve(this.TEST_USERS[ 0 ]);
   });
 
   putUser = jasmine.createSpy('putUser').and.callFake((user: User) => {
-    const found = this.TEST_USERS.filter(u => u.id === user.id)[0];
+    const found = this.TEST_USERS.filter(u => u.id === user.id)[ 0 ];
     found.username = user.username;
     found.email = user.email;
     found.password = user.password;

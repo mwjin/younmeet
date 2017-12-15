@@ -139,7 +139,7 @@ describe('AccountService', () => {
       }));
 
       it('could delete a user', async(inject([], () => {
-        response = new Response(new ResponseOptions({ status : 200, body : true }));
+        response = new Response(new ResponseOptions({ status : 204, body : true }));
         backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
         service.deleteUser()
           .then(result => {

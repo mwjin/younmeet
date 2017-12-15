@@ -4,24 +4,28 @@ from user.models import User
 from room.models import Room
 import json
 
+from datetime import datetime, timedelta
+
+
 # Create your tests here.
 class UserTestCase(TestCase):
     def setUp(self):
         user1 = User.objects.create_user(email='minu@snu.ac.kr', password='1234', username='minu', name='Minwoo')
         user2 = User.objects.create_user(email='taebum@snu.ac.kr', password='1234', username='taebum', name='Taebum')
+        current_date = datetime.now()
 
         room1 = Room.objects.create(name="room1",
                                     place="place1",
-                                    time_span_start=None,
-                                    time_span_end=None,
+                                    time_span_start=current_date + timedelta(days=3),
+                                    time_span_end=current_date + timedelta(days=6),
                                     min_time_required=None,
                                     owner=user1
                                     )
 
         room2 = Room.objects.create(name="room2",
                                     place="place2",
-                                    time_span_start=None,
-                                    time_span_end=None,
+                                    time_span_start=current_date - timedelta(days=6),
+                                    time_span_end=current_date - timedelta(days=3),
                                     min_time_required=None,
                                     owner=user2
                                     )
@@ -247,6 +251,44 @@ class UserTestCase(TestCase):
                                       HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
+    def test_user_joined_room_past_unauth(self):
+        response = self.client.get('/api/user/joined-rooms/past')
+        self.assertEqual(response.status_code, 401)  # Unauthorized
+
+    def test_user_joined_room_past_get(self):
+        self.client.login(email='minu@snu.ac.kr', password='1234')
+        response = self.client.get('/api/user/joined-rooms/past')
+
+        data = json.loads(response.content.decode())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 1)
+
+    def test_user_joined_room_past_invalid_methods(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+
+        response = self.client.post('/api/user/joined-rooms/past',
+                                    json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/user/joined-rooms/past',
+                                   json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                   content_type='application/json',
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/user/joined-rooms/past',
+                                      json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                      content_type='application/json',
+                                      HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
     def test_user_joined_room_list_unauth(self):
         response = self.client.get('/api/user/joined-rooms')
         self.assertEqual(response.status_code, 401)  # Unauthorized
@@ -258,7 +300,7 @@ class UserTestCase(TestCase):
         data = json.loads(response.content.decode())
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(data), 2)
+        self.assertEqual(len(data), 1)
 
     def test_user_joined_room_list_invalid_methods(self):
         response = self.client.post('/api/signin',
@@ -302,7 +344,8 @@ class UserTestCase(TestCase):
             User.objects.create_superuser(email='superman@snu.ac.kr', password='super', username='root', is_staff=False)
 
         with self.assertRaises(ValueError):
-            User.objects.create_superuser(email='superman@snu.ac.kr', password='super', username='root', is_superuser=False)
+            User.objects.create_superuser(email='superman@snu.ac.kr', password='super', username='root',
+                                          is_superuser=False)
 
     def test_create_user_no_email(self):
         with self.assertRaises(ValueError):
@@ -361,7 +404,7 @@ class UserTestCase(TestCase):
                                     HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content.decode())
-        self.assertEqual(data, False    )
+        self.assertEqual(data, False)
 
     def test_check_password_put_password(self):
         response = self.client.post('/api/signin',
@@ -377,5 +420,4 @@ class UserTestCase(TestCase):
                                    )
         self.assertEqual(response.status_code, 405)
 
-
-                #  endregion
+        #  endregion

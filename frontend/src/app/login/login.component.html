@@ -1,4 +1,4 @@
-<body>
+<body style="overflow:hidden;">
   <div class="ui middle aligned center aligned grid">
     <div class="column">
       <img src="../../assets/images/login.png" width="320" draggable="false">
@@ -46,6 +46,9 @@
       </div>
       <div *ngIf="redirectUrl" class="ui message">
         Annoying to sign up? &nbsp; <a [routerLink]="['/login','non-user']"> Log In without Sign Up</a>
+      </div>
+      <div class="ui message">
+        New to You & MEet? &nbsp; <a [routerLink]="['/tutorial']">Watch Tutorial</a>
       </div>
     </div>
   </div>

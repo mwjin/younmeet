@@ -144,7 +144,7 @@ export class PlaceComponent implements OnInit {
     );
   }
 
-  private goBack(): void {
+  public goBack(): void {
     this.location.back();
   }
 

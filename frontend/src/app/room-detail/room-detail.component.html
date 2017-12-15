@@ -8,17 +8,17 @@
         <div class="ui fluid action input">
           <input type="text" [(ngModel)]="shareableLink" readonly="" #inputTarget>
           -->
-          <button class="ui orange left labeled icon button" type="button"
-                  ngxClipboard [cbContent]="shareableLink" (cbOnSuccess)="isCopied = true">
-            <i class="copy icon"></i>
-            <div *ngIf="!isCopied">Copy Link</div>
-            <div *ngIf="isCopied">Copied!</div>
-          </button>
+        <button class="ui orange left labeled icon button" type="button"
+                ngxClipboard [cbContent]="shareableLink" (cbOnSuccess)="isCopied = true">
+          <i class="copy icon"></i>
+          <div *ngIf="!isCopied">Copy Link</div>
+          <div *ngIf="isCopied">Copied!</div>
+        </button>
         <!--</div>-->
       </div>
-      <div class="eight wide column"></div>
-      <div class="two wide column">
+      <div class="ten wide column">
         <button (click)="goBack()" class="ui yellow button right floated">Back</button>
+        <button *ngIf="isRoomOwner" (click)="deleteRoom()" class="ui orange button right floated">Delete Room</button>
       </div>
     </div>
   </div>
@@ -149,13 +149,13 @@
 
     <!-- Place does not exist-->
     <div *ngIf="!room.latitude">
-          <h2>Location not selected</h2>
+      <h2>Location not selected</h2>
     </div>
     <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
       <br/>
       <button (click)="goPlaceChangePage()" class="ui yellow button right floated">Select Place</button>
     </div>
   </div>
-<br/>
+  <br/>
   <br/>
   <br/>

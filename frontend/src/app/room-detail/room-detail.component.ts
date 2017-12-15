@@ -10,7 +10,7 @@ import { UserInfo } from '../models/user-info';
 import { BesttimeResponseData } from '../services/besttime-response-data';
 import { AccountService } from '../services/account.service';
 import { Besttime } from '../models/besttime';
-import {Place} from "../models/place";
+import { Place } from '../models/place';
 
 
 declare var daum: any;
@@ -45,7 +45,7 @@ export class RoomDetailComponent implements OnInit {
     this.route.params
       .flatMap(params => {
         const roomHash = params[ 'hash' ];
-        this.shareableLink = `http://localhost:4200/link/${roomHash}`;
+        this.shareableLink = window.location.href.replace('room', 'link');
         return this.meetService.getRoomByHash(roomHash, true);
       })
       .flatMap(room => {
@@ -89,6 +89,15 @@ export class RoomDetailComponent implements OnInit {
     } else {
       this.showingBestTimes = this.bestTimes.length;
     }
+  }
+
+  deleteRoom(): void {
+    this.meetService.deleteRoom(this.room.id)
+      .then(response => {
+        if (response.status === 204) {
+          this.router.navigate([ 'dashboard' ]);
+        }
+      });
   }
 
 

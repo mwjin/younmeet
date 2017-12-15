@@ -111,3 +111,10 @@ db.sqlite3
 
 
 Algorithm
+
+# static folder (automatically imported from frontend)
+static/
+
+# log and pid file
+younmeet.log
+younmeet.pid

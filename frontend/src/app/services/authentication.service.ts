@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { toPromise } from 'rxjs/operator/toPromise';
-import {getCSRFHeaders} from "../../util/headers";
+import { getCSRFHeaders } from '../../util/headers';
 
 @Injectable()
 export class AuthenticationService {
@@ -27,8 +27,9 @@ export class AuthenticationService {
           if (response.status === 200) {
             // login success
             let token = '';
-            if (document.cookie)
-              token = document.cookie.split('csrftoken=')[1].split(';')[0];
+            if (document.cookie) {
+              token = document.cookie.split('csrftoken=')[ 1 ].split(';')[ 0 ];
+            }
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
@@ -48,8 +49,9 @@ export class AuthenticationService {
           if (response.status === 200) {
             // login success
             let token = '';
-            if (document.cookie)
-              token = document.cookie.split('csrftoken=')[1].split(';')[0];
+            if (document.cookie) {
+              token = document.cookie.split('csrftoken=')[ 1 ].split(';')[ 0 ];
+            }
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
@@ -88,12 +90,13 @@ export class AuthenticationService {
     return this.http.get(url)
       .toPromise()
       .then(response => {
-        if (response.status === 200) {
-          localStorage.removeItem('currentUser');
-          return true;
-        } else {
-          return false;
-        }
+        localStorage.removeItem('currentUser');
+        return true;
+      })
+      .catch((error: any) => {
+        console.error(`Logout request failed!. Will log out for frontend.`);
+        localStorage.removeItem('currentUser');
+        return Promise.resolve(true);
       });
   }
 
@@ -103,6 +106,7 @@ export class AuthenticationService {
     }
     return false;
   }
+
   /*
   checkPassword(password: string): Promise<boolean> {
     const url = `/api/checkPassword`;
