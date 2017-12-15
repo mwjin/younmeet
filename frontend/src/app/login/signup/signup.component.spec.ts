@@ -66,12 +66,13 @@ describe('SignupComponent', () => {
     it('should try signing up the user', async(() => {
       let email = component.email.value;
       let username = component.username.value;
+      let name = component.name.value;
       let password = component.password.value;
       component.signUp();
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         expect(accountServiceSpy.postUserSignUp)
-            .toHaveBeenCalledWith(email, username, password);
+            .toHaveBeenCalledWith(email, username, password, name);
         expect(authServiceSpy.logIn)
             .toHaveBeenCalledWith(username, password);
       });

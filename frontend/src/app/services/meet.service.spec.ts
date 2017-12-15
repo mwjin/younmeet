@@ -12,9 +12,9 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 
 let TEST_USERS: User[] = [
-  new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
-  new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
-  new User(3, 'chris', 'chris@snu.ac.kr', 'chris'),
+  new User(1, 'alice', 'alice@snu.ac.kr', 'alice', 'alice'),
+  new User(2, 'bob', 'bob@snu.ac.kr', 'bob', 'bob'),
+  new User(3, 'chris', 'chris@snu.ac.kr', 'chris', 'chris'),
 ];
 
 describe('MeetService', () => {

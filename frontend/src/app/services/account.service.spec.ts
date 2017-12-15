@@ -17,19 +17,22 @@ const makeMockUserDB = () => [
     id : 1,
     username : 'user1',
     email : 'swpp2017@gmail.com',
-    password : 'iluvswpp'
+    password : 'iluvswpp',
+    name: 'name1'
   },
   {
     id : 2,
     username : 'user2',
     email : 'swpp2016@naver.com',
-    password : 'ihateswpp'
+    password : 'ihateswpp',
+    name: 'name2'
   },
   {
     id : 3,
     username : 'user3',
     email : 'swpp2015@daum.net',
-    password : 'iluvswpp'
+    password : 'iluvswpp',
+    name: 'name3'
   }
 ] as User[];
 
@@ -91,7 +94,7 @@ describe('AccountService', () => {
       it('could put user', async(inject([], () => {
         response = new Response(new ResponseOptions({ status : 204, body : true }));
         backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-        let user = new User(2, 'test', 'test@gmail.com', 'iluvswpp');
+        let user = new User(2, 'test', 'test@gmail.com', 'iluvswpp', 'test');
         service.putUser(user)
           .then(result => {
             expect(result).toEqual(true);
@@ -113,10 +116,10 @@ describe('AccountService', () => {
       }));
 
       it('could post a new user', async(inject([], () => {
-        const newUser = new User(4, 'newComer', 'newComer@gmail.com', 'swpp2017');
+        const newUser = new User(4, 'newComer', 'newComer@gmail.com', 'swpp2017', 'newComerName');
         response = new Response(new ResponseOptions({ status : 201, body : newUser }));
         backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-        service.postUserSignUp(newUser.username, newUser.email, newUser.password)
+        service.postUserSignUp(newUser.username, newUser.email, newUser.password, newUser.name)
           .then(result => {
             expect(result).toEqual(true);
           });

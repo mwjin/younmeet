@@ -29,14 +29,15 @@ export class AccountService {
       .catch(this.handleError);
   }
 
-  postUserSignUp(username: string, email: string, password: string): Promise<boolean> {
+  postUserSignUp(username: string, email: string, password: string, name: string): Promise<boolean> {
     const url = `/api/signup`; // could be /api/user/signup
     return this.http.post(
       url,
       JSON.stringify({
         username : username,
         email : email,
-        password : password
+        password : password,
+        name: name,
       }),
       { headers: getCSRFHeaders() }
       )

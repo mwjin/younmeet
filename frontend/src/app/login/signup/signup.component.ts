@@ -16,6 +16,7 @@ export class SignupComponent implements OnInit {
   signUpForm: FormGroup;
   email: AbstractControl;
   username: AbstractControl;  // ID
+  name: AbstractControl;
   password: AbstractControl;
   passwordConfirm: AbstractControl;
 
@@ -23,9 +24,11 @@ export class SignupComponent implements OnInit {
               private router: Router,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService) {
+
     this.signUpForm = formBuilder.group({
       'email' : [ '', Validators.required ],
       'username' : [ '', Validators.required ],
+      'name' : [ '', Validators.required ],
       'password' : [ '', Validators.required ],
       'passwordConfirm' : [ '', Validators.required ]
     }, {
@@ -34,6 +37,7 @@ export class SignupComponent implements OnInit {
 
     this.email = this.signUpForm.controls[ 'email' ];
     this.username = this.signUpForm.controls[ 'username' ];
+    this.name = this.signUpForm.controls[ 'name' ];
     this.password = this.signUpForm.controls[ 'password' ];
     this.passwordConfirm = this.signUpForm.controls[ 'passwordConfirm' ];
 
@@ -47,7 +51,8 @@ export class SignupComponent implements OnInit {
     this.accountService.postUserSignUp(
       this.username.value,
       this.email.value,
-      this.password.value
+      this.password.value,
+      this.name.value
     ).then(isSignUpSuccess => {
       if (isSignUpSuccess) {
         // If success to create a new user
