@@ -35,6 +35,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
 import {Ng2AutoCompleteModule} from "ng2-auto-complete";
 import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import { NonUserLoginComponent } from './login/non-user-login/non-user-login.component';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path : 'room/:hash', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'link/:hash', redirectTo : 'room/:hash', pathMatch : 'full' },
   { path : 'login', component : LoginComponent, resolve: [ IsLoggedIn ] },
+  { path : 'login/non-user', component : NonUserLoginComponent },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
@@ -80,6 +82,7 @@ export function MyCookieStrategy() {
     PlaceComponent,
     NotFoundComponent,
     DialogComponent,
+    NonUserLoginComponent,
   ],
   imports : [
     CommonModule,

@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   email_username: AbstractControl;
   password: AbstractControl;
+  redirectUrl: string;
 
   ngOnInit() {
   }
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     });
     this.email_username = this.loginForm.controls[ 'email/username' ];
     this.password = this.loginForm.controls[ 'password' ];
+    this.redirectUrl = this.authenticationService.redirectUrl;
   }
 
   tryLogin(): void {
@@ -35,9 +37,8 @@ export class LoginComponent implements OnInit {
       this.password.value)
       .then(isSignInSuccess => {
         if (isSignInSuccess) {
-          let redirectUrl = this.authenticationService.redirectUrl;
-          if (redirectUrl) {
-            this.router.navigateByUrl(redirectUrl);
+          if (this.redirectUrl) {
+            this.router.navigateByUrl(this.redirectUrl);
           } else {
             this.router.navigate([ 'dashboard' ]);
           }
