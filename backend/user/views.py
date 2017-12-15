@@ -113,7 +113,8 @@ def user_owned_room_list(request):
 
     if request.method == 'GET':
         current_date = datetime.now()
-        room_list = list(filter(lambda room: room.time_span_end > current_date, list(user.owned_rooms.all())))
+        room_list = list(
+            filter(lambda room: room.time_span_end.date() >= current_date.date(), list(user.owned_rooms.all())))
         result = []
         for room in room_list:
             dict = model_to_dict(room, exclude='members')
@@ -133,7 +134,8 @@ def user_joined_room_list(request):
 
     if request.method == 'GET':
         current_date = datetime.now()
-        room_list = list(filter(lambda room: room.time_span_end > current_date, list(user.joined_rooms.all())))
+        room_list = list(
+            filter(lambda room: room.time_span_end.date() >= current_date.date(), list(user.joined_rooms.all())))
         result = []
         for room in room_list:
             dict = model_to_dict(room, exclude='members')
@@ -152,8 +154,8 @@ def user_joined_room_list_past(request):
         return HttpResponse(status=401)
 
     if request.method == 'GET':
-        current_data = datetime.now()
-        past_rooms = list(filter(lambda room: room.time_span_end <= current_data,
+        current_date = datetime.now()
+        past_rooms = list(filter(lambda room: room.time_span_end.date() < current_date.date(),
                                  list(user.joined_rooms.all())))
         past_rooms_dict_list = []
         for room in past_rooms:
