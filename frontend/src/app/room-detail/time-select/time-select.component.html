@@ -1,33 +1,31 @@
 <h2 id="select-time" class="ui header">Select Available Time</h2>
 <div class="ui hidden divider"></div>
 <div class="row">
-<div class="six wide column">
+  <div class="six wide column">
+    <button (click)="deleteAllEvent()" class="ui orange button right floated">Clear</button>
+    <button id="authorize-button"
+                class="ui google plus button right floated"
+                (click)="handleSyncClick()"
+                style="display: none;">
+          <i class="google plus icon"></i>
+        </button>
+    <button id="signout-button"
+            class="ui secondary google plus button right floated"
+            (click)="handleCancelClick()"
+            style="display: none; width: 140px">
+      <i class="google plus icon"></i>
+      Cancel Sync
+    </button>
+    <button (click)="deleteEvent()" class="ui yellow button right floated"
+            style="display: none;"
+            id="deleteButton">Delete
+    </button>
+  </div>
+</div>
 
-<button id="authorize-button"
-              class="ui secondary google plus button right floated"
-              (click)="handleSyncClick()"
-              style="display: none; width: 140px">
-        <i class="google plus icon"></i>
-        Calendar
-      </button>
-      <button id="signout-button"
-              class="ui secondary google plus button right floated"
-              (click)="handleCancelClick()"
-              style="display: none; width: 140px">
-        <i class="google plus icon"></i>
-        Cancel Sync
-      </button>
-      <button (click)="deleteAllEvent()" class="ui orange button right floated">Clear</button>
-      <button (click)="deleteEvent()" class="ui orange button right floated"
-              style="display: none;"
-              id="deleteButton">Delete
-      </button>
-</div>
-</div>
-<br>
 <div *ngIf="previousFreeTimes">
   <calendar-component [options]="calendarOptions" id="calendar"></calendar-component>
 </div>
 <div class="ui hidden divider"></div>
-<button (click)="collectFreeTimes()" class="ui teal button right floated">Submit</button>
-
+<button (click)="collectFreeTimes()" class="ui orange button fluid floated">Submit</button>
+<br>

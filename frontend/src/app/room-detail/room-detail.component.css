@@ -30,6 +30,12 @@ h2 {
   font-size: 200%
 }
 
-.recommended-times{
-  color: #5C656E;
+
+.item {
+  color: #5C656E !important;
+}
+
+#delete {
+  position: absolute;
+  bottom: 10px;
 }

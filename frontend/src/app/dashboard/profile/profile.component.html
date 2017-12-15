@@ -2,12 +2,12 @@
   <div *ngIf="currentUser">
     <sui-tabset>
       <div class="ui top attached tabular menu">
-        <a id="userInfoTab" class="item" suiTabHeader="1">User Information</a>
-        <a id="pastTimeTab" class="item" suiTabHeader="2">Past Appointments</a>
+        <a id="user-info" class="item" suiTabHeader="1">User Information</a>
+        <a id="past-appointments" class="item" suiTabHeader="2">Past Appointments</a>
       </div>
       <div class="ui bottom attached segment" suiTabContent="1">
         <div class="column">
-          <h2 class="ui align-middle header">
+          <h2 class="ui align-middle header field">
             {{currentUser.username}}
           </h2>
         </div>
@@ -74,11 +74,7 @@
       </div>
 
       <div class="ui bottom attached segment" suiTabContent="2">
-        <div class="column">
-          <h2 class="ui align-middle header">
-            Past Appointments
-          </h2>
-        </div>
+
         <app-room-list [rooms]="pastRooms"></app-room-list>
       </div>
     </sui-tabset>
