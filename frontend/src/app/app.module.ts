@@ -30,11 +30,12 @@ import { PlaceComponent } from './create-room/place/place.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig } from 'ng-gapi';
 import { GoogleScheduleService } from './services/google-schedule.service';
-import {DaumApiService} from './services/daum-api.service';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DaumApiService } from './services/daum-api.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
-import {Ng2AutoCompleteModule} from "ng2-auto-complete";
-import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import { NguiAutoCompleteModule} from "@ngui/auto-complete";
+import { TutorialComponent } from './tutorial/tutorial.component';
+import { SwiperConfigInterface, SwiperModule } from "ngx-swiper-wrapper";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
   { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
+  { path : 'tutorial', component : TutorialComponent },
   { path : 'not_found', component : NotFoundComponent },
   { path : '**', redirectTo : '/not_found'}
 
@@ -65,6 +67,13 @@ export function MyCookieStrategy() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
 }
 
+const SWIPER_CONFIG: SwiperConfigInterface = {
+  direction: 'vertical',
+  slidesPerView: 'auto',
+  centeredSlides: true,
+  keyboardControl: true,
+};
+
 @NgModule({
   declarations : [
     AppComponent,
@@ -80,6 +89,7 @@ export function MyCookieStrategy() {
     PlaceComponent,
     NotFoundComponent,
     DialogComponent,
+    TutorialComponent,
   ],
   imports : [
     CommonModule,
@@ -101,6 +111,7 @@ export function MyCookieStrategy() {
       useValue: gapiClientConfig,
     }),
     NguiAutoCompleteModule,
+    SwiperModule.forRoot(SWIPER_CONFIG),
   ],
   providers : [
     AccountService,

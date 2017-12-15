@@ -1,0 +1,16 @@
+<div class="vertical-container">
+  <h1 align="center">Tutorial</h1>
+
+  <div class="content-container">
+    <swiper overlay-controls [config]="config" (indexChange)="onIndexChange($event)" fxFlex>
+      <div *ngFor="let slide of slides" class="swiper-slide">
+        <div class="swiper-slide-content" fxLayout="column" fxLayoutAlign="center center">
+          <img align="middle" src = {{slide}} width="70%" height="70%">
+        </div>
+      </div>
+    </swiper>
+
+  </div>
+</div>
+
+
