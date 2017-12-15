@@ -17,7 +17,7 @@ import { AccountService } from './services/account.service';
 import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
-import { AuthGuard } from './auth-guard/auth.guard';
+import { AuthGuard } from './guard/auth.guard';
 import { CommonModule } from '@angular/common';
 import { RoomListFilterPipe } from './dashboard/room-list-filter.pipe';
 import { ClipboardModule } from 'ngx-clipboard/dist';
@@ -37,6 +37,8 @@ import {NguiAutoCompleteModule} from '@ngui/auto-complete';
 import { NonUserLoginComponent } from './login/non-user-login/non-user-login.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { SwiperConfigInterface, SwiperModule } from 'ngx-swiper-wrapper';
+import { NonUserNotAllowedComponent } from './non-user-not-allowed/non-user-not-allowed.component';
+import { NonUserGuard } from './guard/non-user.guard';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -52,6 +54,7 @@ const routes: Routes = [
   { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
   { path : 'tutorial', component : TutorialComponent },
   { path : 'not_found', component : NotFoundComponent },
+  { path : 'not_allowed', component : NonUserNotAllowedComponent, canActivate: [ NonUserGuard ] },
   { path : '**', redirectTo : '/not_found'}
 
 ];
@@ -93,6 +96,7 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     DialogComponent,
     NonUserLoginComponent,
     TutorialComponent,
+    NonUserNotAllowedComponent,
   ],
   imports : [
     CommonModule,
@@ -124,6 +128,7 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     GoogleScheduleService,
     DaumApiService,
     AuthGuard,
+    NonUserGuard,
     IsLoggedIn,
   ],
   bootstrap : [ AppComponent ]

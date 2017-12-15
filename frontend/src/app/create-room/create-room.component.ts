@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CreateRoomForm } from './create-room-form';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Timespan } from '../models/timespan';
+import {AccountService} from "../services/account.service";
 
 
 function roomCreateValidator(control: AbstractControl) {
@@ -63,11 +64,19 @@ export class CreateRoomComponent implements OnInit {
   formModel: CreateRoomForm;
   createRoomForm: FormGroup;
 
-  constructor(private meetService: MeetService,
+  constructor(private accountService: AccountService,
+              private meetService: MeetService,
               private router: Router,
               private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    this.accountService.getUserDetail()
+      .then(user => {
+        if (user.is_fake) {
+          this.goNotAllowedPage();
+        }
+      });
+
     this.createRoomForm = this.formBuilder.group({
       'name' : [ '', Validators.required ],
       'duration' : [ 30, Validators.required ],
@@ -96,5 +105,9 @@ export class CreateRoomComponent implements OnInit {
         // navigate to room detail page
         this.router.navigate([ 'room', room.hashid, 'place' ]);
       });
+  }
+
+  goNotAllowedPage(): void {
+    this.router.navigate([ 'not_allowed' ]);
   }
 }
