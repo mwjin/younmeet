@@ -113,7 +113,8 @@ def user_detail(request):
         dict_user_info = {'id': dict_model['id'],
                           'email': dict_model['email'],
                           'username': dict_model['username'],
-                          'name': dict_model['name']}
+                          'name': dict_model['name'],
+                          'is_fake': dict_model['is_fake']}
 
         return JsonResponse(dict_user_info)
 
