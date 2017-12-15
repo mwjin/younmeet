@@ -156,9 +156,9 @@ describe('MeetService', () => {
       expectUrl(mockBackend, 'api/rooms/42/members', mockResponse);
       meetService.getUsersInRoom(42).then(res => {
         expect(res.length).toBe(3);
-        expect(res[ 0 ].username).toBe('alice');
-        expect(res[ 1 ].username).toBe('bob');
-        expect(res[ 2 ].username).toBe('chris');
+        expect(res[ 0 ].name).toBe('alice');
+        expect(res[ 1 ].name).toBe('bob');
+        expect(res[ 2 ].name).toBe('chris');
       });
     }));
   });
