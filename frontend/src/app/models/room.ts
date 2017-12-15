@@ -11,7 +11,6 @@ export interface Room {
   place: string;
   latitude: number;
   longitude: number;
-  urgent: boolean;
   createdTime: Date;
   member_count: number;
   owner: UserInfo;

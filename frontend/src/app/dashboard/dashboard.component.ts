@@ -25,12 +25,10 @@ export class DashboardComponent implements OnInit {
 
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {
-      this.roomsCreated_Urgent = rooms.filter(room => room.urgent);
-      this.roomsCreated_NotUrgent = rooms.filter(room => !room.urgent);
+      this.roomsCreated_Urgent = rooms;
     });
     this.meetService.getRoomsJoinedByMe().then(rooms => {
-      this.roomsJoined_Urgent = rooms.filter(room => room.urgent);
-      this.roomsJoined_NotUrgent = rooms.filter(room => !room.urgent);
+      this.roomsJoined_Urgent = rooms;
     });
   }
 
