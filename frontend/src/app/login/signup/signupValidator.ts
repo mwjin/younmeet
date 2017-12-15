@@ -32,4 +32,12 @@ export class SignupValidator {
       control.get('passwordConfirm').setErrors({ invalidPasswordConfirm : true });
     }
   }
+
+  static nonUserMatchForm(control: AbstractControl) {
+    const name = control.get('name').value;
+    const nameReg: RegExp = new RegExp('^$');
+    if (nameReg.test(name)) {
+      control.get('name').setErrors({ invalidName : true });
+    }
+  }
 }

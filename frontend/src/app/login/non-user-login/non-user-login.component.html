@@ -1,3 +1,21 @@
-<p>
-  non-user-login works!
-</p>
+<sui-modal [isClosable]="true" (dismissed)="goOut()" #modal>
+  <div class="header">Log In without Sign Up</div>
+  <div class="content">
+    <!-- Name Input -->
+    <h4>Enter Your Name</h4>
+    <div class="required field">
+      <div class="ui left icon input">
+        <i class="user icon"></i>
+        <input class="input-form" type="text" name="name" placeholder="Your name or nickname"
+               [formControl]="signUpForm.controls['name']">
+      </div>
+    </div>
+    <div *ngIf="name.hasError('invalidName')&&name.touched"
+         class="ui error message"> Name Should not be Empty
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui red button" (click)="modal.deny()">Cancel</button>
+    <button class="ui green button" [disabled]="!signUpForm.valid" (click)="modal.approve('done')" autofocus>OK</button>
+  </div>
+</sui-modal>

@@ -42,10 +42,10 @@
         </div>
       </form>
       <div class="ui message">
-        New Member? &nbsp; <a href="signup">Sign Up</a>
+        New Member? &nbsp; <a [routerLink]="['/signup']">Sign Up</a>
       </div>
       <div *ngIf="redirectUrl" class="ui message">
-        Annoying to sign up? &nbsp; <a href="login/non-user"> Log In without Sign Up</a>
+        Annoying to sign up? &nbsp; <a [routerLink]="['/login','non-user']"> Log In without Sign Up</a>
       </div>
     </div>
   </div>

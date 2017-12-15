@@ -40,8 +40,6 @@ export class SignupComponent implements OnInit {
     this.name = this.signUpForm.controls[ 'name' ];
     this.password = this.signUpForm.controls[ 'password' ];
     this.passwordConfirm = this.signUpForm.controls[ 'passwordConfirm' ];
-
-
   }
 
   ngOnInit() {
@@ -52,7 +50,7 @@ export class SignupComponent implements OnInit {
       this.username.value,
       this.email.value,
       this.password.value,
-      this.name.value
+      this.name.value,
     ).then(isSignUpSuccess => {
       if (isSignUpSuccess) {
         // If success to create a new user
