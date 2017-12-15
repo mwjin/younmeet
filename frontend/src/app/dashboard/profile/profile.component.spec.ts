@@ -1,18 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileComponent } from './profile.component';
-import {RouterTestingModule} from "@angular/router/testing";
-import {Component} from "@angular/core";
-import {SuiModule} from "ng2-semantic-ui";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AccountService} from "../../services/account.service";
-import {AccountServiceSpy} from "../../services/account.service.spy";
+import { RouterTestingModule } from '@angular/router/testing';
+import { Component } from '@angular/core';
+import { SuiModule } from 'ng2-semantic-ui';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AccountService } from '../../services/account.service';
+import { AccountServiceSpy } from '../../services/account.service.spy';
 import { RouterLinkStubDirective } from '../../../testing/router-stubs';
-import {DialogComponent} from "./dialog/dialog.component";
-import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
+import { DialogComponent } from './dialog/dialog.component';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MockComponent } from 'ng2-mock-component';
+import { MeetService } from '../../services/meet.service';
+import { MeetServiceSpy } from '../../services/meet.service.spy';
 
 @Component({
-  template: ``
+  template : ``
 })
 class ProfileComponentMock {}
 
@@ -23,9 +26,9 @@ describe('ProfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
+      imports : [
         RouterTestingModule.withRoutes([
-          { path: 'profile/', component: ProfileComponentMock }
+          { path : 'profile/', component : ProfileComponentMock }
         ]),
         FormsModule,
         SuiModule,
@@ -33,14 +36,16 @@ describe('ProfileComponent', () => {
         BrowserAnimationsModule,
         NoopAnimationsModule,
       ],
-      declarations: [
+      declarations : [
         ProfileComponent,
         ProfileComponentMock,
         RouterLinkStubDirective,
         DialogComponent,
+        MockComponent({ selector : 'app-room-list', inputs : [ 'rooms', 'searchText', 'searchOption' ] })
       ],
-      providers: [
-        { provide: AccountService, useClass: AccountServiceSpy }
+      providers : [
+        { provide : AccountService, useClass : AccountServiceSpy },
+        { provide : MeetService, useClass : MeetServiceSpy }
       ]
     })
       .compileComponents();

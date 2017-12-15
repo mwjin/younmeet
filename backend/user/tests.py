@@ -241,6 +241,44 @@ class UserTestCase(TestCase):
                                       HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
+    def test_user_joined_room_past_unauth(self):
+        response = self.client.get('/api/user/joined-rooms/past')
+        self.assertEqual(response.status_code, 401)  # Unauthorized
+
+    def test_user_joined_room_past_get(self):
+        self.client.login(email='minu@snu.ac.kr', password='1234')
+        response = self.client.get('/api/user/joined-rooms/past')
+
+        data = json.loads(response.content.decode())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 1)
+
+    def test_user_joined_room_past_invalid_methods(self):
+        response = self.client.post('/api/signin',
+                                    json.dumps({'email': 'minu@snu.ac.kr', 'password': '1234'}),
+                                    content_type='application/json',
+                                    )
+        csrftoken = response.cookies['csrftoken'].value
+
+        response = self.client.post('/api/user/joined-rooms/past',
+                                    json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                    content_type='application/json',
+                                    HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/user/joined-rooms/past',
+                                   json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                   content_type='application/json',
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/user/joined-rooms/past',
+                                      json.dumps({'email': 'invalid@snu.ac.kr', 'password': 'invalid'}),
+                                      content_type='application/json',
+                                      HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
     def test_user_joined_room_list_unauth(self):
         response = self.client.get('/api/user/joined-rooms')
         self.assertEqual(response.status_code, 401)  # Unauthorized
