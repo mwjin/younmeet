@@ -32,6 +32,8 @@ export class NonUserLoginComponent implements OnInit {
   }
 
   tryLogin() {
+    this.accountService.postNonUserSignUp(this.name.value);
+    this.router.navigate([ 'login' ]);
   }
 
   goOut() {

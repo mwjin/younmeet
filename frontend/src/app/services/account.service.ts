@@ -46,6 +46,11 @@ export class AccountService {
       .catch(this.handleError);
   }
 
+  postNonUserSignUp(name: string) {
+    const url = `/api/signup/non-user`; // could be /api/user/signup
+    console.log('hello', name);
+  }
+
   deleteUser(): Promise<boolean> {
     return this.http.delete(this.accountUrl, { headers: getCSRFHeaders() })
       .toPromise()
