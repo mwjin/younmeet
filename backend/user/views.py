@@ -25,11 +25,16 @@ def token(request):
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
+
         email = req_data['email']
         username = req_data['username']
         password = req_data['password']
-        User.objects.create_user(email=email, password=password, username=username)
+        name = req_data['name']
+
+        User.objects.create_user(email=email, password=password, username=username, name=name)
+
         return HttpResponse(status=201)
+
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -83,16 +88,21 @@ def user_detail(request):
         dict_model = model_to_dict(user)
         dict_user_info = {'id': dict_model['id'],
                           'email': dict_model['email'],
-                          'username': dict_model['username']}
+                          'username': dict_model['username'],
+                          'name': dict_model['name']}
 
         return JsonResponse(dict_user_info)
 
     elif request.method == 'PUT':
-        req_new_password = json.loads(request.body.decode())  # Deserialization
-        new_password = req_new_password['password']
+        req_data = json.loads(request.body.decode())  # Deserialization
+
+        new_password = req_data['password']
+        new_name = req_data['name']
 
         user.set_password(new_password)
+        user.name = new_name
         user.save()
+
         update_session_auth_hash(request, user)
 
         return HttpResponse(status=204)

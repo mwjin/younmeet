@@ -19,10 +19,10 @@ def time_delta_handler(x):
 
 class RoomTestCase(TestCase):
     def setUp(self):
-        User.objects.create_user(email='email1', password='password1', username='username1')
-        User.objects.create_user(email='email2', password='password2', username='username2')
-        User.objects.create_user(email='email3', password='password3', username='username3')
-        User.objects.create_user(email='email4', password='password4', username='username4')
+        User.objects.create_user(email='email1', password='password1', username='username1', name='name1')
+        User.objects.create_user(email='email2', password='password2', username='username2', name='name2')
+        User.objects.create_user(email='email3', password='password3', username='username3', name='name3')
+        User.objects.create_user(email='email4', password='password4', username='username4', name='name4')
 
         user1 = User.objects.get(id=1)
         user2 = User.objects.get(id=2)
