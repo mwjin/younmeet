@@ -15,12 +15,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/mergeMap';
 
+
 @Component({
   selector : 'app-time-select',
   templateUrl : './time-select.component.html',
   styleUrls : [ './time-select.component.css' ],
 })
-
 export class TimeSelectComponent implements OnInit, OnDestroy {
   private timeSpan: Timespan;
   public previousFreeTimes: Freetime[];
@@ -30,6 +30,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   private syncButton: HTMLElement;
   private cancelButton: HTMLElement;
 
+  private timeViewRangeStart: string;
+  private timeViewRangeEnd: string;
   currentRoom: Room;
 
   constructor(private location: Location,
@@ -50,8 +52,9 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       .flatMap(room => {
         this.currentRoom = room;
         this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
-        this.timeSpan.start.setDate(this.timeSpan.start.getDate() + 1);
-        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 2);
+        this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
+        this.timeViewRangeStart = this.convertDateToMomentString(this.timeSpan.start);
+        this.timeViewRangeEnd = this.convertDateToMomentString(this.timeSpan.end);
         return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
       })
       .subscribe(freeTimes => {
@@ -93,6 +96,26 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       });
   }
 
+  private convertDateToMomentString(date: Date): string {
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const day = date.getDate();
+
+    let momentString = '';
+    momentString += year.toString();
+    momentString += '-';
+    if (month.toString().length === 1) {
+      momentString += '0';
+    }
+    momentString += month.toString();
+    momentString += '-';
+    if (day.toString().length === 1) {
+      momentString += '0';
+    }
+    momentString += day.toString();
+    return momentString;
+  }
+
   private setCalendarOptions() {
     this.calendarOptions = {
       locale : 'ko',
@@ -109,8 +132,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
         }
       },
       visibleRange : {
-        'start' : this.timeSpan.start.toJSON().split('T')[ 0 ]
-        , 'end' : this.timeSpan.end.toJSON().split('T')[ 0 ]
+        'start' : this.timeViewRangeStart
+        , 'end' : this.timeViewRangeEnd
       },
       events : this.previousFreeTimes,
       timezone : 'local',
