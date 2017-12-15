@@ -56,7 +56,7 @@ const routes: Routes = [
 
 /* For Google Calendar API */
 const gapiClientConfig: NgGapiClientConfig = {
-  client_id: '25518841710-ndjknsp4cjuupba6gn0k7t2grth86sji.apps.googleusercontent.com',
+  client_id: '25518841710-5n8lt12ndapgo13uina8o36sb97dncol.apps.googleusercontent.com',
   discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
   scope: [
     'https://www.googleapis.com/auth/calendar.readonly'
