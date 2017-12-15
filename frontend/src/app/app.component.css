@@ -8,6 +8,43 @@
    */
 }
 
+/*
+@media (min-height: 300px) {
+  #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #F9A0A0;
+  }
+}
+*/
+/*
+@media (min-height: 300px) {
+  #footer {
+    background-color: #F9A0A0;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+}
+#footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+  background-color: #F9A0A0;
+}
+*/
+
+/*
+#footer {
+  background-color: #F9A0A0;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+*/
 .header.item {
   color: white;
 }
