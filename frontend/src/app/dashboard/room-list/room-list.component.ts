@@ -6,7 +6,7 @@ import { FilterOptions } from '../room-list-filter-options';
 @Component({
   selector: 'app-room-list',
   templateUrl: './room-list.component.html',
-  styles: [],
+  styleUrls: ['./room-list.component.css'],
 })
 export class RoomListComponent implements OnInit {
 

@@ -2,71 +2,115 @@
 
 <div class="ui divider"></div>
 
-<form (ngSubmit)="onSubmit()"
-      #form="ngForm"
-      class="ui form">
+<div *ngIf="createRoomForm">
+  <form class="ui form"
+        (submit)="onSubmit()"
+        [class.error]="!createRoomForm.valid"
+        [formGroup]="createRoomForm">
+    <div class="field">
+      <label for="name">Name</label>
+      <input class="input-form" type="text" id="name" required
+             placeholder="Appointment Name"
+             [formControl]="createRoomForm.controls['name']">
+    </div>
 
-  <div class="field" [ngClass]="{error: !(name.valid || name.pristine)}">
-    <label for="name">Name</label>
-    <input type="text" id="name" required
-           placeholder="Appointment Name"
-           [(ngModel)]="formModel.name" name="name"
-           #name="ngModel">
-  </div>
+    <div *ngIf="createRoomForm.controls['name'].hasError('invalidName')&&createRoomForm.controls['name'].touched"
+         class="ui error message">
+      Name Should Not be Empty
+    </div>
 
-  <div class="field">
-    <label for="duration">Duration (in minutes)</label>
-    <input type="number" id="duration" step="30" min="30" required
-           placeholder="Duration (in minutes)"
-           [(ngModel)]="formModel.duration" name="duration">
-  </div>
+    <div class="field">
+      <label for="duration">Duration (in minutes)</label>
+      <input class="input-form" type="number" id="duration" step="30" min="30" required
+             placeholder="Duration (in minutes)"
+             [formControl]="createRoomForm.controls['duration']">
+    </div>
 
-  <div class="field">
-    <label for="duration">Minimum People to Meet</label>
-    <input type="number" id="minPeople" step="1" min="1" required
-           placeholder="Number of People"
-           [(ngModel)]="formModel.minPeople" name="minPeople">
-  </div>
+    <div *ngIf="createRoomForm.controls['duration'].hasError('invalidDurationRange')"
+         class="ui error message">
+      Duration Out of Range
+    </div>
 
-  <div class="two fields">
-    <div class="field"
-         [ngClass]="{error: !(timespan_start.valid || timespan_start.pristine)}">
-      <label>Min Date</label>
-      <div class="ui left icon input">
-        <i class="calendar icon"></i>
-        <input suiDatepicker
-               [(ngModel)]="formModel.timespan.start" name="timespan_start"
-               [pickerMode]="'date'"
-               #timespan_start="ngModel">
+    <div *ngIf="createRoomForm.controls['duration'].hasError('invalidDurationFloat')"
+         class="ui error message">
+      Duration Should be an Integer
+    </div>
+
+    <div *ngIf="createRoomForm.controls['duration'].hasError('invalidDurationForm')"
+         class="ui error message">
+      Duration Form Error
+    </div>
+
+    <div class="field">
+      <label for="minPeople">Minimum People to Meet</label>
+      <input class="input-form" type="number" id="minPeople" step="1" min="1" required
+             placeholder="Number of People"
+             [formControl]="createRoomForm.controls['minPeople']">
+    </div>
+
+    <div *ngIf="createRoomForm.controls['minPeople'].hasError('invalidMinPeopleRange')"
+         class="ui error message">
+      Minimum Number of People Out of Range
+    </div>
+
+    <div *ngIf="createRoomForm.controls['minPeople'].hasError('invalidMinPeopleFloat')"
+         class="ui error message">
+      Minimum Number of People Should be an Integer
+    </div>
+
+    <div *ngIf="createRoomForm.controls['minPeople'].hasError('invalidMinPeopleForm')"
+         class="ui error message">
+      Minimum Number of People Form Error
+    </div>
+
+    <div class="two fields">
+      <div class="field"
+           [ngClass]="{error:createRoomForm.controls['timeSpanStart'].hasError('invalidTimeSpanStartPast') }">
+        <label>Min Date</label>
+        <div class="ui left icon input">
+          <i class="calendar icon"></i>
+          <input
+            class="input-form"
+            suiDatepicker
+            [formControl]="createRoomForm.controls['timeSpanStart']"
+            [class.error]="createRoomForm.controls['timeSpanStart'].hasError('invalidTimeSpanStartPast')"
+            [pickerMode]="'date'">
+        </div>
+      </div>
+
+      <div class="field"
+           [ngClass]="{error: createRoomForm.controls['timeSpanEnd'].hasError('invalidTimeSpanEndPast')}">
+        <label>Max Date</label>
+        <div class="ui left icon input">
+          <i class="calendar icon"></i>
+          <input
+            class="input-form"
+            suiDatepicker
+            [formControl]="createRoomForm.controls['timeSpanEnd']"
+            [pickerMode]="'date'">
+        </div>
       </div>
     </div>
-    <div class="field"
-         [ngClass]="{error: !(timespan_end.valid || timespan_end.pristine)}">
-      <label>Max Date</label>
-      <div class="ui left icon input">
-        <i class="calendar icon"></i>
-        <input suiDatepicker
-               [(ngModel)]="formModel.timespan.end" name="timespan_end"
-               [pickerMode]="'date'"
-               #timespan_end="ngModel">
-      </div>
+
+    <div *ngIf="createRoomForm.controls['timeSpanEnd'].value < createRoomForm.controls['timeSpanStart'].value"
+         class="ui error message">
+      Max Date Should be Later Than Min Date
     </div>
-  </div>
 
-  <div *ngIf="!form.valid"
-       class="ui error message">Form is invalid
-  </div>
+    <h2>Options</h2>
+    <div class="field">
+      <sui-checkbox [formControl]="createRoomForm.controls['anonymity']"
+                    name="anonymity">
+        Anonymity
+      </sui-checkbox>
+    </div>
+    <button type="submit" class="ui orange button right floated"
+            [disabled]="!createRoomForm.valid||createRoomForm.controls['timeSpanEnd'].value < createRoomForm.controls['timeSpanStart'].value">
+      Submit
+    </button>
+  </form>
+  <br>
+  <br>
+  <br>
+</div>
 
-  <h2>Options</h2>
-  <div class="field">
-    <sui-checkbox [(ngModel)]="formModel.anonymity" name="anonymity">
-      Anonymity
-    </sui-checkbox>
-  </div>
-
-  <div class="ui divider"></div>
-
-  <button type="submit" class="ui button"
-          [disabled]="!form.form.valid">Submit
-  </button>
-</form>

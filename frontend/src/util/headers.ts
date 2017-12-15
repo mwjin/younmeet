@@ -1,5 +1,4 @@
 import { Headers } from '@angular/http';
-import {isUndefined} from "util";
 
 
 export function getCSRFHeaders(): Headers {

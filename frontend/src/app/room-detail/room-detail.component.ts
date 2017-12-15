@@ -10,6 +10,10 @@ import { UserInfo } from '../models/user-info';
 import { BesttimeResponseData } from '../services/besttime-response-data';
 import { AccountService } from '../services/account.service';
 import { Besttime } from '../models/besttime';
+import {Place} from "../models/place";
+
+
+declare var daum: any;
 
 @Component({
   selector : 'app-room-detail',
@@ -19,10 +23,9 @@ import { Besttime } from '../models/besttime';
 export class RoomDetailComponent implements OnInit {
   room: Room;
   members: UserInfo[];
-
   bestTimes: Besttime[];
+  myPlace: Place;
   showingBestTimes: number;
-
   zoom: number;
   isRoomOwner: boolean;
 
@@ -33,7 +36,12 @@ export class RoomDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private meetService: MeetService,
               private  accountService: AccountService) {
+    this.zoom = 15;
     this.showingBestTimes = 3;
+  }
+
+
+  ngOnInit() {
     this.route.params
       .flatMap(params => {
         const roomHash = params[ 'hash' ];
@@ -56,15 +64,11 @@ export class RoomDetailComponent implements OnInit {
             this.isRoomOwner = true;
           } else {
             this.isRoomOwner = false;
-        }});
+          }
+        });
         return Observable.forkJoin(getMembers, getBestTime);
       })
       .subscribe();
-  }
-
-
-  ngOnInit() {
-    this.zoom = 15;
   }
 
   goBack(): void {

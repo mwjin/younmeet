@@ -56,7 +56,6 @@ describe('FreetimeService', () => {
       providers : [
         FreetimeService,
         { provide : XHRBackend, useClass : MockBackend }
-        // { provide : getCSRFHeaders, useClass: mockCSRFHeaders}
       ]
     });
   });

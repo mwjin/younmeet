@@ -1,5 +1,7 @@
-body {
-  background-color: #FFFFFF;
+#username {
+  font-family: Kollektif;
+  font-size: 250%;
+  color: #FE9A76;
 }
 
 .ui.menu .item img.logo {
@@ -18,3 +20,9 @@ body {
   margin: 5em 0em 0em;
   padding: 5em 0em;
 }
+
+#check-password {
+  font-family: Kollektif;
+  font-size: 120%;
+}
+

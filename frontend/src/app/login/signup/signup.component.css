@@ -1,6 +1,4 @@
-body {
-  background-color: white;
-}
+
 
 body > .grid {
   height: 100%;
@@ -12,4 +10,15 @@ body > .grid {
 
 .column {
   max-width: 450px;
+}
+
+
+h1 {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 300%
+}
+
+.input-form {
+  color: #5C656E !important;
 }

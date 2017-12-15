@@ -87,26 +87,31 @@ class RoomTestCase(TestCase):
         )
 
         min_time = timedelta(hours=1)
-        time_span_start = '2017-11-4 12:30'
-        time_span_end = '2017-11-4 17:30'
+        time_span_start = '2017-11-4'
+        time_span_end = '2017-11-4'
 
         response = self.client.post(
             '/api/rooms',
-            json.dumps({'name': 'room1',
-                        'place': 'place1',
+            json.dumps({'name': 'room3',
+                        'place': 'place3',
                         'min_time_required': time_delta_handler(min_time),
                         'min_members': '1',
                         'time_span_start': time_span_start,
                         'time_span_end': time_span_end,
+                        'anonymity': False,
                         }),
             content_type=CONTENT_TYPE,
         )
 
         self.assertEqual(response.status_code, 200)
+        return_response = json.loads(response.content.decode())
+
+        self.assertEqual(return_response['name'], 'room3')
+        self.assertEqual(return_response['place'], 'place3')
+        self.assertEqual(return_response['min_members'], 1)
 
         response = self.client.get('/api/rooms')
         data = json.loads(response.content.decode())
-
         self.assertEqual(len(data), 3)
 
     def test_room_list_delete(self):
@@ -249,3 +254,51 @@ class RoomTestCase(TestCase):
         )
         response = self.client.get('/api/rooms/100/members')
         self.assertEqual(response.status_code, 404)
+
+    def test_set_place_not_authenticated(self):
+        response = self.client.put('/api/rooms/1/place')
+        self.assertEqual(response.status_code, 401)
+
+    def test_set_place_non_existing_room(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.put('/api/rooms/5/place')
+        self.assertEqual(response.status_code, 404)
+
+    def test_set_place_not_owner(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email2', 'password': 'password2'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.put('/api/rooms/1/place')
+        self.assertEqual(response.status_code, 401)
+
+    def test_set_place_not_allowed_method(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.get('/api/rooms/1/place')
+        self.assertEqual(response.status_code, 405)
+
+    def test_set_place_change_place(self):
+        self.client.post(
+            '/api/signin',
+            json.dumps({'email': 'email1', 'password': 'password1'}),
+            content_type=CONTENT_TYPE
+        )
+        response = self.client.put(
+            '/api/rooms/1/place',
+            json.dumps({'place': 'Korea',
+                        'latitude': 37.5,
+                        'longitude': 135}),
+            content_type=CONTENT_TYPE,
+        )
+        self.assertEqual(response.status_code, 200)
+        room = Room.objects.get(id=1)
+        self.assertEqual(room.place, 'Korea')
