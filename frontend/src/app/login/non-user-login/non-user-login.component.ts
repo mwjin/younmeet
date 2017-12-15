@@ -32,8 +32,20 @@ export class NonUserLoginComponent implements OnInit {
   }
 
   tryLogin() {
-    this.accountService.postNonUserSignUp(this.name.value);
-    console.log('hello');
+    this.authenticationService.logInNonUser(this.name.value)
+      .then(isSignInSuccess => {
+        if (isSignInSuccess) {
+          const redirectUrl = this.authenticationService.redirectUrl;
+
+          if (redirectUrl) {
+            this.router.navigateByUrl(redirectUrl);
+          } else {
+            this.router.navigate([ 'dashboard' ]);
+          }
+        }
+      }).catch(() => {
+      document.getElementById('loginFail').style.display = 'block';
+    });
   }
 
   goOut() {

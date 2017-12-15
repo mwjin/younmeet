@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
@@ -8,7 +6,10 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.forms.models import model_to_dict
 from user.models import User
 from room.models import Room
+
 import json
+import string
+import random
 
 
 """
@@ -62,6 +63,28 @@ def signin(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=401)  # Unauthorized user
+
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
+@ensure_csrf_cookie
+@csrf_exempt
+def signin_nonuser(request):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode())
+
+        username = ''.join(random.choices(string.ascii_letters + string.digits, k=64))
+        email = username + '@nonuser.com'
+        password = User.objects.make_random_password()
+        name = req_data['name']
+
+        User.objects.create_user(email=email, password=password, username=username, name=name)
+
+        user = authenticate(email=email, password=password)
+        login(request, user)
+
+        return HttpResponse(status=200)
 
     else:
         return HttpResponseNotAllowed(['POST'])

@@ -60,6 +60,29 @@ export class AuthenticationService {
     }
   }
 
+  logInNonUser(name: string): Promise<boolean>{
+    const url = `/api/signin/non-user`; // could be /api/user/signup
+
+    return this.http.post(url,
+      JSON.stringify({
+        name: name,
+      }), { headers : getCSRFHeaders(), withCredentials : true })
+      .toPromise()
+      .then(response => {
+        if (response.status === 200) {
+          // login success
+          let token = '';
+          if (document.cookie)
+            token = document.cookie.split('csrftoken=')[1].split(';')[0];
+          localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch(this.handleError);
+  }
+
   logOut(): Promise<boolean> {
     const url = `/api/signout`;
     return this.http.get(url)
