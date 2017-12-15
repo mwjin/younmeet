@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   public currentPassword: AbstractControl;
   public newPassword: AbstractControl;
   public newPasswordConfirm: AbstractControl;
-  private pastRooms: Room[];
+  public pastRooms: Room[];
 
 
   constructor(private accountService: AccountService,
