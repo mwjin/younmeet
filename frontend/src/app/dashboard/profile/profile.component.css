@@ -22,8 +22,12 @@
   padding: 5em 0em;
 }
 
-.sui-sidebar-container {
-  background: floralwhite;
+.ui.top.attached.demo.menu {
+  background-color: floralwhite;
+}
+
+.ui.bottom.attached.segment {
+  background-color: floralwhite;
 }
 
 #check-password {
