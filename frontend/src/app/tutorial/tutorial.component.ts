@@ -8,15 +8,12 @@ import {SwiperComponent, SwiperConfigInterface, SwiperDirective} from "ngx-swipe
 })
 export class TutorialComponent implements OnInit {
   public show: boolean;
+  private tutorialUrl = '../../assets/images/tutorial/';
 
   public slides = [
-    "../../assets/images/tutorial/login.png",
-    'First slide',
-    'Second slide',
-    'Third slide',
-    'Fourth slide',
-    'Fifth slide',
-    'Sixth slide'
+    this.tutorialUrl + 'login.png',
+    this.tutorialUrl + 'dashboard.png',
+    this.tutorialUrl + 'room_detail.png',
   ];
   public type = 'component';
 

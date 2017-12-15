@@ -122,7 +122,6 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     DaumApiService,
     AuthGuard,
     IsLoggedIn,
-
   ],
   bootstrap : [ AppComponent ]
 })
