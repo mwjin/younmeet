@@ -44,7 +44,7 @@
       <div class="ui message">
         New Member? &nbsp; <a href="signup">Sign Up</a>
       </div>
-      <div class="ui message">
+      <div *ngIf="redirectUrl" class="ui message">
         Annoying to sign up? &nbsp; <a href="login/non-user"> Log In without Sign Up</a>
       </div>
     </div>
