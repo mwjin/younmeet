@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
+from dateutil.tz import tzoffset
 import json
 
 from django.http import HttpResponse, HttpResponseNotAllowed
@@ -25,7 +26,9 @@ def room_list(request):
         name = data['name']
         place = data['place']
         time_span_start = parse(data['time_span_start'], ignoretz=True)
+        time_span_start += timedelta(hours=9)
         time_span_end = parse(data['time_span_end'], ignoretz=True)
+        time_span_end += timedelta(hours=9)
         time = int(data['min_time_required'])
         min_members = int(data['min_members'])
         min_time_required = timedelta(hours=int(time / 60), minutes=time % 60)

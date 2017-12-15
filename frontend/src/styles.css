@@ -16,7 +16,7 @@
 }
 
 .fc-unthemed td.fc-today {
-  background: white;
+  background: floralwhite;
 }
 
 html {
@@ -47,8 +47,6 @@ app-root {
 .main.container {
   margin-top: 7em;
 }
-
-
 
 @font-face {
   font-family: 'Kollektif';
