@@ -2,12 +2,18 @@
 <div class="ui hidden divider"></div>
 <div class="row">
   <div class="six wide column">
+    <button (click)="deleteEvent()" class="ui yellow button right floated"
+            style="display: none;"
+            id="deleteButton">Delete
+    </button>
+    <br>
+    <div class="ui hidden divider"></div>
     <button (click)="deleteAllEvent()" class="ui orange button right floated">Clear</button>
     <button id="authorize-button"
                 class="ui google plus button right floated"
                 (click)="handleSyncClick()"
                 style="display: none;">
-          <i class="google plus icon"></i>
+          <i class="google plus icon"></i>Calendar
         </button>
     <button id="signout-button"
             class="ui secondary google plus button right floated"
@@ -15,10 +21,6 @@
             style="display: none; width: 140px">
       <i class="google plus icon"></i>
       Cancel Sync
-    </button>
-    <button (click)="deleteEvent()" class="ui yellow button right floated"
-            style="display: none;"
-            id="deleteButton">Delete
     </button>
   </div>
 </div>
