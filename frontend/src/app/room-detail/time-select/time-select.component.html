@@ -1,31 +1,37 @@
 <h2 id="select-time" class="ui header">Select Available Time</h2>
 <div class="ui hidden divider"></div>
 <div class="row">
-<div class="six wide column">
+  <div class="six wide column">
 
-<button id="authorize-button"
-              class="ui secondary google plus button right floated"
-              (click)="handleSyncClick()"
-              style="display: none; width: 140px">
-        <i class="google plus icon"></i>
-        Calendar
-      </button>
-      <button id="signout-button"
-              class="ui secondary google plus button right floated"
-              (click)="handleCancelClick()"
-              style="display: none; width: 140px">
-        <i class="google plus icon"></i>
-        Cancel Sync
-      </button>
-      <button (click)="deleteAllEvent()" class="ui orange button right floated">Clear</button>
-      <button (click)="deleteEvent()" class="ui orange button right floated"
-              style="display: none;"
-              id="deleteButton">Delete
-      </button>
-</div>
+    <button id="authorize-button"
+            class="ui secondary google plus button right floated"
+            (click)="handleSyncClick()"
+            style="display: none; width: 140px">
+      <i class="google plus icon"></i>
+      Calendar
+    </button>
+    <button id="signout-button"
+            class="ui secondary google plus button right floated"
+            (click)="handleCancelClick()"
+            style="display: none; width: 140px">
+      <i class="google plus icon"></i>
+      Cancel Sync
+    </button>
+    <button (click)="deleteAllEvent()" class="ui orange button right floated">Clear</button>
+    <button (click)="deleteEvent()" class="ui orange button right floated"
+            style="display: none;"
+            id="deleteButton">Delete
+    </button>
+  </div>
 </div>
 <br>
 <div *ngIf="previousFreeTimes">
+  <div class="ui small basic icon buttons">
+    <button class="ui button" [disabled]="viewStart==0" (click)="seePreviousDays()"><i class="arrow left icon"></i>
+    </button>
+    <button class="ui button" [disabled]="viewEnd==timeViewRanges.length-1" (click)="seeNextDays()"><i
+      class="arrow right icon"></i></button>
+  </div>
   <calendar-component [options]="calendarOptions" id="calendar"></calendar-component>
 </div>
 <div class="ui hidden divider"></div>

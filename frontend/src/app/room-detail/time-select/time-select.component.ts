@@ -30,8 +30,9 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   private syncButton: HTMLElement;
   private cancelButton: HTMLElement;
 
-  private timeViewRangeStart: string;
-  private timeViewRangeEnd: string;
+  private timeViewRanges: string[];
+  private viewStart: number;
+  private viewEnd: number;
   currentRoom: Room;
 
   constructor(private location: Location,
@@ -53,8 +54,23 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
         this.currentRoom = room;
         this.timeSpan = new Timespan(room.timespan.start, room.timespan.end);
         this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
-        this.timeViewRangeStart = this.convertDateToMomentString(this.timeSpan.start);
-        this.timeViewRangeEnd = this.convertDateToMomentString(this.timeSpan.end);
+        this.timeViewRanges = [];
+
+        let date: Date = this.timeSpan.start;
+        while (this.compareTwoDateJustDate(date, this.timeSpan.end) <= 0) {
+          this.timeViewRanges.push(this.convertDateToMomentString(date));
+          date.setDate(date.getDate() + 1);
+        }
+        console.log(this.timeViewRanges);
+
+        if (this.timeViewRanges.length > 3) {
+          this.viewStart = 0;
+          this.viewEnd = 3;
+        } else {
+          this.viewStart = 0;
+          this.viewEnd = this.timeViewRanges.length - 1;
+        }
+
         return Observable.fromPromise(this.freetimeService.getFreeTimes(room.id));
       })
       .subscribe(freeTimes => {
@@ -96,6 +112,46 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       });
   }
 
+  public seePreviousDays(): void {
+    // if user can press this button, it means that viewStart >= 3
+    if (this.viewEnd - this.viewStart < 3) {
+      this.viewStart -= 3;
+      this.viewEnd = this.viewStart + 3;
+    } else {
+      this.viewStart -= 3;
+      this.viewEnd -= 3;
+    }
+    $('#calendar').fullCalendar('option', 'visibleRange', {
+      'start' : this.timeViewRanges[ this.viewStart ]
+      , 'end' : this.timeViewRanges[ this.viewEnd ]
+    });
+  }
+
+  public seeNextDays(): void {
+    // if user can press this button, it means that viewEnd <= viewRangeLength
+    if (this.viewEnd + 3 >= this.timeViewRanges.length) {
+      this.viewEnd = this.timeViewRanges.length - 1;
+      this.viewStart += 3;
+    } else {
+      this.viewEnd += 3;
+      this.viewStart += 3;
+    }
+    $('#calendar').fullCalendar('option', 'visibleRange', {
+      'start' : this.timeViewRanges[ this.viewStart ]
+      , 'end' : this.timeViewRanges[ this.viewEnd ]
+    });
+  }
+
+  private compareTwoDateJustDate(date1: Date, date2: Date) {
+    if (date1.getFullYear() === date2.getFullYear()) {
+      if (date1.getMonth() === date2.getMonth()) {
+        return date1.getDate() - date2.getDate();
+      }
+      return date1.getMonth() - date2.getMonth();
+    }
+    return date1.getFullYear() - date2.getFullYear();
+  }
+
   private convertDateToMomentString(date: Date): string {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
@@ -121,8 +177,9 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       locale : 'ko',
       slotDuration : '00:10:00', // set slot duration
       scrollTime : '09:00:00', // start scroll from 9AM
-      height : 650,
+      height : 600,
       // Do not Modify Below This Comment
+      columnFormat : 'ddd M/D',
       eventOverlap : function (stillEvent, movingEvent) {
         return stillEvent.name === 'googleSchedule';
       },
@@ -132,8 +189,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
         }
       },
       visibleRange : {
-        'start' : this.timeViewRangeStart
-        , 'end' : this.timeViewRangeEnd
+        'start' : this.timeViewRanges[ this.viewStart ]
+        , 'end' : this.timeViewRanges[ this.viewEnd ]
       },
       events : this.previousFreeTimes,
       timezone : 'local',
