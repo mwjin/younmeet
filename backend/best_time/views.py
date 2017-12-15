@@ -20,7 +20,6 @@ def best_time_list(request, room_id):
         best_times = BestTime.objects.filter(room_id=room_id).all()
         best_times_list = []
         current_time = datetime.utcnow()
-        print(current_time)
         for best_time in best_times:
             print(best_time.start_time)
             print(best_time.end_time)
