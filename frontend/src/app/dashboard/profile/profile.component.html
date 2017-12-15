@@ -1,5 +1,8 @@
 <body>
   <div *ngIf="currentUser">
+    <h2 id="profile">
+      Profile
+    </h2>
     <sui-tabset>
       <div class="ui top attached tabular menu">
         <a id="user-info" class="item" suiTabHeader="1">User Information</a>
@@ -74,7 +77,7 @@
       </div>
 
       <div class="ui bottom attached segment" suiTabContent="2">
-
+        <h3>Past Appointments</h3>
         <app-room-list [rooms]="pastRooms"></app-room-list>
       </div>
     </sui-tabset>

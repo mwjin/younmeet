@@ -39,6 +39,12 @@
   font-size: 120%;
 }
 
+#profile {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 300%
+}
+
 input {
   font-size: 16px;
 }
