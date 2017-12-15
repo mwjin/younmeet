@@ -135,6 +135,27 @@ def user_joined_room_list(request):
         return HttpResponseNotAllowed(['GET'])
 
 
+def user_joined_room_list_past(request):
+    user = request.user
+
+    if not user.is_authenticated():
+        return HttpResponse(status=401)
+
+    if request.method == 'GET':
+        current_data = datetime.now()
+        past_rooms = list(filter(lambda room: room.time_span_end <= current_data,
+                                 list(user.joined_rooms.all())))
+        past_rooms_dict_list = []
+        for room in past_rooms:
+            past_room_dict = model_to_dict(room)
+            past_room_dict['members'] = list(map(lambda user: user.id, past_room_dict['members']))
+            past_rooms_dict_list.append(past_room_dict)
+
+        return JsonResponse(past_rooms_dict_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
 def check_password(request):
     user = request.user
     if not user.is_authenticated():

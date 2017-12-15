@@ -58,6 +58,16 @@ export class MeetService {
       .catch(handleError);
   }
 
+  getRoomsJoinedPast(): Promise<Room[]> {
+    return this.http.get(`api/user/joined-rooms/past`)
+      .toPromise()
+      .then(res => res.json() as RoomResponse[])
+      .then(roomDataList => roomDataList.map(
+        roomData => roomFromResponse(roomData)
+      ))
+      .catch(handleError);
+  }
+
   handleRoomResponse(room: Promise<Response>): Promise<Room> {
     return room
       .then(res => res.json() as RoomResponse)

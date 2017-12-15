@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { User } from '../../models/user';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidator } from './passwordValidator';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { Room } from '../../models/room';
+import { MeetService } from '../../services/meet.service';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 
+export interface IContext {
+  data: string;
+}
 
 @Component({
   selector : 'app-profile',
@@ -13,18 +19,24 @@ import { Router } from '@angular/router';
   styleUrls : [ './profile.component.css' ]
 })
 export class ProfileComponent implements OnInit {
+  @ViewChild('modalTemplate')
+  public modalTemplate: ModalTemplate<IContext, string, string>;
+
   public currentUser: User;
   public passwordForm: FormGroup;
   public password: AbstractControl;
   public passwordConfirm: AbstractControl;
   public currPassword: string;
   public showDialog: boolean;
+  private pastRooms: Room[];
 
 
-  constructor (private accountService: AccountService,
+  constructor(private accountService: AccountService,
               private location: Location,
               private formBuilder: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private meetService: MeetService,
+              private modalService: SuiModalService) {
   }
 
   ngOnInit() {
@@ -40,6 +52,11 @@ export class ProfileComponent implements OnInit {
         });
         this.password = this.passwordForm.controls[ 'password' ];
         this.passwordConfirm = this.passwordForm.controls[ 'passwordConfirm' ];
+      });
+    this.meetService.getRoomsJoinedPast()
+      .then(rooms => {
+        this.pastRooms = rooms;
+        console.log(rooms);
       });
   }
 
@@ -61,7 +78,7 @@ export class ProfileComponent implements OnInit {
 
     // for null value
     if (!this.currPassword)
-      return
+      return;
     this.accountService.checkPassword(this.currPassword)
       .then(res => {
         if (res)
@@ -69,4 +86,33 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  showUserInfo(): void {
+    document.getElementById('pastappointment').style.display = 'none';
+    document.getElementById('userinfo').style.display = 'block';
+  }
+
+  showPastRooms(): void {
+    document.getElementById('pastappointment').style.display = 'block';
+    document.getElementById('userinfo').style.display = 'none';
+  }
+
+  public open(dynamicContent: string = 'Example') {
+    const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
+
+    config.closeResult = 'closed!';
+    config.context = { data : dynamicContent };
+
+    this.modalService
+      .open(config)
+      .onApprove(result => {
+        this.accountService.deleteUser()
+          .then(deleteSuccess => {
+            console.log(deleteSuccess);
+            if (deleteSuccess) {
+              this.router.navigate([ 'login' ]);
+            }
+          });
+      })
+      .onDeny(result => { /* deny callback */});
+  }
 }

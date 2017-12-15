@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { User } from '../models/user';
-import {getCSRFHeaders} from "../../util/headers";
+import { getCSRFHeaders } from '../../util/headers';
 
 @Injectable()
 export class AccountService {
@@ -22,8 +22,8 @@ export class AccountService {
       .put(
         this.accountUrl,
         JSON.stringify(user),
-        { headers: getCSRFHeaders() }
-        )
+        { headers : getCSRFHeaders() }
+      )
       .toPromise()
       .then(response => response.status === 204)
       .catch(this.handleError);
@@ -38,18 +38,19 @@ export class AccountService {
         email : email,
         password : password
       }),
-      { headers: getCSRFHeaders() }
-      )
+      { headers : getCSRFHeaders() }
+    )
       .toPromise()
       .then(response => response.status === 201)
       .catch(this.handleError);
   }
 
   deleteUser(): Promise<boolean> {
-    return this.http.delete(this.accountUrl, { headers: getCSRFHeaders() })
+    return this.http.delete(this.accountUrl, { headers : getCSRFHeaders() })
       .toPromise()
       .then((response) => {
-        return response.status === 200;
+        localStorage.clear();
+        return response.status === 204;
       })
       .catch(this.handleError);
   }
@@ -58,9 +59,9 @@ export class AccountService {
   checkPassword(password: string): Promise<boolean> {
     const url = `/api/user/check-password`;
     return this.http.post(url,
-      JSON.stringify({'password': password}),
+      JSON.stringify({ 'password' : password }),
       { headers : getCSRFHeaders() }
-      )
+    )
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);
