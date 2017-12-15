@@ -1,7 +1,3 @@
-body {
-  background-color: white;
-}
-
 body > .grid {
   height: 100%;
 }
@@ -13,3 +9,21 @@ body > .grid {
 .column {
   max-width: 450px;
 }
+
+body {
+  background-color: floralwhite;
+  /*
+  #cee3e6
+  #F8EDE8
+   */
+}
+
+#email {
+  color: #5C656E;
+}
+
+#password {
+  color: #5C656E;
+}
+
+

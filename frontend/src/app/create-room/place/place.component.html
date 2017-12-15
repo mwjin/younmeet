@@ -1,18 +1,18 @@
 <div class="container">
   <h1>Select Place to MEet</h1>
-  <button (click)="goBack()" class="ui button right floated">Back</button>
-  <button *ngIf="goToTimeOnSubmit" (click)="goToTimeSelect()" class="ui button right floated">Skip</button>
-  <div id="autocomplete" class="ui icon left input">
+  <button (click)="goBack()" class="ui yellow button right floated">Back</button>
+  <button *ngIf="goToTimeOnSubmit" (click)="goToTimeSelect()" class="ui orange button right floated">Skip</button>
+  <div id="autocomplete" class="ui search icon left input">
+    <i class="search icon"></i>
     <input
       ngui-auto-complete
-      type="text"
+      placeholder="Search Places"
       [(ngModel)]="search_place"
       [source]="observableSource"
       [list-formatter]="list_formatter"
       [value-formatter]="value_formatter"
       (valueChanged)="onPlaceChange()"
-      size="27">
-    <i class="search icon"></i>
+      size="15">
   </div>
   <br>
   <br>
@@ -30,46 +30,44 @@
       </div>
     </agm-map>
     <div *ngIf="isPlaceSelected">
-      <button (click)="onSubmit()" class="ui button right floated">Submit</button>
+      <button (click)="onSubmit()" class="ui teal button right floated">Submit</button>
       <h2>Recommendations</h2>
     <!-- exists places to recommend-->
       <sui-tabset>
         <div class="ui top attached tabular menu">
-          <a class="item" suiTabHeader="1">Restaurants</a>
-          <a class="item" suiTabHeader="2">Cafes</a>
-          <a class="item" suiTabHeader="3">Cultural Faculties</a>
+          <a class="item tab-header" suiTabHeader="1">Restaurants</a>
+          <a class="item tab-header" suiTabHeader="2">Cafes</a>
+          <a class="item tab-header" suiTabHeader="3">Cultural Faculties</a>
         </div>
         <div class="tab ui bottom attached segment" suiTabContent="1">
-          <div class = "ui list">
-            <ul *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
-              <li>
-                <div>{{rest.name}}</div>
-                <div>{{rest.category}}</div>
-                <a (click)="goToUrl(rest)">Details</a>
-              </li>
-            </ul>
+          <div class = "ui relaxed divided list">
+            <div class="item" *ngFor="let rest of restaurant_list" (click)="onSelectRecommendation(rest)">
+              <div class="header not-details">{{rest.name}}</div>
+              <div class="not-details">{{rest.category}}</div>
+              <a class="details" (click)="goToUrl(rest)">Details</a>
+            </div>
           </div>
         </div>
         <div class="tab ui bottom attached segment" suiTabContent="2">
-          <div class = "ui list">
-            <ul *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
-              <li>
-                <div>{{cafe.name}}</div>
-                <div>{{cafe.category}}</div>
-                <a (click)="goToUrl(cafe)">Details</a>
-              </li>
-            </ul>
+          <div class ="ui relaxed divided list">
+            <div class="item" *ngFor="let cafe of cafe_list" (click)="onSelectRecommendation(cafe)">
+              <div class="content">
+                <div class="header not-details">{{cafe.name}}</div>
+                <div class="not-details">{{cafe.category}}</div>
+                <a class="details" (click)="goToUrl(cafe)">Details</a>
+              </div>
+            </div>
           </div>
         </div>
         <div class="tab ui bottom attached segment" suiTabContent="3">
-          <div class = "ui list">
-            <ul *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
-              <li>
-                <div>{{cf.name}}</div>
-                <div>{{cf.category}}</div>
-                <a (click)="goToUrl(cf)">Details</a>
-              </li>
-            </ul>
+          <div class = "ui relaxed divided list">
+            <div class="item" *ngFor="let cf of cultural_faculty_list" (click)="onSelectRecommendation(cf)">
+              <div class="content">
+                <div class="header not-details">{{cf.name}}</div>
+                <div class="not-details">{{cf.category}}</div>
+                <a class="details" (click)="goToUrl(cf)">Details</a>
+              </div>
+            </div>
           </div>
         </div>
       </sui-tabset>

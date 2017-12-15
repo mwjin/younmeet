@@ -57,7 +57,7 @@ function roomCreateValidator(control: AbstractControl) {
 @Component({
   selector : 'app-create-room',
   templateUrl : './create-room.component.html',
-  styles : []
+  styleUrls : ['./create-room.component.css']
 })
 export class CreateRoomComponent implements OnInit {
   formModel: CreateRoomForm;

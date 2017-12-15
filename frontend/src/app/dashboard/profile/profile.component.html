@@ -1,8 +1,6 @@
 <body>
-
-
 <app-dialog [(visible)]="showDialog">
-  <h2 class="ui align-middle header">Check Password</h2>
+  <img src="../../../assets/images/check_password_orange.png" width="270" height="40">
 
   <div class="ui left icon input fluid">
     <i class="lock icon"></i>
@@ -10,10 +8,9 @@
            [(ngModel)]="currPassword">
   </div>
   <br>
-  <button (click)="goBack()" class="ui left floated submit button">Back
+  <button (click)="checkCurrentPassword()" class="ui right floated submit teal button">Check
   </button>
-
-  <button (click)="checkCurrentPassword()" class="ui right floated submit button">Check
+  <button (click)="goBack()" class="ui right floated submit yellow button">Back
   </button>
 
 </app-dialog>
@@ -21,11 +18,12 @@
 <div *ngIf="currentUser">
     <div class="ui main text container">
       <div class="column">
-        <h2 class="ui align-middle header">
+        <h2 id="username" class="ui align-middle header">
           {{currentUser.username}}
-          <button class="ui button right floated" (click)="goBack()">Back</button>
         </h2>
       </div>
+      <button class="ui yellow button right floated" (click)="goBack()">Back</button>
+
     </div>
 
     <div class="ui main text container">
@@ -38,6 +36,10 @@
           {{currentUser.email}}
         </div>
 
+        <div class="ui hidden divider"></div>
+        <div class="field">
+          <label>Change Password</label>
+        </div>
         <!-- Password Input -->
         <div class="required field">
           <div class="ui left icon input">
@@ -49,7 +51,6 @@
         <div *ngIf="password.hasError('invalidPassword')&&password.touched"
              class="ui error message"> Must contain at least 8 characters with at least one number
         </div>
-
         <!-- PasswordConfirm Input -->
         <div class="required field">
           <div class="ui left icon input">
@@ -61,9 +62,9 @@
         <div *ngIf="passwordConfirm.hasError('invalidPasswordConfirm')&&passwordConfirm.touched"
              class="ui error message"> Must match password.
         </div>
-        <button class="ui fluid submit button"
+        <button class="ui right floated submit teal button"
                 type="submit"
-                [disabled]="!passwordForm.valid">Change Password
+                [disabled]="!passwordForm.valid">Submit
         </button>
 
       </form>

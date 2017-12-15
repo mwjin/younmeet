@@ -16,3 +16,20 @@ header > h2 {
 header > h3 {
   display: inline-block;
 }
+
+
+h1 {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 300%
+}
+
+h2 {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 200%
+}
+
+.recommended-times{
+  color: #5C656E;
+}
