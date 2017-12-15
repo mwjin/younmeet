@@ -61,7 +61,6 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
           this.timeViewRanges.push(this.convertDateToMomentString(date));
           date.setDate(date.getDate() + 1);
         }
-        console.log(this.timeViewRanges);
 
         if (this.timeViewRanges.length > 3) {
           this.viewStart = 0;
