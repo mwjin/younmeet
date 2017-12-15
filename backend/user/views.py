@@ -113,8 +113,13 @@ def user_owned_room_list(request):
 
     if request.method == 'GET':
         current_date = datetime.now()
-        return JsonResponse(list(filter(lambda room: room['time_span_end'] > current_date,
-                                        list(user.owned_rooms.all().values()))), safe=False)
+        room_list = list(filter(lambda room: room.time_span_end > current_data, list(user.owned_rooms.all())))
+        result = []
+        for room in room_list:
+            dict = model_to_dict(room, exclude='members')
+            dict['member_count'] = len(list(room.members.all().values()))
+            result.append(dict)
+        return JsonResponse(result, safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -128,8 +133,13 @@ def user_joined_room_list(request):
 
     if request.method == 'GET':
         current_date = datetime.now()
-        return JsonResponse(list(filter(lambda room: room['time_span_end'] > current_date,
-                                        list(user.joined_rooms.all().values()))), safe=False)
+        room_list = list(filter(lambda room: room.time_span_end > current_data, list(user.joined_rooms.all())))
+        result = []
+        for room in room_list:
+            dict = model_to_dict(room, exclude='members')
+            dict['member_count'] = len(list(room.members.all().values()))
+            result.append(dict)
+        return JsonResponse(result, safe=False)
 
     else:
         return HttpResponseNotAllowed(['GET'])

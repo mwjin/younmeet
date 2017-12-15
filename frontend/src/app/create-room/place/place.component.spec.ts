@@ -15,10 +15,16 @@ import {AccountServiceSpy} from "../../services/account.service.spy";
 import {ClipboardModule} from "ngx-clipboard/dist";
 import {DaumApiService} from "../../services/daum-api.service";
 import {DaumApiServiceSpy} from "../../services/daum-api.service.spy";
+import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import {FreetimeService} from "../../services/freetime.service";
+import {FreetimeServiceSpy} from "../../services/freetime.service.spy";
 
 describe('PlaceComponent', () => {
   let component: PlaceComponent;
   let fixture: ComponentFixture<PlaceComponent>;
+  let accountServiceSpy: AccountServiceSpy;
+  let meetServiceSpy: MeetServiceSpy;
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,23 +34,23 @@ describe('PlaceComponent', () => {
         ReactiveFormsModule,
         AgmCoreModule.forRoot({
           apiKey: 'AIzaSyDBe3QLe8Z3c8Kpuw88gMHpfrgvHseQOXc',
-          libraries: ["places"],
+          libraries: ['places'],
         }),
         FormsModule,
-        ClipboardModule,
+        NguiAutoCompleteModule,
       ],
       declarations: [
         PlaceComponent,
-        RouterLinkStubDirective,
       ],
       providers: [
         { provide: MeetService, useClass: MeetServiceSpy },
         {
           provide : ActivatedRoute, useValue: {
-          params: Observable.of({'id': 1})
+          params: Observable.of({hash : 'asdf'})
         }},
         { provide: AccountService, useClass: AccountServiceSpy },
         { provide: DaumApiService, useClass: DaumApiServiceSpy },
+        { provide: FreetimeService, useClass: FreetimeServiceSpy },
       ]
     })
       .compileComponents();

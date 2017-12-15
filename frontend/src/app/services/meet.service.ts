@@ -9,7 +9,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/observable/of';
 
-import { roomFormToCreateResponse, roomFromResponse, RoomResponse, roomToResponse } from './room-rest-interfaces';
+import { roomFormToCreateResponse, roomFromResponse, RoomResponse } from './room-rest-interfaces';
 import { UserInfo } from '../models/user-info';
 import { CreateRoomForm } from '../create-room/create-room-form';
 import { TimespanResponseData } from './timespan-response-data';

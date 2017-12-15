@@ -5,7 +5,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-import {SuiModalModule, SuiModule, SuiPopupModule} from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomListComponent } from './dashboard/room-list/room-list.component';
 import { MeetService } from './services/meet.service';
@@ -33,6 +33,8 @@ import { GoogleScheduleService } from './services/google-schedule.service';
 import {DaumApiService} from './services/daum-api.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
+import {Ng2AutoCompleteModule} from "ng2-auto-complete";
+import {NguiAutoCompleteModule} from "@ngui/auto-complete";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -64,7 +66,8 @@ export function MyCookieStrategy() {
 }
 
 @NgModule({
-  declarations : [AppComponent,
+  declarations : [
+    AppComponent,
     LoginComponent,
     SignupComponent,
     DashboardComponent,
@@ -81,7 +84,6 @@ export function MyCookieStrategy() {
   imports : [
     CommonModule,
     BrowserModule,
-
     RouterModule.forRoot(routes),
     FormsModule,
     HttpModule,
@@ -98,6 +100,7 @@ export function MyCookieStrategy() {
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig,
     }),
+    NguiAutoCompleteModule,
   ],
   providers : [
     AccountService,
@@ -108,13 +111,6 @@ export function MyCookieStrategy() {
     DaumApiService,
     AuthGuard,
     IsLoggedIn,
-    /*
-
-    {
-      provide : XSRFStrategy,
-      useFactory : MyCookieStrategy
-    },
-    */
 
   ],
   bootstrap : [ AppComponent ]

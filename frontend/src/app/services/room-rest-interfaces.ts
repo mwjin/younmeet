@@ -16,11 +16,11 @@ export interface RoomResponse {
   min_time_required: number;
   created_time: Date;
   owner: number;
-  members?: number[];
+  member_count: number;
   time_span_start: Date;
   time_span_end: Date;
 }
-
+/*
 export function roomToResponse(room: Room): RoomResponse {
   return {
     id : room.id,
@@ -40,6 +40,7 @@ export function roomToResponse(room: Room): RoomResponse {
     time_span_end : room.timespan.end
   };
 }
+*/
 
 export function roomFromResponse(res: RoomResponse): Room {
   return {
@@ -53,7 +54,7 @@ export function roomFromResponse(res: RoomResponse): Room {
     longitude : res.longitude,
     urgent : true,
     createdTime : res.created_time,
-    users : res.members ? res.members.map(id => new UserInfo(id)) : [],
+    member_count: res.member_count,
     owner : new UserInfo(res.owner),
     id : res.id,
   };

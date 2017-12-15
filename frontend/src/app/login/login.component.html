@@ -1,9 +1,14 @@
 <body>
   <div class="ui middle aligned center aligned grid">
     <div class="column">
-      <h2 class="ui header">
-        You & MEet Login
-      </h2>
+      <img src="../../assets/images/login.png" width="320" draggable="false">
+      <div class="ui hidden divider"></div>
+
+      <!--
+      <h1 class="ui header">
+        You & MEet
+      </h1>
+      -->
 
       <form class="ui large form"
             [formGroup]="loginForm"
@@ -14,7 +19,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="email/username" placeholder="Email/Username"
+              <input id="email" type="text" name="email/username" placeholder="Email/Username"
                      [formControl]="loginForm.controls['email/username']">
             </div>
           </div>
@@ -22,7 +27,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" name="password" placeholder="Password"
+              <input id="password" class="input" type="password" name="password" placeholder="Password"
                      [formControl]="loginForm.controls['password']">
             </div>
           </div>
@@ -32,12 +37,12 @@
                class="ui error message"> Incorrect Email/Username or Password
           </div>
 
-          <button class="ui fluid large submit button" type="submit">Login</button>
+          <button class="ui fluid large submit yellow button" type="submit">Login</button>
 
         </div>
       </form>
       <div class="ui message">
-        New Member? <a href="signup">Sign Up</a>
+        New Member? &nbsp; <a href="signup">Sign Up</a>
       </div>
     </div>
   </div>

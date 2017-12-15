@@ -1,15 +1,18 @@
 <body>
   <app-dialog [(visible)]="showDialog">
-    <h2 class="ui align-middle header">Check Password</h2>
-    <div class="ui left icon input">
+    <img src="../../../assets/images/check_password_orange.png" width="270" height="40">
+
+    <div class="ui left icon input fluid">
       <i class="lock icon"></i>
       <input type="password" name="passwordConfirm" placeholder="Password"
              [(ngModel)]="currPassword">
     </div>
-    <button (click)="checkCurrentPassword()" class="ui right submit button">Check
+    <br>
+    <button (click)="checkCurrentPassword()" class="ui right floated submit teal button">Check
     </button>
-    <button (click)="goBack()" class="ui right submit button">Go Back
+    <button (click)="goBack()" class="ui right floated submit yellow button">Back
     </button>
+
   </app-dialog>
 
   <div *ngIf="currentUser">

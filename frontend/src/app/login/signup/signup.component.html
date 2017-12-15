@@ -1,9 +1,11 @@
 <body>
   <div class="ui middle aligned center aligned grid">
     <div class="column">
-      <h2 class="ui header">
-        You & MEet Sign Up
-      </h2>
+      <img src="../../../assets/images/main_logo.png"
+        width="200">
+      <h1>
+        Sign Up
+      </h1>
       <form class="ui large form"
             [formGroup]="signUpForm"
             [class.error]="!signUpForm.valid"
@@ -13,7 +15,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="email" placeholder="Username"
+              <input class="input-form" type="text" name="email" placeholder="Username"
                      [formControl]="signUpForm.controls['username']">
             </div>
           </div>
@@ -25,7 +27,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="mail icon"></i>
-              <input type="text" name="email" placeholder="Email"
+              <input class="input-form" type="text" name="email" placeholder="Email"
                      [formControl]="signUpForm.controls['email']">
             </div>
           </div>
@@ -37,7 +39,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" name="password" placeholder="Password"
+              <input class="input-form" type="password" name="password" placeholder="Password"
                      [formControl]="signUpForm.controls['password']">
             </div>
           </div>
@@ -49,7 +51,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" name="passwordConfirm" placeholder="Password Confirmation"
+              <input class="input-form" type="password" name="passwordConfirm" placeholder="Password Confirmation"
                      [formControl]="signUpForm.controls['passwordConfirm']">
             </div>
           </div>
@@ -57,7 +59,7 @@
                class="ui error message"> Must match password.
           </div>
 
-          <button class="ui fluid large submit button"
+          <button class="ui fluid large submit yellow button"
                   type="submit"
                   [disabled]="!signUpForm.valid">Sign Up
           </button>
@@ -68,7 +70,7 @@
         </div>
       </form>
       <div class="ui message">
-        Already Has Account? <a href="login">Log In</a>
+        Already have an account? <a href="login">Log In</a>
       </div>
     </div>
   </div>

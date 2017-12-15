@@ -4,45 +4,47 @@
   <div class="ui grid">
     <div class="row">
       <div class="six wide column">
+        <!--
         <div class="ui fluid action input">
           <input type="text" [(ngModel)]="shareableLink" readonly="" #inputTarget>
-          <button class="ui teal right labeled icon button" type="button"
+          -->
+          <button class="ui orange left labeled icon button" type="button"
                   ngxClipboard [cbContent]="shareableLink" (cbOnSuccess)="isCopied = true">
             <i class="copy icon"></i>
-            <div *ngIf="!isCopied">Copy</div>
+            <div *ngIf="!isCopied">Copy Link</div>
             <div *ngIf="isCopied">Copied!</div>
           </button>
-        </div>
+        <!--</div>-->
       </div>
       <div class="eight wide column"></div>
       <div class="two wide column">
-        <button (click)="goBack()" class="ui button right floated">Back</button>
+        <button (click)="goBack()" class="ui yellow button right floated">Back</button>
       </div>
     </div>
   </div>
-
+  <div class="ui hidden divider"></div>
   <h2>List of participants</h2>
   <div *ngIf="members && room.owner">
     <div class="ui horizontal list" *ngFor="let member of members">
       <div class="item">
         <img *ngIf="room.owner.id === member.id"
-             class="ui avatar image" src="assets/images/user-icon-tiny-king.png">
+             class="ui avatar image" src="assets/images/user-circle_teal.png" draggable="false">
         <img *ngIf="room.owner.id !== member.id"
-             class="ui avatar image" src="assets/images/user-icon-tiny.png">
+             class="ui avatar image" src="assets/images/user-circle_pink.png" draggable="false">
         <div class="content">
           <div class="header">{{ member.username }} &nbsp;&nbsp;</div>
         </div>
       </div>
     </div>
   </div>
-  <br/>
+  <div class="ui hidden divider"></div>
   <header>
     <h2>Recommended Times</h2>
   </header>
   <div *ngIf="bestTimes">
     <div class="ui attached segment">
       <div *ngIf="bestTimes.length == 0">
-        <h4>No Recommended Times Yet!</h4>
+        <h4 class="recommended-times">No Recommended Times Yet!</h4>
       </div>
       <div *ngIf="room.anonymity;then hideName else revealName"></div>
 
@@ -51,7 +53,7 @@
           <div *ngIf="i < showingBestTimes">
             <div class="item">
               <b style="font-size: 18px">{{i + 1}}. &nbsp;</b>
-              <b>{{bestTime.getDate()[0]}}: &nbsp;</b>
+              <b class="recommended-times">{{bestTime.getDate()[0]}}: &nbsp;</b>
               {{bestTime.getStartTime()}} ~ {{bestTime.getEndTime()}}
               ({{bestTime.getDuration()}})
               <div style="display: inline" suiPopup popupTrigger="outsideClick" #popup="suiPopup"
@@ -118,10 +120,12 @@
     </div>
 
     <div *ngIf="showingBestTimes < bestTimes.length">
-      <div class="ui bottom attached button" tabindex="0" (click)="viewMore()">View More</div>
+      <div class="ui bottom attached teal basic button" tabindex="0" (click)="viewMore()">View More</div>
     </div>
     <br/>
-    <button class="ui button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+    <button class="ui yellow button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
+
+    <div class="ui hidden divider"></div>
 
     <!-- If there exists Place -->
     <div *ngIf="room.latitude">
@@ -139,14 +143,19 @@
       </div>
       <br/>
       <div *ngIf="isRoomOwner" class="two wide column">
-        <button (click)="goPlaceChangePage()" class="ui button right floated">Change</button>
+        <button (click)="goPlaceChangePage()" class="ui yellow button right floated">Change Place</button>
       </div>
     </div>
 
     <!-- Place does not exist-->
+    <div *ngIf="!room.latitude">
+          <h2>Location not selected</h2>
+    </div>
     <div *ngIf="!room.latitude&&isRoomOwner" class="two wide column">
       <br/>
-
-      <button (click)="goPlaceChangePage()" class="ui button right floated">Select Place</button>
+      <button (click)="goPlaceChangePage()" class="ui yellow button right floated">Select Place</button>
     </div>
   </div>
+<br/>
+  <br/>
+  <br/>

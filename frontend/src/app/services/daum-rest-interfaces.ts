@@ -21,6 +21,7 @@ export function responseToPlace(res: PlaceResponse): Place {
     res['category_name'],
     res['y'],
     res['x'],
-    res['place_url']
+    res['place_url'],
+    res['address_name'],
   );
 }

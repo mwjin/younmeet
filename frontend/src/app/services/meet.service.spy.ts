@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/of"
 
-let ROOMS_CREATED: Room[] = [
+const ROOMS_CREATED: Room[] = [
   <Room>{
     name : 'Room 1',
     duration : 30,
@@ -17,7 +17,8 @@ let ROOMS_CREATED: Room[] = [
     urgent : true,
     createdTime : new Date(),
     id : 1,
-    hashid : 'hash1'
+    hashid : 'hash1',
+    member_count: 1,
   },
   <Room>{
     name : 'Room 2',
@@ -28,7 +29,8 @@ let ROOMS_CREATED: Room[] = [
     urgent : true,
     createdTime : new Date(),
     id : 2,
-    hashid : 'hash2'
+    hashid : 'hash2',
+    member_count: 2,
   },
   <Room>{
     name : 'Room 3',
@@ -39,7 +41,8 @@ let ROOMS_CREATED: Room[] = [
     urgent : true,
     createdTime : new Date(),
     id : 3,
-    hashid : 'hash3'
+    hashid : 'hash3',
+    member_count: 3,
   },
 ];
 
@@ -53,7 +56,8 @@ let ROOMS_JOINED: Room[] = [
     urgent : true,
     createdTime : new Date(),
     id : 1,
-    hashid : 'hash1'
+    hashid : 'hash1',
+    member_count: 4,
   },
   <Room>{
     name : 'Room 5',
@@ -64,7 +68,8 @@ let ROOMS_JOINED: Room[] = [
     urgent : true,
     createdTime : new Date(),
     id : 2,
-    hashid : 'hash2'
+    hashid : 'hash2',
+    member_count: 5,
   },
   <Room>{
     name : 'Room 6',
@@ -75,23 +80,24 @@ let ROOMS_JOINED: Room[] = [
     urgent : false,
     createdTime : new Date(),
     id : 3,
-    hashid : 'hash3'
+    hashid : 'hash3',
+    member_count: 6,
   },
 ];
 
-let TEST_USERS: User[] = [
+const TEST_USERS: User[] = [
   new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
   new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
   new User(3, 'chris', 'chris@snu.ac.kr', 'chris'),
 ];
 
-let TEST_AVAILABLE_TIME: Timespan[] = [
+const TEST_AVAILABLE_TIME: Timespan[] = [
   new Timespan(),
   new Timespan(),
   new Timespan()
 ];
 
-let TEST_TIME_SPAN: Timespan = new Timespan(
+const TEST_TIME_SPAN: Timespan = new Timespan(
   new Date('2017-11-10'),
   new Date('2017-11-15')
 );
@@ -104,11 +110,9 @@ export class MeetServiceSpy {
 
   constructor() {
     for (let room of ROOMS_CREATED) {
-      room.users = TEST_USERS.slice(0);
       room.owner = TEST_USERS[ 0 ];
     }
     for (let room of ROOMS_JOINED) {
-      room.users = TEST_USERS.slice(0);
       room.owner = TEST_USERS[ 0 ];
     }
   }

@@ -7,7 +7,7 @@ import { FilterOptions } from './room-list-filter-options';
 @Component({
   selector : 'app-dashboard',
   templateUrl : './dashboard.component.html',
-  styles : []
+  styleUrls : ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
 
@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit {
   public roomsJoined_NotUrgent: Room[];
   public latitude: number;
   public longitude: number;
-  public zoom: number;
 
   filters: FilterOptions[] = [ 'All', 'Name', 'Location' ];
   searchText: string;

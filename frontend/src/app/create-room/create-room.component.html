@@ -9,7 +9,7 @@
         [formGroup]="createRoomForm">
     <div class="field">
       <label for="name">Name</label>
-      <input type="text" id="name" required
+      <input class="input-form" type="text" id="name" required
              placeholder="Appointment Name"
              [formControl]="createRoomForm.controls['name']">
     </div>
@@ -21,7 +21,7 @@
 
     <div class="field">
       <label for="duration">Duration (in minutes)</label>
-      <input type="number" id="duration" step="30" min="30" required
+      <input class="input-form" type="number" id="duration" step="30" min="30" required
              placeholder="Duration (in minutes)"
              [formControl]="createRoomForm.controls['duration']">
     </div>
@@ -43,7 +43,7 @@
 
     <div class="field">
       <label for="minPeople">Minimum People to Meet</label>
-      <input type="number" id="minPeople" step="1" min="1" required
+      <input class="input-form" type="number" id="minPeople" step="1" min="1" required
              placeholder="Number of People"
              [formControl]="createRoomForm.controls['minPeople']">
     </div>
@@ -69,10 +69,12 @@
         <label>Min Date</label>
         <div class="ui left icon input">
           <i class="calendar icon"></i>
-          <input suiDatepicker
-                 [formControl]="createRoomForm.controls['timeSpanStart']"
-                 [class.error]="createRoomForm.controls['timeSpanStart'].hasError('invalidTimeSpanStartPast')"
-                 [pickerMode]="'date'">
+          <input
+            class="input-form"
+            suiDatepicker
+            [formControl]="createRoomForm.controls['timeSpanStart']"
+            [class.error]="createRoomForm.controls['timeSpanStart'].hasError('invalidTimeSpanStartPast')"
+            [pickerMode]="'date'">
         </div>
       </div>
 
@@ -81,9 +83,11 @@
         <label>Max Date</label>
         <div class="ui left icon input">
           <i class="calendar icon"></i>
-          <input suiDatepicker
-                 [formControl]="createRoomForm.controls['timeSpanEnd']"
-                 [pickerMode]="'date'">
+          <input
+            class="input-form"
+            suiDatepicker
+            [formControl]="createRoomForm.controls['timeSpanEnd']"
+            [pickerMode]="'date'">
         </div>
       </div>
     </div>
@@ -100,10 +104,13 @@
         Anonymity
       </sui-checkbox>
     </div>
-    <button type="submit" class="ui button right floated"
+    <button type="submit" class="ui orange button right floated"
             [disabled]="!createRoomForm.valid||createRoomForm.controls['timeSpanEnd'].value < createRoomForm.controls['timeSpanStart'].value">
       Submit
     </button>
   </form>
+  <br>
+  <br>
+  <br>
 </div>
 
