@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { toPromise } from 'rxjs/operator/toPromise';
-import {getCSRFHeaders} from "../../util/headers";
+import { getCSRFHeaders } from '../../util/headers';
 
 @Injectable()
 export class AuthenticationService {
@@ -27,8 +27,9 @@ export class AuthenticationService {
           if (response.status === 200) {
             // login success
             let token = '';
-            if (document.cookie)
-              token = document.cookie.split('csrftoken=')[1].split(';')[0];
+            if (document.cookie) {
+              token = document.cookie.split('csrftoken=')[ 1 ].split(';')[ 0 ];
+            }
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
@@ -48,8 +49,9 @@ export class AuthenticationService {
           if (response.status === 200) {
             // login success
             let token = '';
-            if (document.cookie)
-              token = document.cookie.split('csrftoken=')[1].split(';')[0];
+            if (document.cookie) {
+              token = document.cookie.split('csrftoken=')[ 1 ].split(';')[ 0 ];
+            }
             localStorage.setItem('currentUser', JSON.stringify({ 'token' : token }));
             return true;
           } else {
@@ -80,6 +82,7 @@ export class AuthenticationService {
     }
     return false;
   }
+
   /*
   checkPassword(password: string): Promise<boolean> {
     const url = `/api/checkPassword`;

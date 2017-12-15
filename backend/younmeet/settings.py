@@ -15,14 +15,24 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+if os.environ.get('DJANGO_ENV') == 'prod':
+    is_prod = True
+else:
+    is_prod = False
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l)j07!#2#4d24exgiv14@wx#7h_qjgae*u$f7nu6a-54l4!p$x'
+if is_prod:
+    key_file = open("/etc/younmeet/key", "r")
+    SECRET_KEY = key_file.read()
+else:
+    SECRET_KEY = 'l)j07!#2#4d24exgiv14@wx#7h_qjgae*u$f7nu6a-54l4!p$x'
+
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.78.6.209', 'localhost']
+ALLOWED_HOSTS = ['52.78.6.209', 'localhost', 'ec2-52-78-6-209.ap-northeast-2.compute.amazonaws.com', 'younmeet.com']
 
 # Application definition
 
@@ -38,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'younmeet.urls'
@@ -73,12 +85,23 @@ WSGI_APPLICATION = 'younmeet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if is_prod:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'read_default_file': '/etc/mysql/my.cnf',
+                'charset': 'utf8mb4',
+            },
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -120,3 +143,9 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.User'
+
+# Root for static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# CORS headers settings
+CORS_ORIGIN_ALLOW_ALL = True

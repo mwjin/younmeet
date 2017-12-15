@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../models/room';
 import { MeetService } from '../services/meet.service';
-import {User} from "../models/user";
+import { User } from '../models/user';
 import { FilterOptions } from './room-list-filter-options';
 
 @Component({
@@ -19,9 +19,9 @@ export class DashboardComponent implements OnInit {
   public latitude: number;
   public longitude: number;
 
-  filters: FilterOptions[] = ["All", "Name", "Location"];
+  filters: FilterOptions[] = [ 'All', 'Name', 'Location' ];
   searchText: string;
-  currentSearchOption: FilterOptions = "All";
+  currentSearchOption: FilterOptions = 'All';
 
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {
