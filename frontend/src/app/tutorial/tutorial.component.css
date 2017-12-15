@@ -14,7 +14,15 @@
 
   color: #555;
   background-color: #eee;
+  align: center;
 
+}
+
+.vertical-container {
+  padding:auto;
+  margin:auto;
+  text-align: center;
+  max-width: 600px;
 }
 
 .info-container {
@@ -29,7 +37,6 @@
 .action-container,
 .content-container {
   position: relative;
-  max-height: 600px;
   margin: 8px 16px;
   border-radius: 6px;
 
@@ -58,7 +65,8 @@
 }
 
 .swiper-container {
-  position: absolute;
+  align: center;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
@@ -68,6 +76,7 @@
 .swiper-slide {
   color: floralwhite;
   background-color: floralwhite;
+  align: center;
 }
 
 .swiper-slide-active {
