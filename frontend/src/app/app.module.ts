@@ -76,6 +76,7 @@ export function MyCookieStrategy() {
     CreateRoomComponent,
     RoomDetailComponent,
     RoomListSortPipe,
+    RoomListFilterPipe,
     TimeSelectComponent,
     ProfileComponent,
     PlaceComponent,

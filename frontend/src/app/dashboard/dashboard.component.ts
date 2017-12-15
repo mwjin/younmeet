@@ -3,6 +3,7 @@ import { Room } from '../models/room';
 import { MeetService } from '../services/meet.service';
 import {User} from "../models/user";
 import { SortOptions } from './room-list-sort-options';
+import { FilterOptions } from './room-list-filter-options';
 
 @Component({
   selector : 'app-dashboard',
@@ -20,11 +21,9 @@ export class DashboardComponent implements OnInit {
   sortOptions: SortOptions[] = ["Best Time", "Num. of Members", "Created Time"];
   currentSortOption: SortOptions = "Best Time";
 
-  /*
   filters: FilterOptions[] = ["All", "Name", "Location"];
   currentSearchOption: FilterOptions = "All";
   searchText: string;
-  */
 
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {
