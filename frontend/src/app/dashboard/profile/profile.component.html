@@ -1,20 +1,4 @@
 <body>
-  <app-dialog [(visible)]="showDialog">
-    <img src="../../../assets/images/check_password_orange.png" width="270" height="40">
-
-    <div class="ui left icon input fluid">
-      <i class="lock icon"></i>
-      <input type="password" name="passwordConfirm" placeholder="Password"
-             [(ngModel)]="currPassword">
-    </div>
-    <br>
-    <button (click)="checkCurrentPassword()" class="ui right floated submit teal button">Check
-    </button>
-    <button (click)="goBack()" class="ui right floated submit yellow button">Back
-    </button>
-
-  </app-dialog>
-
   <div *ngIf="currentUser">
     <div class="ui top attached demo menu">
       <a class="item" (click)="sidebar.toggle()">
@@ -32,7 +16,6 @@
           <div class="column">
             <h2 class="ui align-middle header">
               {{currentUser.username}}
-              <button class="ui red button right floated" (click)="open()">Leave You & MEet</button>
             </h2>
           </div>
           <form class="ui large form"
@@ -40,19 +23,35 @@
                 [class.error]="!passwordForm.valid&&passwordForm.touched"
                 (submit)="changePassword()">
             <div class="field">
+              <br><br>
               <label>Email</label>
               {{currentUser.email}}
             </div>
 
+            <div class="field">
+              <br><br>
+              <label>Modify Password</label>
+            </div>
+
+            <div class="required field">
+              <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="currentPassword" placeholder="Current Password"
+                       [formControl]="currentPassword">
+              </div>
+            </div>
+            <div *ngIf="currentPassword.hasError('invalidCurrentPassword')"
+                 class="ui error message"> Please Check Your Current Password
+            </div>
             <!-- Password Input -->
             <div class="required field">
               <div class="ui left icon input">
                 <i class="lock icon"></i>
-                <input type="password" name="password" placeholder="Password"
-                       [formControl]="passwordForm.controls['password']">
+                <input type="password" name="newPassword" placeholder="New Password"
+                       [formControl]="newPassword">
               </div>
             </div>
-            <div *ngIf="password.hasError('invalidPassword')&&password.touched"
+            <div *ngIf="newPassword.hasError('invalidPassword')&&newPassword.touched"
                  class="ui error message"> Must contain at least 8 characters with at least one number
             </div>
 
@@ -60,11 +59,11 @@
             <div class="required field">
               <div class="ui left icon input">
                 <i class="lock icon"></i>
-                <input type="password" name="passwordConfirm" placeholder="Password Confirmation"
-                       [formControl]="passwordForm.controls['passwordConfirm']">
+                <input type="password" name="newPasswordConfirm" placeholder="New Password Confirmation"
+                       [formControl]="newPasswordConfirm">
               </div>
             </div>
-            <div *ngIf="passwordConfirm.hasError('invalidPasswordConfirm')&&passwordConfirm.touched"
+            <div *ngIf="newPasswordConfirm.hasError('invalidPasswordConfirm')&&newPasswordConfirm.touched"
                  class="ui error message"> Must match password.
             </div>
             <button class="ui fluid submit button"
@@ -72,13 +71,21 @@
                     [disabled]="!passwordForm.valid">Change Password
             </button>
 
+            <div class="field">
+              <br><br>
+              <label>Delete Account </label>
+              <br>
+              <button class="ui fluid red button" (click)="open()">Leave You & MEet</button>
+            </div>
           </form>
         </div>
 
-        <div id="pastappointment" style="display: none" class="ui main container">
-          <h2 class="ui align-middle header">
-            Past Appointments
-          </h2>
+        <div id="pastappointment" style="display: none" class="ui main text container">
+          <div class="column">
+            <h2 class="ui align-middle header">
+              Past Appointments
+            </h2>
+          </div>
           <app-room-list [rooms]="pastRooms"></app-room-list>
         </div>
       </sui-sidebar-sibling>
@@ -90,11 +97,16 @@
   <ng-template let-context let-modal="modal" #modalTemplate>
     <div class="header">Delete Account Confirmation</div>
     <div class="content">
-      <p>You cannot restore your account</p>
+      <p>You Cannot Restore Your Account</p>
+      <p>Please Confirm Your Password Again</p>
+      <div class="ui left icon input">
+        <i class="lock icon"></i>
+        <input type="password" [formControl]="modalPasswordForm.controls['passwordCheck']" placeholder="Your Password">
+      </div>
     </div>
     <div class="actions">
       <button class="ui red button" (click)="modal.deny('denied')">Cancel</button>
-      <button class="ui green button" (click)="modal.approve('approved')" autofocus>OK</button>
+      <button class="ui green button" (click)="modal.approve('approved')">OK</button>
     </div>
   </ng-template>
 </body>

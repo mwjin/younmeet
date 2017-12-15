@@ -23,11 +23,15 @@
 }
 
 .sui-sidebar-container {
-  height: 100%;
+  background: floralwhite;
 }
 
 #check-password {
   font-family: Kollektif;
   font-size: 120%;
+}
+
+input {
+  font-size: 16px;
 }
 
