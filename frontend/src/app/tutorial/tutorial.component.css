@@ -4,19 +4,17 @@
 
 .box-container {
   box-sizing: border-box;
-  width: 400px;
-  height: 300px;
+  width: 300px;
+  height: 700px;
   max-width: 90%;
   max-height: 90%;
-  padding: 24px;  
+  padding: 24px;
   margin: 24px auto;
   border-radius: 4px;
 
   color: #555;
   background-color: #eee;
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.18),
-    0 6px 6px rgba(0, 0, 0, 0.25);
+
 }
 
 .info-container {
@@ -31,9 +29,7 @@
 .action-container,
 .content-container {
   position: relative;
-  max-height: 300px;
-  padding-top: 75%;
-  overflow: auto;
+  max-height: 600px;
   margin: 8px 16px;
   border-radius: 6px;
 
@@ -70,13 +66,13 @@
 }
 
 .swiper-slide {
-  color: #aaa;
-  background-color: #eee;
+  color: floralwhite;
+  background-color: floralwhite;
 }
 
 .swiper-slide-active {
-  color: #fff;
-  background-color: #aaa;
+  color: floralwhite;
+  background-color: floralwhite;
 }
 
 h1 {
