@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui red button" (click)="modal.deny()">Cancel</button>
-    <button class="ui green button" [disabled]="!signUpForm.valid" (click)="modal.approve('done')" autofocus>OK</button>
+    <button class="ui red button" (click)="goOut()">Cancel</button>
+    <button class="ui green button" [disabled]="!signUpForm.valid" (click)="tryLogin()" autofocus>OK</button>
   </div>
 </sui-modal>

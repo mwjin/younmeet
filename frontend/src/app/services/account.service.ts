@@ -48,7 +48,7 @@ export class AccountService {
 
   postNonUserSignUp(name: string) {
     const url = `/api/signup/non-user`; // could be /api/user/signup
-    console.log('hello', name);
+    console.log(name);
   }
 
   deleteUser(): Promise<boolean> {
