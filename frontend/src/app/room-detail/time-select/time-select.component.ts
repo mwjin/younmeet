@@ -56,7 +56,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
         this.timeSpan.end.setDate(this.timeSpan.end.getDate() + 1);
         this.timeViewRanges = [];
 
-        let date: Date = this.timeSpan.start;
+        let date: Date = new Date(this.timeSpan.start);
         while (this.compareTwoDateJustDate(date, this.timeSpan.end) <= 0) {
           this.timeViewRanges.push(this.convertDateToMomentString(date));
           date.setDate(date.getDate() + 1);
