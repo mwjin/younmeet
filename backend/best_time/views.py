@@ -19,9 +19,11 @@ def best_time_list(request, room_id):
     if request.method == 'GET':
         best_times = BestTime.objects.filter(room_id=room_id).all()
         best_times_list = []
-        current_time = datetime.now()
+        current_time = datetime.utcnow()
         for best_time in best_times:
-            if best_time.start_time.date() >= current_time.date():
+            print(best_time.start_time)
+            print(best_time.end_time)
+            if best_time.start_time >= current_time:
                 best_time_dict = dict()
                 best_time_dict['start_time'] = best_time.start_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 best_time_dict['end_time'] = best_time.end_time.strftime('%Y-%m-%dT%H:%M:%SZ')

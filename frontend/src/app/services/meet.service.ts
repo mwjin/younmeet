@@ -101,16 +101,9 @@ export class MeetService {
   }
 
   getCurrentRoom(route: ActivatedRoute): Observable<Room> {
-    //if (this.currentRoom === null) {
     return route.params
       .map(params => params[ 'hash' ])
       .flatMap(hash => this.getRoomByHash(hash, true));
-    /*
-    }
-    else {
-      return Observable.of(this.currentRoom);
-    }
-    */
   }
 
   getUsersInRoom(id: number): Promise<UserInfo[]> {

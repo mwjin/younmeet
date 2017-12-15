@@ -156,12 +156,12 @@ describe('AuthenticationService', () => {
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));
-    it('could not log out when current user does not exist', async(inject([], () => {
+    it('should still log out on response error', async(inject([], () => {
       response = new Response(new ResponseOptions({ status : 403 }));
       expect(localStorage.getItem('currentUser')).toBeNull();
       service.logOut()
         .then((result) => {
-          expect(result).toBe(false);
+          expect(result).toBe(true);
           expect(localStorage.getItem('currentUser')).toBeNull();
         });
     })));

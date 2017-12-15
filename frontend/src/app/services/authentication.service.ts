@@ -67,12 +67,13 @@ export class AuthenticationService {
     return this.http.get(url)
       .toPromise()
       .then(response => {
-        if (response.status === 200) {
-          localStorage.removeItem('currentUser');
-          return true;
-        } else {
-          return false;
-        }
+        localStorage.removeItem('currentUser');
+        return true;
+      })
+      .catch((error: any) => {
+        console.error(`Logout request failed!. Will log out for frontend.`);
+        localStorage.removeItem('currentUser');
+        return Promise.resolve(true);
       });
   }
 
