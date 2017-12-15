@@ -10,6 +10,7 @@
 
 .main.container {
   margin-top: 7em;
+  margin-bottom: 7em;
 }
 
 .wireframe {
@@ -21,8 +22,20 @@
   padding: 5em 0em;
 }
 
+.ui.top.attached.demo.menu {
+  background-color: floralwhite;
+}
+
+.ui.bottom.attached.segment {
+  background-color: floralwhite;
+}
+
 #check-password {
   font-family: Kollektif;
   font-size: 120%;
+}
+
+input {
+  font-size: 16px;
 }
 

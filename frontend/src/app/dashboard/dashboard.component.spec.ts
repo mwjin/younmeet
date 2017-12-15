@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
-import {Component} from "@angular/core";
-import {RouterTestingModule} from "@angular/router/testing";
-import {MockComponent} from "ng2-mock-component";
-import {MeetServiceSpy} from "../services/meet.service.spy";
-import {RouterLinkStubDirective} from "../../testing/router-stubs";
-import {MeetService} from "../services/meet.service";
-import {SuiModule} from "ng2-semantic-ui";
-import {FormsModule} from "@angular/forms";
+import { Component } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockComponent } from 'ng2-mock-component';
+import { MeetServiceSpy } from '../services/meet.service.spy';
+import { RouterLinkStubDirective } from '../../testing/router-stubs';
+import { MeetService } from '../services/meet.service';
+import { SuiModule } from 'ng2-semantic-ui';
+import { FormsModule } from '@angular/forms';
 import { RoomListFilterPipe } from './room-list-filter.pipe';
 
 @Component({
-  template: ``
+  template : ``
 })
 class CreateRoomComponentMock {}
 
@@ -23,25 +23,25 @@ describe('DashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
+      imports : [
         RouterTestingModule.withRoutes([
-          { path: 'room/create', component: CreateRoomComponentMock }
+          { path : 'room/create', component : CreateRoomComponentMock }
         ]),
         FormsModule,
         SuiModule
       ],
-      declarations: [
+      declarations : [
         DashboardComponent,
         CreateRoomComponentMock,
         RouterLinkStubDirective,
         RoomListFilterPipe,
-        MockComponent({ selector: 'app-room-list', inputs: ['rooms', 'searchText', 'searchOption'] })
+        MockComponent({ selector : 'app-room-list', inputs : [ 'rooms', 'searchText', 'searchOption' ] })
       ],
-      providers: [
-        { provide: MeetService, useClass: MeetServiceSpy }
+      providers : [
+        { provide : MeetService, useClass : MeetServiceSpy }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
