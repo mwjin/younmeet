@@ -51,6 +51,7 @@ class User(AbstractUser):
     username = models.CharField(_('Username'), max_length=64, unique=True)
     email = models.EmailField(_('Email'), unique=True)
     name = models.CharField(_('Name'), max_length=30)
+    is_fake = models.BooleanField(_('Is_fake'), default=False)
 
     objects = MyUserManager()
 

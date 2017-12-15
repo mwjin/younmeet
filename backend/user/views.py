@@ -79,7 +79,7 @@ def signin_nonuser(request):
         password = User.objects.make_random_password()
         name = req_data['name']
 
-        User.objects.create_user(email=email, password=password, username=username, name=name)
+        User.objects.create_user(email=email, password=password, username=username, name=name, is_fake=True)
 
         user = authenticate(email=email, password=password)
         login(request, user)
