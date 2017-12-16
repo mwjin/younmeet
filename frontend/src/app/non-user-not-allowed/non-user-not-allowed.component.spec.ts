@@ -21,6 +21,7 @@ class DashboardComponentMock {}
 describe('NonUserNotAllowedComponent', () => {
   let component: NonUserNotAllowedComponent;
   let fixture: ComponentFixture<NonUserNotAllowedComponent>;
+  let authServiceSpy: AuthenticationServiceSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -46,6 +47,7 @@ describe('NonUserNotAllowedComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NonUserNotAllowedComponent);
+    authServiceSpy = fixture.debugElement.injector.get(AuthenticationService) as any;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
