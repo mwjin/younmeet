@@ -21,7 +21,6 @@ export class NonUserNotAllowedComponent implements OnInit {
   }
 
   goSignUp(): void {
-    this.authService.logOut();
     this.router.navigate(['signup']);
   }
 }
