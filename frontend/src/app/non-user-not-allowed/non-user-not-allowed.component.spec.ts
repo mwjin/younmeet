@@ -5,6 +5,8 @@ import { SuiModule } from 'ng2-semantic-ui';
 import {RouterTestingModule} from "@angular/router/testing";
 import {RouterLinkStubDirective} from "../../testing/router-stubs";
 import {Component} from "@angular/core";
+import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationServiceSpy} from "../services/authentication.service.spy";
 
 @Component({
   template : ``
@@ -18,6 +20,7 @@ class DashboardComponentMock {}
 
 describe('NonUserNotAllowedComponent', () => {
   let component: NonUserNotAllowedComponent;
+  let authServiceSpy: AuthenticationServiceSpy;
   let fixture: ComponentFixture<NonUserNotAllowedComponent>;
 
   beforeEach(async(() => {
@@ -35,6 +38,9 @@ describe('NonUserNotAllowedComponent', () => {
         SignupComponentMock,
         DashboardComponentMock,
       ],
+      providers: [
+        { provide: AuthenticationService, useClass: AuthenticationServiceSpy },
+      ]
     })
     .compileComponents();
   }));
@@ -42,11 +48,11 @@ describe('NonUserNotAllowedComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NonUserNotAllowedComponent);
     component = fixture.componentInstance;
+    authServiceSpy = fixture.debugElement.injector.get(AuthenticationService) as any;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });
