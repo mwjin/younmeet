@@ -90,7 +90,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   }
 
   public deleteAllEvent(): void {
-    $('#calendar').fullCalendar('removeEvents');
+    $('#calendar').fullCalendar('removeEvents',
+      function (event) { return event.name !== 'googleSchedule'; });
   }
 
   public collectFreeTimes(): void {
