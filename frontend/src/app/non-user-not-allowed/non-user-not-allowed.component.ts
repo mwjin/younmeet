@@ -10,8 +10,7 @@ import {AuthenticationService} from "../services/authentication.service";
 })
 export class NonUserNotAllowedComponent implements OnInit {
 
-  constructor(private router: Router,
-              private authService: AuthenticationService) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
   }
@@ -21,7 +20,6 @@ export class NonUserNotAllowedComponent implements OnInit {
   }
 
   goSignUp(): void {
-    this.authService.logOut();
     this.router.navigate(['signup']);
   }
 }

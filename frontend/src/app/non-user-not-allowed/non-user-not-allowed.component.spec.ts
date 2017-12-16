@@ -4,8 +4,6 @@ import { NonUserNotAllowedComponent } from './non-user-not-allowed.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import {RouterTestingModule} from "@angular/router/testing";
 import {RouterLinkStubDirective} from "../../testing/router-stubs";
-import { AuthenticationService } from "../services/authentication.service";
-import { AuthenticationServiceSpy } from "../services/authentication.service.spy";
 import {Component} from "@angular/core";
 
 @Component({
@@ -21,7 +19,6 @@ class DashboardComponentMock {}
 describe('NonUserNotAllowedComponent', () => {
   let component: NonUserNotAllowedComponent;
   let fixture: ComponentFixture<NonUserNotAllowedComponent>;
-  let authServiceSpy: AuthenticationServiceSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -34,12 +31,11 @@ describe('NonUserNotAllowedComponent', () => {
       ],
       declarations: [
         NonUserNotAllowedComponent,
-        // RouterLinkStubDirective,
+        RouterLinkStubDirective,
         SignupComponentMock,
         DashboardComponentMock,
       ],
       providers: [
-        {provide: AuthenticationService, useClass: AuthenticationServiceSpy},
       ]
     })
     .compileComponents();
@@ -47,7 +43,6 @@ describe('NonUserNotAllowedComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NonUserNotAllowedComponent);
-    authServiceSpy = fixture.debugElement.injector.get(AuthenticationService) as any;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

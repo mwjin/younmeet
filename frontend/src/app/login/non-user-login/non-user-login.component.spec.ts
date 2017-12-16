@@ -37,7 +37,7 @@ describe('NonUserLoginComponent', () => {
       ],
       declarations: [
         NonUserLoginComponent,
-        // RouterLinkStubDirective,
+        RouterLinkStubDirective,
         DashboardComponentMock,
         LoginComponentMock
       ],
