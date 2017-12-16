@@ -9,13 +9,13 @@ import {Router} from "@angular/router";
 })
 export class NonUserNotAllowedComponent implements OnInit {
 
-  constructor(private location: Location, private router: Router) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['dashboard']);
   }
 
   goSignUp(): void {

@@ -3,6 +3,18 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NonUserNotAllowedComponent } from './non-user-not-allowed.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import {RouterTestingModule} from "@angular/router/testing";
+import {RouterLinkStubDirective} from "../../testing/router-stubs";
+import {Component} from "@angular/core";
+
+@Component({
+  template : ``
+})
+class SignupComponentMock {}
+
+@Component({
+  template : ``
+})
+class DashboardComponentMock {}
 
 describe('NonUserNotAllowedComponent', () => {
   let component: NonUserNotAllowedComponent;
@@ -12,9 +24,17 @@ describe('NonUserNotAllowedComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         SuiModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'dashboard', component: DashboardComponentMock },
+          { path: 'signup', component: SignupComponentMock },
+        ]),
       ],
-      declarations: [ NonUserNotAllowedComponent ]
+      declarations: [
+        NonUserNotAllowedComponent,
+        RouterLinkStubDirective,
+        SignupComponentMock,
+        DashboardComponentMock,
+      ]
     })
     .compileComponents();
   }));
