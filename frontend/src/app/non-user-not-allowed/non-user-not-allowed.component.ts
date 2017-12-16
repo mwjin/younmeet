@@ -20,9 +20,6 @@ export class NonUserNotAllowedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.gotoSignup) {
-      this.authService.logOut();
-    }
   }
 
   goBack(): void {
