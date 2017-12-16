@@ -34,7 +34,7 @@ describe('NonUserNotAllowedComponent', () => {
       ],
       declarations: [
         NonUserNotAllowedComponent,
-        RouterLinkStubDirective,
+        // RouterLinkStubDirective,
         SignupComponentMock,
         DashboardComponentMock,
       ],
