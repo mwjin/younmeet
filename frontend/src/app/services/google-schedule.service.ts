@@ -66,7 +66,16 @@ export class GoogleScheduleService implements OnDestroy {
    * appropriate message is printed.
    */
   private listUpcomingEvents(): void {
-    gapi.client.request({
+    this.getGoogleCalendarEvents('primary')
+      .then(schedules => {
+        this.schedules = schedules;
+        this.isInit = true;
+      });
+  }
+
+  /*
+  private getGoogleCalendarIdList(): Promise<string[]> {
+    return gapi.client.request({
       'path': '/calendar/v3/users/me/calendarList',
       'method': 'GET',
     }).then( response => {
@@ -79,19 +88,17 @@ export class GoogleScheduleService implements OnDestroy {
       }
 
       return calendarIdList;
-    }).then(calendarIdList => {
-      for (let i = 0; i < calendarIdList.length; i++) {
-        const calendarId = calendarIdList[i];
-        console.log(calendarId);
-      }
-      });
+    });
+  }
+  */
 
-    gapi.client.request({
+  private getGoogleCalendarEvents(calendarId: string): Promise<Schedule[]> {
+    return gapi.client.request({
         'path': '/calendar/v3/calendars/calendarId/events',
         'method': 'GET',
         'params':
           {
-            'calendarId': 'primary',
+            'calendarId': calendarId,
             'timeMin': this.timeSpan.start.toISOString(),
             'timeMax': this.timeSpan.end.toISOString(),
             'showDeleted': false,
@@ -100,12 +107,12 @@ export class GoogleScheduleService implements OnDestroy {
           },
       }
     ).then( response => {
+      const schedules = []
       const events = response.result.items;
-      console.log('Upcoming events:');
 
       if (events.length > 0) {
-        for (let i = 0; i < events.length; i++) {
-          const event = events[i];
+        for (let j = 0; j < events.length; j++) {
+          const event = events[j];
           let start = event.start.dateTime;
           let end = event.end.dateTime;
           if (!start) {
@@ -115,14 +122,11 @@ export class GoogleScheduleService implements OnDestroy {
             end = event.end.date;
           }
 
-          console.log(event.summary + ' (' + start + ' ~ ' + end + ')');
           const schedule = new Schedule(event.summary, new Date(start), new Date(end));
-          this.schedules.push(schedule);
+          schedules.push(schedule);
         }
-      } else {
-        console.log('No upcoming events found.');
       }
-      this.isInit = true;
+      return schedules;
     });
   }
 
