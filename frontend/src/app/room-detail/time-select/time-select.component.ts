@@ -278,6 +278,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             end : schedule.end,
             color : 'rgb(230, 0, 0)',
             overlap : true,
+            editable : false,
           };
 
           calendar.fullCalendar('renderEvent', event);
