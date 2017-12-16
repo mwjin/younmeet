@@ -11,10 +11,15 @@ export class TutorialComponent implements OnInit {
   private tutorialUrl = '../../assets/images/tutorial/';
 
   public slides = [
-    this.tutorialUrl + 'testing.png',
     this.tutorialUrl + 'login.png',
+    this.tutorialUrl + 'sign_up.png',
     this.tutorialUrl + 'dashboard.png',
-    this.tutorialUrl + 'room_detail.png',
+    this.tutorialUrl + 'create_appointment.png',
+    this.tutorialUrl + 'place.png',
+    this.tutorialUrl + 'place1.png',
+    this.tutorialUrl + 'select_time.png',
+    this.tutorialUrl + 'room_detail1.png',
+    this.tutorialUrl + 'room_detail2.png',
   ];
   public type = 'component';
 

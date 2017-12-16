@@ -18,12 +18,12 @@
       </div>
       <div class="ten wide column">
         <button (click)="goBack()" class="ui yellow button right floated">Back</button>
-        <button *ngIf="isRoomOwner" (click)="deleteRoom()" class="ui orange button right floated">Delete Room</button>
       </div>
     </div>
   </div>
   <div class="ui hidden divider"></div>
   <h2>List of participants</h2>
+  <ng-template></ng-template>
   <div *ngIf="members && room.owner">
     <div class="ui horizontal list" *ngFor="let member of members">
       <div class="item">
@@ -116,11 +116,10 @@
             </div>
           </div>
         </div>
+        <div *ngIf="showingBestTimes < bestTimes.length">
+          <div class="ui bottom attached teal basic button" tabindex="0" (click)="viewMore()">View More</div>
+        </div>
       </ng-template>
-    </div>
-
-    <div *ngIf="showingBestTimes < bestTimes.length">
-      <div class="ui bottom attached teal basic button" tabindex="0" (click)="viewMore()">View More</div>
     </div>
     <br/>
     <button class="ui yellow button right floated" (click)="goTimeSelectPage()">Select Available Time</button>
@@ -158,4 +157,18 @@
   </div>
   <br/>
   <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <button *ngIf="isRoomOwner" (click)="deleteRoom()" class="ui red button fluid ">Delete Room</button>
   <br/>

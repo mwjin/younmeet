@@ -22,12 +22,16 @@
   padding: 5em 0em;
 }
 
-.ui.top.attached.demo.menu {
-  background-color: floralwhite;
+#user-info {
+  color: #FB6F24;
+  font-family: Kollektif;
+  font-size: 113.7%
 }
 
-.ui.bottom.attached.segment {
-  background-color: floralwhite;
+#past-appointments {
+  color: #FB6F24;
+  font-family: Kollektif;
+  font-size: 113.7%
 }
 
 #check-password {
@@ -35,7 +39,22 @@
   font-size: 120%;
 }
 
+#profile {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 300%
+}
+
 input {
   font-size: 16px;
 }
 
+.field {
+  color: #5C656E;
+  font-size: 120%;
+}
+
+label {
+  color: #5C656E !important;
+  font-size: 200%;
+}
