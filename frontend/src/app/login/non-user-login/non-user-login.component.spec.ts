@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NonUserLoginComponent } from './non-user-login.component';
 import { SuiModule } from "ng2-semantic-ui";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthenticationServiceSpy} from "../../services/authentication.service.spy";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Component} from "@angular/core";
@@ -18,6 +18,7 @@ class LoginComponentMock {}
   template : ``
 })
 class DashboardComponentMock {}
+
 
 describe('NonUserLoginComponent', () => {
   let component: NonUserLoginComponent;
@@ -42,6 +43,7 @@ describe('NonUserLoginComponent', () => {
         LoginComponentMock
       ],
       providers: [
+        FormBuilder,
         { provide: AuthenticationService, useClass: AuthenticationServiceSpy },
       ]
     })

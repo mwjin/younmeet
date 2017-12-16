@@ -35,8 +35,6 @@ describe('NonUserNotAllowedComponent', () => {
         SignupComponentMock,
         DashboardComponentMock,
       ],
-      providers: [
-      ]
     })
     .compileComponents();
   }));
@@ -50,4 +48,5 @@ describe('NonUserNotAllowedComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
