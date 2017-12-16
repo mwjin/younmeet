@@ -90,7 +90,8 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   }
 
   public deleteAllEvent(): void {
-    $('#calendar').fullCalendar('removeEvents');
+    $('#calendar').fullCalendar('removeEvents',
+      function (event) { return event.name !== 'googleSchedule'; });
   }
 
   public collectFreeTimes(): void {
@@ -278,6 +279,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             end : schedule.end,
             color : 'rgb(230, 0, 0)',
             overlap : true,
+            editable : false,
           };
 
           calendar.fullCalendar('renderEvent', event);
