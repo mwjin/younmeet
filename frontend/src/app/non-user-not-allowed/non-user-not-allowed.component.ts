@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from "@angular/common";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../services/authentication.service";
@@ -8,12 +8,21 @@ import {AuthenticationService} from "../services/authentication.service";
   templateUrl: './non-user-not-allowed.component.html',
   styleUrls: ['./non-user-not-allowed.component.css']
 })
-export class NonUserNotAllowedComponent implements OnInit {
+export class NonUserNotAllowedComponent implements OnInit, OnDestroy {
+  gotoSignup: boolean;
 
   constructor(private router: Router,
-              private authService: AuthenticationService) {}
+              private authService: AuthenticationService) {
+    this.gotoSignup = false;
+  }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    if (this.gotoSignup) {
+      this.authService.logOut();
+    }
   }
 
   goBack(): void {
@@ -21,7 +30,7 @@ export class NonUserNotAllowedComponent implements OnInit {
   }
 
   goSignUp(): void {
+    this.gotoSignup = true;
     this.router.navigate(['signup']);
-    this.authService.logOut();
   }
 }
