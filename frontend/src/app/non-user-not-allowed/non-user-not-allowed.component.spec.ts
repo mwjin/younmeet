@@ -4,6 +4,8 @@ import { NonUserNotAllowedComponent } from './non-user-not-allowed.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import {RouterTestingModule} from "@angular/router/testing";
 import {RouterLinkStubDirective} from "../../testing/router-stubs";
+import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationServiceSpy } from "../services/authentication.service.spy";
 import {Component} from "@angular/core";
 
 @Component({
@@ -34,6 +36,9 @@ describe('NonUserNotAllowedComponent', () => {
         RouterLinkStubDirective,
         SignupComponentMock,
         DashboardComponentMock,
+      ],
+      providers: [
+        {provide: AuthenticationService, useClass: AuthenticationServiceSpy},
       ]
     })
     .compileComponents();
