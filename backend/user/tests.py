@@ -112,6 +112,24 @@ class UserTestCase(TestCase):
                                       )
         self.assertEqual(response.status_code, 405)
 
+    def test_signin_nonuser_post(self):
+        response = self.client.post('/api/signin/non-user',
+                                    json.dumps({'name': 'minwoo'}),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_signin_nonuser_invalid_methods(self):
+        response = self.client.get('/api/signin/non-user')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/signin/non-user',
+                                    json.dumps({'name': 'minwoo'}),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/signin/non-user')
+        self.assertEqual(response.status_code, 405)
+
     def test_signout_get(self):
         self.client.login(email='minu@snu.ac.kr', password='1234')
 
