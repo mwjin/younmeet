@@ -36,6 +36,7 @@ describe('DashboardComponent', () => {
         CreateRoomComponentMock,
         RouterLinkStubDirective,
         RoomListSortPipe,
+        RoomListFilterPipe,
         MockComponent({ selector: 'app-room-list', inputs: ['rooms', 'searchText', 'searchOption'] })
       ],
       providers : [

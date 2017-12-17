@@ -57,9 +57,9 @@ describe('RoomListSortPipe', () => {
     }
   });
 
-  it('filters rooms correctly with "Num. of Members" option', () => {
+  it('filters rooms correctly with "# Members" option', () => {
     {
-      let sorted = pipe.transform(rooms, "Num. of Members");
+      let sorted = pipe.transform(rooms, '# Members');
       expect(sorted[0].id).toBe(rooms[3].id);
       expect(sorted[1].id).toBe(rooms[0].id);
       expect(sorted[2].id).toBe(rooms[2].id);
@@ -69,7 +69,7 @@ describe('RoomListSortPipe', () => {
 
   it('filters rooms correctly with "Created Time" option', () => {
     {
-      let sorted = pipe.transform(rooms, "Created Time");
+      let sorted = pipe.transform(rooms, 'Created Time');
       expect(sorted[0].id).toBe(rooms[2].id);
       expect(sorted[1].id).toBe(rooms[3].id);
       expect(sorted[2].id).toBe(rooms[0].id);
