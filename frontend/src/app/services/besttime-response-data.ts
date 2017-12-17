@@ -12,7 +12,8 @@ export class BesttimeResponseData {
     return new Besttime(
       new Timespan(new Date(response.start_time), new Date(response.end_time)),
       response.full_attend,
-      response.partial_attend.map(partialAttendResponse => PartialAttendInfoResponseData.responseToPartialAttend(partialAttendResponse)));
+      response.partial_attend ?
+        response.partial_attend.map(res => PartialAttendInfoResponseData.responseToPartialAttend(res)) : []);
   }
 }
 

@@ -142,7 +142,6 @@ export class MeetServiceSpy {
     }
   }
 
-
   getTimeSpan = jasmine.createSpy('getTimeSpan').and.returnValue(TEST_TIME_SPAN);
 
   getCurrentRoomId = jasmine.createSpy('getCurrentRoomId').and.returnValue(1);
@@ -152,6 +151,10 @@ export class MeetServiceSpy {
   );
 
   getRoomsJoinedByMe = jasmine.createSpy('getRoomsJoinedByMe').and.callFake(
+    () => Promise.resolve(ROOMS_JOINED)
+  );
+
+  getRoomsJoinedPast = jasmine.createSpy('getRoomsJoinedPast').and.callFake(
     () => Promise.resolve(ROOMS_JOINED)
   );
 
@@ -174,6 +177,10 @@ export class MeetServiceSpy {
 
   getUsersInRoom = jasmine.createSpy('getUsersInRoom').and.callFake(
     (id: number) => Promise.resolve(TEST_USERS)
+  );
+
+  getBestTime = jasmine.createSpy('getBestTime').and.callFake(
+    (roomId: number) => Promise.resolve(TEST_AVAILABLE_TIME)
   );
 
   getAvailableTime = jasmine.createSpy('getAvailableTime').and.callFake(
