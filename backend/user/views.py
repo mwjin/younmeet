@@ -75,7 +75,8 @@ def signin_nonuser(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
 
-        username = ''.join(random.choices(string.ascii_letters + string.digits, k=64))
+        username = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
+
         email = username + '@nonuser.com'
         password = User.objects.make_random_password()
         name = req_data['name']
