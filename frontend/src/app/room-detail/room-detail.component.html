@@ -157,18 +157,22 @@
   </div>
   <br/>
   <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <button *ngIf="isRoomOwner" (click)="deleteRoom()" class="ui red button fluid ">Delete Room</button>
+
+  <div *ngIf="isRoomOwner">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <button (click)="deleteRoom()" class="ui red button fluid ">Delete Room</button>
+  </div>
   <br/>

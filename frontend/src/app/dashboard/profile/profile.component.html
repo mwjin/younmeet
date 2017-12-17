@@ -62,7 +62,7 @@
           <div *ngIf="newPasswordConfirm.hasError('invalidPasswordConfirm')&&newPasswordConfirm.touched"
                class="ui error message"> Must match password.
           </div>
-          <button class="ui fluid submit button"
+          <button class="ui fluid submit yellow button"
                   type="submit"
                   [disabled]="!passwordForm.valid">Change Password
           </button>

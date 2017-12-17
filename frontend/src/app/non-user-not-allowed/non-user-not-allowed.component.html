@@ -1,10 +1,14 @@
 <sui-modal [isClosable]="true" (dismissed)="goBack()" #modal>
-  <div class="header">Non-Users are Forbidden</div>
+  <div id="forbidden" class="header">Non-Members Forbidden</div>
   <div class="content">
     <!-- Name Input -->
-    <p style="font-size: 20px">This page is allowed for only regular users. Sign Up for more features!</p>
-    <button class="ui yellow button" (click)="modal.approve('done'); goSignUp()" autofocus>Sign Up</button>
-    <button class="ui orange button" (click)="modal.deny(); goBack()">Back to Main Page</button>
+    <div class="content">Only for regular users!</div>
+    <div class="content">Sign Up for more features!</div>
+    <div class="ui hidden divider"></div>
+    <button class="ui orange button right floated" (click)="modal.approve('done'); goSignUp()" autofocus>Sign Up</button>
+    <button class="ui yellow button right floated" (click)="modal.deny(); goBack()">Back</button>
+    <br>
+    <br>
   </div>
 </sui-modal>
 

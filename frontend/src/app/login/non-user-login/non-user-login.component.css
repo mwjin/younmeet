@@ -1,0 +1,15 @@
+body {
+  background-color: floralwhite;
+}
+
+#header {
+  color: #FE9A76;
+  font-family: Kollektif;
+  font-size: 200%;
+}
+
+#nickname {
+  color: #FB6F24;
+  font-family: Kollektif;
+  font-size: 120%;
+}
