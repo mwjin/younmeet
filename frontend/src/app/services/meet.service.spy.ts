@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import "rxjs/add/observable/of"
+import { UserInfo } from '../models/user-info';
 
 const ROOMS_CREATED: Room[] = [
   <Room>{
@@ -18,7 +19,11 @@ const ROOMS_CREATED: Room[] = [
     createdTime : new Date(),
     id : 1,
     hashid : 'hash1',
-    member_count: 1,
+    memberCount: 1,
+    owner: new UserInfo(1234, "asdf"),
+    bestTimespan: new Timespan(),
+    latitude: 0,
+    longitude: 0
   },
   <Room>{
     name : 'Room 2',
@@ -30,7 +35,11 @@ const ROOMS_CREATED: Room[] = [
     createdTime : new Date(),
     id : 2,
     hashid : 'hash2',
-    member_count: 2,
+    memberCount: 2,
+    owner: new UserInfo(1234, "asdf"),
+    bestTimespan: new Timespan(),
+    latitude: 0,
+    longitude: 0
   },
   <Room>{
     name : 'Room 3',
@@ -42,7 +51,11 @@ const ROOMS_CREATED: Room[] = [
     createdTime : new Date(),
     id : 3,
     hashid : 'hash3',
-    member_count: 3,
+    memberCount: 3,
+    owner: new UserInfo(1234, "asdf"),
+    bestTimespan: new Timespan(),
+    latitude: 0,
+    longitude: 0
   },
 ];
 
@@ -57,7 +70,11 @@ let ROOMS_JOINED: Room[] = [
     createdTime : new Date(),
     id : 1,
     hashid : 'hash1',
-    member_count: 4,
+    memberCount: 4,
+    owner: new UserInfo(1234, "asdf"),
+    bestTimespan: new Timespan(),
+    latitude: 0,
+    longitude: 0
   },
   <Room>{
     name : 'Room 5',
@@ -69,7 +86,11 @@ let ROOMS_JOINED: Room[] = [
     createdTime : new Date(),
     id : 2,
     hashid : 'hash2',
-    member_count: 5,
+    memberCount: 5,
+    owner: new UserInfo(1234, "asdf"),
+    bestTimespan: new Timespan(),
+    latitude: 0,
+    longitude: 0
   },
   <Room>{
     name : 'Room 6',
@@ -81,7 +102,11 @@ let ROOMS_JOINED: Room[] = [
     createdTime : new Date(),
     id : 3,
     hashid : 'hash3',
-    member_count: 6,
+    memberCount: 6,
+    owner: new UserInfo(1234, "asdf"),
+    bestTimespan: new Timespan(),
+    latitude: 0,
+    longitude: 0
   },
 ];
 

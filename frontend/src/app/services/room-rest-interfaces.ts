@@ -53,9 +53,10 @@ export function roomFromResponse(res: RoomResponse): Room {
     latitude : res.latitude,
     longitude : res.longitude,
     createdTime : res.created_time,
-    member_count: res.member_count,
+    memberCount: res.member_count,
     owner : new UserInfo(res.owner),
     id : res.id,
+    bestTimespan : new Timespan(res.best_start_time, res.best_end_time)
   };
 }
 

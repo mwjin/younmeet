@@ -50,6 +50,7 @@ export class RoomDetailComponent implements OnInit {
       })
       .flatMap(room => {
         this.room = room;
+        console.log(room);
         const getMembers = this.meetService.getUsersInRoom(this.room.id)
           .then(members => {
             this.members = members.filter(user => user.id !== room.owner.id);

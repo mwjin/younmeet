@@ -14,7 +14,7 @@
 }
 
 #joined {
-  color: #FB6F24;
+  color: #FB6F24 !important;
   font-family: Kollektif;
   font-size: 120%
 }
@@ -24,7 +24,7 @@ teal: #02B7A9
  */
 
 #created {
-  color: #FB6F24;
+  color: #FB6F24 !important;
   font-family: Kollektif;
   font-size: 120%
 }

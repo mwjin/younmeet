@@ -43,9 +43,9 @@
       </form>
       <div class="ui message">
         New Member? &nbsp; <a [routerLink]="['/signup']">Sign Up</a>
-      </div>
-      <div *ngIf="redirectUrl" class="ui message">
-        Annoying to sign up? &nbsp; <a [routerLink]="['/login','non-user']"> Log In without Sign Up</a>
+        <div *ngIf="redirectUrl">
+          Or &nbsp; <a [routerLink]="['/login','non-user']"> Login without Signing Up</a>
+        </div>
       </div>
       <div class="ui message">
         New to You & MEet? &nbsp; <a [routerLink]="['/tutorial']">View Tutorial</a>

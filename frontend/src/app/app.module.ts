@@ -40,6 +40,7 @@ import { SwiperConfigInterface, SwiperModule } from 'ngx-swiper-wrapper';
 import { NonUserNotAllowedComponent } from './non-user-not-allowed/non-user-not-allowed.component';
 import { NonUserGuard } from './guard/non-user.guard';
 import { UserGuard } from "./guard/user.guard";
+import { RoomListSortPipe } from './dashboard/room-list-sort.pipe';
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
@@ -89,6 +90,7 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     RoomListComponent,
     CreateRoomComponent,
     RoomDetailComponent,
+    RoomListSortPipe,
     RoomListFilterPipe,
     TimeSelectComponent,
     ProfileComponent,
