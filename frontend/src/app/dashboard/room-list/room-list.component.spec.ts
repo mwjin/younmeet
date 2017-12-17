@@ -4,7 +4,7 @@ import { RoomListComponent } from './room-list.component';
 import {RouterTestingModule} from "@angular/router/testing";
 import {Component} from "@angular/core";
 import {RouterLinkStubDirective} from "../../../testing/router-stubs";
-import {RoomListFilterPipe} from "../room-list-filter.pipe";
+import { RoomListSortPipe } from '../room-list-sort.pipe';
 
 @Component({
   template: ``
@@ -26,7 +26,7 @@ describe('RoomListComponent', () => {
         RoomListComponent,
         RouterLinkStubDirective,
         RoomDetailComponentMock,
-        RoomListFilterPipe
+        RoomListSortPipe
       ],
     })
     .compileComponents();

@@ -3,13 +3,6 @@
     <div class="column">
       <img src="../../assets/images/login.png" width="320" draggable="false">
       <div class="ui hidden divider"></div>
-
-      <!--
-      <h1 class="ui header">
-        You & MEet
-      </h1>
-      -->
-
       <form class="ui large form"
             [formGroup]="loginForm"
             (ngSubmit)="tryLogin()"
@@ -20,7 +13,7 @@
             <div class="ui left icon input">
               <i class="user icon"></i>
               <input id="email" type="text" name="email/username" placeholder="ID/Email"
-                     [formControl]="loginForm.controls['email/username']">
+                     [formControl]="loginForm.controls['email/username']" size="18">
             </div>
           </div>
 
@@ -28,7 +21,7 @@
             <div class="ui left icon input">
               <i class="lock icon"></i>
               <input id="password" class="input" type="password" name="password" placeholder="Password"
-                     [formControl]="loginForm.controls['password']">
+                     [formControl]="loginForm.controls['password']" size="18">
             </div>
           </div>
 
@@ -43,9 +36,9 @@
       </form>
       <div class="ui message">
         New Member? &nbsp; <a [routerLink]="['/signup']">Sign Up</a>
-      </div>
-      <div *ngIf="redirectUrl" class="ui message">
-        Annoying to sign up? &nbsp; <a [routerLink]="['/login','non-user']"> Log In without Sign Up</a>
+        <div *ngIf="redirectUrl">
+          Or &nbsp; <a [routerLink]="['/login','non-user']"> Login without Signing Up</a>
+        </div>
       </div>
       <div class="ui message">
         New to You & MEet? &nbsp; <a [routerLink]="['/tutorial']">View Tutorial</a>

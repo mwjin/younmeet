@@ -62,7 +62,7 @@
           <div *ngIf="newPasswordConfirm.hasError('invalidPasswordConfirm')&&newPasswordConfirm.touched"
                class="ui error message"> Must match password.
           </div>
-          <button class="ui fluid submit button"
+          <button class="ui fluid submit yellow button"
                   type="submit"
                   [disabled]="!passwordForm.valid">Change Password
           </button>
@@ -77,7 +77,6 @@
       </div>
 
       <div class="ui bottom attached segment" suiTabContent="2">
-        <h3>Past Appointments</h3>
         <app-room-list [rooms]="pastRooms"></app-room-list>
       </div>
     </sui-tabset>

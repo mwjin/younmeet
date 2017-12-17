@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../models/room';
 import { MeetService } from '../services/meet.service';
-import { User } from '../models/user';
+import {User} from "../models/user";
+import { SortOptions } from './room-list-sort-options';
 import { FilterOptions } from './room-list-filter-options';
 
 @Component({
@@ -12,25 +13,23 @@ import { FilterOptions } from './room-list-filter-options';
 export class DashboardComponent implements OnInit {
 
   public user: User;
-  public roomsCreated_Urgent: Room[];
-  public roomsCreated_NotUrgent: Room[];
-  public roomsJoined_Urgent: Room[];
-  public roomsJoined_NotUrgent: Room[];
+  public roomsCreated: Room[];
+  public roomsJoined: Room[];
   public latitude: number;
   public longitude: number;
 
-  filters: FilterOptions[] = [ 'All', 'Name', 'Location' ];
+  sortOptions: SortOptions[] = ["Best Time", "# Members", "Created Time"];
+  currentSortOption: SortOptions = "Best Time";
+
+  currentSearchOption: FilterOptions = "All";
   searchText: string;
-  currentSearchOption: FilterOptions = 'All';
 
   constructor(private meetService: MeetService) {
     this.meetService.getRoomsCreatedByMe().then(rooms => {
-      this.roomsCreated_Urgent = rooms.filter(room => room.urgent);
-      this.roomsCreated_NotUrgent = rooms.filter(room => !room.urgent);
+      this.roomsCreated = rooms;
     });
     this.meetService.getRoomsJoinedByMe().then(rooms => {
-      this.roomsJoined_Urgent = rooms.filter(room => room.urgent);
-      this.roomsJoined_NotUrgent = rooms.filter(room => !room.urgent);
+      this.roomsJoined = rooms;
     });
   }
 

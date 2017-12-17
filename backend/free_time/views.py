@@ -83,9 +83,10 @@ def free_time_list(request, room_id):
         best_time_calculator.insert_time(new_free_time_list)
         best_time_calculator.calculate_best_times()
         best_times = best_time_calculator.get_best_times()
-
+        if len(best_times) > 0:
+            current_room.best_start_time = best_times[0].start;
+            current_room.save()
         for time in best_times:
-            print(time)
             full_attend_members = time.full_attend
             partial_attend_members = time.partial_attend
             new_best_time = BestTime(
@@ -94,7 +95,6 @@ def free_time_list(request, room_id):
                 end_time=time.end,
             )
             new_best_time.save()
-            print(partial_attend_members.keys())
             for user_id in partial_attend_members.keys():
                 partial_info = PartialAttendInfo(
                     username=User.objects.get(id=user_id).name,

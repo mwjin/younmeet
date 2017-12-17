@@ -3,49 +3,51 @@
   Dashboard
 </h2>
 <div class="ui hidden divider"></div>
-
-<div>
-  <div class="four wide column">
-    <div class="ui search icon input">
-      <i class="search icon"></i>
-      <input type="text" name="search" placeholder="Search Rooms"
-             [(ngModel)]="searchText" size="16">
-    </div>
-    <button class="ui yellow button right floated" [routerLink]="['/room/create']">
-      Create
-    </button>
-    <!--
-    <sui-select class="ui orange right floated labeled icon button"
-                icon="filter"
-                [options]="filters"
-                [isSearchable]="true"
-                placeholder="All"
-                [(ngModel)]="currentSearchOption"
-                #filterSelect>
-      <div class="header">
-        <i class="tags icon"></i>
-        Filter by:
-      </div>
-      <sui-select-option *ngFor="let o of filterSelect.filteredOptions" [value]="o"></sui-select-option>
-    </sui-select>
-    -->
-  </div>
-</div>
+<button class="ui orange button right floated" [routerLink]="['/room/create']">
+  Create
+</button>
 <div class="ui hidden divider"></div>
+<div class="ui hidden divider"></div>
+<div class="ui hidden divider"></div>
+
+<div class="ui search icon input">
+  <i class="search icon"></i>
+  <input type="text" name="search" placeholder="Search Rooms"
+         [(ngModel)]="searchText" size="16">
+</div>
+
+&nbsp;
+<sui-select class="ui yellow right floated dropdown icon button"
+            icon="sort"
+            [options]="sortOptions"
+            placeholder="Sort" #sortSelect
+            [(ngModel)]="currentSortOption">
+  <sui-select-option *ngFor="let o of sortOptions" [value]="o"></sui-select-option>
+</sui-select>
+
+
+<div class="ui hidden divider"></div>
+
 <sui-tabset>
   <div class="ui top attached tabular menu">
-    <a id="joined" class="item" suiTabHeader="1">Joined</a>
-    <a id="created" class="item" suiTabHeader="2">Created</a>
+    <a id="created" class="item" suiTabHeader="1">Created</a>
+    <a id="joined" class="item" suiTabHeader="2">Joined</a>
+    <div class="right menu">
+      <div class="item">
+      </div>
+    </div>
+
   </div>
   <div class="ui bottom attached segment" suiTabContent="1">
-    <app-room-list [rooms]="roomsJoined_Urgent
-                   | roomListFilter: searchText: currentSearchOption">
+    <app-room-list [rooms]="roomsJoined
+                   | roomListFilter: searchText: currentSearchOption
+                   | roomSorter: currentSortOption">
     </app-room-list>
   </div>
   <div class="ui bottom attached segment" suiTabContent="2">
-    <app-room-list [rooms]="roomsCreated_Urgent
-                   | roomListFilter: searchText: currentSearchOption">
+    <app-room-list [rooms]="roomsCreated
+                   | roomListFilter: searchText: currentSearchOption
+                   | roomSorter: currentSortOption">
     </app-room-list>
-
   </div>
 </sui-tabset>

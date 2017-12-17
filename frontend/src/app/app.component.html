@@ -5,17 +5,16 @@
     <a class="header item" href="dashboard" draggable="false">
       <img class="ui icon" src="../assets/images/logo_white.png" height="22"
         draggable="false">
-
     </a>
     <div *ngIf="hasCurrentUser()" class="ui simple right aligned dropdown item">
       <img class="ui icon" src="../assets/images/user-circle_grey.png"
            width="21">
       <div class="menu">
         <div class="header">
-          <a href="profile" style="color:black" draggable="false">Profile</a>
+          <a href="profile" style="color:#5C656E" draggable="false">Profile</a>
         </div>
         <div class="header">
-          <a (click)="logOut()" style="color:black; cursor: pointer" draggable="false">LogOut</a>
+          <a (click)="logOut()" style="color:#5C656E; cursor: pointer" draggable="false">LogOut</a>
         </div>
       </div>
     </div>
@@ -24,16 +23,3 @@
 <div class="ui main container">
   <router-outlet></router-outlet>
 </div>
-
-<!--
-<footer id="footer" class="ui vertical footer segment">
-  <div class="ui center aligned container">
-    <div class="ui horizontal inverted small divided link list">
-      <a class="item" href="#">Site Map</a>
-      <a class="item" href="#">Contact Us</a>
-      <a class="item" href="#">Terms and Conditions</a>
-      <a class="item" href="#">Privacy Policy</a>
-    </div>
-  </div>
-</footer>
--->

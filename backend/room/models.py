@@ -39,6 +39,7 @@ class Room(models.Model):
 
     hashids = Hashids(salt='lasagna is very delicious', min_length=7)
     anonymity = models.BooleanField(default=False)
+    best_start_time = models.DateTimeField(null=True)
 
     def get_hash(id_num):
         return Room.hashids.encode(id_num)

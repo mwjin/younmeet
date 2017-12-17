@@ -89,8 +89,6 @@ export class CreateRoomComponent implements OnInit {
         this.createRoomForm.get('timeSpanEnd').value),
       this.createRoomForm.get('anonymity').value
     );
-    console.log(this.formModel.timeSpan.start);
-    console.log(this.formModel.timeSpan.end);
     this.meetService.addRoom(this.formModel)
       .then(room => {
         // navigate to room detail page
