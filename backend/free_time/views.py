@@ -83,7 +83,8 @@ def free_time_list(request, room_id):
         best_time_calculator.insert_time(new_free_time_list)
         best_time_calculator.calculate_best_times()
         best_times = best_time_calculator.get_best_times()
-
+        current_room.best_start_time = best_times[0].start;
+        current_room.save()
         for time in best_times:
             print(time)
             full_attend_members = time.full_attend

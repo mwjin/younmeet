@@ -58,6 +58,9 @@ export class RoomDetailComponent implements OnInit {
         const getBestTime = this.meetService.getBestTime(this.room.id)
           .then(bestTime => {
             this.bestTimes = bestTime.map(bestTimeResponse => BesttimeResponseData.responseToBestTime(bestTimeResponse));
+            console.log("ZZz");
+            console.log(this.bestTimes);
+
           });
         this.accountService.getUserDetail().then(currUser => {
           if (currUser.id === this.room.owner.id) {

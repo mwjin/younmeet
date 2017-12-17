@@ -52,7 +52,6 @@ export function roomFromResponse(res: RoomResponse): Room {
     place : res.place,
     latitude : res.latitude,
     longitude : res.longitude,
-    urgent : true,
     createdTime : res.created_time,
     member_count: res.member_count,
     owner : new UserInfo(res.owner),
