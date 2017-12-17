@@ -186,6 +186,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       eventRender : function (event, element) {
         if (event.name === 'googleSchedule') {
           element.append('from Google Calendar');
+          $(element).css("opacity", "0.5");
         }
       },
       visibleRange : {
