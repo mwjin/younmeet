@@ -12,9 +12,9 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 
 let TEST_USERS: User[] = [
-  new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
-  new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
-  new User(3, 'chris', 'chris@snu.ac.kr', 'chris'),
+  new User(1, 'alice', 'alice@snu.ac.kr', 'alice', 'alice'),
+  new User(2, 'bob', 'bob@snu.ac.kr', 'bob', 'bob'),
+  new User(3, 'chris', 'chris@snu.ac.kr', 'chris', 'chris'),
 ];
 
 describe('MeetService', () => {
@@ -156,9 +156,9 @@ describe('MeetService', () => {
       expectUrl(mockBackend, 'api/rooms/42/members', mockResponse);
       meetService.getUsersInRoom(42).then(res => {
         expect(res.length).toBe(3);
-        expect(res[ 0 ].username).toBe('alice');
-        expect(res[ 1 ].username).toBe('bob');
-        expect(res[ 2 ].username).toBe('chris');
+        expect(res[ 0 ].name).toBe('alice');
+        expect(res[ 1 ].name).toBe('bob');
+        expect(res[ 2 ].name).toBe('chris');
       });
     }));
   });

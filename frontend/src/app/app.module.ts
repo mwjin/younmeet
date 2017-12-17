@@ -17,7 +17,7 @@ import { AccountService } from './services/account.service';
 import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { SignupComponent } from './login/signup/signup.component';
 import { AuthenticationService } from './services/authentication.service';
-import { AuthGuard } from './auth-guard/auth.guard';
+import { AuthGuard } from './guard/auth.guard';
 import { CommonModule } from '@angular/common';
 import { RoomListFilterPipe } from './dashboard/room-list-filter.pipe';
 import { ClipboardModule } from 'ngx-clipboard/dist';
@@ -33,23 +33,29 @@ import { GoogleScheduleService } from './services/google-schedule.service';
 import { DaumApiService } from './services/daum-api.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dashboard/profile/dialog/dialog.component';
-import { NguiAutoCompleteModule} from "@ngui/auto-complete";
+import {NguiAutoCompleteModule} from '@ngui/auto-complete';
+import { NonUserLoginComponent } from './login/non-user-login/non-user-login.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
-import { SwiperConfigInterface, SwiperModule } from "ngx-swiper-wrapper";
+import { SwiperConfigInterface, SwiperModule } from 'ngx-swiper-wrapper';
+import { NonUserNotAllowedComponent } from './non-user-not-allowed/non-user-not-allowed.component';
+import { NonUserGuard } from './guard/non-user.guard';
+import { UserGuard } from "./guard/user.guard";
 
 const routes: Routes = [
   { path : '', redirectTo : 'login', pathMatch : 'full' },
   { path : 'dashboard', component : DashboardComponent, canActivate : [ AuthGuard ] },
-  { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard ] },
+  { path : 'room/create', component : CreateRoomComponent, canActivate : [ AuthGuard, UserGuard ] },
   { path : 'room/:hash', component : RoomDetailComponent, canActivate : [ AuthGuard ] },
   { path : 'link/:hash', redirectTo : 'room/:hash', pathMatch : 'full' },
   { path : 'login', component : LoginComponent, resolve: [ IsLoggedIn ] },
+  { path : 'login/non-user', component : NonUserLoginComponent },
   { path : 'signup', component : SignupComponent },
   { path : 'room/:hash/time', component : TimeSelectComponent, canActivate : [ AuthGuard ] },
   { path : 'room/:hash/place', component : PlaceComponent, canActivate : [ AuthGuard ] },
-  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard ] },
+  { path : 'profile', component : ProfileComponent, canActivate : [ AuthGuard, UserGuard ] },
   { path : 'tutorial', component : TutorialComponent },
   { path : 'not_found', component : NotFoundComponent },
+  { path : 'not_allowed', component : NonUserNotAllowedComponent, canActivate: [ NonUserGuard ] },
   { path : '**', redirectTo : '/not_found'}
 
 ];
@@ -89,7 +95,9 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     PlaceComponent,
     NotFoundComponent,
     DialogComponent,
+    NonUserLoginComponent,
     TutorialComponent,
+    NonUserNotAllowedComponent,
   ],
   imports : [
     CommonModule,
@@ -121,6 +129,8 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
     GoogleScheduleService,
     DaumApiService,
     AuthGuard,
+    UserGuard,
+    NonUserGuard,
     IsLoggedIn,
   ],
   bootstrap : [ AppComponent ]

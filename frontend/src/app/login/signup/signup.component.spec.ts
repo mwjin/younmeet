@@ -87,9 +87,26 @@ describe('SignupComponent', () => {
   });
 
   describe('signUp', () => {
+    it('should try signing up the user', async(() => {
+      let email = component.email.value;
+      let username = component.username.value;
+      let name = component.name.value;
+      let password = component.password.value;
+      component.signUp();
+
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        expect(accountServiceSpy.postUserSignUp)
+            .toHaveBeenCalledWith(username, email, password, name);
+        expect(authServiceSpy.logIn)
+            .toHaveBeenCalledWith(username, password);
+      });
+    }));
+
     beforeEach(() => {
       component.signUpForm.controls[ 'email' ].setValue('test@gmail.com');
       component.signUpForm.controls[ 'username' ].setValue('test');
+      component.signUpForm.controls[ 'name' ].setValue('testname');
       component.signUpForm.controls[ 'password' ].setValue('password1');
       component.signUpForm.controls[ 'passwordConfirm' ].setValue('password1');
     });
@@ -99,10 +116,13 @@ describe('SignupComponent', () => {
         let username: string = accountServiceSpy.postUserSignUp.calls.argsFor(0)[ 0 ];
         let email: string = accountServiceSpy.postUserSignUp.calls.argsFor(0)[ 1 ];
         let password: string = accountServiceSpy.postUserSignUp.calls.argsFor(0)[ 2 ];
+        let name: string = accountServiceSpy.postUserSignUp.calls.argsFor(0)[ 3 ];
+
         fixture.whenStable().then(() => {
           expect(username).toEqual('test');
           expect(email).toEqual('test@gmail.com');
           expect(password).toEqual('password1');
+          expect(name).toEqual('testname');
         });
       })));
   });

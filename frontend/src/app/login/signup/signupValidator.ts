@@ -4,6 +4,7 @@ export class SignupValidator {
   static matchForm(control: AbstractControl) {
     const email = control.get('email').value;
     const username = control.get('username').value;
+    const name = control.get('name').value;
     const password = control.get('password').value;
     const passwordConfirm = control.get('passwordConfirm').value;
 
@@ -17,6 +18,11 @@ export class SignupValidator {
       control.get('username').setErrors({ invalidUsername : true });
     }
 
+    const nameReg: RegExp = new RegExp('^$');
+    if (nameReg.test(name)) {
+      control.get('name').setErrors({ invalidName : true });
+    }
+
     const passwordReg: RegExp = new RegExp('^(?=.*[a-z])(?=.*[0-9])\\S{8,}$');
     if (!passwordReg.test(password)) {
       control.get('password').setErrors({ invalidPassword : true });
@@ -24,6 +30,14 @@ export class SignupValidator {
 
     if (password !== passwordConfirm) {
       control.get('passwordConfirm').setErrors({ invalidPasswordConfirm : true });
+    }
+  }
+
+  static nonUserMatchForm(control: AbstractControl) {
+    const name = control.get('name').value;
+    const nameReg: RegExp = new RegExp('^$');
+    if (nameReg.test(name)) {
+      control.get('name').setErrors({ invalidName : true });
     }
   }
 }

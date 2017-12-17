@@ -89,6 +89,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate([ 'dashboard' ]);
   }
 
+  goNotAllowedPage(): void {
+    this.router.navigate([ 'not_allowed' ]);
+  }
+
   showUserInfo(): void {
     document.getElementById('userInfoTab').className = 'active item';
     document.getElementById('pastAppointmentTab').className = 'item';

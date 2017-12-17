@@ -10,9 +10,10 @@ from datetime import datetime, timedelta
 # Create your tests here.
 class UserTestCase(TestCase):
     def setUp(self):
-        user1 = User.objects.create_user(email='minu@snu.ac.kr', password='1234', username='minu')
-        user2 = User.objects.create_user(email='taebum@snu.ac.kr', password='1234', username='taebum')
+        user1 = User.objects.create_user(email='minu@snu.ac.kr', password='1234', username='minu', name='Minwoo')
+        user2 = User.objects.create_user(email='taebum@snu.ac.kr', password='1234', username='taebum', name='Taebum')
         current_date = datetime.now()
+
         room1 = Room.objects.create(name="room1",
                                     place="place1",
                                     time_span_start=current_date + timedelta(days=3),
@@ -37,7 +38,10 @@ class UserTestCase(TestCase):
 
     def test_signup_post(self):
         response = self.client.post('/api/signup',
-                                    json.dumps({'email': 'dongsu@snu.ac.kr', 'username': 'dongsu', 'password': '1234'}),
+                                    json.dumps({'email': 'dongsu@snu.ac.kr',
+                                                'username': 'dongsu',
+                                                'password': '1234',
+                                                'name': 'Dongsu'}),
                                     content_type='application/json',
                                     )
         self.assertEqual(response.status_code, 201)
@@ -47,13 +51,19 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
         response = self.client.put('/api/signup',
-                                   json.dumps({'email': 'test@snu.ac.kr', 'username': 'test', 'password': 'hello'}),
+                                   json.dumps({'email': 'test@snu.ac.kr',
+                                               'username': 'test',
+                                               'password': 'hello',
+                                               'name': 'Test'}),
                                    content_type='application/json',
                                    )
         self.assertEqual(response.status_code, 405)
 
         response = self.client.delete('/api/signup',
-                                      json.dumps({'email': 'test@snu.ac.kr', 'username': 'test', 'password': 'hello'}),
+                                      json.dumps({'email': 'test@snu.ac.kr',
+                                                  'username': 'test',
+                                                  'password': 'hello',
+                                                  'name': 'Test'}),
                                       content_type='application/json',
                                       )
         self.assertEqual(response.status_code, 405)
@@ -100,6 +110,24 @@ class UserTestCase(TestCase):
                                       json.dumps({'email': 'test@snu.ac.kr', 'password': 'hello'}),
                                       content_type='application/json',
                                       )
+        self.assertEqual(response.status_code, 405)
+
+    def test_signin_nonuser_post(self):
+        response = self.client.post('/api/signin/non-user',
+                                    json.dumps({'name': 'minwoo'}),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_signin_nonuser_invalid_methods(self):
+        response = self.client.get('/api/signin/non-user')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.put('/api/signin/non-user',
+                                    json.dumps({'name': 'minwoo'}),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
+        response = self.client.delete('/api/signin/non-user')
         self.assertEqual(response.status_code, 405)
 
     def test_signout_get(self):
@@ -183,7 +211,7 @@ class UserTestCase(TestCase):
         csrftoken = response.cookies['csrftoken'].value
 
         response = self.client.put('/api/user',
-                                   json.dumps({'password': '123456'}),
+                                   json.dumps({'password': '123456', 'name': 'Name'}),
                                    content_type='application/json',
                                    HTTP_X_CSRFTOKEN=csrftoken)
 
@@ -321,7 +349,10 @@ class UserTestCase(TestCase):
 
     # region test models.py
     def test_create_superuser(self):
-        superuser = User.objects.create_superuser(email='superman@snu.ac.kr', password='super', username='root')
+        superuser = User.objects.create_superuser(email='superman@snu.ac.kr',
+                                                  password='super',
+                                                  username='root',
+                                                  name='Root')
 
         self.assertTrue(superuser.is_staff)
         self.assertTrue(superuser.is_superuser)
@@ -336,15 +367,19 @@ class UserTestCase(TestCase):
 
     def test_create_user_no_email(self):
         with self.assertRaises(ValueError):
-            User.objects.create_user(email=None, password='1234', username='null')
+            User.objects.create_user(email=None, password='1234', username='null', name='Test')
 
     def test_create_user_no_password(self):
         with self.assertRaises(ValueError):
-            User.objects.create_user(email='philsik@snu.ac.kr', password=None, username='philsik')
+            User.objects.create_user(email='philsik@snu.ac.kr', password=None, username='philsik', name='Philsik')
 
     def test_create_user_no_username(self):
         with self.assertRaises(ValueError):
-            User.objects.create_user(email='philsik@snu.ac.kr', password='1234', username=None)
+            User.objects.create_user(email='philsik@snu.ac.kr', password='1234', username=None, name='Philsik')
+
+    def test_create_user_no_name(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_user(email='philsik@snu.ac.kr', password='1234', username='philsik', name=None)
 
     def test_check_password_not_logged_in(self):
         # login and logout to get csrftoken

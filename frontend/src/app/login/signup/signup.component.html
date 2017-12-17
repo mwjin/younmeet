@@ -13,7 +13,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input class="input-form" type="text" name="email" placeholder="Username"
+              <input class="input-form" type="text" name="username" placeholder="ID"
                      [formControl]="signUpForm.controls['username']">
             </div>
           </div>
@@ -31,6 +31,18 @@
           </div>
           <div *ngIf="email.hasError('invalidEmail')&&email.touched"
                class="ui error message"> Email Should be xxxxx@xxxxxx.xxx
+          </div>
+
+          <!-- Name Input -->
+          <div class="required field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input class="input-form" type="text" name="name" placeholder="Your name or nickname"
+                     [formControl]="signUpForm.controls['name']">
+            </div>
+          </div>
+          <div *ngIf="name.hasError('invalidName')&&name.touched"
+               class="ui error message"> Name Should not be Empty
           </div>
 
           <!-- Password Input -->

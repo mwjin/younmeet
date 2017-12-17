@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
@@ -8,7 +6,11 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.forms.models import model_to_dict
 from user.models import User
 from room.models import Room
+
 import json
+import string
+import random
+
 from datetime import datetime
 
 """
@@ -25,11 +27,16 @@ def token(request):
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
+
         email = req_data['email']
         username = req_data['username']
         password = req_data['password']
-        User.objects.create_user(email=email, password=password, username=username)
+        name = req_data['name']
+
+        User.objects.create_user(email=email, password=password, username=username, name=name)
+
         return HttpResponse(status=201)
+
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -62,6 +69,28 @@ def signin(request):
         return HttpResponseNotAllowed(['POST'])
 
 
+@ensure_csrf_cookie
+@csrf_exempt
+def signin_nonuser(request):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode())
+
+        username = ''.join(random.choices(string.ascii_letters + string.digits, k=64))
+        email = username + '@nonuser.com'
+        password = User.objects.make_random_password()
+        name = req_data['name']
+
+        User.objects.create_user(email=email, password=password, username=username, name=name, is_fake=True)
+
+        user = authenticate(email=email, password=password)
+        login(request, user)
+
+        return HttpResponse(status=200)
+
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
 def signout(request):
     if not request.user.is_authenticated():
         return HttpResponse(status=401)
@@ -83,16 +112,22 @@ def user_detail(request):
         dict_model = model_to_dict(user)
         dict_user_info = {'id': dict_model['id'],
                           'email': dict_model['email'],
-                          'username': dict_model['username']}
+                          'username': dict_model['username'],
+                          'name': dict_model['name'],
+                          'is_fake': dict_model['is_fake']}
 
         return JsonResponse(dict_user_info)
 
     elif request.method == 'PUT':
-        req_new_password = json.loads(request.body.decode())  # Deserialization
-        new_password = req_new_password['password']
+        req_data = json.loads(request.body.decode())  # Deserialization
+
+        new_password = req_data['password']
+        new_name = req_data['name']
 
         user.set_password(new_password)
+        user.name = new_name
         user.save()
+
         update_session_auth_hash(request, user)
 
         return HttpResponse(status=204)

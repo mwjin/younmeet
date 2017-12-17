@@ -86,9 +86,9 @@ let ROOMS_JOINED: Room[] = [
 ];
 
 const TEST_USERS: User[] = [
-  new User(1, 'alice', 'alice@snu.ac.kr', 'alice'),
-  new User(2, 'bob', 'bob@snu.ac.kr', 'bob'),
-  new User(3, 'chris', 'chris@snu.ac.kr', 'chris'),
+  new User(1, 'alice', 'alice@snu.ac.kr', 'alice', 'alice'),
+  new User(2, 'bob', 'bob@snu.ac.kr', 'bob', 'alice'),
+  new User(3, 'chris', 'chris@snu.ac.kr', 'chris', 'alice'),
 ];
 
 const TEST_AVAILABLE_TIME: Timespan[] = [

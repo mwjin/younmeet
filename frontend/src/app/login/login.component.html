@@ -19,7 +19,7 @@
           <div class="required field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input id="email" type="text" name="email/username" placeholder="Email/Username"
+              <input id="email" type="text" name="email/username" placeholder="ID/Email"
                      [formControl]="loginForm.controls['email/username']">
             </div>
           </div>
@@ -43,6 +43,9 @@
       </form>
       <div class="ui message">
         New Member? &nbsp; <a [routerLink]="['/signup']">Sign Up</a>
+      </div>
+      <div *ngIf="redirectUrl" class="ui message">
+        Annoying to sign up? &nbsp; <a [routerLink]="['/login','non-user']"> Log In without Sign Up</a>
       </div>
       <div class="ui message">
         New to You & MEet? &nbsp; <a [routerLink]="['/tutorial']">View Tutorial</a>

@@ -18,6 +18,9 @@ class MyUserManager(BaseUserManager):
         if not extra_fields['username']:
             raise ValueError('The username must be set.')
 
+        if not extra_fields['name']:
+            raise ValueError('The name must be set.')
+
         user = self.model(
             email = MyUserManager.normalize_email(email),
             **extra_fields,
@@ -47,9 +50,10 @@ class MyUserManager(BaseUserManager):
 class User(AbstractUser):
     username = models.CharField(_('Username'), max_length=64, unique=True)
     email = models.EmailField(_('Email'), unique=True)
-    google_account = models.EmailField(_('google account'), blank=True, default='')
+    name = models.CharField(_('Name'), max_length=30)
+    is_fake = models.BooleanField(_('Is_fake'), default=False)
 
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'name']

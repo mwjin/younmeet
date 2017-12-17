@@ -97,4 +97,8 @@ export class CreateRoomComponent implements OnInit {
         this.router.navigate([ 'room', room.hashid, 'place' ]);
       });
   }
+
+  goNotAllowedPage(): void {
+    this.router.navigate([ 'not_allowed' ]);
+  }
 }
