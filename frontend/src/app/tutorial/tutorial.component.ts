@@ -11,15 +11,16 @@ export class TutorialComponent implements OnInit {
   private tutorialUrl = '../../assets/images/tutorial/';
 
   public slides = [
-    this.tutorialUrl + 'login.png',
-    this.tutorialUrl + 'sign_up.png',
-    this.tutorialUrl + 'dashboard.png',
-    this.tutorialUrl + 'create_appointment.png',
-    this.tutorialUrl + 'place.png',
-    this.tutorialUrl + 'place1.png',
-    this.tutorialUrl + 'select_time.png',
-    this.tutorialUrl + 'room_detail1.png',
-    this.tutorialUrl + 'room_detail2.png',
+    this.tutorialUrl + '1.login1.png',
+    this.tutorialUrl + '2.dashboard1.png',
+    this.tutorialUrl + '3.create1.png',
+    this.tutorialUrl + '4.place1.png',
+    this.tutorialUrl + '5.select_time1.png',
+    this.tutorialUrl + '6.select_time3.png',
+    this.tutorialUrl + '7.room-detail1.png',
+    this.tutorialUrl + '8.login2.png',
+    this.tutorialUrl + '9.non_member_login.png',
+    this.tutorialUrl + '10.room-detail2.png',
   ];
   public type = 'component';
 
@@ -89,7 +90,6 @@ export class TutorialComponent implements OnInit {
   }
 
   onIndexChange(index: number) {
-    console.log('Swiper index: ' + index);
   }
 
 
