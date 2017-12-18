@@ -13,27 +13,21 @@ class BestTimeCalculator:
 
     def calculate_best_times(self):
         time_node_list = self.time_count_tree.append_inorder(self.min_people)
-        for i in range(len(time_node_list)):
+        i = 0
+        while i < len(time_node_list):
             time_node = time_node_list[i]
             new_best_time = BestTimeCalculator.BestTime(time_node)
-            if new_best_time.end - new_best_time.start >= self.min_time_required:
+            j = i + 1
+            while j < len(time_node_list):
+                next_time = time_node_list[j]
+                if next_time.start != new_best_time.end:
+                    break
+                new_best_time.expand_best_time(next_time)
+                j += 1
+            if new_best_time.end - new_best_time.start >= self.min_time_required \
+                    and len(new_best_time.full_attend) >= self.min_people:
                 self.best_k_times.insert(new_best_time)
-            else:
-                # failed to exceed min time
-                for j in range(i + 1, len(time_node_list)):
-                    next_node = time_node_list[j]
-                    if next_node.start != new_best_time.end:
-                        # not consecutive, break
-                        break
-
-                    if next_node.end - next_node.start < self.min_time_required:
-                        # if the next node exceeds min_time_required, merging will product duplicate result
-                        new_best_time.expand_best_time(next_node)
-                        if new_best_time.end - new_best_time.start >= self.min_time_required:
-                            break
-                if new_best_time.end - new_best_time.start >= self.min_time_required \
-                        and len(new_best_time.full_attend) >= self.min_people:
-                    self.best_k_times.insert(new_best_time)
+            i = j
 
     # inputs list of pair (start, end)
     def insert_time(self, time_list):
@@ -104,7 +98,7 @@ class BestTimeCalculator:
                 else:
                     # Take longer time
                     if new_time_node.end - new_time_node.start > \
-                                    before_available_time['end'] - before_available_time['start']:
+                            before_available_time['end'] - before_available_time['start']:
                         self.partial_attend[member]['start'] = new_time_node.start
                         self.partial_attend[member]['end'] = new_time_node.end
 
