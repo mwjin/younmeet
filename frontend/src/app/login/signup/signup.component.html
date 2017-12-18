@@ -3,13 +3,13 @@
     <div class="column">
       <img src="../../../assets/images/sign_up_bold.png"
         width="300" draggable="false">
+       <div class="ui stacked segment">
+         <form class="ui large form"
+               [formGroup]="signUpForm"
+               [class.error]="!signUpForm.valid"
+               (submit)="signUp()">
 
-      <form class="ui large form"
-            [formGroup]="signUpForm"
-            [class.error]="!signUpForm.valid"
-            (submit)="signUp()">
-        <div class="ui stacked segment">
-          <!-- Username Input -->
+         <!-- Username Input -->
           <div class="required field">
             <div class="ui left icon input">
               <i class="user icon"></i>
@@ -77,8 +77,8 @@
                style="display: none"
                class="ui error message"> Username/Email already exists!
           </div>
-        </div>
-      </form>
+         </form>
+       </div>
       <div class="ui message">
         Already have an account? <a [routerLink]="['login']">Log In</a>
       </div>

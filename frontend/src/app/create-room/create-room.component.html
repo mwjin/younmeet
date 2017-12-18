@@ -3,7 +3,7 @@
 <div class="ui divider"></div>
 
 <div *ngIf="createRoomForm">
-  <form class="ui form"
+  <form class="ui large form"
         (submit)="onSubmit()"
         [class.error]="!createRoomForm.valid"
         [formGroup]="createRoomForm">
