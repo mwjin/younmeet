@@ -6,9 +6,11 @@ import io
 
 
 class BestTimeMock:
-    def __init__(self, weight, start=1):
+    def __init__(self, weight, start=1, full_attend=list(), partial_attend=dict()):
         self.weight = weight
         self.start = start
+        self.full_attend = full_attend
+        self.partial_attend = partial_attend
 
     def __str__(self):
         return str(self.weight)
@@ -67,3 +69,44 @@ class BestTimeHeapTester(unittest.TestCase):
 
         self.heap.extract_max()
         self.assertEqual(self.heap.extract_max().start, 1)
+
+    def test_heap_priority_diff_full_attend(self):
+        self.heap.insert(BestTimeMock(weight=10,
+                                      start=10,
+                                      full_attend=[1, 2, 3]))
+
+        self.heap.insert(BestTimeMock(weight=10,
+                                      start=10,
+                                      full_attend=[1, 2]))
+
+        best_time = self.heap.extract_max()
+        self.assertEqual(len(best_time.full_attend), 3)
+
+    def test_heap_priority_diff_partial_attend(self):
+        self.heap.insert(BestTimeMock(weight=10,
+                                      start=10,
+                                      full_attend=[1, 2],
+                                      partial_attend={4: 'a', 5: 'a'}))
+
+        self.heap.insert(BestTimeMock(weight=10,
+                                      start=10,
+                                      full_attend=[1, 2],
+                                      partial_attend={4: 'a'}))
+
+        best_time = self.heap.extract_max()
+        self.assertEqual(len(best_time.partial_attend.keys()), 2)
+
+    def test_heap_priority_diff_weight(self):
+        self.heap.insert(BestTimeMock(weight=10))
+
+        self.heap.insert(BestTimeMock(weight=5))
+
+        best_time = self.heap.extract_max()
+        self.assertEqual(best_time.weight, 10)
+
+    def test_heap_priority_diff_start(self):
+        self.heap.insert(BestTimeMock(weight=1, start=10))
+
+        self.heap.insert(BestTimeMock(weight=1, start=5))
+        best_time = self.heap.extract_max()
+        self.assertEqual(best_time.start, 5)

@@ -87,6 +87,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
   public deleteEvent(): void {
     $('#calendar').fullCalendar('removeEvents', localStorage.getItem('deleteButtonId'));
     document.getElementById('deleteButton').style.display = 'none';
+    localStorage.removeItem('deleteButtonId');
   }
 
   public deleteAllEvent(): void {
@@ -186,7 +187,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       eventRender : function (event, element) {
         if (event.name === 'googleSchedule') {
           element.append('from Google Calendar');
-          $(element).css("opacity", "0.5");
+          $(element).css('opacity', '0.5');
         }
       },
       visibleRange : {
@@ -203,7 +204,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       selectOverlap : function (stillEvent, movingEvent) {
         return stillEvent.name === 'googleSchedule';
       },
-      longPressDelay : 10,
+      longPressDelay : 50,
       select : function (start, end) {
         document.getElementById('deleteButton').style.display = 'none';
         let eventData;
@@ -218,14 +219,16 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       unselectAuto : true,
       eventClick : function (calEvent, jsEvent, view) {
         let selected = $('#calendar').fullCalendar('clientEvents', calEvent._id);
-        let startTime = selected[ 0 ][ 'start' ][ '_d' ]
-          .toString().split(' ')[ 4 ].slice(0, 5);
-        let endTime = selected[ 0 ][ 'end' ][ '_d' ]
-          .toString().split(' ')[ 4 ].slice(0, 5);
-        document.getElementById('deleteButton').style.display = 'block';
-        document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
+        if (selected[ 0 ][ 'name' ] !== 'googleSchedule') {
+          let startTime = selected[ 0 ][ 'start' ][ '_d' ]
+            .toString().split(' ')[ 4 ].slice(0, 5);
+          let endTime = selected[ 0 ][ 'end' ][ '_d' ]
+            .toString().split(' ')[ 4 ].slice(0, 5);
+          document.getElementById('deleteButton').style.display = 'block';
+          document.getElementById('deleteButton').innerText = `Delete ${startTime} - ${endTime}`;
 
-        localStorage.setItem('deleteButtonId', calEvent._id);
+          localStorage.setItem('deleteButtonId', calEvent._id);
+        }
       },
     };
   }
@@ -281,6 +284,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             color : 'rgb(230, 0, 0)',
             overlap : true,
             editable : false,
+            selectable : false
           };
 
           calendar.fullCalendar('renderEvent', event);

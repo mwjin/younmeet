@@ -28,19 +28,13 @@ class BestTimeHeap:
 
     def print_heap(self):
         for item in self.items:
-            if item:
-                print(str(item.weight) + ', ', end='')
+            print(str(item.weight) + ', ', end='')
 
     def sift_up(self, k):
         while k > 0:
             parent = int((k - 1) / 2)
-
-            if self.items[parent].weight > self.items[k].weight:
+            if self.is_parent_high_priority(parent, k):
                 return
-            elif self.items[parent].weight == self.items[k].weight:
-                # if has same weight, the earlier, the better
-                if self.items[parent].start <= self.items[k].start:
-                    return
             self.items[parent], self.items[k] = self.items[k], self.items[parent]
 
             k = parent
@@ -54,12 +48,27 @@ class BestTimeHeap:
                     child = 2 * k + 2
                 else:
                     child = 2 * k + 1
-            if self.items[k].weight > self.items[child].weight:
-                return
-            elif self.items[k].weight == self.items[child].weight:
-                if self.items[k].start <= self.items[child].start:
-                    return
 
+            if self.is_parent_high_priority(k, child):
+                return
             self.items[child], self.items[k] = self.items[k], self.items[child]
 
             k = child
+
+    def is_parent_high_priority(self, parent_i, child_i):
+        parent = self.items[parent_i]
+        child = self.items[child_i]
+
+        if len(parent.full_attend) == len(child.full_attend):
+            # compare weight
+            if len(parent.partial_attend.keys()) == len(child.partial_attend.keys()):
+                # compare weight
+                if parent.weight == child.weight:
+                    # compare start time
+                    return parent.start <= child.start
+
+                return parent.weight >= child.weight
+
+            return len(parent.partial_attend.keys()) >= len(child.partial_attend.keys())
+
+        return len(parent.full_attend) >= len(child.full_attend)
