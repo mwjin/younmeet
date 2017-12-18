@@ -3,11 +3,12 @@
     <div class="column">
       <img src="../../assets/images/login.png" width="320" draggable="false">
       <div class="ui hidden divider"></div>
-      <form class="ui large form"
-            [formGroup]="loginForm"
-            (ngSubmit)="tryLogin()"
-            [class.error]="!loginForm.valid && loginForm.touched">
         <div class="ui stacked segment">
+          <form class="ui large form"
+                [formGroup]="loginForm"
+                (ngSubmit)="tryLogin()"
+                [class.error]="!loginForm.valid && loginForm.touched">
+
 
           <div class="required field">
             <div class="ui left icon input">
@@ -31,9 +32,8 @@
           </div>
 
           <button class="ui fluid large submit yellow button" type="submit">Login</button>
-
+          </form>
         </div>
-      </form>
       <div class="ui message">
         New Member? &nbsp; <a [routerLink]="['/signup']">Sign Up</a>
         <div *ngIf="redirectUrl">
