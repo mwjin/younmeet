@@ -28,13 +28,12 @@ class BestTimeHeap:
 
     def print_heap(self):
         for item in self.items:
-            if item:
-                print(str(item.weight) + ', ', end='')
+            print(str(item.weight) + ', ', end='')
 
     def sift_up(self, k):
         while k > 0:
             parent = int((k - 1) / 2)
-            if self.compare_parent_and_child(parent, k) >= 0:
+            if self.is_parent_high_priority(parent, k):
                 return
             self.items[parent], self.items[k] = self.items[k], self.items[parent]
 
@@ -50,13 +49,13 @@ class BestTimeHeap:
                 else:
                     child = 2 * k + 1
 
-            if self.compare_parent_and_child(k, child) >= 0:
+            if self.is_parent_high_priority(k, child):
                 return
             self.items[child], self.items[k] = self.items[k], self.items[child]
 
             k = child
 
-    def compare_parent_and_child(self, parent_i, child_i):
+    def is_parent_high_priority(self, parent_i, child_i):
         parent = self.items[parent_i]
         child = self.items[child_i]
 
@@ -66,10 +65,10 @@ class BestTimeHeap:
                 # compare weight
                 if parent.weight == child.weight:
                     # compare start time
-                    return -(parent.start - child.start).total_seconds()
+                    return parent.start <= child.start
 
-                return parent.weight - child.weight
+                return parent.weight >= child.weight
 
-            return len(parent.partial_attend.keys()) - len(child.partial_attend.keys())
+            return len(parent.partial_attend.keys()) >= len(child.partial_attend.keys())
 
-        return len(parent.full_attend) - len(child.full_attend)
+        return len(parent.full_attend) >= len(child.full_attend)
