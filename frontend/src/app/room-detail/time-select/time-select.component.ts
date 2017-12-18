@@ -186,7 +186,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       eventRender : function (event, element) {
         if (event.name === 'googleSchedule') {
           element.append('from Google Calendar');
-          $(element).css("opacity", "0.5");
+          $(element).css('opacity', '0.5');
         }
       },
       visibleRange : {
@@ -203,7 +203,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
       selectOverlap : function (stillEvent, movingEvent) {
         return stillEvent.name === 'googleSchedule';
       },
-      longPressDelay : 10,
+      longPressDelay : 50,
       select : function (start, end) {
         document.getElementById('deleteButton').style.display = 'none';
         let eventData;
@@ -281,6 +281,7 @@ export class TimeSelectComponent implements OnInit, OnDestroy {
             color : 'rgb(230, 0, 0)',
             overlap : true,
             editable : false,
+            selectable : false
           };
 
           calendar.fullCalendar('renderEvent', event);
