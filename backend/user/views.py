@@ -195,8 +195,8 @@ def user_joined_room_list_past(request):
                                  list(user.joined_rooms.all())))
         past_rooms_dict_list = []
         for room in past_rooms:
-            past_room_dict = model_to_dict(room)
-            past_room_dict['members'] = list(map(lambda user: user.id, past_room_dict['members']))
+            past_room_dict = model_to_dict(room, exclude='members')
+            past_room_dict['member_count'] = len(list(room.members.all().values()))
             past_rooms_dict_list.append(past_room_dict)
 
         return JsonResponse(past_rooms_dict_list, safe=False)
