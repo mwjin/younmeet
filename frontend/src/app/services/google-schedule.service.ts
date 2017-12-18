@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Schedule } from '../models/schedule';
 import { Timespan } from '../models/timespan';
 
+import * as moment from 'moment';
+
 @Injectable()
 export class GoogleScheduleService implements OnDestroy {
   CLIENT_ID = '25518841710-5n8lt12ndapgo13uina8o36sb97dncol.apps.googleusercontent.com';
@@ -66,31 +68,30 @@ export class GoogleScheduleService implements OnDestroy {
    * appropriate message is printed.
    */
   private listUpcomingEvents(): void {
-    this.getGoogleCalendarEvents('primary')
+    this.getGoogleCalendarIdList().then(idList => {
+      console.log(idList);
+      return Promise.all(idList.map(id => this.getGoogleCalendarEvents(id)));
+    })
+      .then(e => [].concat.apply([], e))
       .then(schedules => {
-        this.schedules = schedules;
+        this.schedules = schedules.filter(schedule => {
+          const diff = moment.duration(moment(schedule.end).diff(schedule.start));
+          // filter events lasting for more than a day
+          return diff.asHours() < 24;
+        });
         this.isInit = true;
       });
   }
 
-  /*
   private getGoogleCalendarIdList(): Promise<string[]> {
     return gapi.client.request({
       'path': '/calendar/v3/users/me/calendarList',
       'method': 'GET',
     }).then( response => {
       const events = response.result.items;
-      const calendarIdList: string[] = [];
-
-      for (let i = 0; i < events.length; i++) {
-        const event = events[i];
-        calendarIdList.push(event.id);
-      }
-
-      return calendarIdList;
+      return events.map(e => e.id).filter(e => !e.endsWith("group.v.calendar.google.com"));
     });
   }
-  */
 
   private getGoogleCalendarEvents(calendarId: string): Promise<Schedule[]> {
     return gapi.client.request({

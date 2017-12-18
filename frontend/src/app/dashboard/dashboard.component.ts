@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit {
     });
     this.meetService.getRoomsJoinedByMe().then(rooms => {
       this.roomsJoined = rooms;
+      console.log(this.roomsJoined);
     });
   }
 
