@@ -93,20 +93,6 @@ export class ProfileComponent implements OnInit {
     this.router.navigate([ 'not_allowed' ]);
   }
 
-  showUserInfo(): void {
-    document.getElementById('userInfoTab').className = 'active item';
-    document.getElementById('pastAppointmentTab').className = 'item';
-    document.getElementById('pastappointment').style.display = 'none';
-    document.getElementById('userinfo').style.display = 'block';
-  }
-
-  showPastRooms(): void {
-    document.getElementById('userInfoTab').className = 'item';
-    document.getElementById('pastAppointmentTab').className = 'active item';
-    document.getElementById('pastappointment').style.display = 'block';
-    document.getElementById('userinfo').style.display = 'none';
-  }
-
   public open(dynamicContent: string = 'Example') {
     const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
 
