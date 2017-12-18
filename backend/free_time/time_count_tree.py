@@ -80,26 +80,20 @@ class TimeCountTree:
         root.members = split_root.members
 
         if split_left is not None:
-            if split_left.end == root.start and split_left.members == root.members:
-                root.start = split_left.start
-            else:
-                root.left = self._insert(split_left, root.left)
-                if TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right) == 2:
-                    if TimeCountTree.get_height(root.left.left) > TimeCountTree.get_height(root.left.right):
-                        root = TimeCountTree.right_rotate(root)
-                    else:
-                        root = TimeCountTree.double_right_rotate(root)
+            root.left = self._insert(split_left, root.left)
+            if TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right) == 2:
+                if TimeCountTree.get_height(root.left.left) > TimeCountTree.get_height(root.left.right):
+                    root = TimeCountTree.right_rotate(root)
+                else:
+                    root = TimeCountTree.double_right_rotate(root)
 
         if split_right is not None:
-            if split_right.start == root.end and split_right.members == root.members:
-                root.end = split_right.end
-            else:
-                root.right = self._insert(split_right, root.right)
-                if TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right) == -2:
-                    if TimeCountTree.get_height(root.right.right) > TimeCountTree.get_height(root.right.left):
-                        root = TimeCountTree.left_rotate(root)
-                    else:
-                        root = TimeCountTree.double_left_rotate(root)
+            root.right = self._insert(split_right, root.right)
+            if TimeCountTree.get_height(root.left) - TimeCountTree.get_height(root.right) == -2:
+                if TimeCountTree.get_height(root.right.right) > TimeCountTree.get_height(root.right.left):
+                    root = TimeCountTree.left_rotate(root)
+                else:
+                    root = TimeCountTree.double_left_rotate(root)
 
         root.height = 1 + max(TimeCountTree.get_height(root.left), TimeCountTree.get_height(root.right))
 
