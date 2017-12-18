@@ -121,6 +121,30 @@ class BestTimeCalculatorTest(unittest.TestCase):
         self.assertEqual(k_times[1], None)
         self.assertEqual(k_times[2], None)
 
+    def test_longer_time_versus_many_people(self):
+        time1 = [
+            [convert_to_datetime('2017-11-01 08:00'), convert_to_datetime('2017-11-01 11:00'), 'user1'],
+            [convert_to_datetime('2017-11-03 08:00'), convert_to_datetime('2017-11-03 10:00'), 'user1'],
+        ]
+        time2 = [
+            [convert_to_datetime('2017-11-01 08:00'), convert_to_datetime('2017-11-01 11:00'), 'user2'],
+            [convert_to_datetime('2017-11-03 08:00'), convert_to_datetime('2017-11-03 10:00'), 'user2'],
+        ]
+        time3 = [
+            [convert_to_datetime('2017-11-03 08:00'), convert_to_datetime('2017-11-03 10:00'), 'user3'],
+        ]
+
+        calculator = BestTimeCalculator(timedelta(hours=2), min_people=2, k=3)
+
+        calculator.insert_time(time1)
+        calculator.insert_time(time2)
+        calculator.insert_time(time3)
+        calculator.calculate_best_times()
+
+        best_times = calculator.get_best_times()
+        self.assertEqual(best_times[0].end - best_times[0].start, timedelta(hours=2))
+        self.assertEqual(best_times[1].end - best_times[1].start, timedelta(hours=3))
+
     def test_two_people_min_2hours_min_two_people_3_best_times(self):
         time1 = [
             [convert_to_datetime('2017-11-01 08:00'), convert_to_datetime('2017-11-01 10:00'), 'user1'],
